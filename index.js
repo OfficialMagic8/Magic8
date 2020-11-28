@@ -36,7 +36,7 @@ bot.statcord.on("autopost-start", () => {
 });
 
 bot.dbl = new DBL(process.env.DBL_TOKEN, { statsInterval: 1800000, webhookServer: server, webhookAuth: process.env.TOPGG_AUTH }, bot);
-bot.boats = new BOATS(process.env.DISCORD_BOATS_AUTH)
+bot.boats = new BOATS(process.env.DISCORD_BOATS_AUTH);
 
 bot.config = require("./config.json");
 bot.docs = bot.config.docs
