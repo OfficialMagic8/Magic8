@@ -8,6 +8,7 @@ module.exports = {
   dev: true,
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
-
+    let language = bot.utils.getLanguage(bot, guildData.language);
+    
   }
 }  
