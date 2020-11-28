@@ -1,4 +1,4 @@
-console.log("Magic8 starting up!")
+console.log("Magic8 starting up on GitHub!")
 require("dotenv").config()
 const http = require('http');
 const express = require('express');
