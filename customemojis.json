@@ -1,0 +1,45 @@
+{
+  "peepo": {
+    "category": "Peepo Category",
+    "preview": "<:peepoboost:702300605057597505>",
+    "emojis": {
+      "peepowut": {
+        "name": "peepowut",
+        "emoji": "<:peepowut:702300603187068938>",
+        "id": "702300603187068938"
+      },
+      "peepoboost": {
+        "name": "peepoboost",
+        "emoji": "<:peepoboost:702300605057597505>",
+        "id": "702300605057597505"
+      },
+      "pfff": {
+        "name": "pfff",
+        "emoji": "<:pfff:522886461444456448>",
+        "id": "522886461444456448"
+      },
+      "peepoomg": {
+        "name": "peepoomg",
+        "emoji": "<a:peepoomg:702300621788807288>",
+        "id": "702300621788807288",
+        "animated": true
+      }
+    }
+  },
+  "social": {
+    "category": "Social Category",
+    "preview": "<:facebook:702300598409756702>",
+    "emojis": {
+      "twitter": {
+        "name": "twitter",
+        "emoji": "<:twitter:702300595842842624>",
+        "id": "702300595842842624"
+      },
+      "facebook": {
+        "name": "facebook",
+        "emoji": "<:facebook:702300598409756702>",
+        "id": "702300598409756702"
+      }
+    }
+  }
+}

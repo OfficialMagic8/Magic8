@@ -1,0 +1,261 @@
+if(false){
+  bot.database.prepare("DROP TABLE IF EXISTS guildsinfo").run()
+  setTimeout(()=>{
+    bot.database.prepare(`CREATE TABLE IF NOT EXISTS guildsinfo (guildid TEXT PRIMARY KEY,guildname TEXT DEFAULT Unavailable,premium INTEGER DEFAULT 0,serverlevel INTEGER DEFAULT 0,additionalresponses INTEGER DEFAULT 0,prefix TEXT DEFAULT 'm*',ballchannelid TEXT DEFAULT none,replytype INTEGER DEFAULT 0,customresponses TEXT DEFAULT none,ballcolor TEXT DEFAULT '#9a00ff',ballplays INTEGER DEFAULT 0)`).run()
+  },1000)
+  setTimeout(()=>{
+    bot.database.prepare("INSERT into guildsinfo SELECT * FROM guildsinfotest").run()
+    if(false){
+    bot.database.prepare("SELECT * FROM guildsinfotest").all().forEach(row=>{
+        if(bot.guilds.cache.has(row.guildid)){
+          let rGuild = bot.guilds.cache.get(row.guildid);
+          let noBots = rGuild.members.cache.filter(m=>!m.user.bot);
+          let maxKey = Math.max.apply(null,[...bot.guildlevels.filter((level,min)=> min < noBots.size).keys()])
+          let level = bot.guildlevels.get(maxKey);
+          //console.log(`Users: ${noBots.size} |Level: ${bot.guildlevels.get(maxKey)} | Max: ${bot.levelresponses.get(level)} (${rGuild.name})`)
+          bot.database.prepare("INSERT INTO guildsinfo (guildid,prefix,ballchannelid,replytype,customresponses,ballcolor,ballplays) VALUES (?,?,?,?,?,?,?)").run(rGuild.name,level,row.ballplays,row.guildid)
+        }
+      })
+    }
+  },2500)
+}
+
+// bot.database.prepare("ALTER TABLE guildsinfo ADD COLUMN filterchannel TEXT DEFAULT none").run()
+
+if(false){//DO NOT FUCKING TOUCH THIS SHIT
+  
+  bot.database.prepare(`CREATE TABLE IF NOT EXISTS guildsinfotest (guildid TEXT PRIMARY KEY,guildname TEXT DEFAULT Unavailable,premium INTEGER DEFAULT 0,serverlevel INTEGER DEFAULT 0,additionalresponses INTEGER DEFAULT 0,prefix TEXT DEFAULT 'm*',ballchannelid TEXT DEFAULT none,replytype INTEGER DEFAULT 0,customresponses TEXT DEFAULT none,ballcolor TEXT DEFAULT '#9a00ff',ballplays INTEGER DEFAULT 0)`).run()
+  bot.database.prepare("INSERT INTO guildsinfotest (guildid,prefix,ballchannelid,replytype,customresponses,ballcolor,ballplays) SELECT guildid,prefix,'8ballchannelid',replytype,customresponses,'8ballcolor','8ballplays' FROM guildsinfo WHERE guildid!=0")
+  bot.database.prepare("SELECT * FROM guildsinfo").all().forEach(row=>{
+    bot.database.prepare("INSERT INTO guildsinfotest (guildid,prefix,ballchannelid,replytype,customresponses,ballcolor,ballplays) VALUES (?,?,?,?,?,?,?)").run(row.guildid,row.prefix,row["8ballchannelid"],row.replytype,row.customresponses,row["8ballcolor"],row["8ballplays"])
+  })
+  console.log("Copied info size: "+bot.database.prepare("SELECT * FROM guildsinfotest").all().length)
+}
+function stress(){
+  let guilds = bot.guilds.cache.filter(g=> 0 < g.members.size && g.members.size < 50000).array();
+  console.log(`🔔 Found ${guilds.length} to verify registration!`)
+  let index = 0;
+  setTimeout(()=>{
+    console.log(`⏰ Starting registration in 10 seconds..`)
+    registerGuild(guilds,index);
+  },10000);
+}
+function registerGuild(guilds,guildIndex){
+  if(guilds.length <= guildIndex) return;
+  let guild = guilds[guildIndex];
+  console.log(`⏰ Starting registration of guild '${guild.name}' in 0.5 seconds.. | Guilds to register: ${guilds.length - (guildIndex + 1)}`)
+  setTimeout(()=>{
+    let guildtable = `guild_${guild.id}`;
+    bot.stresstestdatabase.prepare(`CREATE TABLE IF NOT EXISTS ${guildtable} (userid TEXT PRIMARY KEY,username TEXT DEFAULT Unavailable,usertag TEXT DEFAULT 'Unavailable#0000',level INTEGER DEFAULT 1,expericence BIGINT DEFAULT 1,ballplays BIGINT DEFAULT 0,badges TEXT DEFAULT none,colorplays INTEGER DEFAULT 0,colorstreak INTEGER DEFAULT 0)`).run()
+    let registered = bot.stresstestdatabase.prepare(`SELECT * FROM ${guildtable}`).all().map(row=>row.userid)
+    let toRegister = guild.members.cache.filter(m=>!m.user.bot && !registered.includes(m.id)).array();
+    if(toRegister.length <= 0){
+      console.log(`📛 Skipping guild '${guild.name}' (${guild.id}) | Members: ${guild.members.size} | Members to register: ${toRegister.length}`)
+      guildIndex = guildIndex + 1;
+      registerGuild(guilds,guildIndex)
+      return;
+    }
+    console.log(`🆕 Starting registration of guild '${guild.name}' (${guild.id}) | Members: ${guild.members.size} | Members to register: ${toRegister.length}`)
+    let memberIndex = 0;
+    registerMember(guildtable,guilds,guild,guildIndex,toRegister,memberIndex)
+  },500)
+}
+function registerMember(guildtable,guilds,guild,guildIndex,members,memberIndex){
+  if(members.length <= memberIndex){
+    guildIndex = guildIndex + 1;
+    registerGuild(guilds,guildIndex);
+  }else{
+    console.log(`[PREVIOUS] Current index ${memberIndex} | Size: ${members.length}`)
+    let member = members[memberIndex];
+    console.log(`🏆 Registering member ${member.user.tag} (${member.id}) | Members left: ${members.length - (memberIndex + 1)}`)
+    bot.stresstestdatabase.prepare(`INSERT INTO ${guildtable} (userid,username,usertag) VALUES (?,?,?)`).run(member.id,member.user.username,member.user.tag)
+    memberIndex = memberIndex+1;
+    setTimeout(()=>{
+      console.log(`[ACTUAL] Current index ${memberIndex} | Size: ${members.length}`)
+      registerMember(guildtable,guilds,guild,guildIndex,members,memberIndex);
+    },100);
+  }
+}
+async function stress2(){
+  let guilds = bot.guilds.cache.filter(g=> 50000 < g.members.size && g.members.size < 100000).array();
+  console.log(`🔔 Found ${guilds.length} to verify registration!`)
+  let size = guilds.length;
+  let index = guilds.length - 1;
+  let interval = setInterval(()=>{
+    if(index >= 0){
+      let guild = guilds[index];
+      index--;
+      let actualindex = index + 1;
+      let guildtable = `guild_${guild.id}`;
+      bot.stresstestdatabase.prepare(`CREATE TABLE IF NOT EXISTS ${guildtable} (userid TEXT PRIMARY KEY,username TEXT DEFAULT Unavailable,usertag TEXT DEFAULT 'Unavailable#0000',level INTEGER DEFAULT 1,expericence BIGINT DEFAULT 1,ballplays BIGINT DEFAULT 0,badges TEXT DEFAULT none,customwallpaper TEXT DEFAULT none,donator BIGINT DEFAULT 0)`).run()
+      setTimeout(()=>{
+        let registered = bot.stresstestdatabase.prepare(`SELECT * FROM ${guildtable}`).all().map(row=>row.userid)
+        let toRegister = guild.members.cache.filter(m=>!registered.includes(m.id)).array();
+        console.log(`🏆 Registering guild ${guild.name} (${guild.id}) | Members: ${guild.members.size} | Members to register: ${toRegister.length}`)
+        let index2 = toRegister.length - 1;
+        setTimeout(()=>{
+          console.log(`🏆 Starting registering guild ${guild.name} (${guild.id}) | Members: ${guild.members.size} | Guilds left: ${actualindex}`)
+          let interval2 = setInterval(()=>{
+            let member = toRegister[index2]
+            if(!member){
+              clearInterval(interval2);
+            }else{
+              console.log(`🏆 Registering member ${member.user.tag} (${member.id}) | Members left: ${index2}`)
+              try{
+                bot.stresstestdatabase.prepare(`INSERT INTO ${guildtable} (userid,username,usertag) VALUES (?,?,?)`).run(member.id,member.user.username,member.user.tag)
+              }catch(e){}
+              index2--;
+              if(index2 < 0){
+                clearInterval(interval2);
+              }
+            }
+          },1000)
+        },200)
+      },5000)
+    }else{
+      /*
+      clearInterval(interval);
+      setTimeout(()=>{
+        console.log(`📚 Total amount of members registered in database: A LOT :V`)
+      },5000)
+      */
+    }
+  },30000)
+}
+
+app.get("/api/*", (request, response) => {
+  console.log("[API] " + date + " Ping Received");
+  let paths = request.originalUrl.slice(1).split("/");
+  //console.log(paths);
+  if(paths[0] === "api"){
+    if(paths[1] === "v1"){
+      if(paths[2] === "guild"){
+        let guildid = paths[3];
+        if(guildid && guildid.length === 18){
+          let info = bot.database.prepare("SELECT * FROM guildsinfo WHERE guildid=?").get(guildid)
+          if(info){
+            let guildInfo = {
+              error:false,
+              guildid:info.guildid,
+              guildname:info.guildname,
+              prefix:info.prefix,
+              language:info.language,
+              serverlevel:info.serverlevel,
+              ballchannelid:info.ballchannelid,
+              "8ballplays":info.ballplays,
+              replytype:info.ballreplytype,
+              filterstatus:info.togglefilter,
+              ticketstatus:info.ticketstatus,
+              maxtickets:info.ticketmaxamount,
+              ticketchannel:info.ticketchannelid,
+              ticketlog:info.ticketslogchannelid,
+              ticketcategory:info.ticketcategoryid,
+              tickettype:info.tickettype,
+              supportrole:info.ticketsupportroleid,
+              ticketmessageid:info.ticketmessageid,
+              ticketmessage:info.ticketmessage,
+              ticketmessagechannelid:info.ticketmessagechannelid,
+              systemready:info.ticketsystemready,
+            }
+            response.send(guildInfo)
+            return;
+          }
+        }
+        let notfound = {
+          error: true,
+          message: "Guild not found"
+        }
+        response.send(notfound)
+        return;
+      }else if(paths[2] === "random"){
+        let type = paths[3];
+        if(type){
+          if(type === "8ball"){
+            let mode = paths[4] || "all";
+            let ranReplies = bot.responses[mode]
+            if(!ranReplies){
+              let invalidmode = {
+                error: true,
+                message: "Invalid mode"
+              }
+              return response.send(invalidmode)
+            }
+            let success = {
+              error: false,
+              message: ranReplies[Math.floor(Math.random()*ranReplies.length)]
+            }
+            return response.send(success)
+          }else if(type==="fakeinfo"){
+            let firstName = faker.name.firstName();
+              let firstLastName = faker.name.lastName();
+            let rep = ["_","-","."]
+            //let randRep = rep[Math.floor(Math.random() * rep.length)]
+            let fakedinfo = {
+              error: false,
+              names: Math.floor(Math.random() * 100) > 50 ? firstName:`${firstName} ${faker.name.firstName()}`,
+              firstlastname: firstLastName,
+              secondlastname: faker.name.lastName(),
+              company: faker.company.companyName(),
+              email: faker.internet.email(),
+              username: faker.internet.userName([firstName,firstLastName]).replace(/,/g,"."),
+              password: faker.internet.password(),
+              photo: faker.image.avatar(),
+              phone: faker.phone.phoneNumber("(###) ###-####"),
+              address: faker.address.streetAddress("###"),
+              city: faker.address.city(),
+              zip: faker.address.zipCode(),
+              latitute: faker.address.latitude(),
+              longitude: faker.address.longitude(),
+              birthday: faker.date.between('1960-01-01', '2000-12-30').toLocaleString().split(",")[0].trim()
+            }
+            return response.send(fakedinfo)
+          }else if(type==="belike"){
+            let name = paths[4];
+            let gender = (paths[5] && ["female","male"].includes(paths[5]))?paths[5]:Math.floor(Math.random()*100) < 75?"male":"female";
+            if(!name){
+              let error = {
+                error: true,
+                message: "You need to specify a name"
+              }
+              return response.send(error)
+            }
+            let belike = {
+              error: false,
+              gender: gender==="male"?"male":"female",
+              image: `https://belikebill.ga/billgen-API.php?default=1&name=${name}&sex=${gender==="male"?"m":"f"}`
+            }
+            return response.send(belike)
+          }else if(type==="8color"){
+            let amount = paths[4] || 2;
+            if(!isNaN(amount)){
+              amount = parseInt(amount);
+              let colorsString;
+              if(amount <= 1){
+                amount = 2;
+              }else if(amount > 20){
+                amount = 20
+              }
+              colorsString = bot.utils.getRandomColors(bot,amount+1).original
+              let colors = {
+                error: false,
+                amount: amount,
+                colors: colorsString
+              }
+              return response.send(colors)
+            }
+            let error = {
+              error: true,
+              message: "Amount is not a valid number."
+            }
+            return response.send(error)
+          }
+        }
+      }
+    }
+  }
+  let unknown = {
+    error: true,
+    message: "Unknown path. Check /api/v1/"
+  }
+  return response.send(unknown)
+});

@@ -1,0 +1,18 @@
+{
+  "connectred": "#dd2e44",
+  "connectyellow": "#fdcb58",
+  "red": "#ff4f4f",
+  "green": "#32ba7c",
+  "blue": "#2453d4",
+  "yellow": "#fcd703",
+  "pink": "#ff40a6",
+  "main": "#fdfdfd",
+  "gold": "#f5af0c",
+  "lightred": "#f27777",
+  "lightblue": "#77c7f2",
+  "lightgreen": "#98f277",
+  "lightyellow": "#f2de77",
+  "trivia": {
+    "start": "#2562C6"
+  }
+}

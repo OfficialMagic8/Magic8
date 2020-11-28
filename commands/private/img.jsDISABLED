@@ -1,0 +1,93 @@
+const Discord = require("discord.js");
+const guildsMap = new Discord.Collection();
+module.exports = {
+  emoji: "🎴",
+  name: "img",
+  beta: true,
+  toggleable: true,
+  category: "UTILS",
+  cooldown: 30000,
+  cooldownMap: new Discord.Collection()
+  run: async (bot,message,args,prefix,guildData)=>{
+    if(!args[0]){
+      return message.channel.send(`${bot.emoji.cross} **Please specify a search term!**`)
+    }
+    if(guildsMap.has(message.guild.id)) {
+      return message.channel.send(`${bot.emoji.cross} \`Image search can only be used once every 60 seconds per guild!\``).catch(e=>{})
+    }
+    guildsMap.set(message.guild.id,undefined)
+    setTimeout(()=>{
+      guildsMap.delete(message.guild.id);
+    },60000)
+    if(bot.playingimage.has(message.guild.id)) {
+      let imgData = bot.playingimage.get(message.guild.id);
+      try{
+        imgData.collector.end();
+      }catch(e){}
+      imgData
+    }
+    let search = args.join(" ");
+    let results;
+    let embed = new Discord.MessageEmbed()
+      .setAuthor(message.author.tag,message.author.displayAvatarURL, null)
+      .setDescription(`${bot.emoji.loading} **Search in progress..**`)
+      .setFooter(`${bot.footer} - Searching in progress`)
+    let sent;
+    try{
+      sent = await message.channel.send(embed);
+    }catch(e){
+      return message.channel.send(`${bot.emoji.cross} \`Unknown error!\``).catch(e=>{})
+    }
+    try{
+      results = await bot.google.scrape(search,30);
+      if(results.length === 0) {
+        bot.playingimage.delete(message.guild.id)
+        return sent.edit(embed.setDescription(`${bot.emoji.cross} **Couldn't find anything :(**`).setFooter(`${bot.footer} - End`)).catch(e=>{})
+      }
+      const filter = m => m.author.id === message.author.id && m.content && ["n","cancel"].includes(m.content.toLowerCase());
+      let collector = message.channel.createMessageCollector(filter, {time: 60000})
+      let imgData = {
+        user: message.author,
+        channel: message.channel,
+        message: sent,
+        date: Date.now() + 30000,
+        collector: collector
+      }
+      let index = 0;
+      embed.setTitle(`Image search results`)
+        .setDescription(`Type \`n\` to move to the next image or \`cancel\` to cancel the process.`)
+        .setImage(results[index].url)
+        .setFooter(`${bot.footer} - (${index+1}/${Math.min(results.length,30)})`)
+      bot.playingimage.set(message.guild.id,imgData)
+      collector.on("collect", m => {
+        if(m.content.toLowerCase().trim() === "cancel"){
+          m.delete({timeout:500}).catch(e=>{})
+          sent.edit(embed.setFooter(`${bot.footer} - End`)).catch(e=>{})
+          collector.end();
+          bot.playingimage.delete(message.guild.id)
+        }else if(m.content.toLowerCase().trim() === "n"){
+          m.delete({timeout:500}).catch(e=>{})
+          index++;
+          if(index >=30){
+            sent.edit(embed.setFooter(`${bot.footer} - End`)).catch(e=>{})
+            collector.end();
+            bot.playingimage.delete(message.guild.id)
+          }
+          embed.setImage(results[index].url)
+          .setFooter(`${bot.footer} - (${index+1}/${Math.min(results.length,30)})`)
+          sent.edit(embed).catch(e=>{})
+        }
+      })
+      collector.on("end", m => {
+        sent.edit(embed.setFooter(`${bot.footer} - End`)).catch(e=>{})
+      });
+    }catch(e){
+      console.log(e)
+      try{
+        bot.playingimage.get(message.guild.id).collector.end();
+      }catch(e){}
+      bot.playingimage.delete(message.guild.id)
+      return sent.edit(embed.setDescription(`${bot.emoji.cross} **Couldn't search that :(**`).setFooter(`${bot.footer} - End`)).catch(e=>{})
+    }
+  }
+}

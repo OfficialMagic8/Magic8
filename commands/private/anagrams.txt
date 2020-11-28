@@ -1,0 +1,123 @@
+const Discord = require("discord.js");
+// const thesaurus = require("thesaurus");
+module.exports.run = async(bot,message,args,prefix,guildData)=> {}
+//   message.delete({timeout:500}).catch(e=>{});
+//   if (bot.playinganagrams.has(message.author.id)) {
+//     return console.error("Already playing!")
+//   }
+//   // let startGameEmbed = new Discord.MessageEmbed()
+//   //   .setColor(bot.colors.main)
+//   //   .setAuthor(`${message.author.username} is playing Anagrams`)
+//   //   .setDescription([`**${message.author}, here are your random letters!**`,
+//   //                    `${shuffled.join(" ")}`,
+//   //                    // ``,
+//   //                    // `**Words:**`,
+//   //                    // `**Points:**`,
+//   //                    // ``,
+//   //                    ``,
+//   //                    ``].join("\n"))
+//   //   .setFooter(`${bot.footer} • Anagrams`)
+//   // message.channel.send(startGameEmbed)
+
+//   let object = {
+//     id: message.author.id,
+//     tag: message.author.tag,
+//     name: message.author.username,
+//     channelid: message.channel.id,
+//     guildid: message.guild.id
+//   }
+  
+//   bot.playinganagrams.set(message.author.id,object)
+  
+//   let wordAttempt = message.content;
+//   if ([prefix.includes(wordAttempt)]) return console.log(`test`)
+//   if (!wordAttempt || [" "].includes(wordAttempt)) return console.log(`incorrect usage`)
+//   let findword = thesaurus.find(wordAttempt.toLowerCase())
+//   if (findword.length === 0 || wordAttempt.length === 1) {
+//     console.error(`Couldn't find that word!`)
+//   } else {
+//     var wordCorrect = wordAttempt;
+//     console.log(`Found word: ${wordCorrect}`);
+//   }
+  
+//   console.log(object.tag + ` started Anagrams`)
+//   // const vowels = ["🇦","🇪","🇮","🇴","🇺","🇾"]
+//   // const consonants = ["🇧","🇨","🇩","🇫","🇬","🇭","🇯","🇰","🇱","🇲","🇳","🇵","🇶","🇷","🇸","🇹","🇻","🇼","🇽","🇾","🇿"]
+//   const vowels = ["A","E","I","O","U","Y"]
+//   const consonants = ["B","C","D","F","G","H","J","K","L","M","N","P","Q","R","S","T","V","W","X","Y","Z"]
+//   let sixLetters = []
+//   for (let i = 0; i < 2; i++){
+//     let vSelection = vowels[Math.floor(Math.random() * 6)];
+//     sixLetters.push(vSelection)
+//   }
+//   for (let i = 0; i < 4; i++){
+//     let cSelection = consonants[Math.floor(Math.random() * 22)];
+//     sixLetters.push(cSelection)
+//   }
+//   let shuffled = shuffle(sixLetters)
+//   console.log(object.username + `'s aLetters: ${shuffled}`)
+  
+//   let filter = m=>m.author.id === object.id && wordCorrect
+//   message.channel.awaitMessages(filter, {max: 60, time: 20000, errors: ['time'] })
+//     .then(collected => {
+//       console.log(`Hit max words: ${collected.size}`)
+//       bot.playinganagrams.delete(message.author.id)  
+//     }).catch(collected => {
+//       console.log(`Time is up! Words: ${collected.size}`)
+//       bot.playinganagrams.delete(message.author.id)
+//     });
+// }
+
+// // function startGame(bot,message,channel,object,wordCorrect) {
+// //   console.log(object.tag + ` started Anagrams`)
+// //   const vowels = ["🇦","🇪","🇮","🇴","🇺","🇾"]
+// //   const consonants = ["🇧","🇨","🇩","🇫","🇬","🇭","🇯","🇰","🇱","🇲","🇳","🇵","🇶","🇷","🇸","🇹","🇻","🇼","🇽","🇾","🇿"]
+// //   let sixLetters = []
+// //   for (let i = 0; i < 2; i++){
+// //     let vSelection = vowels[Math.floor(Math.random() * 6)];
+// //     sixLetters.push(vSelection)
+// //   }
+// //   for (let i = 0; i < 4; i++){
+// //     let cSelection = consonants[Math.floor(Math.random() * 22)];
+// //     sixLetters.push(cSelection)
+// //   }
+// //   let shuffled = shuffle(sixLetters)
+// //   console.log(`Letters: ${shuffled}`)
+// //   collectWords(bot,message,object,wordCorrect)
+// // }
+
+// // function collectWords(bot,message,object,wordCorrect,guildData,prefix){
+// //   let filter = m=>m.author.id === object.id && wordCorrect && !m.content.startsWith(prefix)
+// //   message.channel.awaitMessages(filter, {max: 60, time: 20000, errors: ['time'] })
+// //     .then(collected => {
+// //       console.log(`Hit max words: ${collected.size}`)
+// //       bot.playinganagrams.delete(message.author.id)  
+// //     }).catch(collected => {
+// //       console.log(`Time is up! Words: ${collected.size}`)
+// //       bot.playinganagrams.delete(message.author.id)
+// //     });
+// // }
+  
+// function shuffle(arra1) {
+//   var ctr = arra1.length, temp, index;
+//   while (ctr > 0) {
+//     index = Math.floor(Math.random() * ctr);
+//     ctr--;
+//     temp = arra1[ctr];
+//     arra1[ctr] = arra1[index];
+//     arra1[index] = temp;
+//     }
+//   return arra1;
+// }
+
+module.exports.help = {
+  aliases: ["wordgame"],
+  description: "Write words with given letters!",
+  emoji: ":regional_indicator_a:",
+  name: "anagrams",
+  hidden: true,
+  dev: true,
+  ignore: true,
+  beta: true,
+  category: "GAMES"
+}

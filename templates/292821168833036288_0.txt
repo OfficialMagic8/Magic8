@@ -1,0 +1,13 @@
+Transcription from ticket #ticket-292821168833036288-1
+Created by: Fyrlex#2740 (292821168833036288)
+Closed by: Fyrlex#2740 (292821168833036288)
+Creation date: 10/5/2020, 12:58:51 PM (1d 14h 23m 24.2s ago)
+Close date: 10/7/2020, 3:22:15 AM
+Messages amount: 3
+
+(484148705507934208)[10/5/2020, 12:58:51 PM] Magic8#4058: Hello <@292821168833036288>, <@&713099280763715605> help them! 
+(292821168833036288)[10/7/2020, 3:22:15 AM] Fyrlex#2740: oht close 
+(484148705507934208)[10/7/2020, 3:22:15 AM] Magic8#4058: <:8cross:693828164782129253> **Closing ticket..** 
+
+Transcription system by AlonsoAliaga#0017 (290640988677079041)
+More information: https://alonsoaliaga.github.io/
