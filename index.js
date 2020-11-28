@@ -65,6 +65,7 @@ bot.schedule.scheduleJob('0 0 1 * *', async function () {
     }
   })
 });
+
 app.post("/votes", async function (request, response) {
   response.sendStatus(200)
   if (request.headers.authorization === process.env.TOPGG_AUTH) {
