@@ -1,6 +1,4 @@
 const Discord = require("discord.js");
-const e = require("express");
-const mc = require('minecraft-server-util');
 module.exports = {
   aliases: ["mcstatus", "status"],
   category: "MINECRAFT",
@@ -24,8 +22,8 @@ module.exports = {
       let updating = new Discord.MessageEmbed()
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "mcserver.checking")
-          .replace(/{LOADING}/g, bot.emoji.loading))
-      let updatingMessage
+          .replace(/{LOADING}/g, bot.emoji.loading));
+      let updatingMessage;
       try {
         updatingMessage = await message.channel.send(updating);
       } catch (e) {
@@ -54,9 +52,9 @@ module.exports = {
       }
     } else {
       if (bot.mcservers.has(message.guild.id)) {
-        let server = bot.mcservers.get(message.guild.id)
+        let server = bot.mcservers.get(message.guild.id);
         bot.fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(data => {
-          let players = data.players.list ? data.players.list.map(p => `**-** ${p.replace(/_/g, "\_")}`).join("\n") : `**-** *${bot.translate(bot, language, "none")}*`
+          let players = data.players.list ? data.players.list.map(p => `**-** ${p.replace(/_/g, "\_")}`).join("\n") : `**-** *${bot.translate(bot, language, "none")}*`;
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")

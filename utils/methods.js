@@ -42,7 +42,7 @@ module.exports.loadLanguageProgress = (bot) => {
       let paths = bot.utils.getAllPaths(object);
       let progress = (paths.length * 100) / langEnPathsAmount;
       progress = progress.toFixed(2);
-      langArray.push(`| ${lang}`)
+      langArray.push(`| ${lang}`);
       bot.languagesprogress.set(lang, { lang: object.languagenamelong, flag: object.flag, progress: progress, authors: object.authors, link: object.link })
     }
   })
@@ -59,10 +59,10 @@ module.exports.fetchLanguages = (bot) => {
       json.forEach(link => {
         bot.fetch(link).then(res => res.json())
           .then(json => {
-            bot.languages.set(json.languagenameshort, json)
+            bot.languages.set(json.languagenameshort, json);
           });
       });
-    }).catch(console.error);
+    }).catch(e => { return bot.error(bot, message, language, e); });
 }
 module.exports.getTranslation = (bot, object, path) => {
   let text = getNested(object, path.split("."));
@@ -72,10 +72,10 @@ module.exports.getLanguage = (bot, lang = "en") => {
   return bot.languages.has(lang) ? bot.languages.get(lang) : bot.languages.get("en");
 }
 module.exports.registerGuild = (bot, guild) => {
-  bot.db.prepare("INSERT INTO guilddata (guildid, guildname) VALUES (?,?)").run(guild.id, guild.name)
+  bot.db.prepare("INSERT INTO guilddata (guildid, guildname) VALUES (?,?)").run(guild.id, guild.name);
 }
 module.exports.updateGuild = (bot, guild) => {
-  bot.db.prepare("UPDATE guilddata SET guildname=? WHERE guildid=?").run(guild.name, guild.id)
+  bot.db.prepare("UPDATE guilddata SET guildname=? WHERE guildid=?").run(guild.name, guild.id);
   bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("true", guild.id);
 }
 module.exports.updateGuildUsage = (bot, guild) => {

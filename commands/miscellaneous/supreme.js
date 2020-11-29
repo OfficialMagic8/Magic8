@@ -15,7 +15,7 @@ module.exports = {
     let x = bot.canvas.createCanvas(10, 10).getContext('2d');
     x.font = font
     message.delete({ timeout: 500 }).catch(e => { });
-    let messagetosend = args.join(" ")
+    let messagetosend = args.join(" ");
     if (!messagetosend) {
       let language = bot.utils.getLanguage(bot, guildData.language);
       let embed = new Discord.MessageEmbed()
