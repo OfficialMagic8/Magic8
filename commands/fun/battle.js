@@ -18,15 +18,15 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (bot.battling.has(message.author.id)) {
       let embed = new Discord.MessageEmbed()
-      .setColor(bot.colors.red)
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "battle.error.alreadybattling")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (!args[0]) {
       let embed = new Discord.MessageEmbed()
-      .setColor(bot.colors.red)
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
@@ -35,7 +35,7 @@ module.exports = {
     let target = message.guild.members.cache.get(args[0].replace(/[^0-9]/g, ""));
     if (!target) {
       let embed = new Discord.MessageEmbed()
-      .setColor(bot.colors.red)
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
@@ -43,7 +43,7 @@ module.exports = {
     }
     if (target.id === message.author.id) {
       let embed = new Discord.MessageEmbed()
-      .setColor(bot.colors.red)
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "battle.error.cannotbeauthor")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
@@ -51,7 +51,7 @@ module.exports = {
     }
     if (bot.battling.has(target.id)) {
       let embed = new Discord.MessageEmbed()
-      .setColor(bot.colors.red)
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "battle.error.targetbattling")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
@@ -106,7 +106,7 @@ module.exports = {
               battleEmbed.setDescription(firstobject.attacks.slice(-3).join("\n"));
               bot.battling.delete(first.id)
               bot.battling.delete(second.id)
-              duelMessage.edit(battleembed).catch(e => { });
+              duelMessage.edit(battleEmbed).catch(e => { return bot.error(bot, message, language, e); });
               clearInterval(interval)
             } else if (secondobject.hp <= 0) {
               let winsArray = bot.translate(bot, language, "battle.battling.wins");
@@ -118,12 +118,9 @@ module.exports = {
               battleEmbed.setColor(bot.colors.green)
               battleEmbed.setImage("https://i.imgur.com/V2eOyD0.png")
               battleEmbed.setDescription(firstobject.attacks.slice(-3).join("\n"));
-
               bot.battling.delete(first.id)
               bot.battling.delete(second.id)
-
-              duelMessage.edit(battleembed).catch(e => { });
-
+              duelMessage.edit(battleEmbed).catch(e => { return bot.error(bot, message, language, e); });
               clearInterval(interval)
             } else {
               let damage = Math.floor(Math.random() * 15) + 7
@@ -152,11 +149,11 @@ module.exports = {
               battleEmbed.fields = [];
               battleEmbed.addField(`\\🟢 ${first.username} HP`, `❤️ ${firstobject.hp}/100`, true)
               battleEmbed.addField(`\\🔴 ${second.username} HP`, `❤️ ${secondobject.hp}/100`, true)
-              duelMessage.edit(battleembed).catch(e => { });
+              duelMessage.edit(battleEmbed).catch(e => { return bot.error(bot, message, language, e); });
             }
           }, 5000);
         }, 1500)
-      }).catch(e => { });
+      }).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
 }
