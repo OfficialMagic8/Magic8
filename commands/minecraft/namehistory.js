@@ -34,7 +34,7 @@ module.exports = {
             .setDescription(bot.translate(bot, language, "namehistory.invalidusername")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, message.author)
-              .replace(/{TOSEARCH}/g, toSearch))
+              .replace(/{TOSEARCH}/g, toSearch.replace(/_/g, "\_")))
             .setColor(bot.colors.red)
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
@@ -43,7 +43,7 @@ module.exports = {
         if (res.length === 1) {
           description = bot.translate(bot, language, "namehistory.success.unique").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
-            .replace(/{USERNAME}/g, res[0].name)
+            .replace(/{IGN}/g, res[0].name)
             .replace(/{UUID}/g, uuid)
         } else {
           let otherformat = bot.translate(bot, language, "namehistory.success.others.name");
@@ -53,7 +53,7 @@ module.exports = {
               .replace(/{NAME}/g, r.name));
           description = bot.translate(bot, language, "namehistory.success.others.description").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
-            .replace(/{USERNAME}/g, (res[0].name).replace(/_/g, "\\_"))
+            .replace(/{IGN}/g, (res[0].name).replace(/_/g, "\_"))
             .replace(/{UUID}/g, uuid)
             .replace(/{HISTORY}/g, mapped.join("\n"))
         }
@@ -98,7 +98,7 @@ module.exports = {
           if (res.length === 1) {
             description = bot.translate(bot, language, "namehistory.success.unique").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
-              .replace(/{USERNAME}/g, (res[0].name))
+              .replace(/{IGN}/g, (res[0].name).replace(/_/g, "\_"))
               .replace(/{UUID}/g, parsedUUID)
           } else {
             let otherformat = bot.translate(bot, language, "namehistory.success.others.name");
@@ -108,7 +108,7 @@ module.exports = {
                 .replace(/{NAME}/g, r.name));
             description = bot.translate(bot, language, "namehistory.success.others.description").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
-              .replace(/{USERNAME}/g, (res[0].name).replace(/_/g, "\\_"))
+              .replace(/{IGN}/g, (res[0].name).replace(/_/g, "\_"))
               .replace(/{UUID}/g, parsedUUID)
               .replace(/{HISTORY}/g, mapped.join("\n"))
           }
