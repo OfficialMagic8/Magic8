@@ -1,11 +1,8 @@
 const Discord = require("discord.js");
 const requestpromise = require("request-promise");
-const bodyURL = "https://minotar.net/armor/body/{USER}/300.png";
-const headURL = "https://minotar.net/cube/{USER}/100.png";
 const helmURL = "https://minotar.net/helm/{USER}/100.png";
-const profileURL = "https://es.namemc.com/profile/{USER}";
 module.exports = {
-  aliases: ["hipixel", "hyp", "jaipixel"],
+  aliases: ["hyp"],
   category: "MINECRAFT",
   description: "Get a Hypixel player's statistics",
   emoji: "🎮",
@@ -28,7 +25,7 @@ module.exports = {
       parsed = JSON.parse(requested);
       if (parsed.success) {
         if (parsed.player === null) {
-          let matchRegex = toSearch.match(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/gi)
+          let matchRegex = toSearch.match(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/gi);
           if (matchRegex && matchRegex.length !== 0) {
             requested = await requestpromise(`https://api.hypixel.net/player?key=${process.env.HYPIXEL_TOKEN}&uuid=${toSearch}`);
             parsed = JSON.parse(requested);
@@ -38,7 +35,7 @@ module.exports = {
               .setDescription(bot.translate(bot, language, "hypixel.error.neverjoined")
                 .replace(/{CROSS}/g, bot.emoji.cross)
                 .replace(/{USER}/g, message.author));
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
         }
       } else {
@@ -47,11 +44,10 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "hypixel.error.invalid")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } catch (e) {
-      console.error(e);
-      bot.error(bot, message, language, e)
+      return bot.error(bot, message, language, e);
     }
     let player = parsed.player;
     let firstLogin = new Date(player.firstLogin);
@@ -101,28 +97,28 @@ module.exports = {
     let rewardHighScore = player.rewardHighScore ? player.rewardHighScore : 0;
     // let rankPlusColor = player.rankPlusColor ? `${player.rankPlusColor.substring(0, 1)}${player.rankPlusColor.slice(1).toLowerCase()}`.replace(/_/g, " ") : "None"
     // let mostRecentGameType = player.mostRecentGameType ? `${player.mostRecentGameType.substring(0, 1)}${player.mostRecentGameType.slice(1).toLowerCase()}` : "Unknown"
-    let hypixelstats = new Discord.MessageEmbed()
+    let embed = new Discord.MessageEmbed()
       .setColor(bot.colors.yellow)
       .setAuthor(bot.translate(bot, language, "hypixel.success.title")
         .replace(/{TARGET}/g, player.displayname), hypixel)
-      .setThumbnail(headURL.replace(/{USER}/g, player.uuid))
+      .setThumbnail(helmURL.replace(/{USER}/g, player.uuid))
       .setFooter(bot.footer)
       .setDescription(bot.translate(bot, language, "hypixel.success.description").join("\n")
         .replace(/{DISPLAYNAME}/g, player.displayname)
-        .replace(/{RANK}/g, rank)
+        .replace(/{RANK}/g, rank.toLocaleString("en"))
         .replace(/{SUBSCRIPTION}/g, subscription === "SUPERSTAR" ? "MVP++" : subscription)
         .replace(/{FIRSTLOGIN}/g, firstLogin.toLocaleString().split("GMT")[0].trim())
         .replace(/{LASTLOGIN}/g, lastLogin.toLocaleString().split("GMT")[0].trim())
         .replace(/{LASTLOGOUT}/g, lastLogout.toLocaleString().split("GMT")[0].trim())
-        .replace(/{KARMA}/g, karma)
-        .replace(/{NETWORKLEVEL}/g, networklevel)
-        .replace(/{NETWORKEXP}/g, networkExp)
-        .replace(/{REWARDSTREAK}/g, rewardStreak)
-        .replace(/{ACHIEVEMENTPOINTS}/g, achievementPoints)
+        .replace(/{KARMA}/g, karma.toLocaleString("en"))
+        .replace(/{NETWORKLEVEL}/g, networklevel.toLocaleString("en"))
+        .replace(/{NETWORKEXP}/g, networkExp.toLocaleString("en"))
+        .replace(/{REWARDSTREAK}/g, rewardStreak.toLocaleString("en"))
+        .replace(/{ACHIEVEMENTPOINTS}/g, achievementPoints.toLocaleString("en"))
         .replace(/{USERLANGUAGE}/g, userLanguage)
         .replace(/{SOCIALMEDIA}/g, socialMedia.length === 0 ? "None" : socialMedia.join(" • "))
         .replace(/{BESTREWARDSTREAK}/g, rewardHighScore).replace(/{STATUS}/g, status));
-    return message.channel.send(hypixelstats).catch(e => { });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     function getRank(rank) {
       if (rank === "VIP_PLUS") {
         return "VIP+"
