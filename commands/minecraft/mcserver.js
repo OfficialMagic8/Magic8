@@ -66,10 +66,10 @@ module.exports = {
           }
           let image = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(imageURL => {
             return imageURL;
-          }).catch(e => { })
+          }).catch(e => { return false })
           let motd = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(imageURL => {
             return imageURL;
-          }).catch(e => { })
+          }).catch(e => { return false })
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")

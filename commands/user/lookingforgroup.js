@@ -116,8 +116,9 @@ module.exports = {
                 .setDescription(bot.translate(bot, language, "lookingforgroup.confirmremoveall").join("\n")
                   .replace(/{WARNING}/g, bot.emoji.warning)
                   .replace(/{USER}/g, message.author)
+                  .replace(/{ROLE}/g, getrole)
                   .replace(/{INFO}/g, bot.emoji.info));
-              message.channel.send(embed).then(m => {
+              return message.channel.send(embed).then(m => {
                 const filter = m => m.author.id === message.author.id && message.content;
                 message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ["time"] }).then(async collected => {
                   let confirm = collected.first().content.toLowerCase() === "confirm";
@@ -141,7 +142,8 @@ module.exports = {
                     } catch (e) { return bot.error(bot, message, langauge, e); }
                   }
                 }).catch(collected => {
-                  let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
+                  console.log(collected)
+                  let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id));
                   m.delete({ timeout: 500 }).catch(e => { });
                   let embed = new Discord.MessageEmbed()
                     .setColor(bot.colors.red)

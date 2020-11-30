@@ -1043,7 +1043,7 @@ module.exports = {
             let role = bot.guilds.cache.get(message.guild.id).roles.cache.get(guildData.lfgrole)
             if (!role) role = "none"
             let embed = new Discord.MessageEmbed()
-              .setColor(bot.colors.red)
+              .setColor(bot.colors.main)
               .setAuthor(`${b} Looking For Group Role`)
               .setDescription([
                 `**Role:** ${role}`,
