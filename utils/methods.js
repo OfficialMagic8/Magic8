@@ -1,26 +1,25 @@
 module.exports.loadCommands = (bot) => {
-  let reloading = false;
-  if (bot.commands.size >= 1) {
-    bot.commands.clear();
-    reloading = true;
-  }
-  console.log(`💻 ${reloading ? `Re` : `L`}oading commands...`)
+  if (bot.commands.size >= 1) bot.commands.clear();
+  console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
   bot.fs.readdirSync("./commands/").forEach(dir => {
     if (!dir.includes(".js")) {
-      const commands = bot.fs.readdirSync(`./commands/${dir}/`).filter(f => f.endsWith(".js"));
-      for (let file of commands) {
-        let pull = require(`../commands/${dir}/${file}`);
-        if (!pull) continue;
-        if (pull.name) {
-          bot.commands.set(pull.name, pull);
-        } else continue;
-        if (pull.aliases) {
-          pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
+      bot.fs.readdir(`./commands/${dir}`, (err, files) => {
+        if (err) console.error(err)
+        const commands = files.filter(f => f.split(".").pop() === "js")
+        for (let file of commands) {
+          let pull = require(`../commands/${dir}/${file}`);
+          if (!pull) continue;
+          if (pull.name) {
+            bot.commands.set(pull.name, pull);
+          } else continue;
+          if (pull.aliases) {
+            pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
+          }
         }
-      }
+      })
     }
   });
-  console.log(`💻 Commands ${reloading ? `re` : `l`}oaded successfully!`)
+  console.log(`💻 Commands ${reloading ? `re` : ``}loaded successfully!`)
 }
 
 module.exports.loadEvents = (bot) => {
