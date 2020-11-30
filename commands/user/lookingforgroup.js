@@ -154,31 +154,31 @@ module.exports = {
                   return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
                 });
               }).catch(e => { return bot.error(bot, message, language, e); })
-            } else {
+            } else if (message.mentions.users) {
               let target;
               try {
                 let id = args[0].replace(/[^0-9]/g, "");
                 target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
               } catch (e) {
-                let error = new Discord.MessageEmbed()
+                let embed = new Discord.MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "it")
                     .replace(/{CROSS}/g, bot.emoji.cross)
                     .replace(/{USER}/g, message.author));
-                return message.channel.send(error).catch(e => { });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               }
               if (!target) {
-                let error = new Discord.MessageEmbed()
+                let embed = new Discord.MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "it")
                     .replace(/{CROSS}/g, bot.emoji.cross)
                     .replace(/{USER}/g, message.author));
-                return message.channel.send(error).catch(e => { });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               }
               let member = message.guild.members.cache.get(target.id) || await message.guild.members.fetch(target.id);
-              if (member.roles.cache.has(guildData.lfgrole)) {
-                member.roles.remove(guildData.lfgrole).catch(e => { });
-                let current = JSON.parse(guildData.lfgusers)
+              if (member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
+                member.roles.remove(bot.lfgroles.get(message.guild.id)).catch(e => { });
+                let current = JSON.parse(bot.lfgroles.get(message.guild.id))
                 let sort = current.find(userid => userid === target.id)
                 if (sort !== undefined) {
                   current.splice(current.indexOf(sort), 1);
@@ -190,7 +190,7 @@ module.exports = {
                     .replace(/{CHECK}/g, bot.emoji.check)
                     .replace(/{TARGET}/g, target));
                 return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
-              } else if (!member.roles.cache.has(guildData.lfgrole)) {
+              } else if (!member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
                 let embed = new Discord.MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.alreadynorole")
