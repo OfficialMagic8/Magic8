@@ -14,18 +14,18 @@ module.exports = {
       // console.log("has premium")
       if (bot.lfgroles.has(message.guild.id)) {
         // console.log("not none")
-        let role = message.guild.roles.cache.get(guildData.lfgrole)
+        let role = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
         if (message.guild.roles.cache.has(role.id)) {
           let member = await message.guild.members.fetch(message.author.id)
           let data = JSON.parse(guildData.lfgusers)
           // bot.lfgusers.set(message.guild.id, bot.lfgusers.has(message.guild.id) ? bot.lfgusers.get(message.guild.id) : new Array())
           // let data = bot.lfgusers.get(message.guild.id)
           let sort = data.find(userid => userid === message.author.id)
-          if (!member.roles.cache.has(guildData.lfgrole) && sort === undefined && !args[0]) {
+          if (!member.roles.cache.has(bot.lfgroles.get(message.guild.id)) && sort === undefined && !args[0]) {
             // console.log("adding role")
             try {
               let cooldown = guildData.lfgcooldown;
-              member.roles.add(guildData.lfgrole)
+              member.roles.add(bot.lfgroles.get(message.guild.id))
               let current = JSON.parse(guildData.lfgusers)
               // let object = {
               //   userid: message.author.id,
@@ -41,11 +41,11 @@ module.exports = {
                 current.splice(current.indexOf(sort), 1)
                 // bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run(JSON.stringify(current), message.guild.id)
                 let member1 = await message.guild.members.fetch(message.author.id)
-                if (message.guild.roles.cache.has(guildData.lfgrole) && message.guild.channels.cache.has(guildData.lfgnotifychannel) && guildData.lfgnotifymessage) {
+                if (message.guild.roles.cache.has(bot.lfgroles.get(message.guild.id)) && message.guild.channels.cache.has(guildData.lfgnotifychannel) && guildData.lfgnotifymessage) {
                   let log = message.guild.channels.cache.get(guildData.lfgnotifychannel)
                   log.send(guildData.lfgnotifymessage.replace(/{USER}/g, message.author).replace(/{LFG}/, role)).catch(e => { });
                 }
-                if (member1.roles.cache.has(message.guild.roles.cache.get(guildData.lfgrole).id)) {
+                if (member1.roles.cache.has(message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id)).id)) {
                   member1.roles.remove(role.id).catch(e => { console.error(e) })
                 }
               }, (cooldown * 3600000));
@@ -60,7 +60,7 @@ module.exports = {
             } catch (e) {
               bot.error(bot, message, language, e);
             }
-          } else if (member.roles.cache.has(guildData.lfgrole)) {
+          } else if (member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
             if (args[0] && args[0].toLowerCase() === "list") {
               let data = JSON.parse(guildData.lfgusers)
               // console.log(data)
@@ -120,14 +120,15 @@ module.exports = {
               message.channel.send(embed).then(m => {
                 const filter = m => m.author.id === message.author.id && message.content;
                 message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ["time"] }).then(async collected => {
-                  let yes = collected.first().content.toLowerCase() === "yes";
-                  if (yes) {
+                  let confirm = collected.first().content.toLowerCase() === "confirm";
+                  if (confirm) {
                     try {
                       m.delete({ timeout: 500 }).catch(e => { });
                       let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
                       let newrole = await message.guild.roles.create({ data: oldrole })
                       oldrole.delete('Magic8 - LFG Remove All Users').then(deleted => {
                         bot.lfgroles.set(message.guild.id, newrole.id)
+                        bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run(newrole.id, message.guild.id)
                       }).catch(e => {
                         return bot.error(bot, message, language, e);
                       })
@@ -140,10 +141,14 @@ module.exports = {
                     } catch (e) { return bot.error(bot, message, langauge, e); }
                   }
                 }).catch(collected => {
+                  let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
                   m.delete({ timeout: 500 }).catch(e => { });
                   let embed = new Discord.MessageEmbed()
                     .setColor(bot.colors.red)
-                    .setDescription(bot.translate(bot, language, "lookingforgroup.didnotconfirm"))
+                    .setDescription(bot.translate(bot, language, "lookingforgroup.didnotconfirm")
+                      .replace(/{CROSS}/g, bot.emoji.cross)
+                      .replace(/{USER}/g, message.author)
+                      .replace(/{ROLE}/g, oldrole))
                   return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
                 });
               }).catch(e => { return bot.error(bot, message, langauge, e); })
