@@ -189,7 +189,7 @@ module.exports = {
               .replace(/{MAX}/g, list.items.length));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
-        let cooldown = guildData.randomizercooldown
+        let cooldown = guildData.randomizercooldown;
         bot.listscooldown.set(message.author.id, Date.now());
         setTimeout(async () => {
           bot.listscooldown.delete(message.author.id);
@@ -212,7 +212,7 @@ module.exports = {
             .replace(/{LOADING}/g, bot.emoji.loading));
         let embedMessage;
         try {
-          embedMessage = await message.channel.send(embed)
+          embedMessage = await message.channel.send(embed);
         } catch (e) {
           return bot.error(bot, message, language, e);
         }

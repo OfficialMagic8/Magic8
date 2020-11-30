@@ -8,5 +8,5 @@ module.exports = (bot) => {
       bot.events.set(props.name, props);
     });
     console.log("📢 Events loaded successfully!")
-  })
+  });
 }

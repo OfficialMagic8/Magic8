@@ -1,4 +1,5 @@
 module.exports = (bot) => {
+  if (bot.commands.size >= 1) bot.commands.clear();
   console.log("💻 Loading commands...")
   bot.fs.readdirSync("./commands/").forEach(dir => {
     if (!dir.includes(".js")) {
