@@ -64,11 +64,11 @@ module.exports = {
               }
             }
           }
-          let image = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(imageURL => {
-            return imageURL;
+          let image = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(image => {
+            return `http://status.mclive.eu/${server}/${server}/banner.png`;
           }).catch(e => { return false })
-          let motd = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(imageURL => {
-            return imageURL;
+          let motd = bot.canvas.loadImage(data.icon).then(image => {
+            return data.icon;
           }).catch(e => { return false })
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
