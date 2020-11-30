@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { loadCommands } = require("./utils/methods")
+const { loadCommands } = require(".../utils/methods")
 module.exports = {
   aliases: [],
   category: "",
