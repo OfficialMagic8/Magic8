@@ -36,6 +36,7 @@ module.exports = {
         bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run(args[0], message.guild.id);
         bot.mcservers.set(message.guild.id, args[0]);
         updating.setColor(bot.colors.green);
+        updating.setFooter(bot.translate(bot, language, "mcserver.javawarning"))
         updating.setDescription(bot.translate(bot, language, "mcserver.updated").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
           .replace(/{SERVER}/g, args[0])
@@ -54,16 +55,33 @@ module.exports = {
       if (bot.mcservers.has(message.guild.id)) {
         let server = bot.mcservers.get(message.guild.id);
         bot.fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(data => {
-          let players = data.players.list ? data.players.list.map(p => `**-** ${p.replace(/_/g, "\_")}`).join("\n") : `**-** *${bot.translate(bot, language, "none")}*`;
+          let getplayers = data.players.list ? data.players.list : false;
+          let finalplayersarray = [];
+          if (getplayers) {
+            for (player of getplayers) {
+              if (getplayers.indexOf(player) < 10) {
+                finalplayersarray.push(player);
+              }
+            }
+          }
+          let image = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(imageURL => {
+            return imageURL;
+          }).catch(e => { })
+          let motd = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(imageURL => {
+            return imageURL;
+          }).catch(e => { })
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
-              .replace(/{STATUS}/g, data.online)
+              .replace(/{STATUS}/g, data.online ? bot.translate(bot, language, "mcserver.online") : bot.translate(bot, language, "mcserver.offline"))
               .replace(/{SERVER}/g, server)
-              .replace(/{ONLINEPLAYERS}/g, data.players.online)
-              .replace(/{MAXPLAYERS}/g, data.players.max)
-              .replace(/{PLAYERS}/g, players));
+              .replace(/{VERSIONS}/g, data.version ? data.version : bot.translate(bot, language, "none"))
+              .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
+              .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
+              .replace(/{PLAYERS}/g, finalplayersarray.length >= 1 ? finalplayersarray.map(p => `**-** ${p.replace(/_/g, "\_")}`) : ""));
+          if (image) embed.setThumbnail(image)
+          if (motd) embed.setThumbnail(motd)
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           let embed = new Discord.MessageEmbed()
