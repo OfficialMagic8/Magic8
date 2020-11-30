@@ -1,34 +1,38 @@
-// const { loadLanguageProgress, loadPrefixes, loadUsage, loadAutoVoiceChannels, loadRestrictedChannels, loadLFGNotificationChannels, loadLFGRoles, loadAntiPingUsers, loadAntiPingChannels, loadMonthlyVotes, loadTotalVotes, loadVotedUsers, loadEmojis } = require(".../utils/load")
-const functions = ["loadLanguageProgress", "loadPrefixes", "loadUsage", "loadAutoVoiceChannels", "loadRestrictedChannels", "loadLFGNotificationChannels", "loadLFGRoles", "loadAntiPingUsers", "loadAntiPingChannels", "loadMonthlyVotes", "loadTotalVotes", "loadVotedUsers", "loadEmojis"]
 const Discord = require("discord.js");
+const { loadCommands } = require("./utils/methods")
 module.exports = {
   aliases: [],
   category: "",
-  description: "Reload a load function",
+  description: "Reload a load commands",
   emoji: "🔄",
   name: "reload",
   dev: true,
   run: async (bot, message, args, prefix, guildData) => {
-    // if (!args[0]) {
-    //   let embed = new Discord.MessageEmbed()
-    //     .setColor(bot.colors.red)
-    //     .setDescription([
-    //       `${bot.emoji.cross} **Please type a function.**`,
-    //       ``,
-    //       `${functions.map(f => `\`${f}\``).join(" ")}`])
-    //   return message.channel.send(embed).catch(e => { })
-    // }
-    // if (!functions.includes(args[0])) {
-    //   let embed = new Discord.MessageEmbed()
-    //     .setColor(bot.colors.red)
-    //     .setDescription([
-    //       `${bot.emoji.cross} **Invalid Function:** \`${args[0]}\``,
-    //       ``,
-    //       `**Available Functions:**`,
-    //       `${functions.map(f => `\`${f}\``).join(" ")}`])
-    //   return message.channel.send(embed).catch(e => { })
-    // }
-    // let runfunction = args[0]
-    // runfunction(bot);
+    let embed = new Discord.MessageEmbed()
+      .setColor(bot.colors.main)
+      .setDescription(`${bot.emoji.loading} **${message.author}, I am reloading all comands!**`);
+    let embedmessage;
+    try {
+      embedmessage = await message.channel.send(embed);
+    } catch (e) {
+      return bot.error(bot, message, language, e);
+    }
+    try {
+      loadCommands(bot);
+      setTimeout(() => {
+        embed.setColor(bot.colors.green);
+        embed.setDescription(`${bot.emoji.check} **${message.author}, commands were reloaded successfully.**`)
+      }, 3000);
+    } catch (e) {
+      embed.setColor(bot.colors.red);
+      embed.setDescription(`${bot.emoji.cross} **${message.author}, there was an error reloading the commands! Check console!**`);
+      embedmessage.edit(embed);
+      let error = [
+        `\`\`\``,
+        `${e}`,
+        `\`\`\``
+      ];
+      return message.channel.send(error).catch(e => { })
+    }
   }
 }  
