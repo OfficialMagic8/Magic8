@@ -308,9 +308,8 @@ bot.on("voiceStateUpdate", (oldState, newState) => {
   let event = bot.events.get("voiceStateUpdate");
   if (event) event.run(bot, oldState, newState)
 });
-const { loadCommands, loadEvents } = require("./utils/methods")
-loadCommands(bot);
-loadEvents(bot);
+bot.utils.loadCommands(bot);
+bot.utils.loadEvents(bot);
 
 // ["command", "event"].forEach(handler => {
 //   require(`./handler/${handler}`)(bot);

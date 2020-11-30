@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { loadCommands } = require(".../utils/methods")
 module.exports = {
   aliases: [],
   category: "",
@@ -18,7 +17,7 @@ module.exports = {
       return bot.error(bot, message, language, e);
     }
     try {
-      loadCommands(bot);
+      bot.utils.loadCommands(bot);
       setTimeout(() => {
         embed.setColor(bot.colors.green);
         embed.setDescription(`${bot.emoji.check} **${message.author}, commands were reloaded successfully.**`)
