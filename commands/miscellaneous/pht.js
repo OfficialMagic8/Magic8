@@ -4,7 +4,7 @@ const font = `bold ${lettersize}px Impact`
 const additionalheight = lettersize / 4;
 const regex = /\_|p|q|g|y|,|.|@|\|/g
 module.exports = {
-  aliases: ["ph", "pht", "phtext"],
+  aliases: ["pht"],
   category: "MISCELLANEOUS",
   description: "Create a PornHub style image - Requires `Manage Server` Permission",
   emoji: ":regional_indicator_p:",
@@ -14,7 +14,7 @@ module.exports = {
     if (!message.member.hasPermission("MANAGE_GUILD")) return;
     let x = bot.canvas.createCanvas(10, 10).getContext('2d');
     x.font = font
-    message.delete({ timeout: 500 })
+    message.delete({ timeout: 500 }).catch(e => { })
     let messagetosend = args.join(" ").split("|");
     let cleanmessage = messagetosend.map(m => m.trim()).filter(m => m.length >= 1);
     if (!messagetosend) {
@@ -24,16 +24,18 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "pornhubtext.messagerequired")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (cleanmessage.length < 2) {
       let language = bot.utils.getLanguage(bot, guildData.language);
       let embed = new Discord.MessageEmbed()
         .setColor(bot.colors.red)
-        .setDescription(bot.translate(bot, language, "pornhubtext.nobar")
+        .setDescription(bot.translate(bot, language, "pornhubtext.nobar").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { });
+          .replace(/{USER}/g, message.author)
+          .replace(/{INFO}/g, bot.emoji.info)
+          .replace(/{PREFIX}/g, prefix));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     parts = cleanmessage.map(l => l.trim())
     let first = parts[0];
@@ -62,11 +64,9 @@ module.exports = {
     ctx.fillText(first, widthfirst / 2, greaterheight / 2)
     ctx.fillStyle = "#000000"
     ctx.fillText(second, widthfirst + (widthsecond / 2) - (lettersize / 12), greaterheight / 2)
-    message.channel.send({
+    return message.channel.send({
       files: [{ attachment: canvas.toBuffer(), name: 'ph.png' }]
-    }).catch(e => {
-      console.log(e)
-    })
+    }).catch(e => { return bot.error(bot, message, language, e); })
     function measureText(text = "") {
       if (text.length === 0) {
         return { width: 0, height: 0 };
