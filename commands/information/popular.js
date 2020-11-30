@@ -13,7 +13,7 @@ module.exports = {
     let popularcommandsarray = [];
     for (command of popularcommands) {
       if (popularcommands.indexOf(command) < 10) {
-        popularcommandsarray.push(`**-** ${command.name} (${(command.count).toLocaleString("en")})`);
+        popularcommandsarray.push(`**-** \`${command.name}\` (${parseInt(command.count).toLocaleString("en")})`);
       }
     }
     let embed = new Discord.MessageEmbed()

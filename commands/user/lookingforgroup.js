@@ -139,7 +139,7 @@ module.exports = {
                           .replace(/{CHECK}/g, bot.emoji.check)
                           .replace(/{NEWROLE}/g, newrole))
                       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-                    } catch (e) { return bot.error(bot, message, langauge, e); }
+                    } catch (e) { return bot.error(bot, message, language, e); }
                   }
                 }).catch(collected => {
                   console.log(collected)
@@ -153,7 +153,7 @@ module.exports = {
                       .replace(/{ROLE}/g, oldrole))
                   return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
                 });
-              }).catch(e => { return bot.error(bot, message, langauge, e); })
+              }).catch(e => { return bot.error(bot, message, language, e); })
             } else {
               let target;
               try {
