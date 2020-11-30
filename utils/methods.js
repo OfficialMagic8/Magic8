@@ -1,5 +1,9 @@
 module.exports.loadCommands = (bot) => {
-  if (bot.commands.size >= 1) bot.commands.clear();
+  let reloading = false;
+  if (bot.commands.size >= 1) {
+    bot.commands.clear();
+    reloading = true;
+  }
   console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
   bot.fs.readdirSync("./commands/").forEach(dir => {
     if (!dir.includes(".js")) {
