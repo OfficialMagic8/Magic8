@@ -1,3 +1,41 @@
+module.exports.loadCommands = (bot) => {
+  let reloading = false;
+  if (bot.commands.size >= 1) {
+    bot.commands.clear();
+    reloading = true;
+  }
+  console.log(`💻 ${reloading ? `Re` : `L`}oading commands...`)
+  bot.fs.readdirSync("./commands/").forEach(dir => {
+    if (!dir.includes(".js")) {
+      const commands = bot.fs.readdirSync(`./commands/${dir}/`).filter(f => f.endsWith(".js"));
+      for (let file of commands) {
+        let pull = require(`../commands/${dir}/${file}`);
+        if (!pull) continue;
+        if (pull.name) {
+          bot.commands.set(pull.name, pull);
+        } else continue;
+        if (pull.aliases) {
+          pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
+        }
+      }
+    }
+  });
+  console.log(`💻 Commands ${reloading ? `re` : `l`}oaded successfully!`)
+}
+
+module.exports.loadEvents = (bot) => {
+  bot.fs.readdir("./events/", (err, files) => {
+    if (err) console.log(err);
+    console.log("📢 Loading events...")
+    let jsfile = files.filter(f => f.split(".").pop() === "js")
+    jsfile.forEach((f) => {
+      let props = require(`../events/${f}`);
+      bot.events.set(props.name, props);
+    });
+    console.log("📢 Events loaded successfully!")
+  })
+}
+
 let thisclass = this;
 module.exports.fetchMessages = async (fetchedMessages, channel) => {
   return await fetchMessages(fetchedMessages, channel);

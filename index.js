@@ -308,10 +308,14 @@ bot.on("voiceStateUpdate", (oldState, newState) => {
   let event = bot.events.get("voiceStateUpdate");
   if (event) event.run(bot, oldState, newState)
 });
+const { loadCommands, loadEvents } = require("./utils/methods")
+loadCommands(bot);
+loadEvents(bot);
 
-["command", "event"].forEach(handler => {
-  require(`./handler/${handler}`)(bot);
-});
+// ["command", "event"].forEach(handler => {
+//   require(`./handler/${handler}`)(bot);
+// });
+
 const nekoslifeclient = require("nekos.life");
 const { create } = require("domain");
 bot.nekos = new nekoslifeclient();
