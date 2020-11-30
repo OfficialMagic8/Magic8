@@ -5,8 +5,8 @@ module.exports = {
   description: "View Magic8's most popular commands from Statcord",
   emoji: "📈",
   name: "popular",
-  dev: true,
   run: async (bot, message, args, prefix, guildData) => {
+    let language = bot.utils.getLanguage(bot, guildData.language);
     let popularcommands = await bot.fetch("https://statcord.com/logan/stats/484148705507934208").then(res => res.json()).then(json => {
       return json.popular;
     });

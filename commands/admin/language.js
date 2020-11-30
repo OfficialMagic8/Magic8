@@ -25,10 +25,16 @@ module.exports = {
             condition = true;
             uptodatestring = `${bot.emoji.check} **${bot.translate(bot, language, "language.uptodate")}**`;
           }
-          let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`)
+          let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`);
           let languageslength = bot.languagesprogress.size;
-          let fullpagecount = Math.floor(languageslength / 5);
-          let totalpages = fullpagecount + 1;
+          let math = languageslength / 5;
+          let fullpagecount = Math.floor(math);
+          let totalpages;
+          if (!Number.isInteger(math)) {
+            totalpages = fullpagecount + 1;
+          } else {
+            totalpages = fullpagecount;
+          }
           let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
           if (isNaN(page) || page > totalpages || page < 1) {
             let embed = new Discord.MessageEmbed()
@@ -115,17 +121,23 @@ module.exports = {
         }).catch(e => { return bot.error(bot, message, language, e) })
         let uptodatestring;
         let condition;
-        if (lastfetchedms < lastcommit)  {
+        if (lastfetchedms < lastcommit) {
           condition = false;
           uptodatestring = `${bot.emoji.cross} **${bot.translate(bot, language, "language.outdated")}**`;
         } else if (lastfetchedms >= lastcommit) {
           condition = true;
           uptodatestring = `${bot.emoji.check} **${bot.translate(bot, language, "language.uptodate")}**`;
         }
-        let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`)
+        let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`);
         let languageslength = bot.languagesprogress.size;
-        let fullpagecount = Math.floor(languageslength / 5);
-        let totalpages = fullpagecount + 1;
+        let math = languageslength / 5;
+        let fullpagecount = Math.floor(math);
+        let totalpages;
+        if (!Number.isInteger(math)) {
+          totalpages = fullpagecount + 1;
+        } else {
+          totalpages = fullpagecount;
+        }
         let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
         if (isNaN(page) || page > totalpages || page < 1) {
           let embed = new Discord.MessageEmbed()
@@ -181,11 +193,17 @@ module.exports = {
           let lastfetchedms = Date.parse(lastfetched)
           let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json()).then(json => {
             return Date.parse(json[0].updated_at);
-          }).catch(e => bot.error(bot, message, language, e));
+          }).catch(e => {return bot.error(bot, message, language, e); });
           let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`);
           let languageslength = bot.languagesprogress.size;
-          let fullpagecount = Math.floor(languageslength / 5);
-          let totalpages = fullpagecount + 1;
+          let math = languageslength / 5;
+          let fullpagecount = Math.floor(math);
+          let totalpages;
+          if (!Number.isInteger(math)) {
+            totalpages = fullpagecount + 1;
+          } else {
+            totalpages = fullpagecount;
+          }
           let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
           if (isNaN(page) || page > totalpages || page < 1) {
             let embed = new Discord.MessageEmbed()
