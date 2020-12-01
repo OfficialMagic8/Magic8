@@ -45,23 +45,23 @@ bot.pack = require("./package.json");
 bot.utils = require("./utils/methods.js");
 bot.error = bot.utils.error
 bot.translate = bot.utils.getTranslation
-bot.webhooks = require("./utils/webhooks.js")
+bot.webhooks = require("./utils/webhooks.js");
 bot.links = require("./catched/links.json");
-bot.canvas = require("canvas")
+bot.canvas = require("canvas");
 bot.fs = require("fs");
-bot.fetch = require("node-fetch")
+bot.fetch = require("node-fetch");
 bot.hastebin = require("hastebin-gen");
-bot.os = require("os")
-bot.ms = require("pretty-ms")
+bot.os = require("os");
+bot.ms = require("pretty-ms");
 bot.schedule = require("node-schedule");
 bot.db = new Database('./data/guildData.db');
 bot.udb = new Database('./data/usageData.db');
-bot.colors = require("./utils/colors.json")
-bot.color8 = require("./utils/color8.json")
-bot.emoji = require("./utils/emojis.json")
-bot.invite = "https://discord.gg/bUUggyCjvp"
+bot.colors = require("./utils/colors.json");
+bot.color8 = require("./utils/color8.json");
+bot.emoji = require("./utils/emojis.json");
+bot.invite = "https://discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
-bot.footer = ``
+bot.footer = ``;
 
 bot.schedule.scheduleJob("0 0 1 * *", async function () {
   let guildsids = bot.guilds.cache.keyArray();
@@ -76,17 +76,22 @@ bot.schedule.scheduleJob("0 0 1 * *", async function () {
 bot.schedule.scheduleJob("0 * * * *", async function () {
   let logs = bot.channels.cache.get(bot.config.commandlogs);
   let getdate = new Date().toLocaleString();
-  let day = getdate.split(" ")[0].replace(/\\/g, ".").replace(/,/g, ".");
-  let time = getdate.split(" ")[1].replace(/\:/g, ".");
+  let day = getdate.split(" ")[0].replace(/\\/g, "_").replace(/,/g, "__");
+  let time = getdate.split(" ")[1].replace(/\:/g, "_");
   let filename = `${day}${time}`;
   try {
-    bot.fs.copyFileSync('./data/guildData.db', `./backups/${filename}`);
-    logs.send(`${bot.emoji.check} **Backup Success**`).catch(e => { });
+    bot.fs.copyFileSync('./data/guildData.db', `./backups/${filename}.db`);
+    logs.send(`${bot.emoji.check} **Backup Success**`, {
+      files: [{
+        attachment: `./databackups/${filename}.db`,
+        name: `${filename}`
+      }]
+    })
   } catch (e) {
-    console.error(`Error Backing Up`)
-    console.error(e);
-    logs.send(`${bot.emoji.cross} **Backup Failed**`).catch(e => { });
-  }
+  console.error(`Error Backing Up`);
+  console.error(e);
+  logs.send(`${bot.emoji.cross} **Backup Failed**`).catch(e => { });
+}
 });
 
 app.post("/votes", async function (request, response) {
@@ -325,8 +330,8 @@ bot.on("voiceStateUpdate", (oldState, newState) => {
   let event = bot.events.get("voiceStateUpdate");
   if (event) event.run(bot, oldState, newState)
 });
-bot.utils.loadCommands(bot);
-bot.utils.loadEvents(bot);
+  bot.utils.loadCommands(bot);
+  bot.utils.loadEvents(bot);
 
 // ["command", "event"].forEach(handler => {
 //   require(`./handler/${handler}`)(bot);

@@ -60,7 +60,7 @@ module.exports.loadVotedUsers = async (bot) => {
     });
     let names = [];
     let votesarray = [];
-    let idarray = []
+    let idarray = [];
     for (let v of voted) {
       let repeats = voted.filter(i => i.name === v.name);
       names.push(v.name)
