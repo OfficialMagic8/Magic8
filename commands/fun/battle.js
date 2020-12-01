@@ -32,14 +32,25 @@ module.exports = {
           .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     }
-    let target = message.guild.members.cache.get(args[0].replace(/[^0-9]/g, ""));
+    let target;
+    try {
+      let id = args[0].replace(/[^0-9]/g, "")
+      target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
+    } catch (e) {
+      let embed = new Discord.MessageEmbed()
+      .setColor(bot.colors.red)
+      .setDescription(bot.translate(bot, language, "it")
+        .replace(/{CROSS}/g, bot.emoji.cross)
+        .replace(/{USER}/g, message.author));
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+    }
     if (!target) {
       let embed = new Discord.MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (target.id === message.author.id) {
       let embed = new Discord.MessageEmbed()
@@ -47,7 +58,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "battle.error.cannotbeauthor")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (bot.battling.has(target.id)) {
       let embed = new Discord.MessageEmbed()

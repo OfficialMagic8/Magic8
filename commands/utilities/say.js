@@ -15,9 +15,9 @@ module.exports = {
       let channelid = args[0].replace(/[^0-9]/g, "");
       if (message.guild.channels.cache.has(channelid)) {
         channel = message.guild.channels.cache.get(channelid);
-        msg = args.slice(1).join(" ")
+        msg = args.slice(1).join(" ");
       } else {
-        msg = args.join(" ")
+        msg = args.join(" ");
       }
     }
     if (!msg) {
@@ -28,7 +28,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "say.messagerequired")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
-      return channel.send(embed).catch(e => { });
+      return channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else {
       let permissions = message.guild.me.permissionsIn(channel);
       if (!permissions || !permissions.has("SEND_MESSAGES")) {
@@ -37,7 +37,7 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "say.permissionrequired")
             .replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))
-        return message.channel.send(embed).catch(e => { })
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
       } else {
         if (message.member.hasPermission("MENTION_EVERYONE")) {
           return channel.send(msg
@@ -47,7 +47,7 @@ module.exports = {
             .replace(/{HERE}/gi, "@here"))
             .catch(e => { });
         } else {
-          return channel.send(msg).catch(e => { });
+          return channel.send(msg).catch(e => { return bot.error(bot, message, language, e); });
         }
       }
     }

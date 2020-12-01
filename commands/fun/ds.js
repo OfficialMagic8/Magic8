@@ -13,28 +13,28 @@ module.exports = {
     if (args[0]) {
       let id = args[0].replace(/[^0-9]/g, "");
       try {
-        target = bot.users.cache.get(id) || await bot.users.fetch(id);
+        target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let error = new Discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "it").join("\n")
+          .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author))
-        return message.channel.send(error).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     let size = Math.floor(Math.random() * 25) / 2
-    let ripmessagelol
-    let who = target.id === message.author.id ? "self" : "other"
+    let ripmessagelol;
+    let who = target.id === message.author.id ? "self" : "other";
     if (size > 8) {
       let b = bot.translate(bot, language, `dicksize.${who}.big`)
-      ripmessagelol = b[Math.floor(Math.random() * b.length)]
+      ripmessagelol = b[Math.floor(Math.random() * b.length)];
     } else if (size < 4) {
       let s = bot.translate(bot, language, `dicksize.${who}.small`)
-      ripmessagelol = s[Math.floor(Math.random() * s.length)]
+      ripmessagelol = s[Math.floor(Math.random() * s.length)];
     } else {
       let m = bot.translate(bot, language, `dicksize.${who}.med`)
-      ripmessagelol = m[Math.floor(Math.random() * m.length)]
+      ripmessagelol = m[Math.floor(Math.random() * m.length)];
     }
     let embed = new Discord.MessageEmbed()
       .setColor(guildData.funcolor)
@@ -44,7 +44,7 @@ module.exports = {
         .replace(/{USER}/g, message.author)
         .replace(/{SIZE}/g, size)
         .replace(/{MESSAGE}/g, ripmessagelol)
-        .replace(/{TARGET}/g, target))
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        .replace(/{TARGET}/g, target));
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

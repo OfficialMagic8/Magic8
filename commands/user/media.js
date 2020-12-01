@@ -7,7 +7,8 @@ module.exports = {
   name: "media",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
-    let mediatext = guildData.mediatext
+    let language = bot.utils.getLanguage(bot, guildData.language);
+    let mediatext = guildData.mediatext;
     if (mediatext !== "none") {
       let image
       if (guildData.mediaimage === "none") {
@@ -29,16 +30,7 @@ module.exports = {
           .replace(/{GUILDNAME}/g, message.guild.name))
         .setColor(color)
         .setDescription(mediatext)
-      return message.channel.send(mediaEmbed).catch(e => {
-        console.error(e);
-        let embed = new Discord.MessageEmbed()
-          .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "unexpectederror")
-            .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{USER}/g, message.author)
-            .replace(/{INVITE}/g, bot.invite));
-        return message.channel.send(embed).catch(e => { });
-      })
+      return message.channel.send(mediaEmbed).catch(e => { return bot.error(bot, message, language, e); })
     } else {
       if (!message.member.hasPermission("ADMINISTRATOR")) return;
       let embed = new Discord.MessageEmbed()
@@ -47,7 +39,7 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{INFO}/g, bot.emoji.info)
           .replace(/{PREFIX}/g, prefix))
-      return message.channel.send(embed).catch(e => { });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
 }

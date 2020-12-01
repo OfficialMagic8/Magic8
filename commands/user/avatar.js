@@ -19,7 +19,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     let embed = new Discord.MessageEmbed()
@@ -29,6 +29,6 @@ module.exports = {
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, target))
       .setImage(target.displayAvatarURL({ format: "png", size: 1024, dynamic: true }))
-    return message.channel.send(embed).catch(e => { });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

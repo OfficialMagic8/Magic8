@@ -46,7 +46,10 @@ module.exports = {
                   log.send(guildData.lfgnotifymessage.replace(/{USER}/g, message.author).replace(/{LFG}/, role)).catch(e => { });
                 }
                 if (member1.roles.cache.has(message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id)).id)) {
-                  member1.roles.remove(role.id).catch(e => { console.error(e) })
+                  member1.roles.remove(role.id).catch(e => {
+                    console.error(`Could not remove LFG from ${member1.user.tag} of ${member1.guild.name} (${member1.guild.id}), it may have been deleted!`)
+                    console.error(e);
+                  });
                 }
               }, (cooldown * 3600000));
               let embed = new Discord.MessageEmbed()
@@ -56,9 +59,9 @@ module.exports = {
                   .replace(/{USER}/g, message.author)
                   .replace(/{ROLE}/g, role)
                   .replace(/{COOLDOWN}/g, cooldown));
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             } catch (e) {
-              bot.error(bot, message, language, e);
+              return bot.error(bot, message, language, e);
             }
           } else if (member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
             if (args[0] && args[0].toLowerCase() === "list") {

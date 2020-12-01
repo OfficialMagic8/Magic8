@@ -16,13 +16,13 @@ module.exports = {
           .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
           .setColor(bot.colors.main)
           .setDescription([`**Created:** ${new Date(user.createdTimestamp).toLocaleString().split(" ")[0].replace(/\,/g, "")}`])
-        return message.channel.send(embed).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } catch (e) {
         let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription([
             `${bot.emoji.cross} **Could not find that user.**`])
-        return message.channel.send(embed).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     let member = await message.guild.members.fetch(message.author.id)
@@ -52,6 +52,6 @@ module.exports = {
         .replace(/{CREATED}/g, new Date(message.author.createdTimestamp).toLocaleString().split(" ")[0].replace(/\,/g, ""))
         .replace(/{BOOSTING}/g, boosting)
         .replace(/{ROLES}/g, rolesarray.join("\n")))
-    return message.channel.send(embed).catch(e => { })
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
   }
 }  

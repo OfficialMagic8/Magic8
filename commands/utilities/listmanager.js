@@ -172,7 +172,7 @@ module.exports = {
               .replace(/{INPUT}/g, listname)
               .replace(/{LISTS}/g, listsarray.join("\n"))
               .replace(/{INFO}/g, bot.emoji.info));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase())
         if (!randomcount || randomcount < 2 || randomcount > list.items.length) {
@@ -182,7 +182,7 @@ module.exports = {
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{INPUT}/g, randomcount)
               .replace(/{MAX}/g, list.items.length));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let cooldown = guildData.randomizercooldown;
         bot.listscooldown.set(message.author.id, Date.now());

@@ -34,9 +34,8 @@ module.exports = {
             .replace(/{MAX}/g, max)
             .replace(/{UPGRADE}/g, upgradestring)
             .replace(/{USERS}/g, array.join("\n")));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let target;
       if (!args[1]) {
         let usersarray = [];
         let antipingusers = JSON.parse(guildData.antipingusers);
@@ -54,8 +53,9 @@ module.exports = {
             .replace(/{USERS}/g, usersarray.map(u => `**-** ${u}`).join("\n"))
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
+      let target;
       try {
         let id = args[1].replace(/[^0-9]/g, "");
         target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
@@ -65,14 +65,22 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }
+      if (!target) {
+        let embed = new Discord.MessageEmbed()
+          .setColor(bot.colors.red)
+          .setDescription(bot.translate(bot, language, "it")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{USER}/g, message.author));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (target.id === bot.user.id) {
         let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.cannotbebot")
             .replace(/{CROSS}/g, bot.emoji.cross));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (users.includes(target.id)) {
         let embed = new Discord.MessageEmbed()
@@ -82,8 +90,8 @@ module.exports = {
             .replace(/{TARGET}/g, target));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else if (!users.includes(target.id)) {
-        users.push(target.id)
-        bot.antipingusers.set(message.guild.id, users)
+        users.push(target.id);
+        bot.antipingusers.set(message.guild.id, users);
         bot.db.prepare("UPDATE guilddata SET antipingusers=? WHERE guildid=?").run(JSON.stringify(users), message.guild.id);
         let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.green)
@@ -93,7 +101,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
     } else if (subcommand === "removeuser") {
-      if (!bot.antipingusers.has(message.guild.id) || bot.antipingusers.get(message.guild.id).length === 0) {
+      if (!bot.antipingusers.has(message.guild.id) || bot.antipingusers.get(message.guild.id).length <= 0) {
         bot.antipingusers.delete(message.guild.id)
         let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.red)
@@ -104,19 +112,19 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (!args[1]) {
-        let usersarray = []
+        let usersarray = [];
         bot.antipingusers.get(message.guild.id).forEach(async u => {
-          let fetched = await message.guild.members.fetch(u) || message.guild.members.cache.get(u)
-          usersarray.push(`${fetched} (${fetched.id})`)
-        })
+          let fetched = await message.guild.members.fetch(u) || message.guild.members.cache.get(u);
+          usersarray.push(`${fetched} (${fetched.id})`);
+        });
         let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(bot.translate(bot, language, "antiping.removeusermenutitle")
             .replace(/{BOTNAME}/g, bot.user.username))
           .setDescription(bot.translate(bot, language, "antiping.removeusermenu").join("\n")
-            .replace(/{USERS}/g, usersarray.map(u => `**-** ${u}`).join("\n"))
+            .replace(/{USERS}/g, usersarray.length <= 0 ? usersarray.map(u => `**-** ${u}`).join("\n") : `**-** *${bot.translate(bot, language, "none")}*`)
             .replace(/{INFO}/g, bot.emoji.info)
-            .replace(/{PREFIX}/g, prefix))
+            .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       let target;
@@ -126,8 +134,8 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.removeall")
-            .replace(/{CHECK}/g, bot.emoji.check))
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            .replace(/{CHECK}/g, bot.emoji.check));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       try {
         let id = args[1].replace(/[^0-9]/g, "");
@@ -315,7 +323,7 @@ module.exports = {
         try {
           user = message.guild.members.cache.get(userid) || await message.guild.members.fetch(userid)
         } catch (e) {
-          
+
         }
         usersarray.push(`${user}(${user.id})`)
       })
