@@ -69,6 +69,7 @@ module.exports.error = (bot, message, language, e) => {
   const Discord = require("discord.js");
   let logs = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.caughterrors)
   let startedwith;
+  let prefix = bot.prefixes.get(message.guild.id)
   if (message.content.startsWith(prefix)) startedwith = prefix.length
   if (message.content.startsWith(`<@${bot.user.id}>`)) startedwith = `<@${bot.user.id}>`.length;
   if (message.content.startsWith(`<@!${bot.user.id}>`)) startedwith = `<@!${bot.user.id}>`.length;
