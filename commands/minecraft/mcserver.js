@@ -61,7 +61,7 @@ module.exports = {
               }
             }
           }
-          let thumbnail = bot.canvas.loadImage(`https://eu.mc-api.net/v3/server/favicon/${server}`).then(image => {
+          let thumbnail = await bot.canvas.loadImage(`https://eu.mc-api.net/v3/server/favicon/${server}`).then(image => {
             return `https://eu.mc-api.net/v3/server/favicon/${server}`;
           }).catch(e => {
             return false;
