@@ -26,7 +26,7 @@ module.exports = {
           .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
-    if (cleanmessage.length < 2) {
+    if (cleanmessage && cleanmessage.length < 2) {
       let language = bot.utils.getLanguage(bot, guildData.language);
       let embed = new Discord.MessageEmbed()
         .setColor(bot.colors.red)
