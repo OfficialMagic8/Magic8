@@ -36,7 +36,7 @@ module.exports = {
             .replace(/{CHECK}/g, bot.emoji.check)
             .replace(/{INVITE}/g, bot.invite)
             .replace(/{GUIDE}/g, bot.docs.main));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     if (bot.antipingusers.has(message.guild.id) && message.content && message.mentions.members.keyArray().length >= 1 && !message.mentions.members.keyArray().includes(message.author.id)) {

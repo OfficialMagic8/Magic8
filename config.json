@@ -51,7 +51,6 @@
   "alonsoid": "290640988677079041",
   "guildstats": "652539034404519936",
   "announcements": "634145831703805994",
-  "status": "713071622428557342",
   "updates": "766108811978080267",
   "general": "627864473486753841",
   "guildlogs": "629736566734061588",
@@ -61,6 +60,7 @@
   "privatetesting": "633725136163438592",
   "commandlogs": "629736098028847104",
   "votechannel": "776068283115241482",
+  "caughterrors": "782975917819166731",
   "vote": {
     "dbl": "https://top.gg/bot/484148705507934208/vote",
     "db": "https://discord.boats/bot/484148705507934208/vote",
@@ -73,6 +73,7 @@
     "issues": "https://github.com/OfficialMagic8/Languages/issues"
   },
   "donatelink": "https://donatebot.io/checkout/610816275580583936",
+  "status": "https://status.magic8.xyz/",
   "docs": {
     "ads": "https://docs.magic8.xyz/info/ads",
     "main": "https://docs.magic8.xyz/",

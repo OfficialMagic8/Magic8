@@ -1,14 +1,14 @@
 module.exports.loadCommands = (bot) => {
   let reloading = false;
-  if (bot.commands.size >= 1) {
-    bot.commands.clear();
-    reloading = true;
-  }
+  // if (bot.commands.size >= 1) {
+  //   bot.commands.clear();
+  //   reloading = true;
+  // }
   console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
   bot.fs.readdirSync("./commands/").forEach(dir => {
     if (!dir.includes(".js")) {
       bot.fs.readdir(`./commands/${dir}`, (err, files) => {
-        if (err) console.error(err)
+        if (err) console.error(err);
         const commands = files.filter(f => f.split(".").pop() === "js")
         for (let file of commands) {
           let pull = require(`../commands/${dir}/${file}`);
@@ -23,19 +23,22 @@ module.exports.loadCommands = (bot) => {
       })
     }
   });
-  console.log(`💻 Commands ${reloading ? `re` : ``}loaded successfully!`)
+  console.log(`💻 Commands ${reloading ? `re` : ``}loaded successfully!`);
 }
 
 module.exports.loadEvents = (bot) => {
   bot.fs.readdir("./events/", (err, files) => {
     if (err) console.log(err);
     console.log("📢 Loading events...")
-    let jsfile = files.filter(f => f.split(".").pop() === "js")
-    jsfile.forEach((f) => {
-      let props = require(`../events/${f}`);
-      bot.events.set(props.name, props);
-    });
-    console.log("📢 Events loaded successfully!")
+    const events = files.filter(f => f.split(".").pop() === "js")
+    for (let file of events) {
+      let pull = require(`../events/${file}`);
+      if (!pull) continue;
+      if (pull.name) {
+        bot.events.set(pull.name, pull);
+      } else continue;
+    }
+    console.log("📢 Events loaded successfully!");
   })
 }
 
@@ -64,8 +67,14 @@ async function fetchMessages(fetchedMessages, channel) { // long time no glitch.
 }
 module.exports.error = (bot, message, language, e) => {
   const Discord = require("discord.js");
-  console.error(`Caught Error:`);
-  console.error(e);
+  let logs = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.caughterrors)
+  let error = [
+    `\`\`\``,
+    `Caught Error:`,
+    `${e}`,
+    `\`\`\``
+  ];
+  logs.send(error).catch(e => { });
   let embed = new Discord.MessageEmbed()
     .setColor(bot.colors.red)
     .setDescription(bot.translate(bot, language, "unexpectederror").join("\n")

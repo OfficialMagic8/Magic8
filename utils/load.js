@@ -70,8 +70,8 @@ module.exports.loadVotedUsers = async (bot) => {
           id: v.id,
           votes: repeats.length
         }
-        votesarray.push(o)
-        idarray.push(v.id)
+        votesarray.push(o);
+        idarray.push(v.id);
       }
     }
     console.log(`☑️ Loaded ${votesarray.length} DBL Voters This Month`);
