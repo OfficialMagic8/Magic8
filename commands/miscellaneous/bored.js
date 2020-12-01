@@ -10,10 +10,10 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!args[0]) {
-      let req = await bot.fetch("https://www.boredapi.com/api/activity").then(res => res.json())
-        .then(json => {
-          return json
-        }).catch(e => { return bot.error(bot, message, language, e); });
+      let req;
+      try {
+        req = await bot.fetch("https://www.boredapi.com/api/activity").then(res => res.json()).then(json => { return json });
+      } catch (e) { return bot.error(bot, message, language, e); });
       let embed = new Discord.MessageEmbed()
         .setAuthor(bot.translate(bot, language, "bored.title")
           .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: "true" }))
@@ -24,11 +24,10 @@ module.exports = {
           .replace(/{PEOPLE}/g, req.participants))
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else if (activities.includes(args[0].toLowerCase())) {
-
-      let req = await bot.fetch(`http://www.boredapi.com/api/activity?type=${args[0].toLowerCase()}`).then(res => res.json())
-        .then(json => {
-          return json;
-        }).catch(e => { return bot.error(bot, message, language, e); });
+      let req;
+      try {
+        req = await bot.fetch(`http://www.boredapi.com/api/activity?type=${args[0].toLowerCase()}`).then(res => res.json()).then(json => { return json });
+      } catch (e) { return bot.error(bot, message, language, e); };
       let embed = new Discord.MessageEmbed()
         .setAuthor(bot.translate(bot, language, "bored.title")
           .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: "true" }))

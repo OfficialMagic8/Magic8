@@ -8,10 +8,10 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let req = await bot.fetch(`https://api.chucknorris.io/jokes/random/`).then(res => res.json())
-      .then(json => {
-        return json;
-      }).catch(e => { return bot.error(bot, message, language, e); });
+    let req;
+    try {
+      req = await bot.fetch(`https://api.chucknorris.io/jokes/random/`).then(res => res.json()).then(json => { return json; });
+    } catch (e) { return bot.error(bot, message, language, e); };
     let embed = new Discord.MessageEmbed()
       .setDescription(`${bot.emoji.check} **${req.value}**`)
       .setThumbnail(req.icon_url)

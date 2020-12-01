@@ -61,11 +61,10 @@ module.exports = {
               }
             }
           }
-          let thumbnail = await bot.canvas.loadImage(`https://eu.mc-api.net/v3/server/favicon/${server}`).then(image => {
-            return `https://eu.mc-api.net/v3/server/favicon/${server}`;
-          }).catch(e => {
-            return false;
-          });
+          let thumbnail
+          try {
+            thumbnail = await bot.canvas.loadImage(`https://eu.mc-api.net/v3/server/favicon/${server}`)
+          } catch (e) { }
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
