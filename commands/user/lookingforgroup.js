@@ -40,7 +40,7 @@ module.exports = {
                 let sort = current.find(userid => userid === message.author.id)
                 current.splice(current.indexOf(sort), 1)
                 // bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run(JSON.stringify(current), message.guild.id)
-                let member1 = await message.guild.members.fetch(message.author.id)
+                let member1 = message.guild.members.get(message.author.id) || await message.guild.members.fetch(message.author.id)
                 if (message.guild.roles.cache.has(bot.lfgroles.get(message.guild.id)) && message.guild.channels.cache.has(guildData.lfgnotifychannel) && guildData.lfgnotifymessage) {
                   let log = message.guild.channels.cache.get(guildData.lfgnotifychannel)
                   log.send(guildData.lfgnotifymessage.replace(/{USER}/g, message.author).replace(/{LFG}/, role)).catch(e => { });
@@ -161,7 +161,7 @@ module.exports = {
               let target;
               try {
                 let id = args[0].replace(/[^0-9]/g, "");
-                target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
+                target = bot.users.cache.get(id) || await bot.users.fetch(id);
               } catch (e) {
                 let embed = new MessageEmbed()
                   .setColor(bot.colors.red)

@@ -16,7 +16,7 @@ module.exports = {
     } else if (bot.premium.get(message.guild.id) === 2) {
       premiumstatus = "💎 **Premium: `II`**\n";
     }
-    let bots = message.guild.members.cache.filter(c => c.user.bot).size;
+    let bots = bot.users.cache.filter(c => c.user.bot).size;
     let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "info.title")
         .replace(/{GUILDNAME}/g, message.guild.name))
@@ -24,9 +24,9 @@ module.exports = {
       .setThumbnail(message.guild.iconURL({ format: "png", dynamic: true }))
       .setDescription(bot.translate(bot, language, "info.description").join("\n")
         .replace(/{PREFIX}/g, guildData.prefix)
-        .replace(/{USERS}/g, message.guild.members.cache.size - bots)
+        .replace(/{USERS}/g, bot.users.cache.size - bots)
         .replace(/{BOTS}/g, bots)
-        .replace(/{ONLINE}/g, message.guild.members.cache.filter(m => m.presence.status !== "offline").size)
+        .replace(/{ONLINE}/g, bot.users.cache.filter(m => m.presence.status !== "offline").size)
         .replace(/{TEXTCHANNELS}/g, message.guild.channels.cache.filter(c => c.type === "text").size)
         .replace(/{VOICECHANNELS}/g, message.guild.channels.cache.filter(c => c.type === "voice").size)
         .replace(/{PREMIUM}/g, premiumstatus)

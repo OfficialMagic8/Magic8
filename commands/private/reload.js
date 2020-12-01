@@ -9,7 +9,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     bot.utils.loadCommands(bot);
     let embed = new MessageEmbed()
-      .setColor(bot.colros.green)
+      .setColor(bot.colors.green)
       .setDescription(`${bot.emoji.cross} **Commands were attempted to reload!**`);
     return message.channel.send(embed).catch(e => { });
   }

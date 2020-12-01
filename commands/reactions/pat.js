@@ -12,7 +12,7 @@ module.exports = {
     if (args[0]) {
       try {
         let id = args[0].replace(/[^0-9]/g, "");
-        target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
+        target = bot.users.cache.get(id) || await bot.users.fetch(id);
       } catch (e) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)

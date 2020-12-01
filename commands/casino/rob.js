@@ -14,8 +14,8 @@ module.exports = {
     let target;
     if (args[0]) {
       let id = args[0].replace(/[^0-9]/g,"");
-      target = message.guild.members.cache.get(id);
-      if (!target) {
+      target = bot.users.cache.get(id);
+      if (!target.user) {
         let helpMenu = new MessageEmbed()
           .setColor(bot.colors.lightred)
           .setDescription([`${bot.emoji.cross} **${message.author}, to steal, please provide a valid user or ID that is also in the casino!**`,
@@ -29,7 +29,7 @@ module.exports = {
         return message.channel.send(error).catch(e=>{});
       }
     }
-    if (!target || !bot.playingcasino.has(target.id)) {
+    if (!target.user || !bot.playingcasino.has(target.id)) {
       let helpMenu = new MessageEmbed()
         .setColor(bot.colors.lightred)
         .setDescription([`${bot.emoji.cross} **${message.author}, to steal, please provide a valid user or ID that is also in the casino!**`,

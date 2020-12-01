@@ -259,7 +259,7 @@ module.exports = {
         // log.info(`🎲 ${message.author.tag} opened the Casino Member List`)
         if (message.member.hasPermission("ADMINISTRATOR")) {
           let userArray = []
-          let users = message.guild.members.cache.keyArray()
+          let users = bot.users.cache.keyArray()
           for (let user of users) {
             let userData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(user);
             if (userData) {
@@ -275,7 +275,7 @@ module.exports = {
           let userData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(message.author.id);
           bot.database.prepare("UPDATE usersinfo SET coins=? WHERE userid=?").run(userData.coins - 50, message.author.id);
           let userArray = []
-          let users = message.guild.members.cache.keyArray()
+          let users = bot.users.cache.keyArray()
           for (let user of users) {
             let userData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(user);
             if (userData) {
@@ -293,7 +293,7 @@ module.exports = {
         if (args[1]) {
           let id = args[1].replace(/[^0-9]/g, "");
           try {
-            target = message.guild.members.cache.get(id);
+            target = bot.users.cache.get(id);
           } catch (e) {
             let error = new MessageEmbed()
               .setColor(bot.colors.lightred)
@@ -302,7 +302,7 @@ module.exports = {
             return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
           }
         }
-        if (!target || !bot.playingcasino.has(target.id)) {
+        if (!target.user || !bot.playingcasino.has(target.id)) {
           let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, to set someone's balance, please provide a valid user or ID that has registered in the casino and then provide a value of coins to add!**`,
@@ -326,7 +326,7 @@ module.exports = {
         if (args[1]) {
           let id = args[1].replace(/[^0-9]/g, "");
           try {
-            target = message.guild.members.cache.get(id);
+            target = bot.users.cache.get(id);
           } catch (e) {
             let error = new MessageEmbed()
               .setColor(bot.colors.lightred)
@@ -335,7 +335,7 @@ module.exports = {
             return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
           }
         }
-        if (!target || !bot.playingcasino.has(target.id)) {
+        if (!target.user || !bot.playingcasino.has(target.id)) {
           let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, to set someone's balance, please provide a valid user or ID that has registered in the casino and then provide a value of coins to add!**`,
@@ -360,7 +360,7 @@ module.exports = {
         if (args[1]) {
           let id = args[1].replace(/[^0-9]/g, "");
           try {
-            target = message.guild.members.cache.get(id);
+            target = bot.users.cache.get(id);
           } catch (e) {
             let error = new MessageEmbed()
               .setColor(bot.colors.lightred)
@@ -369,7 +369,7 @@ module.exports = {
             return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
           }
         }
-        if (!target) {
+        if (!target.user) {
           let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, to set someone's balance, please provide a valid user or ID that has registered in the casino and then provide a value of coins to subtract!**`,

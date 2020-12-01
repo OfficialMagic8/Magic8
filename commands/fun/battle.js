@@ -35,14 +35,14 @@ module.exports = {
     let target;
     try {
       let id = args[0].replace(/[^0-9]/g, "")
-      target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
+      target = bot.users.cache.get(id) || await bot.users.fetch(id);
     } catch (e) {
       let embed = new MessageEmbed()
-      .setColor(bot.colors.red)
-      .setDescription(bot.translate(bot, language, "it")
-        .replace(/{CROSS}/g, bot.emoji.cross)
-        .replace(/{USER}/g, message.author));
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        .setColor(bot.colors.red)
+        .setDescription(bot.translate(bot, language, "it")
+          .replace(/{CROSS}/g, bot.emoji.cross)
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (!target) {
       let embed = new MessageEmbed()

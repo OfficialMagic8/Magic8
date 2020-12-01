@@ -6,7 +6,10 @@ module.exports = {
     if (bot.voicechannels.has(guild.id)) {
       // console.log(`Guild In Voice Channels Collection`)
       // console.log(`Cate From Collection: ${category}`)
-      let getchannel = await bot.channels.fetch((oldState.channel || newState.channel).id) || guild.channels.cache.get((oldState.channel || newState.channel).id)
+      let getchannel
+      try {
+        getchannel = await bot.channels.fetch((oldState.channel || newState.channel).id) || guild.channels.cache.get((oldState.channel || newState.channel).id)
+      } catch (e) { }
       // console.log(`Joined: ${getchannel.id}`)
       // console.log(`Parent: ${getchannel.parentID}`)
       if (guild && getchannel.parentID === bot.voicechannels.get(guild.id)) {

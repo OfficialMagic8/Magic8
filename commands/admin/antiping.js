@@ -25,7 +25,7 @@ module.exports = {
         }
         let array = [];
         users.forEach((item, index) => {
-          array.push(`**${index + 1}.** ${message.guild.members.cache.get(item)}`);
+          array.push(`**${index + 1}.** ${bot.users.cache.get(item)}`);
         })
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -58,7 +58,7 @@ module.exports = {
       let target;
       try {
         let id = args[1].replace(/[^0-9]/g, "");
-        target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
+        target = bot.users.cache.get(id) || await bot.users.fetch(id);
       } catch (e) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -114,7 +114,7 @@ module.exports = {
       if (!args[1]) {
         let usersarray = [];
         bot.antipingusers.get(message.guild.id).forEach(async u => {
-          let fetched = await message.guild.members.fetch(u) || message.guild.members.cache.get(u);
+          let fetched = await bot.users.fetch(u) || bot.users.cache.get(u);
           usersarray.push(`${fetched} (${fetched.id})`);
         });
         let embed = new MessageEmbed()
@@ -139,7 +139,7 @@ module.exports = {
       }
       try {
         let id = args[1].replace(/[^0-9]/g, "");
-        target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
+        target = bot.users.cache.get(id) || await bot.users.fetch(id);
       } catch (e) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -321,10 +321,8 @@ module.exports = {
       users.forEach(async userid => {
         let user;
         try {
-          user = message.guild.members.cache.get(userid) || await message.guild.members.fetch(userid)
-        } catch (e) {
-
-        }
+          user = bot.users.cache.get(userid) || await bot.users.fetch(userid)
+        } catch (e) { }
         usersarray.push(`${user}(${user.id})`)
       })
       if (usersarray.length === 0) {

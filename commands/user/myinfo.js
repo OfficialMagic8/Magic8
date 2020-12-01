@@ -25,7 +25,10 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
-    let member = await message.guild.members.fetch(message.author.id)
+    let member
+    try {
+      member = message.guild.members.get(message.author.id) || await message.guild.members.fetch(message.author.id)
+    } catch (e) { }
     let boosting;
     if (member.premiumSince === null) {
       boosting = bot.translate(bot, language, "false");

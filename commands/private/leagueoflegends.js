@@ -37,7 +37,7 @@ module.exports = {
     message.channel.send(playerInfo);
 
     return;
-    if(!target){ 
+    if(!target.user){ 
       let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.utils.getTranslation(bot,language,"howgay.error.description").join("\n").replace(/{CROSS}/g,bot.emoji.cross))

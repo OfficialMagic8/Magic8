@@ -28,7 +28,7 @@ module.exports = {
         return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(e => { })).catch(e => { });
       }
       let targetemoji = args[1] ? args[1].toLowerCase() : args[1];
-      if (!targetemoji) {
+      if (!target.useremoji) {
         let error = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.utils.getTranslation(bot, language, "emojis.error.requireddescription").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))

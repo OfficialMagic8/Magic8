@@ -71,7 +71,7 @@ module.exports = {
           if (bot.antipinglogchannels.has(message.guild.id) && message.guild.channels.cache.has(bot.antipinglogchannels.get(message.guild.id))) {
             let mentionsarray = [];
             tagged.forEach(t => {
-              mentionsarray.push(message.guild.members.cache.get(t))
+              mentionsarray.push(bot.users.cache.get(t))
             })
             let logchannel = message.guild.channels.cache.get(bot.antipinglogchannels.get(message.guild.id))
             let language = bot.utils.getLanguage(bot, guildData.language);
@@ -164,7 +164,7 @@ module.exports = {
     let commandsChannel = bot.channels.cache.get(bot.config.commandlogs);
     if (commandsChannel) commandsChannel.send(performedCommand).catch(e => { });
     // let t = new Date().toLocaleString("en").replace(/,/g, "")
-    // console.log(`${t} ${command.emoji} C: ${command.name} - A: ${message.author.tag} - S/ID: ${message.guild.name} (${message.guild.id}) (${message.guild.members.cache.size - bots}/${bots}/${online}/${channels}) - Full: ${message.content}`)
+    // console.log(`${t} ${command.emoji} C: ${command.name} - A: ${message.author.tag} - S/ID: ${message.guild.name} (${message.guild.id}) (${bot.users.cache.size - bots}/${bots}/${online}/${channels}) - Full: ${message.content}`)
     return;
   }
 }
