@@ -13,14 +13,16 @@ module.exports = {
       }).catch(e => { return bot.error(bot, message, language, e); });
     let popularcommandsarray = [];
     for (command of popularcommands) {
+      let cmd = bot.commands.get(command.name)
       if (popularcommands.indexOf(command) < 10) {
-        popularcommandsarray.push(`**-** \`${command.name}\` (${parseInt(command.count).toLocaleString("en")})`);
+        popularcommandsarray.push(`${cmd.emoji} \`${cmd.name}\` (${parseInt(command.count).toLocaleString("en")})`);
       }
     }
     let embed = new Discord.MessageEmbed()
       .setAuthor(bot.translate(bot, language, "popular.title")
         .replace(/{BOTNAME}/g, bot.user.username))
       .setColor(bot.colors.main)
+      .setFooter(bot.translate(bot, language, "popular.footer"))
       .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
       .setDescription(bot.translate(bot, language, "popular.description").join("\n")
         .replace(/{COMMANDS}/g, popularcommandsarray.join("\n")));
