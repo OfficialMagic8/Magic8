@@ -1,10 +1,10 @@
-console.log("Magic8 starting up on GitHub!")
+console.log("Magic8 Starting")
 require("dotenv").config()
 const http = require('http');
 const express = require('express');
 const bodyParser = require("body-parser")
 const app = express();
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.listen(process.env.PORT);
 const server = http.createServer(app)
 const Database = require('better-sqlite3');
@@ -56,14 +56,37 @@ bot.ms = require("pretty-ms")
 bot.schedule = require("node-schedule");
 bot.db = new Database('./data/guildData.db');
 bot.udb = new Database('./data/usageData.db');
+bot.colors = require("./utils/colors.json")
+bot.color8 = require("./utils/color8.json")
+bot.emoji = require("./utils/emojis.json")
+bot.invite = "https://discord.gg/bUUggyCjvp"
+bot.supportserver = "610816275580583936";
+bot.footer = ``
 
-bot.schedule.scheduleJob('0 0 1 * *', async function () {
-  bot.guilds.cache.forEach(guild => {
-    console.log(`☑️ Reset ${bot.monthlyvotes.size} guilds with monthly votes.`);
-    if (bot.monthlyvotes.has(guild.id)) {
-      bot.monthlyvotes.delete(guild.id)
-    }
-  })
+bot.schedule.scheduleJob("0 0 1 * *", async function () {
+  let guildsids = bot.guilds.cache.keyArray();
+  let selected = bot.db.prepare("SELECT * FROM guilddata WHERE monthlyvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
+  selected.forEach(row => {
+    bot.db.prepare("UPDATE guilddata SET monthlyvotes=? WHERE guildid=?").run(0, guild.id);
+    bot.monthlyvotes.clear();
+  });
+  console.log(`☑️ Reset ${selected.length} guilds with monthly votes.`);
+});
+
+bot.schedule.scheduleJob("0 * * * *", async function () {
+  let logs = bot.channels.cache.get(bot.config.commandlogs);
+  let getdate = new Date().toLocaleString();
+  let day = getdate.split(" ")[0].replace(/\\/g, ".").replace(/,/g, ".");
+  let time = getdate.split(" ")[1].replace(/\:/g, ".");
+  let filename = `${day}${time}`;
+  try {
+    fs.copyFileSync('./data/guildData.db', `./backups/${filename}`);
+    logs.send(`${bot.emoji.check} **Backup Success**`).catch(e => { });
+  } catch (e) {
+    console.error(`Error Backing Up`)
+    console.error(e);
+    logs.send(`${bot.emoji.cross} **Backup Failed**`).catch(e => { });
+  }
 });
 
 app.post("/votes", async function (request, response) {
@@ -71,11 +94,11 @@ app.post("/votes", async function (request, response) {
   if (request.headers.authorization === process.env.TOPGG_AUTH) {
     bot.webhooks.dbl(bot, request);
   } else if (request.headers.authorization === process.env.DISCORD_BOATS_AUTH) {
-    bot.webhooks.boats(bot, request)
+    bot.webhooks.boats(bot, request);
   } else if (request.headers.authorization === process.env.DISCORD_LABS_TOKEN) {
-    bot.webhooks.labs(bot, request)
+    bot.webhooks.labs(bot, request);
   } else if (request.headers.authorization === process.env.BOT_LIST_TOKEN) {
-    bot.webhooks.discordbotlist(bot, request)
+    bot.webhooks.discordbotlist(bot, request);
   } else return;
 });
 
@@ -225,12 +248,6 @@ bot.developer = undefined;
 bot.maindeveloper = undefined;
 bot.developerid = bot.config.ownerid
 bot.maindeveloperid = bot.config.alonsoid
-bot.colors = require("./utils/colors.json")
-bot.color8 = require("./utils/color8.json")
-bot.emoji = require("./utils/emojis.json")
-bot.invite = "https://discord.gg/bUUggyCjvp"
-bot.supportserver = "610816275580583936";
-bot.footer = ``
 
 bot.customemojisobject = require("./customemojis")
 bot.customemojis = new Discord.Collection();
