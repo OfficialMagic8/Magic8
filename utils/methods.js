@@ -74,10 +74,11 @@ module.exports.error = (bot, message, language, e) => {
   if (message.content.startsWith(`<@${bot.user.id}>`)) startedwith = `<@${bot.user.id}>`.length;
   if (message.content.startsWith(`<@!${bot.user.id}>`)) startedwith = `<@!${bot.user.id}>`.length;
   let args = message.content.slice(startedwith).trim().split(" ");
-  let command = args.shift().toLowerCase();
+  let input = args.shift().toLowerCase();
+  let actualcommand = bot.commands.get(input).name
   let error = [
     `\`\`\``,
-    `Caught Error @ ${command}:`,
+    `Caught Error @ ${command}/${actualcommand}:`,
     `${e}`,
     `\`\`\``
   ];
