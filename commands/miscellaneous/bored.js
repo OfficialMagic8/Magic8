@@ -13,7 +13,7 @@ module.exports = {
       let req;
       try {
         req = await bot.fetch("https://www.boredapi.com/api/activity").then(res => res.json()).then(json => { return json });
-      } catch (e) { return bot.error(bot, message, language, e); });
+      } catch (e) { return bot.error(bot, message, language, e); };
       let embed = new Discord.MessageEmbed()
         .setAuthor(bot.translate(bot, language, "bored.title")
           .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: "true" }))

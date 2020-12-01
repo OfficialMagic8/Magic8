@@ -51,6 +51,11 @@ module.exports = {
     } else {
       if (bot.mcservers.has(message.guild.id)) {
         let server = bot.mcservers.get(message.guild.id);
+        let url = `https://eu.mc-api.net/v3/server/favicon/${server}`
+        let thumbnail;
+        try {
+          thumbnail = await bot.canvas.loadImage(url).then(image => { return url; })
+        } catch (e) { }
         bot.fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(data => {
           let getplayers = data.players.list ? data.players.list : false;
           let finalplayersarray = [];
@@ -61,10 +66,6 @@ module.exports = {
               }
             }
           }
-          let thumbnail
-          try {
-            thumbnail = await bot.canvas.loadImage(`https://eu.mc-api.net/v3/server/favicon/${server}`)
-          } catch (e) { }
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
