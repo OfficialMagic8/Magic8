@@ -9,7 +9,7 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let target = message.author;
+    let target = message.member;
     if (args[0]) {
       let id = args[0].replace(/[^0-9]/g, "");
       try {
@@ -44,7 +44,7 @@ module.exports = {
         .replace(/{USER}/g, message.author)
         .replace(/{SIZE}/g, size)
         .replace(/{MESSAGE}/g, ripmessagelol)
-        .replace(/{TARGET}/g, target));
+        .replace(/{TARGET}/g, target.user));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

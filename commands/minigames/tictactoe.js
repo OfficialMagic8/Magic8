@@ -35,43 +35,42 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(error).catch(e => { });
+      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
     }
-    if (args[0]) {
+    try {
       let id = args[0].replace(/[^0-9]/g, "");
-      target = message.guild.members.cache.get(id);
-      if (!target) {
-        let error = new Discord.MessageEmbed()
-          .setDescription(bot.translate(bot, language, "it")
-            .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{USER}/g, message.author))
-          .setColor(bot.colors.red)
-        return message.channel.send(error).catch(e => { });
-      }
-      if (message.author.id === target.id) {
-        let error = new Discord.MessageEmbed()
-          .setDescription(bot.translate(bot, language, "tictactoe.cannotbeauthor")
-            .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{USER}/g, message.author))
-          .setColor(bot.colors.red)
-        return message.channel.send(error).catch(e => { });
-      }
-    }
-    if (!target) {
-      let error = new Discord.MessageEmbed()
+      target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
+    } catch (e) {
+      let embed = new Discord.MessageEmbed()
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(error).catch(e => { });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e);});
+    }
+    if (!target) {
+      let embed = new Discord.MessageEmbed()
+        .setDescription(bot.translate(bot, language, "it")
+          .replace(/{CROSS}/g, bot.emoji.cross)
+          .replace(/{USER}/g, message.author))
+        .setColor(bot.colors.red)
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e);});
+    }
+    if (message.author.id === target.id) {
+      let embed = new Discord.MessageEmbed()
+        .setDescription(bot.translate(bot, language, "tictactoe.cannotbeauthor")
+          .replace(/{CROSS}/g, bot.emoji.cross)
+          .replace(/{USER}/g, message.author))
+        .setColor(bot.colors.red)
+      return message.channel.send(embed).catch(e => {return bot.error(bot, message, language, e); });
     }
     if (bot.playingtictactoe.has(target.id)) {
-      let error = new Discord.MessageEmbed()
+      let embed = new Discord.MessageEmbed()
         .setDescription(bot.translate(bot, language, "tictactoe.targetalreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(error).catch(e => { });
+      return message.channel.send(embed).catch(e => {return bot.error(bot, message, language, e); });
     }
     let now = Date.now();
     let first = {

@@ -13,14 +13,14 @@ module.exports = {
     if (args[0]) {
       let id = args[0].replace(/[^0-9]/g, "");
       try {
-        target = bot.users.cache.get(id) || await bot.users.fetch(id);
+        target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
         let error = new Discord.MessageEmbed()
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author))
           .setColor(bot.colors.red)
-        return message.channel.send(error).catch(e => { });
+        return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
       }
     }
     if (!target) {
@@ -29,7 +29,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
-      return message.channel.send(error).catch(e => { });
+      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
     }
     if (bot.playerhacked.has(target.id)) {
       let error = new Discord.MessageEmbed()
@@ -37,9 +37,9 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "hack.alreadyhacking")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{TARGET}/g, target))
-      return message.channel.send(error).catch(e => { });
+      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
     }
-    let targetName = bot.cleanTags(target.username)
+    let targetName = bot.cleanTags(target.user.username)
 
     message.channel.send(bot.translate(bot, language, "hack.starting")
       .replace(/{TARGET}/g, targetName)
@@ -85,7 +85,7 @@ module.exports = {
         .replace(/{RANDOMEMAIL}/g, randomEmail(targetName)).replace(/{RANDOMPASSWORD}/g, faker.internet.password())
         .replace(/{RANDOMREGISTER}/g, randomregister[Math.floor(Math.random() * randomregister.length)])
       hackMessage.edit(old + "\n" + toAdd).catch(e => {
-        bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       });
       index++;
       setTimeout(() => {

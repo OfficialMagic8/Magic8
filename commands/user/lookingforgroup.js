@@ -191,14 +191,14 @@ module.exports = {
                   .setColor(bot.colors.green)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.roleremoved")
                     .replace(/{CHECK}/g, bot.emoji.check)
-                    .replace(/{TARGET}/g, target));
+                    .replace(/{TARGET}/g, target.user));
                 return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
               } else if (!member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
                 let embed = new Discord.MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.alreadynorole")
                     .replace(/{CROSS}/g, bot.emoji.cross)
-                    .replace(/{TARGET}/g, target));
+                    .replace(/{TARGET}/g, target.user));
                 return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
               }
             }
