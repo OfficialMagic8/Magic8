@@ -68,9 +68,15 @@ async function fetchMessages(fetchedMessages, channel) { // long time no glitch.
 module.exports.error = (bot, message, language, e) => {
   const Discord = require("discord.js");
   let logs = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.caughterrors)
+  let startedwith;
+  if (message.content.startsWith(prefix)) startedwith = prefix.length
+  if (message.content.startsWith(`<@${bot.user.id}>`)) startedwith = `<@${bot.user.id}>`.length;
+  if (message.content.startsWith(`<@!${bot.user.id}>`)) startedwith = `<@!${bot.user.id}>`.length;
+  let args = message.content.slice(startedwith).trim().split(" ");
+  let command = args.shift().toLowerCase();
   let error = [
     `\`\`\``,
-    `Caught Error:`,
+    `Caught Error @ ${command}:`,
     `${e}`,
     `\`\`\``
   ];

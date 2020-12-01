@@ -80,7 +80,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
   let time = getdate.split(" ")[1].replace(/\:/g, ".");
   let filename = `${day}${time}`;
   try {
-    fs.copyFileSync('./data/guildData.db', `./backups/${filename}`);
+    bot.fs.copyFileSync('./data/guildData.db', `./backups/${filename}`);
     logs.send(`${bot.emoji.check} **Backup Success**`).catch(e => { });
   } catch (e) {
     console.error(`Error Backing Up`)
