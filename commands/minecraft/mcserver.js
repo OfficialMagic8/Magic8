@@ -23,12 +23,9 @@ module.exports = {
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "mcserver.checking")
           .replace(/{LOADING}/g, bot.emoji.loading));
-      let updatingMessage;
-      try {
-        updatingMessage = await message.channel.send(updating);
-      } catch (e) {
+      let updatingMessage = await message.channel.send(updating).catch(e => {
         return bot.error(bot, message, language, e);
-      }
+      });
       let tryip = await bot.fetch(`https://api.mcsrvstat.us/2/${args[0]}`).then(res => res.json()).then(json => {
         return json.ip;
       }).catch(e => { return bot.error(bot, message, language, e); })
@@ -64,14 +61,10 @@ module.exports = {
               }
             }
           }
-          let image = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(image => {
-            return `http://status.mclive.eu/${server}/${server}/banner.png`;
-          }).catch(e => { return false });
-          let motd = bot.canvas.loadImage(data.icon).then(image => {
-            return data.icon;
-          }).catch(e => { return false });
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
+            .setThumbnail(`http://status.mclive.eu/${server}/${server}/banner.png`)
+            .setImage(data.icon)
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
               .replace(/{STATUS}/g, data.online ? bot.translate(bot, language, "mcserver.online") : bot.translate(bot, language, "mcserver.offline"))
@@ -80,8 +73,6 @@ module.exports = {
               .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
               .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
               .replace(/{PLAYERS}/g, finalplayersarray.length >= 1 ? finalplayersarray.map(p => `**-** ${p.replace(/_/g, "\_")}`) : ""));
-          if (image) embed.setThumbnail(image);
-          if (motd) embed.setThumbnail(motd);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           let embed = new Discord.MessageEmbed()
