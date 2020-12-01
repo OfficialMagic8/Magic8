@@ -219,9 +219,9 @@ module.exports = {
         if (finalReplies.length < 1750) {
           let replies = new Discord.MessageEmbed()
             .setColor(bot.colors.main)
+            .setAuthor(`${bot.user.username} - Magic 8 Ball - Custom Responses (${guildData.ballcustomresponses.split("|").length}/${ bot.maxballresponses.get(bot.premium.get(message.guild.id))})`)
             .setDescription([
-              `${bot.emoji.check} **Custom Replies: ${guildData.ballcustomresponses.split("|").length}**`,
-              ``,
+              `**Current Replies:**`,
               `${finalDoc}`,
               ``,
               `${bot.emoji.info} To enable custom replies use \`${prefix}s 8ball mode custom\`. If you want to add new replies, you'll have to copy your old replies in addition to your new ones.`])
@@ -229,9 +229,9 @@ module.exports = {
         } else {
           let replies = new Discord.MessageEmbed()
             .setColor(bot.colors.main)
+            
+            .setAuthor(`${bot.user.username} - Magic 8 Ball - Custom Responses (${guildData.ballcustomresponses.split("|").length}/${ bot.maxballresponses.get(bot.premium.get(message.guild.id))})`)
             .setDescription([
-              `${bot.emoji.check} **Custom Replies: ${guildData.ballcustomresponses.split("|").length}**`,
-              ``,
               `${bot.emoji.info} To enable custom replies use \`${prefix}s 8ball mode custom\`. If you want to add new replies, you'll have to copy your old replies in addition to your new ones.`])
           try {
             bot.fs.writeFileSync("././templates/customr8ballreplies.txt", finalDoc, 'utf8')
@@ -259,21 +259,25 @@ module.exports = {
         if (!args[2]) {
           let error = new Discord.MessageEmbed()
             .setAuthor(`Magic 8 Ball - Mode Settings`)
-            .setColor(bot.colors.red)
+            .setColor(bot.colors.main)
             .setDescription([
               `**Available Modes:**`,
-              `\`all\`, \`clean\`, \`explicit\` or \`custom\``])
+              `\`all\`, \`clean\`, \`explicit\` or \`custom\``,
+              ``,
+              `${bot.emoji.info} Type the command again with a mode to update.`])
           return message.channel.send(error).catch(e => { });
         }
         let mode = args[2].toLowerCase();
-        if (!["all", "custom", "clean", "explicit"].includes(mode)) {
+        if (!bot.responsestypes.has(mode)) {
           let error = new Discord.MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Invalid Mode Provided:** \`${mode}\``,
               ``,
-              `Please provide one of the following modes:`,
-              `\`all\`, \`clean\`, \`explicit\` or \`custom\``])
+              `**Available Modes:**`,
+              `\`all\`, \`clean\`, \`explicit\` or \`custom\``,
+              ``,
+              `${bot.emoji.info} Type the command again with a mode to update.`])
           return message.channel.send(error).catch(e => { });
         }
         let oldMode = bot.responsestypes.get(guildData.ballreplytype)
@@ -282,7 +286,7 @@ module.exports = {
         let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription([
-            `${bot.emoji.check} **8Ball Response Mode Updated**`,
+            `${bot.emoji.check} **Magic8 8 Ball Response Mode Updated**`,
             ``,
             `**Old:** ${oldMode}`,
             `**New:** ${mode}`])
@@ -317,7 +321,7 @@ module.exports = {
           .setColor(bot.colors.main)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setDescription([
-            `\`${prefix}s 8ball color\` - Change 8Ball Color`,
+            `\`${prefix}s 8ball color\` - Change Message Color`,
             `\`${prefix}s 8ball mode\` - Select Responses Mode`,
             `\`${prefix}s 8ball replies\` - List Custom Replies`,
             `\`${prefix}s 8ball setreplies\` - Set Custom Responses`,
@@ -367,7 +371,7 @@ module.exports = {
                   ``,
                   `${bot.emoji.info} If you would like to make edits, here is a link of your text:`,
                   `**${haste}**`])
-              return message.channel.send(embed).catch(e => {return bot.error(bot, message, language, e) })
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) })
             }).catch(e => {
               console.error(e)
               let error = new Discord.MessageEmbed()
