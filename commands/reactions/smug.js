@@ -7,9 +7,8 @@ module.exports = {
   name: "smug",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
-    message.delete({ timeout: 500 }).catch(e => { });
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let target = message.author;
+    let target = message.member;
     if (args[0]) {
       try {
         let id = args[0].replace(/[^0-9]/g, "");
@@ -20,17 +19,17 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     let link = bot.links.smug[Math.floor(Math.random() * bot.links.smug.length)];
     let embed = new Discord.MessageEmbed()
+      .setColor("RANDOM")
+      .setImage(link)
       .setDescription(bot.translate(bot, language, `smug.${target.id === message.author.id ? "self" : "other"}`)
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)
-        .replace(/{TARGET}/g, target))
-      .setColor("RANDOM")
-      .setImage(link);
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        .replace(/{TARGET}/g, target));
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }  

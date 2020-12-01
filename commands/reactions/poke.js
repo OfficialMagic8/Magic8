@@ -7,9 +7,8 @@ module.exports = {
   name: "poke",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
-    message.delete({ timeout: 500 }).catch(e => { });
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let target = message.author;
+    let target = message.member;
     if (args[0]) {
       try {
         let id = args[0].replace(/[^0-9]/g, "");
@@ -25,12 +24,12 @@ module.exports = {
     }
     let link = bot.links.poke[Math.floor(Math.random() * bot.links.poke.length)];
     let embed = new Discord.MessageEmbed()
+      .setColor("RANDOM")
+      .setImage(link)
       .setDescription(bot.translate(bot, language, `poke.${target.id === message.author.id ? "self" : "other"}`)
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)
-        .replace(/{TARGET}/g, target))
-      .setColor("RANDOM")
-      .setImage(link)
+        .replace(/{TARGET}/g, target.user))
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
   }
 }  
