@@ -10,7 +10,7 @@ module.exports = {
     bot.utils.loadCommands(bot);
     let embed = new MessageEmbed()
       .setColor(bot.colors.green)
-      .setDescription(`${bot.emoji.cross} **Commands were attempted to reload!**`);
+      .setDescription(`${bot.emoji.check} **Commands were attempted to reload!**`);
     return message.channel.send(embed).catch(e => { });
   }
 }  

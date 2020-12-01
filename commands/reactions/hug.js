@@ -8,7 +8,7 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let target = message.member;
+    let target = message.author;
     if (args[0]) {
       try {
         let id = args[0].replace(/[^0-9]/g, "");

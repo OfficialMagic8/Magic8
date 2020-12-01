@@ -28,7 +28,7 @@ module.exports = {
       .setDescription(bot.translate(bot, language, "avatar.success")
         .replace(/{URL}/g, target.displayAvatarURL({ format: "png", size: 1024, dynamic: true }))
         .replace(/{CHECK}/g, bot.emoji.check)
-        .replace(/{USER}/g, target.))
+        .replace(/{USER}/g, target))
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

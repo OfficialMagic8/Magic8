@@ -8,7 +8,7 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let target = message.;
+    let target = message.author;
     if (args[0]) {
       try {
         let id = args[0].replace(/[^0-9]/g, "");
@@ -29,7 +29,7 @@ module.exports = {
       .setDescription(bot.translate(bot, language, `feed.${target.id === message.author.id ? "self" : "other"}`)
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)
-        .replace(/{TARGET}/g, target.author))
+        .replace(/{TARGET}/g, target))
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
   }
 }  

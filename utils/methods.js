@@ -1,7 +1,6 @@
 module.exports.loadCommands = (bot) => {
   let reloading = false;
   if (bot.commands.size >= 1) {
-    bot.commands.clear();
     reloading = true;
   }
   console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
@@ -9,7 +8,7 @@ module.exports.loadCommands = (bot) => {
     if (!dir.includes(".js")) {
       bot.fs.readdir(`./commands/${dir}`, (err, files) => {
         if (err) console.error(err);
-        const commands = files.filter(f => f.split(".").pop() === "js")
+        const commands = files.filter(f => f.split(".").pop() === "js");
         for (let file of commands) {
           let pull = require(`../commands/${dir}/${file}`);
           if (!pull) continue;
@@ -20,7 +19,7 @@ module.exports.loadCommands = (bot) => {
             pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
           }
         }
-      })
+      });
     }
   });
   console.log(`💻 Commands ${reloading ? `re` : ``}loaded successfully!`);
