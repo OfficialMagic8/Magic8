@@ -13,7 +13,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     if (!message.member.hasPermission("MANAGE_GUILD")) return;
     let x = bot.canvas.createCanvas(10, 10).getContext('2d');
-    x.font = font
+    x.font = font;
     message.delete({ timeout: 500 }).catch(e => { })
     let messagetosend = args.join(" ").split("|");
     let cleanmessage = messagetosend.map(m => m.trim()).filter(m => m.length >= 1);
@@ -37,7 +37,7 @@ module.exports = {
           .replace(/{PREFIX}/g, prefix));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
-    parts = cleanmessage.map(l => l.trim())
+    parts = cleanmessage.map(l => l.trim());
     let first = parts[0];
     let second = parts[1];
     let sizefirst = measureText(first);
@@ -58,15 +58,15 @@ module.exports = {
     ctx.fillStyle = "#ffa31a";
     ctx.fillRect(widthfirst - (lettersize / 12), 0, canvas.width, canvas.height);
     ctx.font = font;
-    ctx.textAlign = "center"
-    ctx.textBaseline = 'middle'
-    ctx.fillStyle = "#ffffff"
+    ctx.textAlign = "center";
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = "#ffffff";
     ctx.fillText(first, widthfirst / 2, greaterheight / 2)
-    ctx.fillStyle = "#000000"
-    ctx.fillText(second, widthfirst + (widthsecond / 2) - (lettersize / 12), greaterheight / 2)
+    ctx.fillStyle = "#000000";
+    ctx.fillText(second, widthfirst + (widthsecond / 2) - (lettersize / 12), greaterheight / 2);
     return message.channel.send({
       files: [{ attachment: canvas.toBuffer(), name: 'ph.png' }]
-    }).catch(e => { return bot.error(bot, message, language, e); })
+    }).catch(e => { return bot.error(bot, message, language, e); });
     function measureText(text = "") {
       if (text.length === 0) {
         return { width: 0, height: 0 };
@@ -104,6 +104,4 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, ra
       this.fill();
   }
 }
-//xddddd
-*/ /// woah okayyyy lmaooOHHH LMoa i thought you were making api command not text, but nice, separate by | ?
-// changed file name cuz im scared
+*/

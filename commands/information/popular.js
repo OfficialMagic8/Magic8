@@ -7,9 +7,10 @@ module.exports = {
   name: "popular",
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let popularcommands = await bot.fetch("https://statcord.com/logan/stats/484148705507934208").then(res => res.json()).then(json => {
-      return json.popular;
-    });
+    let popularcommands = await bot.fetch("https://statcord.com/logan/stats/484148705507934208").then(res => res.json())
+      .then(json => {
+        return json.popular;
+      }).catch(e => { return bot.error(bot, message, language, e); });
     let popularcommandsarray = [];
     for (command of popularcommands) {
       if (popularcommands.indexOf(command) < 10) {

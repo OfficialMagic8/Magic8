@@ -15,7 +15,7 @@ module.exports = {
           let o = {
             name: `${vote.username}#${vote.discriminator}`,
             votes: 1
-          }
+          };
           voted.push(o);
         });
         let names = [];
@@ -45,6 +45,6 @@ module.exports = {
       .setDescription(bot.translate(bot, language, "vote.description").join("\n")
         .replace(/{BOT}/g, bot.user)
         .replace(/{VOTE1}/g, bot.config.vote.dbl))
-    return message.channel.send(embed).catch(e => { })
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
   }
 }

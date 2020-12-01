@@ -130,6 +130,7 @@ module.exports = {
                       oldrole.delete('Magic8 - LFG Remove All Users').then(deleted => {
                         bot.lfgroles.set(message.guild.id, newrole.id)
                         bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run(newrole.id, message.guild.id)
+                        bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run("[]", message.guild.id);
                       }).catch(e => {
                         return bot.error(bot, message, language, e);
                       })
@@ -142,7 +143,6 @@ module.exports = {
                     } catch (e) { return bot.error(bot, message, language, e); }
                   }
                 }).catch(collected => {
-                  console.log(collected)
                   let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id));
                   m.delete({ timeout: 500 }).catch(e => { });
                   let embed = new Discord.MessageEmbed()

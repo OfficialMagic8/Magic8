@@ -118,7 +118,7 @@ module.exports = {
         let lastfetchedms = Date.parse(lastfetched)
         let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json()).then(json => {
           return Date.parse(json[0].updated_at)
-        }).catch(e => { return bot.error(bot, message, language, e) })
+        }).catch(e => { return bot.error(bot, message, language, e); })
         let uptodatestring;
         let condition;
         if (lastfetchedms < lastcommit) {
@@ -191,9 +191,10 @@ module.exports = {
         if (!args[1]) {
           let lastfetched = bot.lastfetched.get("lf")
           let lastfetchedms = Date.parse(lastfetched)
-          let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json()).then(json => {
-            return Date.parse(json[0].updated_at);
-          }).catch(e => {return bot.error(bot, message, language, e); });
+          let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json())
+            .then(json => {
+              return Date.parse(json[0].updated_at);
+            }).catch(e => { return bot.error(bot, message, language, e); });
           let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`);
           let languageslength = bot.languagesprogress.size;
           let math = languageslength / 5;

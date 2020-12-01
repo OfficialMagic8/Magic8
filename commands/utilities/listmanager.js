@@ -7,9 +7,9 @@ module.exports = {
   name: "listmanager",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
-    let language = bot.utils.getLanguage(bot, guildData.language)
+    let language = bot.utils.getLanguage(bot, guildData.language);
     let subcommand = args[0] ? args[0].toLowerCase() : args[0]
-    if (args[0] && !["r", "randomize", "view", "v"].includes(args[0].toLowerCase()) && !message.member.hasPermission("MANAGE_GUILD")) return;
+    if (subcommand && !["r", "randomize", "view", "v"].includes(subcommand) && !message.member.hasPermission("MANAGE_GUILD")) return;
     if (!subcommand && message.member.hasPermission("MANAGE_GUILD")) {
       let embed = new Discord.MessageEmbed()
         .setAuthor(bot.translate(bot, language, "listmanager.helptitle")
@@ -20,7 +20,8 @@ module.exports = {
           .replace(/{PREFIX}/g, prefix)
           .replace(/{INFO}/g, bot.emoji.info))
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
-    } else if (["view", "v"].includes(subcommand)) {
+    }
+    if (["view", "v"].includes(subcommand)) {
       let lists = JSON.parse(guildData.listmanager);
       let listnames = [];
       lists.forEach(l => {
@@ -144,15 +145,13 @@ module.exports = {
           .setColor(bot.colors.lightgreen)
           .setFooter(bot.translate(bot, language, "listmanager.footer")
             .replace(/{LISTNAME}/g, list.name))
-          .setDescription(bot.translate(bot, language, "listmanager.singlerandomize").join("\n")
+          .setDescription(bot.translate(bot, language, "listmanager.singlerandomizing").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
-            .replace(/{LOADING}/g, bot.emoji.loading));
+            .replace(/{USER}/g, message.author)
+            .replace(/{LOADING}/g, bot.emoji.loading)
+            .replace(/{FINALMESSAGE}/g, bot.translate(bot, language, "listmanager.singlerandomize")));
         let embedMessage;
-        try {
-          embedMessage = await message.channel.send(embed);
-        } catch (e) {
-          return bot.error(bot, message, language, e);
-        }
+        embedMessage = await message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         setTimeout(async () => {
           embed.setDescription(bot.translate(bot, language, "listmanager.randomizationsuccess").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -160,12 +159,8 @@ module.exports = {
             .replace(/{FINALMESSAGE}/g, bot.translate(bot, language, "listmanager.singlerandomize"))
             .replace(/{RANDOMIZED}/g, randomitem))
           embed.setColor(bot.colors.green)
-          try {
-            embedMessage.edit(embed);
-          } catch (e) {
-            return bot.error(bot, message, language, e);
-          }
-        }, 2000)
+          embedMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); })
+        }, 2000);
       } else {
         let randomcount = Math.abs(Math.floor(parseInt(args.pop())))
         let listname = args.slice(1).join(" ")
@@ -207,15 +202,14 @@ module.exports = {
           .setColor(bot.colors.lightgreen)
           .setFooter(bot.translate(bot, language, "listmanager.footer")
             .replace(/{LISTNAME}/g, list.name))
-          .setDescription(bot.translate(bot, language, "listmanager.multirandomize").join("\n")
+          .setDescription(bot.translate(bot, language, "listmanager.multirandomizing").join("\n")
+            .replace(/{CHECK}/g, bot.emoji.check)
+            .replace(/{USER}/g, message.author)
             .replace(/{COUNT}/g, randomcount)
-            .replace(/{LOADING}/g, bot.emoji.loading));
+            .replace(/{LOADING}/g, bot.emoji.loading)
+            .replace(/{FINALMESSAGE}/g, bot.translate(bot, language, "listmanager.multirandomize")));
         let embedMessage;
-        try {
-          embedMessage = await message.channel.send(embed);
-        } catch (e) {
-          return bot.error(bot, message, language, e);
-        }
+        embedMessage = await message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         setTimeout(async () => {
           embed.setDescription(bot.translate(bot, language, "listmanager.randomizationsuccess").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -223,11 +217,7 @@ module.exports = {
             .replace(/{FINALMESSAGE}/g, bot.translate(bot, language, "listmanager.multirandomize"))
             .replace(/{RANDOMIZED}/g, randomized.join("\n")));
           embed.setColor(bot.colors.green);
-          try {
-            embedMessage.edit(embed)
-          } catch (e) {
-            return bot.error(bot, message, language, e);
-          }
+          embedMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); })
         }, 2000)
       }
     } else if (subcommand === "create") {

@@ -185,7 +185,8 @@ module.exports = {
           .replace(/{CHECK}/g, bot.emoji.check)
           .replace(/{USER}/g, message.author)
           .replace(/{GUIDE}/g, bot.docs.main)
-          .replace(/{INVITE}/g, bot.invite));
+          .replace(/{INVITE}/g, bot.invite)
+          .replace(/{MESSAGELINK}/g, m.url));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     }).catch(e => {
       embed.setColor(bot.colors.red)

@@ -35,6 +35,6 @@ module.exports = {
         .replace(/{JOINED}/g, bot.guilds.cache.get(message.guild.id).joinedAt.toLocaleString().split("GMT")[0].trim())
         .replace(/{MAGIC8}/g, bot.emoji.magic8)
         .replace(/{LANGUAGE}/g, guildData.language));
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

@@ -1037,7 +1037,7 @@ module.exports = {
               `**Channel:** ${message.channel} (${message.channel.id})`,
               ``,
               `${bot.emoji.info} To remove the LFG Notify Channel, type: \`${prefix}s lfg notifychannel remove\``])
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else if (subcommand2 === "role") {
           if (!args[2]) {
             let role = bot.guilds.cache.get(message.guild.id).roles.cache.get(guildData.lfgrole)
@@ -1049,7 +1049,7 @@ module.exports = {
                 `**Role:** ${role}`,
                 ``,
                 `${bot.emoji.info} To disable LFG role, type: \`${prefix}s lfg role clear\``])
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
           if (args[2].toLowerCase() === "clear") {
             if (guildData.lfgrole === "none") {

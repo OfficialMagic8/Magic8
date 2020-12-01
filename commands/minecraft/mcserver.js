@@ -31,7 +31,7 @@ module.exports = {
       }
       let tryip = await bot.fetch(`https://api.mcsrvstat.us/2/${args[0]}`).then(res => res.json()).then(json => {
         return json.ip;
-      })
+      }).catch(e => { return bot.error(bot, message, language, e); })
       if (tryip.length >= 1) {
         bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run(args[0], message.guild.id);
         bot.mcservers.set(message.guild.id, args[0]);
@@ -66,10 +66,10 @@ module.exports = {
           }
           let image = bot.canvas.loadImage(`http://status.mclive.eu/${server}/${server}/banner.png`).then(image => {
             return `http://status.mclive.eu/${server}/${server}/banner.png`;
-          }).catch(e => { return false })
+          }).catch(e => { return false });
           let motd = bot.canvas.loadImage(data.icon).then(image => {
             return data.icon;
-          }).catch(e => { return false })
+          }).catch(e => { return false });
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
@@ -80,8 +80,8 @@ module.exports = {
               .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
               .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
               .replace(/{PLAYERS}/g, finalplayersarray.length >= 1 ? finalplayersarray.map(p => `**-** ${p.replace(/_/g, "\_")}`) : ""));
-          if (image) embed.setThumbnail(image)
-          if (motd) embed.setThumbnail(motd)
+          if (image) embed.setThumbnail(image);
+          if (motd) embed.setThumbnail(motd);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           let embed = new Discord.MessageEmbed()
