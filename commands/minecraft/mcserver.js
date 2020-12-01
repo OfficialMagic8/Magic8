@@ -61,10 +61,14 @@ module.exports = {
               }
             }
           }
+          let thumbnail = bot.canvas.loadImage(`https://eu.mc-api.net/v3/server/favicon/${server}`).then(image => {
+            return `https://eu.mc-api.net/v3/server/favicon/${server}`;
+          }).catch(e => {
+            return false;
+          });
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
-            .setThumbnail(data.icon.replace(/\\/g, ""))
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
               .replace(/{STATUS}/g, data.online ? bot.translate(bot, language, "mcserver.online") : bot.translate(bot, language, "mcserver.offline"))
@@ -73,6 +77,7 @@ module.exports = {
               .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
               .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
               .replace(/{PLAYERS}/g, finalplayersarray.length >= 1 ? finalplayersarray.map(p => `**-** ${p.replace(/_/g, "\_")}`) : ""));
+          if (thumbnail) embed.setThumbnail(thumbnail)
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           console.error(e)
