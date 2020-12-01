@@ -8,7 +8,7 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let target = message.member;
+    let target = message.author;
     if (args[0]) {
       try {
         let id = args[0].replace(/[^0-9]/g, "");
@@ -25,7 +25,7 @@ module.exports = {
     let embed = new MessageEmbed()
       .setColor(guildData.funcolor)
       .setDescription(bot.translate(bot, language, "howgay.success")
-        .replace(/{TARGET}/g, target.user)
+        .replace(/{TARGET}/g, target)
         .replace(/{PERCENT}/g, Math.floor(Math.random() * 101))
         .replace(/{CHECK}/g, bot.emoji.check))
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });

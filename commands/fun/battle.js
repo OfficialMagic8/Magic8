@@ -80,7 +80,7 @@ module.exports = {
     }
     let secondobject = {
       userid: target.id,
-      user: target.user,
+      user: target,
       guildid: message.guild.id,
       otherid: message.author.id,
       turn: 1,
@@ -89,7 +89,7 @@ module.exports = {
     }
     bot.battling.set(message.author.id, firstobject)
     bot.battling.set(target.id, secondobject)
-    startBattle(bot, message.channel, language, message.author, target.user, firstobject, secondobject);
+    startBattle(bot, message.channel, language, message.author, target, firstobject, secondobject);
     function startBattle(bot, channel, language, first, second, firstobject, secondobject) {
       let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "battle.title")

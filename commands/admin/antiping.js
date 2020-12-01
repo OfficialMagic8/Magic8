@@ -87,7 +87,7 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.targetalreadydisabled")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{TARGET}/g, target.user));
+            .replace(/{TARGET}/g, target));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else if (!users.includes(target.id)) {
         users.push(target.id);
@@ -97,7 +97,7 @@ module.exports = {
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.nowdisabled")
             .replace(/{CHECK}/g, bot.emoji.check)
-            .replace(/{TARGET}/g, target.user));
+            .replace(/{TARGET}/g, target));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
     } else if (subcommand === "removeuser") {
@@ -154,7 +154,7 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.alreadyenabled")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{TARGET}/g, target.user))
+            .replace(/{TARGET}/g, target))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else if (bot.antipingusers.get(message.guild.id).includes(target.id)) {
 
@@ -169,7 +169,7 @@ module.exports = {
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.nowenabled")
             .replace(/{CHECK}/g, bot.emoji.check)
-            .replace(/{TARGET}/g, target.user));
+            .replace(/{TARGET}/g, target));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
     } else if (subcommand === "message") {

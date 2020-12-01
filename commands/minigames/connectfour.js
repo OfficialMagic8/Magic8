@@ -61,7 +61,7 @@ module.exports = {
     let first = {
       user: message.author,
       userid: message.author.id,
-      target: target.user,
+      target: target,
       targetid: target.id,
       guildid: message.guild.id,
       channelid: message.channel.id,
@@ -78,7 +78,7 @@ module.exports = {
       ]
     }
     let second = {
-      user: target.user,
+      user: target,
       userid: target.id,
       target: message.author,
       targetid: message.author.id,

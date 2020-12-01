@@ -8,7 +8,7 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let target = message.member;
+    let target = message.author;
     if (args[0]) {
       let id = args[0].replace(/[^0-9]/g, "");
       try {
@@ -52,7 +52,7 @@ module.exports = {
       .setColor(guildData.funcolor)
       .setThumbnail("https://cdn.discordapp.com/attachments/633725136163438592/709593616221339710/7b48zLprDHLzsc27xkCCKLI8w4T_8zokG-A4dVKvh2NBPXk_3Xto6R6TdEGFHV-0UHA.png")
       .setDescription(bot.translate(bot, language, "iq.description").join("\n")
-        .replace(/{TARGET}/g, target.user)
+        .replace(/{TARGET}/g, target)
         .replace(/{IQ}/g, useriq)
         .replace(/{MESSAGE}/g, finalmsg));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });

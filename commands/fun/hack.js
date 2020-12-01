@@ -20,7 +20,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author))
           .setColor(bot.colors.red)
-        return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
+        return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     if (!target) {
@@ -29,7 +29,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
-      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
+      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (bot.playerhacked.has(target.id)) {
       let error = new MessageEmbed()
@@ -37,10 +37,9 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "hack.alreadyhacking")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{TARGET}/g, target))
-      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
+      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
     }
-    let targetName = bot.cleanTags(target.user.username)
-
+    let targetName = bot.cleanTags(target.username)
     message.channel.send(bot.translate(bot, language, "hack.starting")
       .replace(/{TARGET}/g, targetName)
       .replace(/{HACK}/g, bot.emoji.hack)).then(hackMessage => {

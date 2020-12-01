@@ -79,7 +79,7 @@ module.exports = {
       start: now,
       user: message.author,
       userid: message.author.id,
-      target: target.user,
+      target: target,
       targetid: target.id,
       turns: 0,
       game: [
@@ -93,7 +93,7 @@ module.exports = {
       guildid: message.guild.id,
       channelid: message.channel.id,
       start: now,
-      user: target.user,
+      user: target,
       userid: target.id,
       target: message.author,
       targetid: message.author.id,
