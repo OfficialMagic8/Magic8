@@ -11,9 +11,9 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let target = message.author;
     if (args[0]) {
-      let id = args[0].replace(/[^0-9]/g, "");
       try {
-        target = bot.users.cache.get(id) || await bot.users.fetch(id);
+        let id = args[0].replace(/[^0-9]/g, "");
+        target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
         let embed = new Discord.MessageEmbed()
           .setColor(bot.colors.red)
