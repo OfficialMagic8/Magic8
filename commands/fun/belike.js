@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["bl"],
   category: "FUN",
@@ -10,7 +10,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (args.length === 0) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "belike.providename")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -56,7 +56,7 @@ module.exports = {
         }
       }
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(gendershort === "m" ? bot.colors.blue : bot.colors.pink)
       .setImage(`https://belikebill.ga/billgen-API.php?default=1&name=${name}&sex=${gender === "male" ? "m" : "f"}`)
       .setDescription(bot.translate(bot, language, "belike.description")

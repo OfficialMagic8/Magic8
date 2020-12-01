@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["h", "ayuda", "?"],
   category: "INFO",
@@ -34,7 +34,7 @@ module.exports = {
         } else {
           premium = ``;
         }
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "help.commandinfotitle")
             .replace(/{BOTNAME}/g, bot.user.username))
           .setColor(bot.colors.main)
@@ -50,7 +50,7 @@ module.exports = {
           .setFooter(bot.translate(bot, language, "help.footer"));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "help.invalidcommand").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -97,7 +97,7 @@ module.exports = {
           }
         }
       }
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(`${bot.user.username} - ${message.guild.name} - Help Menu`)
         .setColor(bot.colors.main)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -156,7 +156,7 @@ module.exports = {
       }
       let disabledwarningmessage = bot.translate(bot, language, "help.hasdisabledcommands").replace(/{WARNING}/g, bot.emoji.warning).replace(/{PREFIX}/g, prefix)
       let disabledwarning = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).length > 0 ? disabledwarningmessage : ""
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(`${bot.user.username} - ${message.guild.name} - Administrator Menu`)
         .setColor(bot.colors.main)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -177,7 +177,7 @@ module.exports = {
           .replace(/{HASDISABLED}/g, disabledwarning), false);
       bot.adminmenus.set(message.guild.id, embed)
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
     let embedToSend = message.member.hasPermission("ADMINISTRATOR") ? bot.adminmenus.get(message.guild.id) : bot.helpmenus.get(message.guild.id)
     return message.author.send(embedToSend).then(m => {
       embed.setColor(bot.colors.green)

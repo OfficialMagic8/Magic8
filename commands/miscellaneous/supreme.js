@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const lettersize = 120
 const font = `italic bold ${lettersize}px Impact`
 const additionalheight = lettersize / 4;
@@ -18,7 +18,7 @@ module.exports = {
     let messagetosend = args.join(" ");
     if (!messagetosend) {
       let language = bot.utils.getLanguage(bot, guildData.language);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "supreme.messagerequired")
           .replace(/{CROSS}/g, bot.emoji.cross)

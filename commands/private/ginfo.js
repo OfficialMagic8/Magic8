@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["g"],
   name: "ginfo",
@@ -15,7 +15,7 @@ module.exports = {
         bot.utils.registerGuild(bot, bot.guilds.cache.get(id))
         guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(id)
       } else {
-        let noinfo = new Discord.MessageEmbed()
+        let noinfo = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(`${bot.emoji.cross} **I do not have data for that guild!**`)
         message.channel.send(noinfo)
@@ -62,7 +62,7 @@ module.exports = {
       joined = guild.joinedAt.toLocaleString().split("GMT")[0].trim()
       guildicon = guild.iconURL()
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(`${bot.user.username} - Guild Information`)
       .setDescription([`**Guild Name/ID:** ${guildname} \`(${guildid})\``,
         ``,

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["steal"],
   description: "Rob another casino member!",
@@ -16,21 +16,21 @@ module.exports = {
       let id = args[0].replace(/[^0-9]/g,"");
       target = message.guild.members.cache.get(id);
       if (!target) {
-        let helpMenu = new Discord.MessageEmbed()
+        let helpMenu = new MessageEmbed()
           .setColor(bot.colors.lightred)
           .setDescription([`${bot.emoji.cross} **${message.author}, to steal, please provide a valid user or ID that is also in the casino!**`,
                            `To view a list of users in the casino, type: \`${prefix}casino list\``].join("\n"))
         return message.channel.send(helpMenu).catch(e=>{}).then(m=>m.delete({timeout:15000}).catch(e=>{}));
       }
       if(message.author.id === target.id){
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setDescription(`${bot.emoji.cross} **${message.author}, you cannot rob yourself!**`)
           .setColor(bot.colors.red)
         return message.channel.send(error).catch(e=>{});
       }
     }
     if (!target || !bot.playingcasino.has(target.id)) {
-      let helpMenu = new Discord.MessageEmbed()
+      let helpMenu = new MessageEmbed()
         .setColor(bot.colors.lightred)
         .setDescription([`${bot.emoji.cross} **${message.author}, to steal, please provide a valid user or ID that is also in the casino!**`,
                            `To view a list of users in the casino, type: \`${prefix}casino list\``,
@@ -41,7 +41,7 @@ module.exports = {
     }
     let amount = Math.floor(args[1])
     if (!amount || isNaN(amount)) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **${message.author}, please provide a number that is no higher than the target's current balance! You cannot rob users with less than 300 coins and cannot take more than double your current balance!**`)
       return message.channel.send(error).catch(e=>{})
@@ -49,19 +49,19 @@ module.exports = {
     let userData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(message.author.id);
     let targetData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(target.id);
     if (amount > userData.coins*2) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **${message.author}, the value you provided, \`${amount}\`, was more than double your own balance! Please use a lower value!**`)
       return message.channel.send(error).catch(e=>{})
     }
     if (amount > targetData.coins-300) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **${message.author}, you cannot provide a value that will leave the target with less than 300 coins!**`)
       return message.channel.send(error).catch(e=>{})  
     }
     bot.database.prepare("UPDATE usersinfo SET coins=? WHERE userid=?").run(userData.coins-200,message.author.id);
-    let robbedEmbed = new Discord.MessageEmbed()
+    let robbedEmbed = new MessageEmbed()
       .setColor(bot.colors.main)
       .setDescription([`**${message.author}, you were charged \`200\` coins for the robbery setup and are now attempting to rob ${target}**`,
                        ``,
@@ -73,7 +73,7 @@ module.exports = {
     try{
       robbedMessage = await message.channel.send(robbedEmbed)
     }catch(e){
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription([`${bot.emoji.cross} **${message.author}, something interfered with your robbery!`,
                          ``,
@@ -99,7 +99,7 @@ module.exports = {
         }catch(e){
           // bot.database.prepare("UPDATE usersinfo SET stealingrisk=? WHERE userid=?").run(userData.stealingrisk-10,message.author.id);
           // bot.database.prepare("UPDATE usersinfo SET coins=? WHERE userid=?").run(userData.coins+200,message.author.id);
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **${message.author}, something interfered with your robbery that would have been a success!`,
                              ``,
@@ -124,7 +124,7 @@ module.exports = {
           // bot.database.prepare("UPDATE usersinfo SET coins=? WHERE userid=?").run(userData.coins-robValue,message.author.id);
           // bot.database.prepare("UPDATE usersinfo SET stealingrisk=? WHERE userid=?").run(userData.stealingrisk-5,message.author.id);
           
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **${message.author}, something interfered with your robbery that would have failed anyways!`,
                             ``,

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["rtd","dice"],
   category: "CASINO",
@@ -9,7 +9,7 @@ module.exports = {
   run: async(bot,message,args,prefix,guildData)=>{
     message.delete({timeout:500}).catch(e=>{});
     if(bot.playingrtd.has(message.author.id)){
-      let alreadyplaying = new Discord.MessageEmbed()
+      let alreadyplaying = new MessageEmbed()
         .setDescription([`${bot.emoji.cross} **${message.author}, you are already playing somewhere else!**`].join("\n"))
         .setColor(bot.colors.red)
       return message.channel.send(alreadyplaying).catch(e=>{})
@@ -17,14 +17,14 @@ module.exports = {
     let bet = args[0]
     let number = args[1]
     if (!bet || !number || isNaN(bet) || isNaN(number) || number > 6 || number < 1) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription([`${bot.emoji.cross} **${message.author}, please provide a valid amount of coins to bet and on a number 1-6!**`,
                          ``,
                          `Example: \`${prefix}rtd 230 4\``].join("\n"))
       return message.channel.send(error).catch(e=>{})
     }
-    let rtdEmbed = new Discord.MessageEmbed()
+    let rtdEmbed = new MessageEmbed()
       .setColor(bot.colors.main)
       .setDescription([`**__Roll The Dice__**`,
                        `**Player: ${message.author}**`,
@@ -36,7 +36,7 @@ module.exports = {
     try{
       rtdMessage = await message.channel.send(rtdEmbed)
     }catch(e){
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setDescription(`${bot.emoji.cross} **${message.author}, there was an error letting you roll the die!**`)
         .setColor(bot.colors.red)
         .setFooter(bot.footer)
@@ -46,7 +46,7 @@ module.exports = {
     setTimeout(async () => {
       rtdMessage.react("🎲").catch(e=>{
         bot.playingrtd.delete(message.author.id)
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setDescription(`${bot.emoji.cross} **${message.author}, there was an error letting you roll the die!**`)
           .setColor(bot.colors.red)
           .setFooter(bot.footer)
@@ -72,7 +72,7 @@ module.exports = {
         await rtdMessage.edit(rtdEmbed)
       }catch(e){
         bot.playingrtd.delete(message.author.id)
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setDescription(`${bot.emoji.cross} **${message.author}, there was an error letting you roll the die!**`)
           .setColor(bot.colors.red)
           .setFooter(bot.footer)

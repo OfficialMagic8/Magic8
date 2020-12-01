@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const requestpromise = require("request-promise");
 module.exports = {
   aliases: ["quotes"],
@@ -20,7 +20,7 @@ module.exports = {
       // p = JSON.parse(req)
     }catch(e){
       // console.error(e)
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setDescription(bot.utils.getTranslation(bot,language,"quote.error.unexpected").join("\n")
                         .replace(/{CROSS}/g,bot.emoji.cross)
                         .replace(/{PREFIX}/g,prefix))
@@ -33,7 +33,7 @@ module.exports = {
     console.log(result)
     // let quote = result[Math.floor(Math.random() * result.length)]
     // console.log(quote)
-    // let quoteEmbed = new Discord.MessageEmbed()
+    // let quoteEmbed = new MessageEmbed()
     //   .setColor(bot.colors.main)
     //   .setDescription([`**Here is your random, insipirtational quote, ${message.author}**`,
     //                    ``,

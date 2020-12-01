@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   category: "ADMIN",
@@ -9,7 +9,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!message.guild.me.hasPermission(["MANAGE_WEBHOOKS"])) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "follow.nopermission")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -22,7 +22,7 @@ module.exports = {
       "updates"
     ];
     if (!args[0]) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setAuthor(bot.translate(bot, language, "follow.nooptiontitle")
           .replace(/{BOTNAME}/g, bot.user.username))
@@ -34,7 +34,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     };
     if (!options.includes(args[0].toLowerCase())) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "follow.invalidoption").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -44,7 +44,7 @@ module.exports = {
     };
     // if (args[0].toLowerCase() === options[0]) {
     //   bot.status.addFollower(message.channel.id, `Subscribed to ${options[0]}`).then(() => {
-    //     let embed = new Discord.MessageEmbed()
+    //     let embed = new MessageEmbed()
     //       .setColor(bot.colors.green)
     //       .setDescription(bot.translate(bot, language, "follow.following").join("\n")
     //         .replace(/{CHECK}/g, bot.emoji.check)
@@ -52,7 +52,7 @@ module.exports = {
     //         .replace(/{FOLLOWING}/g, options[0]))
     //     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     //   }).catch(e => {
-    //     let embed = new Discord.MessageEmbed()
+    //     let embed = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.translate(bot, language, "follow.maxintegrations").join("\n")
     //         .replace(/{CROSS}/g, bot.emoji.cross)
@@ -62,7 +62,7 @@ module.exports = {
     // };
     if (args[0].toLowerCase() === options[1]) {
       bot.status.addFollower(message.channel.id, `Subscribed to ${options[1]}`).then(() => {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "follow.following").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -70,7 +70,7 @@ module.exports = {
             .replace(/{FOLLOWING}/g, options[1]))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }).catch(e => {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "follow.maxintegrations").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)

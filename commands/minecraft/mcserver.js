@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["mcstatus", "status"],
   category: "MINECRAFT",
@@ -12,14 +12,14 @@ module.exports = {
       if (args[0] === "remove") {
         bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run("none", message.guild.id);
         bot.mcservers.delete(message.guild.id);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "mcserver.removed")
             .replace(/{CHECK}/g, bot.emoji.check)
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let updating = new Discord.MessageEmbed()
+      let updating = new MessageEmbed()
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "mcserver.checking")
           .replace(/{LOADING}/g, bot.emoji.loading));
@@ -66,7 +66,7 @@ module.exports = {
               }
             }
           }
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
@@ -81,7 +81,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           console.error(e)
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setFooter(bot.translate(bot, language, "mcserver.errorfooter"))
             .setDescription(bot.translate(bot, language, "mcserver.error").join("\n")
@@ -90,7 +90,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         });
       } else {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "mcserver.noip").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)

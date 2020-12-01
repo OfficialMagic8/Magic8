@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["lang"],
   category: "ADMIN",
@@ -37,7 +37,7 @@ module.exports = {
           }
           let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
           if (isNaN(page) || page > totalpages || page < 1) {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "language.invalidpage").join("\n")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -58,7 +58,7 @@ module.exports = {
               if (!selectedlanguages.includes(map)) selectedlanguages.push(map);
             }
           }
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setAuthor(bot.translate(bot, language, "language.listtitle")
               .replace(/{BOTNAME}/g, bot.user.username)
               .replace(/{PAGE}/g, page)
@@ -75,7 +75,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
         if (!bot.languages.has(args[1].toLowerCase())) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "language.invalid").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -86,7 +86,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
         if (args[1].toLowerCase() === guildData.language) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "language.alreadyselected").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -99,7 +99,7 @@ module.exports = {
         let newLanguage = args[1].toLowerCase();
         let getlang = bot.languagesprogress.get(newLanguage);
         bot.db.prepare("UPDATE guilddata SET language=? WHERE guildid=?").run(newLanguage, message.guild.id);
-        let success = new Discord.MessageEmbed()
+        let success = new MessageEmbed()
           .setColor(bot.colors.green)
           .setFooter(bot.translate(bot, language, "language.lastupdated")
             .replace(/{TIME}/g, bot.lastfetched.get("lf")))
@@ -140,7 +140,7 @@ module.exports = {
         }
         let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
         if (isNaN(page) || page > totalpages || page < 1) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "language.invalidpage").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -161,7 +161,7 @@ module.exports = {
             if (!selectedlanguages.includes(map)) selectedlanguages.push(map);
           }
         }
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "language.listtitle")
             .replace(/{BOTNAME}/g, bot.user.username)
             .replace(/{PAGE}/g, page)
@@ -177,7 +177,7 @@ module.exports = {
             .replace(/{WARNING}/g, bot.emoji.warning));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else if (subcommand === "help") {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setDescription(bot.translate(bot, language, "language.help").join("\n")
@@ -207,7 +207,7 @@ module.exports = {
           }
           let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
           if (isNaN(page) || page > totalpages || page < 1) {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "language.invalidpage").join("\n")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -237,7 +237,7 @@ module.exports = {
             condition = true;
             uptodatestring = `${bot.emoji.check} **${bot.translate(bot, language, "language.uptodate")}**`;
           }
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setAuthor(bot.translate(bot, language, "language.listtitle")
               .replace(/{BOTNAME}/g, bot.user.username)
               .replace(/{PAGE}/g, page)
@@ -254,7 +254,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
         if (!bot.languages.has(args[1].toLowerCase())) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "language.invalid").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -265,7 +265,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
         let getlang = bot.languagesprogress.get(args[1].toLowerCase());
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "language.info").join("\n")
             .replace(/{FLAG}/g, getlang.flag)
@@ -275,7 +275,7 @@ module.exports = {
             .replace(/{AUTHORS}/g, getlang.authors.map(a => `**-** ${a}`).join("\n")));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "language.menutitle")
             .replace(/{BOTNAME}/g, bot.user.username))
           .setFooter(bot.translate(bot, language, "language.lastupdated")

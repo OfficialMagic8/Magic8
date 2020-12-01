@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const link = "https://minecraftskinstealer.com/achievement/{ITEM}/{TITLE}/{SUBTITLE}"
 module.exports = {
   aliases: ["mcachie", "mca"],
@@ -28,7 +28,7 @@ module.exports = {
       }
       subtitle = subtitle.split(" ").join("%20");
     } else {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setImage("https://i.imgur.com/xQPByzh.png")
         .setDescription(bot.translate(bot, language, "mcachievement.usage").join("\n")
@@ -40,7 +40,7 @@ module.exports = {
     let finallink = link.replace(/{ITEM}/g, item)
       .replace(/{TITLE}/g, title)
       .replace(/{SUBTITLE}/g, subtitle);
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(bot.colors.lightblue)
       .setImage(finallink)
       .setDescription(bot.translate(bot, language, "mcachievement.success").join("\n")

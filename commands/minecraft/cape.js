@@ -18,7 +18,7 @@ module.exports = {
     let toSearch = args[0]
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!toSearch) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "cape.invalid")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -34,7 +34,7 @@ module.exports = {
     //   let resizeLink = resizeURL.replace(/{URL}/g,capeLink);
     //   bot.canvas.loadImage(bodyLink).then(image=>{
     //     bot.canvas.loadImage(capeLink).then(cape=>{
-    //       let success = new Discord.MessageEmbed()
+    //       let success = new MessageEmbed()
     //         .setAuthor(bot.translate(bot,language,"cape.success.title").replace(/{USER}/g,username),helmLink,profileLink)
     //         .setThumbnail(cape.src)
     //         //.setDescription(bot.translate(bot,language,"cape.success.description").join("\n").replace(/{CROSS}/g,bot.emoji.cross))
@@ -43,13 +43,13 @@ module.exports = {
     //         .setColor(bot.colors.red)
     //       return message.channel.send(success).catch(e=>{})
     //     }).catch(e=>{
-    //       let nocape = new Discord.MessageEmbed()
+    //       let nocape = new MessageEmbed()
     //         .setDescription(bot.translate(bot,language,"cape.error.nocape.description").join("\n").replace(/{CROSS}/g,bot.emoji.cross).replace(/{USER}/g,username))
     //         .setColor(bot.colors.red)
     //       return message.channel.send(nocape).catch(e=>{})
     //     })
     //   }).catch(e=>{
-    //     let notregistered = new Discord.MessageEmbed()
+    //     let notregistered = new MessageEmbed()
     //       .setDescription(bot.translate(bot,language,"cape.error.notregistered.description").join("\n").replace(/{CROSS}/g,bot.emoji.cross).replace(/{USER}/g,username))
     //       .setColor(bot.colors.red)
     //     return message.channel.send(notregistered).catch(e=>{})
@@ -64,7 +64,7 @@ module.exports = {
       let uuid2 = uuid.replace(/-/g, "");
       MojangAPI.profile(uuid2, function (err, res) {
         if (err) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "cape.invalid")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -77,7 +77,7 @@ module.exports = {
         let capeLink = capeURL.replace(/{USER}/g, username);
         let resizeLink = resizeURL.replace(/{URL}/g, capeLink);
         bot.canvas.loadImage(capeLink).then(cape => {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setAuthor(bot.translate(bot, language, "cape.success")
               .replace(/{USER}/g, username), helmLink, profileLink)
             .setThumbnail(cape.src)
@@ -85,7 +85,7 @@ module.exports = {
             .setColor(bot.colors.red)
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }).catch(e => {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "cape.nocape")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -98,7 +98,7 @@ module.exports = {
       let date = new Date();
       MojangAPI.uuidAt(toSearch, date, function (err, res) {
         if (err) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "cape.invalid")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -111,7 +111,7 @@ module.exports = {
         let capeLink = capeURL.replace(/{USER}/g, username);
         let resizeLink = resizeURL.replace(/{URL}/g, capeLink);
         bot.canvas.loadImage(capeLink).then(cape => {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.main)
             .setAuthor(bot.translate(bot, language, "cape.success")
               .replace(/{USER}/g, username), helmLink, profileLink)
@@ -119,7 +119,7 @@ module.exports = {
             .setImage(resizeLink);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }).catch(e => {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "cape.nocape")
               .replace(/{CROSS}/g, bot.emoji.cross)

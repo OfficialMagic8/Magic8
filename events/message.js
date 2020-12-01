@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "message",
   run: async (bot, message) => {
@@ -28,7 +28,7 @@ module.exports = {
           guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(message.guild.id);
         }
         let language = bot.utils.getLanguage(bot, guildData.language);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "mention").join("\n")
             .replace(/{USER}/g, message.author)
@@ -75,7 +75,7 @@ module.exports = {
             })
             let logchannel = message.guild.channels.cache.get(bot.antipinglogchannels.get(message.guild.id))
             let language = bot.utils.getLanguage(bot, guildData.language);
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.lightred)
               .setDescription(bot.translate(bot, language, "antiping.logmessage").join("\n")
                 .replace(/{WARNING}/g, bot.emoji.warning)
@@ -116,10 +116,10 @@ module.exports = {
     if (command.dev) return;
     bot.statcord.postCommand(command.name, message.author.id);
     bot.usage.set(message.guild.id, (bot.usage.get(message.guild.id) + 1));
-    if (guildData.hasvoted === "false" && (bot.usage.get(message.guild.id) % 30 === 0) && bot.premium.get(message.guild.id) === 0) {
+    if (guildData.hasvoted === "false" && (bot.usage.get(message.guild.id) % 50 === 0) && bot.premium.get(message.guild.id) === 0) {
       let ad = bot.ads[bot.adtype.get(message.guild.id)];
       console.log(`🗨️ ${ad.name} Advertisement Sent In: ${message.guild.name} (${message.guild.id})`);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setAuthor(`${ad.name} - Advertisement`)
         .setFooter(`Want your Advertisement here? Contact Fyrlex#2740`)

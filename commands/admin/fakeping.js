@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const Imgur = require("imgur");
 const prettyMs = require("pretty-ms");
 const cooldown = 300000;
@@ -15,7 +15,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (bot.fakepingcooldown.has(message.guild.id)) {
       let cooldownobject = bot.fakepingcooldown.get(message.guild.id)
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setThumbnail(cooldownobject.link)
         .setDescription(bot.translate(bot, language, "fakeping.cooldown").join("\n")
@@ -27,7 +27,7 @@ module.exports = {
       return message.channel.send(error).catch(e => { });
     }
     if (!message.guild.iconURL()) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "fakeping.guildnoicon").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -53,7 +53,7 @@ module.exports = {
       dataURL = await canvas.toDataURL();
     } catch (e) {
       console.error(e);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "unexpectederror")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -67,7 +67,7 @@ module.exports = {
       parsed = await Imgur.uploadBase64(base64);
     } catch (e) {
       console.error(e);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "unexpectederror")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -82,7 +82,7 @@ module.exports = {
       user: message.author
     }
     bot.fakepingcooldown.set(message.guild.id, cooldownobject)
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setDescription(bot.translate(bot, language, "fakeping.success").join("\n")
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)
@@ -107,7 +107,7 @@ module.exports = {
           if (reaction.emoji.name === "✅") {
             if (!message.guild.me.hasPermission("MANAGE_GUILD")) {
               updateToManual(m, embed, bot, language, link);
-              let error = new Discord.MessageEmbed()
+              let error = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription(bot.translate(bot, language, "fakeping.notupdatedperms")
                   .replace(/{CROSS}/g, bot.emoji.cross)
@@ -118,7 +118,7 @@ module.exports = {
             console.log(link)
             message.guild.setIcon(link, `Updated by ${message.author.tag}(${message.author.id}) using Magic8's FakePing feature!`).then(g => {
               updateToManual(m, embed, bot, language, link);
-              let success = new Discord.MessageEmbed()
+              let success = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription(bot.translate(bot, language, "fakeping.updated")
                   .replace(/{CHECK}/g, bot.emoji.check)
@@ -127,7 +127,7 @@ module.exports = {
             }).catch(e => {
               updateToManual(m, embed, bot, language, link);
               console.error(e);
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription(bot.translate(bot, language, "unexpectederror")
                   .replace(/{CROSS}/g, bot.emoji.cross)
@@ -137,7 +137,7 @@ module.exports = {
             })
           } else {
             updateToManual(m, embed, bot, language, link);
-            let error = new Discord.MessageEmbed()
+            let error = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "fakeping.notupdated")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -147,7 +147,7 @@ module.exports = {
         }).catch(e => {
           updateToManual(m, embed, bot, language, link);
           m.reactions.removeAll().catch(e => { });
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "fakeping.notupdated")
               .replace(/{CROSS}/g, bot.emoji.cross)

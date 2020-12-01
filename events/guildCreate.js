@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "guildCreate",
   run: async (bot, guild) => {
@@ -69,7 +69,7 @@ module.exports = {
     let bots = guild.members.cache.filter(m => m.user.bot).size;
     let created = guild.createdAt.toLocaleString().split("GMT")[0].trim();
     let owner = bot.users.cache.get(bot.guilds.cache.get(guild.id).ownerID) || await bot.users.fetch(bot.guilds.cache.get(guild.id).ownerID);
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setTitle(`${isNewGuild ? bot.emoji.plus : bot.emoji.return} - Guild Join`)
       .setColor(bot.colors.green)
       .setThumbnail(guild.iconURL({ format: "png" }))

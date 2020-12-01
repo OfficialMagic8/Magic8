@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const minRingTime = 10000;
 const maxRingTime = 60000;
 module.exports = {
@@ -13,17 +13,17 @@ module.exports = {
     if (bot.onthephone.has(message.guild.id)) {
       let object = bot.onthephone.get(message.guild.id);
       if (object.talking) {
-        let incall = new Discord.MessageEmbed()
+        let incall = new MessageEmbed()
           .setColor(bot.colors.lightred)
           .setDescription(bot.translate(bot, language, "telephone.someoneinacall").replace(/{CROSS}/g, bot.emoji.cross))
         return message.channel.send(incall).catch(e => { });
       }
-      let someoneusing = new Discord.MessageEmbed()
+      let someoneusing = new MessageEmbed()
         .setColor(bot.colors.lightred)
         .setDescription(bot.translate(bot, language, "telephone.someoneusingtelephone").replace(/{CROSS}/g, bot.emoji.cross))
       return message.channel.send(someoneusing).catch(e => { });
     }
-    let ringing = new Discord.MessageEmbed()
+    let ringing = new MessageEmbed()
       .setColor(bot.colors.lightgreen)
       .setDescription(bot.translate(bot, language, "telephone.ringing").replace(/{USER}/g, message.author))
     message.channel.send(ringing).catch(e => { });
@@ -58,7 +58,7 @@ module.exports = {
           }
         } else {
           bot.onthephone.delete(message.guild.id)
-          let nopickup = new Discord.MessageEmbed()
+          let nopickup = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription(bot.translate(bot, language, "telephone.nooneanswered").replace(/{USER}/g, message.author).replace(/{CROSS}/g, bot.emoji.cross))
           message.channel.send(nopickup).catch(e => { });
@@ -87,10 +87,10 @@ module.exports = {
       let firstChannel = bot.channels.cache.get(first.channelid);
       let secondChannel = bot.channels.cache.get(second.channelid);
       if (firstChannel && secondChannel) {
-        let firstestablished = new Discord.MessageEmbed()
+        let firstestablished = new MessageEmbed()
           .setColor(bot.colors.lightgreen)
           .setDescription(bot.translate(bot, firstlanguage, "telephone.establised").replace(/{CROSS}/g, bot.emoji.cross))
-        let secondestablished = new Discord.MessageEmbed()
+        let secondestablished = new MessageEmbed()
           .setColor(bot.colors.lightgreen)
           .setDescription(bot.translate(bot, secondlanguage, "telephone.establised").replace(/{CROSS}/g, bot.emoji.cross))
         firstChannel.send(firstestablished).catch(e => { });

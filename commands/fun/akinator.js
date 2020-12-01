@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const aki = require('aki-api');
 module.exports = {
   aliases: ["aki"],
@@ -11,7 +11,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let subcommand = args[0] ? args[0].toLowerCase() : args[0];
     if (!subcommand) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "akinator.help.title").replace(/{BOTNAME}/g, bot.user.username))
         .setColor(bot.colors.gold)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -23,7 +23,7 @@ module.exports = {
     }
     if (subcommand === "start") {
       if (bot.playingakinator.has(message.author.id)) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "akinator.alreadyplaying").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -46,7 +46,7 @@ module.exports = {
     } else if (message.member.hasPermission("ADMINISTRATOR") && subcommand === "setchannel") {
     } else if (message.member.hasPermission("ADMINISTRATOR") && subcommand === "toggle") {
     } else {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         //   .setAuthor(bot.translate(bot,language,"akinator.title").replace(/{BOTNAME}/g,bot.user.username))
         .setColor(bot.colors.gold)
         .setDescription(bot.translate(bot, language, `akinator.help.${message.member.hasPermission("ADMINISTRATOR") ? "administrator" : "user"}`).join("\n")
@@ -77,7 +77,7 @@ module.exports = {
         return message.channel.send(bot.translate(bot, language, "akinator.sendguess").replace(/{ANSWERS}/g, akiGame.answers.length)).catch(e => { });
       }
       let guess = akiGame.answers[index];
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("#f5e325")
         .setTitle(`You are thinking about..`)
         .setThumbnail("https://4.bp.blogspot.com/_o40I1NXKJF8/SwKggPivX_I/AAAAAAAAEVU/sesarvVjhLM/s1600/akinator.png")
@@ -110,7 +110,7 @@ module.exports = {
       }).catch(e => {
         bot.playingakinator.delete(message.author.id);
         console.error(e)
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "unexpectederror")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -137,7 +137,7 @@ module.exports = {
         guessGame(bot, message, object, akiGame);
         return;
       }
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("#f5e325")
         .setTitle(`${akiGame.question} (#${akiGame.currentStep + 1})`)
         .setThumbnail(akiimages[Math.floor(Math.random() * akiimages.length)])
@@ -153,7 +153,7 @@ module.exports = {
           }).catch(e => {
             bot.playingakinator.delete(message.author.id);
             console.error(e)
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "unexpectederror")
                 .replace(/{CROSS}/g, bot.emoji.cross)

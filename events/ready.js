@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { loadMain, loadMCServers, loadAutoVoiceChannels, loadRestrictedChannels, loadLFGNotificationChannels, loadLFGRoles, loadAntiPingUsers, loadAntiPingChannels, loadAntiPingRoles, loadDisabledCommands, loadMonthlyVotes, loadTotalVotes, loadVotedUsers, loadEmojis } = require("../utils/load")
 module.exports = {
   name: "ready",
@@ -86,6 +86,13 @@ module.exports = {
       if (!guildData) {
         bot.utils.registerGuild(bot, guild)
         guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
+      }
+      if (JSON.parse(guildData.lfgusers).length >=1) {
+        bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run("[]", guild.id)
+      }
+      if (guildData.ballcustomresponses !== "none") {
+        let split = guildData.ballcustomresponses.split("|")
+        bot.db.prepare("UPDATE guilddata SET ballcustomresponses=? WHERE guildid=?").run(JSON.stringify(split), guild.id)
       }
       let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
       if (!usageData) {

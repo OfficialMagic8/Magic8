@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["v"],
   category: "USER",
@@ -38,7 +38,7 @@ module.exports = {
         console.error(e);
       }
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "vote.title")
         .replace(/{BOTNAME}/g, bot.user.username))
       .setColor(bot.colors.main)

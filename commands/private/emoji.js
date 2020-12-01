@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 //nst Canvas = require("canvas");
 const emojilinkanimated = "https://cdn.discordapp.com/emojis/{ID}.gif";
 const emojilink = "https://cdn.discordapp.com/emojis/{ID}.png";
@@ -14,7 +14,7 @@ module.exports = {
     message.delete({ timeout: 500 }).catch(e => { });
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!message.member.hasPermission("MANAGE_EMOJIS")) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.utils.getTranslation(bot, language, "emojis.error.permissiondescription").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))
       return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(e => { })).catch(e => { });
@@ -22,20 +22,20 @@ module.exports = {
     let subcommand = args[0] ? args[0].toLowerCase() : args[0];
     if (subcommand === "add") {
       if (!message.guild.me.hasPermission("MANAGE_EMOJIS")) {
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.utils.getTranslation(bot, language, "emojis.error.insufficientdescription").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))
         return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(e => { })).catch(e => { });
       }
       let targetemoji = args[1] ? args[1].toLowerCase() : args[1];
       if (!targetemoji) {
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.utils.getTranslation(bot, language, "emojis.error.requireddescription").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))
         return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(e => { })).catch(e => { });
       }
       if (!bot.customemojis.has(targetemoji)) {
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.utils.getTranslation(bot, language, "emojis.error.invalidemoji").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))
         return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(e => { })).catch(e => { });
@@ -48,7 +48,7 @@ module.exports = {
         await message.guild.emojis.create(link, emojiinfo.name, [], `Added by ${message.author.tag}(${message.author.id}) using ${bot.user.username}`);
       } catch (e) {
         console.log(e)
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setColor(bot.colors.red)
         if (e.code === 50013) {
           error.setDescription(bot.utils.getTranslation(bot, language, "emojis.error.insufficientdescription").join("\n")
@@ -65,7 +65,7 @@ module.exports = {
         }
         return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(e => { })).catch(e => { });
       }
-      let success = new Discord.MessageEmbed()
+      let success = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.utils.getTranslation(bot, language, "emojis.success.description").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author)
           .replace(/{EMOJINAME}/g, emojiinfo.name)
@@ -77,7 +77,7 @@ module.exports = {
       return message.channel.send(success).then(m => m.delete({ timeout: 25000 }).catch(e => { })).catch(e => { });
     }
     if (!bot.emojisEmbed) {
-      bot.emojisEmbed = new Discord.MessageEmbed()
+      bot.emojisEmbed = new MessageEmbed()
         .setColor(bot.colors.pink)
         .setDescription(bot.utils.getTranslation(bot, language, "emojis.description").join("\n")
           .replace(/{INVITATION}/g, bot.botconfig.invitation)

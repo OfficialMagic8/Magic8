@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const requestpromise = require("request-promise");
 const helmURL = "https://minotar.net/helm/{USER}/100.png";
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let toSearch = args[0];
     if (!toSearch) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "hypixel.error.invalid")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -30,7 +30,7 @@ module.exports = {
             requested = await requestpromise(`https://api.hypixel.net/player?key=${process.env.HYPIXEL_TOKEN}&uuid=${toSearch}`);
             parsed = JSON.parse(requested);
           } else {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "hypixel.error.neverjoined")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -39,7 +39,7 @@ module.exports = {
           }
         }
       } else {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "hypixel.error.invalid")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -97,7 +97,7 @@ module.exports = {
     let rewardHighScore = player.rewardHighScore ? player.rewardHighScore : 0;
     // let rankPlusColor = player.rankPlusColor ? `${player.rankPlusColor.substring(0, 1)}${player.rankPlusColor.slice(1).toLowerCase()}`.replace(/_/g, " ") : "None"
     // let mostRecentGameType = player.mostRecentGameType ? `${player.mostRecentGameType.substring(0, 1)}${player.mostRecentGameType.slice(1).toLowerCase()}` : "Unknown"
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(bot.colors.yellow)
       .setAuthor(bot.translate(bot, language, "hypixel.success.title")
         .replace(/{TARGET}/g, player.displayname), hypixel)

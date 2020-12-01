@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const lettersize = 180
 const font = `bold ${lettersize}px Impact`
 const additionalheight = lettersize / 4;
@@ -19,7 +19,7 @@ module.exports = {
     let cleanmessage = messagetosend.map(m => m.trim()).filter(m => m.length >= 1);
     if (!messagetosend) {
       let language = bot.utils.getLanguage(bot, guildData.language);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "pornhubtext.messagerequired")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -28,7 +28,7 @@ module.exports = {
     }
     if (cleanmessage && cleanmessage.length < 2) {
       let language = bot.utils.getLanguage(bot, guildData.language);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "pornhubtext.nobar").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)

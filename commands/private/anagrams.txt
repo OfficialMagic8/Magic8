@@ -1,11 +1,11 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 // const thesaurus = require("thesaurus");
 module.exports.run = async(bot,message,args,prefix,guildData)=> {}
 //   message.delete({timeout:500}).catch(e=>{});
 //   if (bot.playinganagrams.has(message.author.id)) {
 //     return console.error("Already playing!")
 //   }
-//   // let startGameEmbed = new Discord.MessageEmbed()
+//   // let startGameEmbed = new MessageEmbed()
 //   //   .setColor(bot.colors.main)
 //   //   .setAuthor(`${message.author.username} is playing Anagrams`)
 //   //   .setDescription([`**${message.author}, here are your random letters!**`,

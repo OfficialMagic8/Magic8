@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   name: "dsl",
@@ -42,7 +42,7 @@ module.exports = {
         discordservers.push(`${bot.guilds.cache.get(guild).name} - ${guild} - ${users}/${bots}/${channels}`)
       }
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(bot.colors.main)
       .setAuthor(`Guilds with DSL then Disboard`)
       .setDescription("**DSL**\n" + dsl.join("\n") + "\n\n**Disboard**\n" + disboard.join("\n") + "\n\n**Discord.Me**\n" + discordme.join("\n") + "\n\n**DiscordServers**\n" + discordservers.join("\n"))

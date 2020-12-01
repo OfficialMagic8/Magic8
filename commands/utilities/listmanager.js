@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["lm"],
   category: "UTILITIES",
@@ -11,7 +11,7 @@ module.exports = {
     let subcommand = args[0] ? args[0].toLowerCase() : args[0]
     if (subcommand && !["r", "randomize", "view", "v"].includes(subcommand) && !message.member.hasPermission("MANAGE_GUILD")) return;
     if (!subcommand && message.member.hasPermission("MANAGE_GUILD")) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "listmanager.helptitle")
           .replace(/{BOTNAME}/g, bot.user.username))
         .setColor(bot.colors.main)
@@ -54,7 +54,7 @@ module.exports = {
             return bot.error(bot, message, language, e);
           })
         }
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(bot.translate(bot, language, "listmanager.viewitemstitle"))
           .setDescription(bot.translate(bot, language, "listmanager.viewitems").join("\n")
@@ -63,7 +63,7 @@ module.exports = {
             .replace(/{ITEMS}/g, items));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else if (listname && !listnames.includes(listname.toLowerCase())) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -72,7 +72,7 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setAuthor(bot.translate(bot, language, "listmanager.viewliststitle"))
         .setDescription(bot.translate(bot, language, "listmanager.viewlists").join("\n")
@@ -81,7 +81,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     } else if (["r", "randomize"].includes(subcommand)) {
       if (bot.listscooldown.has(message.author.id)) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.cooldown")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -90,7 +90,7 @@ module.exports = {
       }
       let lists = JSON.parse(guildData.listmanager)
       if (lists.length === 0) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.nolistsavailable").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -103,7 +103,7 @@ module.exports = {
         listsarray.push(`**-** ${l.name} (${l.items.length})`);
       })
       if (!args[1]) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(bot.translate(bot, language, "listmanager.randomizermenutitle"))
           .setDescription(bot.translate(bot, language, "listmanager.randomizermenu").join("\n")
@@ -125,7 +125,7 @@ module.exports = {
       if (!end) {
         let listname = args.slice(1).join(" ");
         if (!listnames.includes(listname.toLowerCase())) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -141,7 +141,7 @@ module.exports = {
         }, (cooldown * 1000));
         let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
         let randomitem = list.items[Math.floor(Math.random() * list.items.length)];
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.lightgreen)
           .setFooter(bot.translate(bot, language, "listmanager.footer")
             .replace(/{LISTNAME}/g, list.name))
@@ -165,7 +165,7 @@ module.exports = {
         let randomcount = Math.abs(Math.floor(parseInt(args.pop())))
         let listname = args.slice(1).join(" ")
         if (!listnames.includes(listname.toLowerCase())) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -176,7 +176,7 @@ module.exports = {
         }
         let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase())
         if (!randomcount || randomcount < 2 || randomcount > list.items.length) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "listmanager.invalidnumber").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -198,7 +198,7 @@ module.exports = {
           }
           randomized.push(randomitem);
         }
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.lightgreen)
           .setFooter(bot.translate(bot, language, "listmanager.footer")
             .replace(/{LISTNAME}/g, list.name))
@@ -228,7 +228,7 @@ module.exports = {
       });
       let listname = args.slice(1).join(" ")
       if (!listname) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.nonewlistname")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -236,7 +236,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (listname.length > 30) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.listnametoolong").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -244,7 +244,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (listnames.includes(listname.toLowerCase())) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.listalreadyexists").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -260,7 +260,7 @@ module.exports = {
       };
       lists.push(listobject);
       bot.db.prepare("UPDATE guilddata SET listmanager=? WHERE guildid=?").run(JSON.stringify(lists), message.guild.id);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "listmanager.listcreated").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
@@ -277,7 +277,7 @@ module.exports = {
         listnames.push(l.name.toLowerCase());
       });
       if (lists.length === 0) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.nolistsavailable").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -295,7 +295,7 @@ module.exports = {
       });
       let list = lists.find(l => l.name === listname.toLowerCase());
       if (!listcopy.includes(listname.toLowerCase())) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -316,7 +316,7 @@ module.exports = {
       bot.hastebin(hastetext.join("\n"), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
         lists.splice(listcopy.indexOf(list.name), 1);
         bot.db.prepare("UPDATE guilddata SET listmanager=? WHERE guildid=?").run(JSON.stringify(lists), message.guild.id);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "listmanager.listdeleted").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -327,7 +327,7 @@ module.exports = {
     } else if (subcommand === "bulkadd") {
       let lists = JSON.parse(guildData.listmanager)
       if (lists.length === 0) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.nolistsavailable").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -345,7 +345,7 @@ module.exports = {
       });
       let listname = args.slice(1).join(" ");
       if (!listname) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "listmanager.bulkaddmenutitle"))
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "listmanager.bulkaddmenu").join("\n")
@@ -354,7 +354,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (!listnames.includes(listname.toLowerCase())) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -374,7 +374,7 @@ module.exports = {
         `This link will expire! Save this when you can!`,
       ];
       bot.hastebin(hastetext.join("\n"), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.lightgreen)
           .setAuthor(bot.translate(bot, language, "listmanager.bulkaddmenutitle"))
           .setDescription(bot.translate(bot, language, "listmanager.bulkadding").join("\n")
@@ -387,7 +387,7 @@ module.exports = {
             let cleanItems = items.map(i => i.trim()).filter(i => i.length >= 2);
             if (cleanItems < 2) {
               m.delete({ timeout: 500 }).catch(e => { });
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription(bot.translate(bot, language, "listmanager.bulkaddinvalid").join("\n")
                   .replace(/{CROSS}/g, bot.emoji.cross)
@@ -399,7 +399,7 @@ module.exports = {
               list.items.push(i);
             })
             bot.db.prepare("UPDATE guilddata SET listmanager=? WHERE guildid=?").run(JSON.stringify(lists), message.guild.id);
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.green)
               .setDescription(bot.translate(bot, language, "listmanager.bulkaddsuccess")
                 .replace(/{CHECK}/g, bot.emoji.check)
@@ -407,7 +407,7 @@ module.exports = {
                 .replace(/{ITEMS}/g, list.items.map(i => `**-** ${i.trim()}`).join("\n")));
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }).catch(collected => {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "listmanager.bulkaddnoitems")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -429,7 +429,7 @@ module.exports = {
         listsarray.push(`**-** ${l.name} (${l.items.length})`);
       });
       if (lists.length === 0) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.nolistsavailable").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -439,7 +439,7 @@ module.exports = {
       }
       let listname = args.slice(1).join(" ");
       if (!listname) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "listmanager.addmenutitle"))
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "listmanager.addmenu")
@@ -448,7 +448,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (!listnames.includes(listname.toLowerCase())) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -468,7 +468,7 @@ module.exports = {
         `This link will expire! Save this when you can!`,
       ]
       bot.hastebin(hastetext.join("\n"), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.lightgreen)
           .setAuthor(bot.translate(bot, language, "listmanager.addmenutitle"))
           .setDescription(bot.translate(bot, language, "listmanager.adding").join("\n")
@@ -481,7 +481,7 @@ module.exports = {
             list.items.push(item);
             bot.db.prepare("UPDATE guilddata SET listmanager=? WHERE guildid=?").run(JSON.stringify(lists), message.guild.id);
             bot.hastebin(list.items.map(i => i.trim()).join(" | "), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription(bot.translate(bot, language, "listmanager.addsuccess").join("\n")
                   .replace(/{CHECK}/g, bot.emoji.check)
@@ -492,7 +492,7 @@ module.exports = {
               return bot.error(bot, message, language, e);
             });
           }).catch(collected => {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "listmanager.addnoitems").join("\n")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -504,7 +504,7 @@ module.exports = {
     } else if (subcommand === "remove") {
       let lists = JSON.parse(guildData.listmanager)
       if (lists.length === 0) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.nolistsavailable").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -522,7 +522,7 @@ module.exports = {
       });
       let listname = args.slice(1).join(" ")
       if (!listname) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "listmanager.removemenutitle"))
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "listmanager.removemenu").join("\n")
@@ -531,7 +531,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!listnames.includes(listname.toLowerCase())) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -542,7 +542,7 @@ module.exports = {
       }
       let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
       if (list.items.length === 0) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.noitemstoremove").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -560,7 +560,7 @@ module.exports = {
         `This link will expire! Save this when you can!`,
       ]
       bot.hastebin(hastetext.join("\n"), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.lightgreen)
           .setAuthor(bot.translate(bot, language, "listmanager.removemenutitle"))
           .setDescription(bot.translate(bot, language, "listmanager.removing").join("\n")
@@ -584,7 +584,7 @@ module.exports = {
               bot.hastebin(hastetext.join("\n"), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
                 list.items = [];
                 bot.db.prepare("UPDATE guilddata SET listmanager=? WHERE guildid=?").run(JSON.stringify(lists), message.guild.id);
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.green)
                   .setDescription(bot.translate(bot, language, "listmanager.removedall").join("\n")
                     .replace(/{CHECK}/g, bot.emoji.check)
@@ -599,7 +599,7 @@ module.exports = {
             })
             if (!itemscopy.includes(item.toLowerCase())) {
               m.delete({ timeout: 500 }).catch(e => { });
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription(bot.translate(bot, language, "listmanager.removeinvalid").join("\n")
                   .replace(/{CROSS}/g, bot.emoji.cross)
@@ -621,7 +621,7 @@ module.exports = {
               `This link will expire! Save this when you can!`,
             ]
             bot.hastebin(hastetext.join("\n"), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription(bot.translate(bot, language, "listmanager.removesuccess").join("\n")
                   .replace(/{CHECK}/g, bot.emoji.check)
@@ -630,7 +630,7 @@ module.exports = {
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }).catch(e => { return bot.error(bot, message, language, e); })
           }).catch(collected => {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "listmanager.removenoitems").join("\n")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -641,7 +641,7 @@ module.exports = {
       }).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "cooldown") {
       if (!args[1]) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.cooldownmenu").join("\n")
             .replace(/{CURRENTCOOLDOWN}/g, guildData.randomizercooldown)
@@ -650,7 +650,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (isNaN(args[1])) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.notanumber").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -660,14 +660,14 @@ module.exports = {
       }
       let number = Math.abs(Math.floor(parseInt(args[1])))
       if (number > 300) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.toobig")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (number < 5) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.toosmall")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -675,7 +675,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       bot.db.prepare("UPDATE guilddata SET randomizercooldown=? WHERE guildid=?").run(number, message.guild.id);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "listmanager.cooldownupdated").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
@@ -683,7 +683,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else {
       if (message.member.hasPermission("MANAGE_GUILD")) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "listmanager.helptitle")
             .replace(/{BOTNAME}/g, bot.user.username))
           .setColor(bot.colors.main)

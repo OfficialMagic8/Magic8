@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const requestpromise = require("request-promise");
 module.exports = {
   aliases: ["ds", "penissize", "ps"],
@@ -15,7 +15,7 @@ module.exports = {
       try {
         target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -36,7 +36,7 @@ module.exports = {
       let m = bot.translate(bot, language, `dicksize.${who}.med`)
       ripmessagelol = m[Math.floor(Math.random() * m.length)];
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(guildData.funcolor)
       .setThumbnail("https://i.ya-webdesign.com/images/drawing-rulers-12-inch-6.png")
       .setDescription(bot.translate(bot, language, `dicksize.${who}.description`).join("\n")

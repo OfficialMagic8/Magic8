@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   category: "UTILITIES",
@@ -22,7 +22,7 @@ module.exports = {
     }
     if (!msg) {
       let language = bot.utils.getLanguage(bot, guildData.language);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setFooter(bot.translate(bot, language, "say.tip"))
         .setDescription(bot.translate(bot, language, "say.messagerequired")
@@ -33,7 +33,7 @@ module.exports = {
       let permissions = message.guild.me.permissionsIn(channel);
       if (!permissions || !permissions.has("SEND_MESSAGES")) {
         let language = bot.utils.getLanguage(bot, guildData.language);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "say.permissionrequired")
             .replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))

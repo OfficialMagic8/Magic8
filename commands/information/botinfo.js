@@ -11,7 +11,7 @@ module.exports = {
     let memory = getMemoryUsage();
     let maxRam = 2048;
     console.log(`~ RAM: ${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`);
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "botinfo.title").replace(/{BOTNAME}/g, bot.user.username))
       .setColor(bot.colors.main)
       .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))

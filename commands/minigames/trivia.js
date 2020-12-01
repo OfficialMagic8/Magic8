@@ -1,4 +1,4 @@
-  const Discord = require("discord.js");
+  const { MessageEmbed } = require("discord.js");
 const categories = new Discord.Collection();
 categories.set("general", 9)
 categories.set("books", 10)
@@ -43,7 +43,7 @@ module.exports = {
     if (bot.playingtrivia.has(message.author.id)) {
       let object = bot.playingtrivia.get(message.author.id)
       if (message.channel.id !== object.channelid) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "trivia.alreadyplaying")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -53,7 +53,7 @@ module.exports = {
     }
     let object;
     if (!args[0]) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "trivia.info").join("\n")
           .replace(/{PREFIX}/g, prefix)
@@ -61,7 +61,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { })
     }
     if (args[0].toLowerCase() === "categories" && !args[1]) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "trivia.categories").join("\n")
           .replace(/{INFO}/g, bot.emoji.info)
@@ -79,7 +79,7 @@ module.exports = {
     }
     let modes = ["easy", "medium", "hard"];
     if (!args[1] && !["start", "categories"].includes(args[0].toLowerCase()) && !modes.includes(args[0].toLowerCase())) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "trivia.invaliddifficulty").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -99,7 +99,7 @@ module.exports = {
       let catestring = args.slice(1).join(" ").toLowerCase();
       modes.push("any")
       if (!modes.includes(args[0].toLowerCase())) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "trivia.invaliddifficulty2").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -108,7 +108,7 @@ module.exports = {
       }
       if (modes.includes(args[0].toLowerCase())) {
         if (!catestring || !categories.has(catestring)) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "trivia.invalidcategory").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -143,7 +143,7 @@ module.exports = {
       request(link, function (err, response, body) {
         if (err) {
           console.error(err);
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "unexpectederror")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -176,7 +176,7 @@ module.exports = {
         }
         let difficulty = capitalizeFirstLetter(stringFix(result.difficulty))
         let question = stringFix(result.question)
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "trivia.trivia.title")
             .replace(/{USERNAME}/, user.username), user.displayAvatarURL({ format: "png", dynamic: true }))
           .setThumbnail("https://i.imgur.com/WTCMRFb.png")
@@ -197,7 +197,7 @@ module.exports = {
                 useranswer.delete({ timeout: 5000 }).catch(e => { });
                 triviaembed.delete({ timeout: 60000 }).catch(e => { });
                 object.streak = object.streak + 1;
-                let correct = new Discord.MessageEmbed()
+                let correct = new MessageEmbed()
                   .setColor(bot.colors.green)
                   .setDescription(bot.translate(bot, language, "trivia.correct").join("\n")
                     .replace(/{CHECK}/g, bot.emoji.check)
@@ -216,7 +216,7 @@ module.exports = {
                 useranswer.delete({ timeout: 5000 }).catch(e => { });
                 triviaembed.delete({ timeout: 60000 }).catch(e => { });
                 bot.playingtrivia.delete(user.id)
-                let incorrect = new Discord.MessageEmbed()
+                let incorrect = new MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "trivia.incorrect").join("\n")
                     .replace(/{USER}/g, user)
@@ -230,7 +230,7 @@ module.exports = {
               // console.log(`🔠[⏰] ${user.tag} time's up. Correct answer: ${correctanswer}`)
               triviaembed.delete({ timeout: 60000 }).catch(e => { });
               bot.playingtrivia.delete(user.id)
-              let timeout = new Discord.MessageEmbed()
+              let timeout = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription(bot.translate(bot, language, "trivia.timeout").join("\n")
                   .replace(/{USER}/g, user)

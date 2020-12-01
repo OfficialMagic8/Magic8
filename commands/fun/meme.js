@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const Memejs = require("memejs");
 module.exports = {
   aliases: ["memes"],
@@ -15,7 +15,7 @@ module.exports = {
     } catch (e) {
       bot.error(bot, message, language, e);
     }
-    let meme = new Discord.MessageEmbed()
+    let meme = new MessageEmbed()
       .setTitle(parsed.title, `https://www.reddit.com/r/${parsed.subreddit}/`)
       .setColor(guildData.funcolor)
       .setImage(parsed.url.endsWith(".gifv") ? parsed.url.substring(0, parsed.url.length - 1) : parsed.url)

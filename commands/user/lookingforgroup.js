@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["lfg"],
   category: "USER",
@@ -52,7 +52,7 @@ module.exports = {
                   });
                 }
               }, (cooldown * 3600000));
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription(bot.translate(bot, language, "lookingforgroup.roleadded")
                   .replace(/{CHECK}/g, bot.emoji.check)
@@ -77,7 +77,7 @@ module.exports = {
                 if (data.length === 0) {
                   memberarray = [`*${bot.translate(bot, language, "none")}*`]
                 }
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.main)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.memberlist").join("\n")
                     .replace(/{LIST}/g, memberarray.map(m => `**-** ${m}`).join("\n")));
@@ -96,7 +96,7 @@ module.exports = {
               if (data.length === 0) {
                 memberarray = [`*${bot.translate(bot, language, "none")}*`]
               }
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.main)
                 .setDescription(bot.translate(bot, language, "lookingforgroup.memberlist").join("\n")
                   .replace(/{LIST}/g, memberarray.map(m => `**-** ${m}`).join("\n")));
@@ -106,7 +106,7 @@ module.exports = {
               let getrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
               if (getrole.members.size <= 0) {
                 bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run("[]", message.guild.id)
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.nouserswithrole")
                     .replace(/{CROSS}/g, bot.emoji.cross)
@@ -114,7 +114,7 @@ module.exports = {
                     .replace(/{ROLE}/g, getrole));
                 return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
               }
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription(bot.translate(bot, language, "lookingforgroup.confirmremoveall").join("\n")
                   .replace(/{WARNING}/g, bot.emoji.warning)
@@ -137,7 +137,7 @@ module.exports = {
                       }).catch(e => {
                         return bot.error(bot, message, language, e);
                       })
-                      let embed = new Discord.MessageEmbed()
+                      let embed = new MessageEmbed()
                         .setColor(bot.colors.green)
                         .setDescription(bot.translate(bot, language, "lookingforgroup.removedall")
                           .replace(/{CHECK}/g, bot.emoji.check)
@@ -148,7 +148,7 @@ module.exports = {
                 }).catch(collected => {
                   let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id));
                   m.delete({ timeout: 500 }).catch(e => { });
-                  let embed = new Discord.MessageEmbed()
+                  let embed = new MessageEmbed()
                     .setColor(bot.colors.red)
                     .setDescription(bot.translate(bot, language, "lookingforgroup.didnotconfirm")
                       .replace(/{CROSS}/g, bot.emoji.cross)
@@ -163,7 +163,7 @@ module.exports = {
                 let id = args[0].replace(/[^0-9]/g, "");
                 target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
               } catch (e) {
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "it")
                     .replace(/{CROSS}/g, bot.emoji.cross)
@@ -171,7 +171,7 @@ module.exports = {
                 return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               }
               if (!target) {
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "it")
                     .replace(/{CROSS}/g, bot.emoji.cross)
@@ -187,14 +187,14 @@ module.exports = {
                   current.splice(current.indexOf(sort), 1);
                   bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run(JSON.stringify(current), message.guild.id);
                 }
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.green)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.roleremoved")
                     .replace(/{CHECK}/g, bot.emoji.check)
                     .replace(/{TARGET}/g, target.user));
                 return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
               } else if (!member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.alreadynorole")
                     .replace(/{CROSS}/g, bot.emoji.cross)
@@ -209,7 +209,7 @@ module.exports = {
         }
       }
     } else if (bot.premium.get(message.guild.id) === 0) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "lookingforgroup.premium").join("\n")
           .replace(/{BOT}/g, bot.user)

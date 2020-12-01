@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const random50 = [
   50,
   100
@@ -22,7 +22,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (bot.playingmallet.has(message.author.id)) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "hammer.alreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -30,7 +30,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     }
     bot.playingmallet.set(message.author.id);
-    let malletEmbed = new Discord.MessageEmbed()
+    let malletEmbed = new MessageEmbed()
       .setColor(guildData.funcolor)
       .setThumbnail("https://i.imgur.com/Mb5W1wy.png")
       .setAuthor(bot.translate(bot, language, "hammer.starting.title")

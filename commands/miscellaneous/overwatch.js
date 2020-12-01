@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const requestpromise = require("request-promise");
 module.exports = {
   aliases: ["ow"],
@@ -11,7 +11,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let toSearch = args[0]
     if (!toSearch) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "overwatch.error.user").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -24,7 +24,7 @@ module.exports = {
       p = JSON.parse(req);
     } catch (e) {
       // console.error(e)
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "overwatch.error.unexpected").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -37,7 +37,7 @@ module.exports = {
     let endorse = p.endorsement;
     let icon = p.icon;
     if (p.private === true) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setThumbnail(icon)
         .setAuthor(bot.translate(bot, language, "overwatch.success.title").replace(/{TOSEARCH}/g, toSearch))
@@ -116,7 +116,7 @@ module.exports = {
       let rankedwins = rankedgames.won;
       let rankedlosses = rankedgames.played - rankedwins;
       let rankedwinpercentage = ((rankedwins / rankedgames.played) * 100).toFixed();
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setThumbnail(icon)
         .setAuthor(bot.translate(bot, language, "overwatch.success.title")

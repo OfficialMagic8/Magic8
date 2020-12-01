@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "raw",
   run: async (bot, raw) => {
@@ -48,7 +48,7 @@ module.exports = {
     //                     let category = guild.channels.cache.get(guildData.ticketcategoryid);
     //                     let language = bot.utils.getLanguage(bot, guildData.language);
     //                     if (!category || category.type !== "category") {
-    //                       let error = new Discord.MessageEmbed()
+    //                       let error = new MessageEmbed()
     //                         .setColor(bot.colors.red)
     //                         .setDescription(bot.translate(bot, language, "ticket.new.notsetup").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //                           .replace(/{INFO}/g, bot.emoji.info))
@@ -62,7 +62,7 @@ module.exports = {
     //                     let currentticket = 1
     //                     if (actualOpenedTickets.size >= 1) {
     //                       if (actualTicketsAmount >= guildData.ticketmaxamount) {
-    //                         let error = new Discord.MessageEmbed()
+    //                         let error = new MessageEmbed()
     //                           .setColor(bot.colors.red)
     //                           .setDescription(bot.translate(bot, language, "ticket.new.maxtickets").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //                             .replace(/{AMOUNT}/g, ticketmaxamount).replace(/{INFO}/g, bot.emoji.info))

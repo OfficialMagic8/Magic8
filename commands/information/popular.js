@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   category: "INFO",
@@ -18,7 +18,7 @@ module.exports = {
         popularcommandsarray.push(`${cmd.emoji} \`${cmd.name}\` (${parseInt(command.count).toLocaleString("en")})`);
       }
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "popular.title")
         .replace(/{BOTNAME}/g, bot.user.username))
       .setColor(bot.colors.main)

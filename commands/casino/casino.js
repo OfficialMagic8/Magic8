@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["cas"],
   description: "Magic8's asino!",
@@ -10,13 +10,13 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData, log) => {
     //message.delete({timeout:500}).catch(e=>{});
     if (!bot.playingcasino.has(message.author.id) && message.author.presence.status === "offline") {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **${message.author}, to enter the casino, you cannot have an \`offline\` status!**`)
       return message.channel.send(error).catch(e => { })
     } else if (!bot.playingcasino.has(message.author.id) && !bot.welcomecasino.has(message.author.id)) {
       bot.welcomecasino.set(message.author.id)
-      let welcomeEmbed = new Discord.MessageEmbed()
+      let welcomeEmbed = new MessageEmbed()
         .setColor(bot.colors.main)
         // .setImage("https://us.123rf.com/450wm/welcomia/welcomia1709/welcomia170900155/86957180-stock-illustration-dark-purple-casino-games-3d-rendered-illustration-concept-vegas-online-casino-games-conceptual-graph.jpg?ver=6")
         .setDescription([`**Welcome to the Magic8 Casino, ${message.author}!**`,
@@ -30,7 +30,7 @@ module.exports = {
       } catch (e) {
         log.error(e)
         // bot.welcomecasino.delete(message.author.id)
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setDescription(`${bot.emoji.cross} **${message.author}, there was an error letting you into the casino!**`)
           .setColor(bot.colors.red)
           .setFooter(bot.footer)
@@ -38,7 +38,7 @@ module.exports = {
       }
       setTimeout(async () => {
         welcomeMessage.react((bot.emoji.check).replace(">", "")).catch(e => {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setDescription(`${bot.emoji.cross} **${message.author}, there was an error letting you into the casino!**`)
             .setColor(bot.colors.red)
             .setFooter(bot.footer)
@@ -57,7 +57,7 @@ module.exports = {
                 await welcomeMessage.reactions.removeAll().catch(e => { });
               } catch (e) {
                 log.error(e)
-                let error = new Discord.MessageEmbed()
+                let error = new MessageEmbed()
                   .setDescription(`${bot.emoji.cross} **${message.author}, there was an error letting you into the casino! Please do not have an \`offline\` status!**`)
                   .setColor(bot.colors.red)
                   .setFooter(bot.footer)
@@ -109,7 +109,7 @@ module.exports = {
                 log.error(e)
                 // log.info(`🎲 ${message.author.tag} did not join the Casino`)
                 bot.playingcasino.delete(message.author.id);
-                let error = new Discord.MessageEmbed()
+                let error = new MessageEmbed()
                   .setDescription(`${bot.emoji.cross} **${message.author}, there was an error letting you into the casino!**`)
                   .setColor(bot.colors.red)
                   .setFooter(bot.footer)
@@ -137,7 +137,7 @@ module.exports = {
             } catch (e) {
               bot.playingcasino.delete(message.author.id)
               log.error(e)
-              let error = new Discord.MessageEmbed()
+              let error = new MessageEmbed()
                 .setDescription(`${bot.emoji.cross} **${message.author}, there was an error letting you into the casino!**`)
                 .setColor(bot.colors.red)
                 .setFooter(bot.footer)
@@ -161,7 +161,7 @@ module.exports = {
         `\`${prefix}casino setbal\` Set a User's Coin Balance`,
         `\`${prefix}casino subbal\` Subtract Coins from a User's Balance.`]
       if (!args[0]) {
-        let helpMenu = new Discord.MessageEmbed()
+        let helpMenu = new MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(`Casino Help Menu`)
           .setDescription(helpmenudescription.join("\n"))
@@ -170,7 +170,7 @@ module.exports = {
       let subcommand = args[0].toLowerCase()
       if (["leave", "exit"].includes(subcommand)) {
         let userData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(message.author.id);
-        let exitEmbed = new Discord.MessageEmbed()
+        let exitEmbed = new MessageEmbed()
           .setColor(bot.colors.lightred)
           .setDescription([`${bot.emoji.warning} **${message.author}, you're about to leave the casino!**`,
             ``,
@@ -188,7 +188,7 @@ module.exports = {
           exitMessage = await message.channel.send(exitEmbed)
         } catch (e) {
           bot.playingcasino.delete(message.author.id);;
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setDescription(`${bot.emoji.cross} **${message.author}, there was an error escorting you out of the casino!**`)
             .setColor(bot.colors.red)
             .setFooter(bot.footer)
@@ -197,7 +197,7 @@ module.exports = {
         setTimeout(async () => {
           exitMessage.react("✅").catch(e => {
             log.error(e)
-            let error = new Discord.MessageEmbed()
+            let error = new MessageEmbed()
               .setDescription(`${bot.emoji.cross} **${message.author}, there was an error escorting you out of the casino!**`)
               .setColor(bot.colors.red)
               .setFooter(bot.footer)
@@ -221,7 +221,7 @@ module.exports = {
                 await exitMessage.edit(exitEmbed).catch(e => { })
                 await exitMessage.delete({ timeout: 15000 }).catch(e => { })
               } catch (e) {
-                let error = new Discord.MessageEmbed()
+                let error = new MessageEmbed()
                   .setDescription(`${bot.emoji.cross} **${message.author}, there was an error escorting you out of the casino!**`)
                   .setColor(bot.colors.red)
                   .setFooter(bot.footer)
@@ -236,7 +236,7 @@ module.exports = {
                 await exitMessage.edit(exitEmbed).catch(e => { })
                 await exitMessage.delete({ timeout: 15000 }).catch(e => { })
               } catch (e) {
-                let error = new Discord.MessageEmbed()
+                let error = new MessageEmbed()
                   .setDescription(`${bot.emoji.cross} **${message.author}, there was an error escorting you out of the casino!**`)
                   .setColor(bot.colors.red)
                   .setFooter(bot.footer)
@@ -245,7 +245,7 @@ module.exports = {
             });
         }, 1000)
       } else if (subcommand === "games") {
-        let gamesEmbed = new Discord.MessageEmbed()
+        let gamesEmbed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setDescription([`**__Casino Game Menu__**`,
             `\`${prefix}bj\` - Black Jack (\\💰**50**)`,
@@ -266,7 +266,7 @@ module.exports = {
               userArray.push(`**${bot.users.cache.get(user)}** - ${userData.coins.toLocaleString("en")} - ${userData.multiplier} - ${userData.stealingrisk}%`)
             }
           }
-          let listEmbed = new Discord.MessageEmbed()
+          let listEmbed = new MessageEmbed()
             .setColor(bot.colors.main)
             .setThumbnail(message.guild.iconURL({ format: "png", dynamic: true }))
             .setDescription(`**Casino Members in ${message.guild.name}**\n\n__Name - Coins - Multiplier - Stealing Risk__\n${userArray.join("\n")}`)
@@ -282,7 +282,7 @@ module.exports = {
               userArray.push(`**${bot.users.cache.get(user)}** - ${userData.coins.toLocaleString("en")}`)
             }
           }
-          let listEmbed = new Discord.MessageEmbed()
+          let listEmbed = new MessageEmbed()
             .setColor(bot.colors.main)
             .setThumbnail(message.guild.iconURL({ format: "png", dynamic: true }))
             .setDescription(`**Casino Members in ${message.guild.name}**\n\n__Name - Coins__\n${userArray.join("\n")}`)
@@ -295,7 +295,7 @@ module.exports = {
           try {
             target = message.guild.members.cache.get(id);
           } catch (e) {
-            let error = new Discord.MessageEmbed()
+            let error = new MessageEmbed()
               .setColor(bot.colors.lightred)
               .setDescription([`${bot.emoji.cross} **${message.author}, please provide a valid user or ID that has registered in the casino and then provide a value of coins to add!**`,
               `To view a list of users registered in the casino, type: \`${prefix}casino list\``].join("\n"))
@@ -303,21 +303,21 @@ module.exports = {
           }
         }
         if (!target || !bot.playingcasino.has(target.id)) {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, to set someone's balance, please provide a valid user or ID that has registered in the casino and then provide a value of coins to add!**`,
             `To view a list of users in the casino, type: \`${prefix}casino list\``].join("\n"))
           return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
         }
         if (!args[2] || isNaN(args[2])) {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, please provide a valid amount of coins to set for ${target}'s balance!**`].join("\n"))
           return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
         }
         let setValue = parseInt(Math.abs(args[2]))
         bot.database.prepare("UPDATE usersinfo SET coins=? WHERE userid=?").run(setValue, target.id);
-        let success = new Discord.MessageEmbed()
+        let success = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(`${bot.emoji.check} **${message.author}, you successfully set ${target}'s balance to 💰${setValue.toLocaleString("en")}!**`)
         return message.channel.send(success).catch(e => { })
@@ -328,7 +328,7 @@ module.exports = {
           try {
             target = message.guild.members.cache.get(id);
           } catch (e) {
-            let error = new Discord.MessageEmbed()
+            let error = new MessageEmbed()
               .setColor(bot.colors.lightred)
               .setDescription([`${bot.emoji.cross} **${message.author}, please provide a valid user or ID that has registered in the casino and then provide a value of coins to add!**`,
               `To view a list of users registered in the casino, type: \`${prefix}casino list\``].join("\n"))
@@ -336,14 +336,14 @@ module.exports = {
           }
         }
         if (!target || !bot.playingcasino.has(target.id)) {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, to set someone's balance, please provide a valid user or ID that has registered in the casino and then provide a value of coins to add!**`,
             `To view a list of users in the casino, type: \`${prefix}casino list\``].join("\n"))
           return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
         }
         if (!args[2] || isNaN(args[2])) {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, please provide a valid amount of coins to add to ${target}'s balance!**`].join("\n"))
           return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
@@ -351,7 +351,7 @@ module.exports = {
         let userData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(message.author.id);
         let setValue = parseInt(Math.abs(args[2]))
         bot.database.prepare("UPDATE usersinfo SET coins=? WHERE userid=?").run(userData.coins + setValue, target.id);
-        let success = new Discord.MessageEmbed()
+        let success = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(`${bot.emoji.check} **${message.author}, you successfully added 💰${setValue.toLocaleString("en")} for a total of 💰${(userData.coins + setValue).toLocaleString("en")} to ${target}'s balance!**`)
         return message.channel.send(success).catch(e => { })
@@ -362,7 +362,7 @@ module.exports = {
           try {
             target = message.guild.members.cache.get(id);
           } catch (e) {
-            let error = new Discord.MessageEmbed()
+            let error = new MessageEmbed()
               .setColor(bot.colors.lightred)
               .setDescription([`${bot.emoji.cross} **${message.author}, please provide a valid user or ID that has registered in the casino and then provide a value of coins to subtract!**`,
               `To view a list of users registered in the casino, type: \`${prefix}casino list\``].join("\n"))
@@ -370,14 +370,14 @@ module.exports = {
           }
         }
         if (!target) {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, to set someone's balance, please provide a valid user or ID that has registered in the casino and then provide a value of coins to subtract!**`,
             `To view a list of users in the casino, type: \`${prefix}casino list\``].join("\n"))
           return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
         }
         if (!args[2] || isNaN(args[2])) {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setColor(bot.colors.lightred)
             .setDescription([`${bot.emoji.cross} **${message.author}, please provide a valid amount of coins to subtract from ${target}'s balance!**`].join("\n"))
           return message.channel.send(error).catch(e => { }).then(m => m.delete({ timeout: 15000 }).catch(e => { }));
@@ -385,12 +385,12 @@ module.exports = {
         let userData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(message.author.id);
         let setValue = parseInt(Math.abs(args[2]))
         bot.database.prepare("UPDATE usersinfo SET coins=? WHERE userid=?").run(userData.coins - setValue, target.id);
-        let success = new Discord.MessageEmbed()
+        let success = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(`${bot.emoji.check} **${message.author}, you successfully subtracted 💰${setValue.toLocaleString("en")} for a total of 💰${(userData.coins - setValue).toLocaleString("en")} from ${target}'s balance!**`)
         message.channel.send(success).catch(e => { })
       } else {
-        let helpMenu = new Discord.MessageEmbed()
+        let helpMenu = new MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(`Casino Help Menu`)
           .setDescription(helpmenudescription.join("\n"))

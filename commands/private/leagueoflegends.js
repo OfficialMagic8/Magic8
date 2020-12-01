@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const requestpromise = require("request-promise");
 let idByName = "https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{SUMMONERNAME}?api_key={KEY}";
 let maestryLevels = "https://la1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{SUMMONERID}?api_key={KEY}";
@@ -28,7 +28,7 @@ module.exports = {
     console.log(mainInfo);
     let maestryInfo = JSON.parse(await requestpromise(maestryLevels.replace(/{SUMMONERID}/g,summonerid).replace(/{KEY}/g,process.env.RIOTKEY)))
 
-    let playerInfo = new Discord.MessageEmbed()
+    let playerInfo = new MessageEmbed()
     .setAuthor("Information about {USERNAME}".replace(/{USERNAME}/g,username))
     .setDescription("**Username:** {USERNAME}\n**Level:** {LEVEL}".replace(/{USERNAME}/g,username)
                     .replace(/{LEVEL}/g,level)/*.replace(/{}/g,).replace(/{}/g,).replace(/{}/g,).replace(/{}/g,).replace(/{}/g,)*/)
@@ -38,12 +38,12 @@ module.exports = {
 
     return;
     if(!target){ 
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.utils.getTranslation(bot,language,"howgay.error.description").join("\n").replace(/{CROSS}/g,bot.emoji.cross))
       return message.channel.send(error)
     }
-    let howgay = new Discord.MessageEmbed()
+    let howgay = new MessageEmbed()
       .setColor(bot.colors.pink)
       .setDescription(bot.utils.getTranslation(bot,language,"howgay.success.description").join("\n").replace(/{TARGET}/g,target)
                       .replace(/{PERCENT}/g,Math.floor(Math.random() * 101))

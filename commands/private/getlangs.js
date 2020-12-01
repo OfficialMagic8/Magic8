@@ -1,10 +1,10 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "getlangs",
   dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     try {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setFooter(`This could take up to a minute to update!`)
         .setDescription(`${bot.emoji.loading} **Attempting to fetch languages...**`)

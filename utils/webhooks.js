@@ -46,7 +46,7 @@ module.exports.dbl = async (bot, request) => {
       // bot.totalvotes.set(guild.id, bot.totalvotes.get(guild.id) + 1)
       // if (guildData.monthlyvotes % 10 === 0) {
       //   let fyrlex = bot.users.cache.get(bot.config.ownerid)
-      //   let embed = new Discord.MessageEmbed()
+      //   let embed = new MessageEmbed()
       //     .setColor(bot.colors.green)
       //     .setDescription([
       //       `${bot.emoji.check} **${bot.totalvotes.get(guild.id)} Monthly Votes**`,
@@ -63,7 +63,7 @@ module.exports.dbl = async (bot, request) => {
   let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
   let weekend = body.isWeekend ? body.isWeekend : `false`;
-  let dm = new Discord.MessageEmbed()
+  let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
     .setDescription([
@@ -73,7 +73,7 @@ module.exports.dbl = async (bot, request) => {
       ``,
       `- Fyrlex#2740`])
   user.send(dm).catch(e => { });
-  let votemsg = new Discord.MessageEmbed()
+  let votemsg = new MessageEmbed()
     .setColor(body.type === "test" ? bot.colors.red : bot.colors.main)
     .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
     .setFooter(`Discord Bot List`)
@@ -108,7 +108,7 @@ module.exports.labs = async (bot, request) => {
   };
   let usertag = user.tag;
   let votechannel = bot.channels.cache.get(bot.config.votechannel);
-  let dm = new Discord.MessageEmbed()
+  let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
     .setDescription([
@@ -118,7 +118,7 @@ module.exports.labs = async (bot, request) => {
       ``,
       `- Fyrlex#2740`])
   user.send(dm).catch(e => { });
-  let votemsg = new Discord.MessageEmbed()
+  let votemsg = new MessageEmbed()
     .setColor(body.type === "test" ? bot.colors.red : bot.colors.main)
     .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
     .setFooter(`Discord Labs`)
@@ -147,7 +147,7 @@ module.exports.boats = async (bot, request) => {
       }
     }
   }
-  let dm = new Discord.MessageEmbed()
+  let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
     .setDescription([
@@ -159,7 +159,7 @@ module.exports.boats = async (bot, request) => {
   user.send(dm).catch(e => { });
   let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
-  let votemsg = new Discord.MessageEmbed()
+  let votemsg = new MessageEmbed()
     .setColor(body.type === "test" ? bot.colors.red : bot.colors.main)
     .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
     .setFooter(`Discord Boats`)

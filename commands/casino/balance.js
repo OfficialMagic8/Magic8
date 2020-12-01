@@ -11,7 +11,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     if (bot.playingcasino.has(message.author.id)) {
       let userData = bot.database.prepare("SELECT * FROM usersinfo WHERE userid=?").get(message.author.id);
-      let balEmbed = new Discord.MessageEmbed()
+      let balEmbed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setDescription([`\\💰 ${message.author}`,
         `**Coins:** ${(userData.coins).toLocaleString("en")}`,

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const firstline = "\u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b 1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣"
 const format = "\u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b \u200b {LINE}"
 const emotesname = { "1⃣": 1, "2⃣": 2, "3⃣": 3, "4⃣": 4, "5⃣": 5, "6⃣": 6, "7⃣": 7, "8⃣": 8 }
@@ -15,7 +15,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let target;
     if (bot.playingconnect4.has(message.author.id)) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "connectfour.alreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -26,7 +26,7 @@ module.exports = {
       let id = args[0].replace(/[^0-9]/g, "");
       target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
     } catch (e) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -34,7 +34,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (!target) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -42,7 +42,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (message.author.id === target.id) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "connectfour.cannotyourself")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -50,7 +50,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (bot.playingconnect4.has(target.id)) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "connectfour.targetalreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -111,7 +111,7 @@ module.exports = {
           else return "🟡"
         }).join(""));
       }).join("\n")
-      let connectEmbed = new Discord.MessageEmbed()
+      let connectEmbed = new MessageEmbed()
         .setAuthor(`Connect4`,
           "https://cdn.discordapp.com/emojis/701843940638457867.gif", null)
         .setDescription(loadingdescription.replace(/{LOADING}/g, bot.emoji.loading).replace(/{RED}/g, first.user).replace(/{YELLOW}/g, second.user).replace(/{GAME}/g, game))

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const wins = [
   [0, 1, 2],
   [3, 4, 5],
@@ -30,7 +30,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let target;
     if (bot.playingtictactoe.has(message.author.id)) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "tictactoe.alreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
@@ -41,7 +41,7 @@ module.exports = {
       let id = args[0].replace(/[^0-9]/g, "");
       target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
     } catch (e) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
@@ -49,7 +49,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e);});
     }
     if (!target) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
@@ -57,7 +57,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e);});
     }
     if (message.author.id === target.id) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "tictactoe.cannotbeauthor")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
@@ -65,7 +65,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => {return bot.error(bot, message, language, e); });
     }
     if (bot.playingtictactoe.has(target.id)) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "tictactoe.targetalreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
@@ -111,7 +111,7 @@ module.exports = {
         else return emotes[a]
       })
       game = gameline.replace(/{ONE}/g, game.slice(0, 3).join("")).replace(/{TWO}/g, game.slice(3, 6).join("")).replace(/{THREE}/g, game.slice(6).join(""));
-      let gameEmbed = new Discord.MessageEmbed()
+      let gameEmbed = new MessageEmbed()
         .setDescription(loadingdescription.replace(/{LOADING}/g, bot.emoji.loading)
           .replace(/{GAME}/g, game)
           .replace(/{CIRCLE}/g, first.user.username)
@@ -295,7 +295,7 @@ module.exports = {
       return false;
     }
     function sendUnexpectedError(bot, language, channel, first) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "unexpectederror")
           .replace(/{CROSS}/g, bot.emoji.cross)

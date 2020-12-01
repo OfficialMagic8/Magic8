@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   category: "MISCELLANEOUS",
@@ -19,7 +19,7 @@ module.exports = {
     } else {
       author = quote.author;
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(`${message.author.username} needs inspiration!`, message.author.displayAvatarURL({ format: "png" }))
       .setColor(bot.colors.blue)
       .setDescription(bot.translate(bot, language, "inspire.success").join("\n")

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   category: "USER",
@@ -14,7 +14,7 @@ module.exports = {
       try {
         target = message.guild.members.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -22,7 +22,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(bot.colors.main)
       .setImage(target.displayAvatarURL({ format: "png", size: 1024, dynamic: true }))
       .setDescription(bot.translate(bot, language, "avatar.success")

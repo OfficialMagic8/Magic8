@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["av"],
   category: "ADMIN",
@@ -10,7 +10,7 @@ module.exports = {
     let subcommand = args[0] ? args[0].toLowerCase() : args[0];
     if (subcommand === "create") {
       if (guildData.autovoicecategory === "none") {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.nocategory").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -34,7 +34,7 @@ module.exports = {
         getautochannels.forEach(c => {
           available.push(`${bot.guilds.cache.get(message.guild.id).channels.cache.get(c.id).name} (${c.id})`);
         })
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.reachedlimit").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -45,7 +45,7 @@ module.exports = {
       }
       let types = ["duo", "trio", "squad"]
       if (!args[1]) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(bot.translate(bot, language, "autovoice.notypetitle")
             .replace(/{BOTNAME}/g, bot.user.username))
@@ -54,7 +54,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (!types.includes(args[1].toLowerCase())) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.invalidtype").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -79,7 +79,7 @@ module.exports = {
           voicechannels.push(object);
           bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(1, message.guild.id)
           bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(voicechannels), message.guild.id);
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription(bot.translate(bot, language, "autovoice.created").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
@@ -105,7 +105,7 @@ module.exports = {
           }
           voicechannels.push(object)
           bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(voicechannels), message.guild.id);
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription(bot.translate(bot, language, "autovoice.created").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
@@ -131,7 +131,7 @@ module.exports = {
           }
           voicechannels.push(object);
           bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(voicechannels), message.guild.id);
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription(bot.translate(bot, language, "autovoice.created").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
@@ -155,7 +155,7 @@ module.exports = {
         })
       }
       if (!args[1] || (args[1] && !a.includes(args[1]))) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.invalidchannel").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -170,7 +170,7 @@ module.exports = {
           bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(getautochannels), message.guild.id);
           if (getautochannels.length <= 0) {
             bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(0, message.guild.id)
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.green)
               .setDescription(bot.translate(bot, language, "autovoice.noneleft").join("\n")
                 .replace(/{CHECK}/g, bot.emoji.check)
@@ -179,7 +179,7 @@ module.exports = {
             message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
             return todelete.delete();
           } else {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.green)
               .setDescription(bot.translate(bot, language, "autovoice.deleted").join("\n")
                 .replace(/{CHECK}/g, bot.emoji.check)
@@ -193,7 +193,7 @@ module.exports = {
       }
     } else if (subcommand === "cooldown") {
       if (!args[1]) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setAuthor(bot.translate(bot, language, "autovoice.nocooldowntitle")
             .replace(/{BOTNAME}/g, bot.user.username))
@@ -204,7 +204,7 @@ module.exports = {
       }
       let cooldown = parseInt(Math.abs(Math.floor(args[1])))
       if (isNaN(cooldown)) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.notanumber")
             .replace(/{USER}/g, message.author)
@@ -212,7 +212,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (cooldown < 10) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.toosmall")
             .replace(/{USER}/g, message.author)
@@ -220,14 +220,14 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (cooldown > 300) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.toolarge")
             .replace(/{USER}/g, message.author)
             .replace(/{CROSS}/g, bot.emoji.cross));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "cooldownupdated").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
@@ -255,7 +255,7 @@ module.exports = {
       } else {
         thechannels = [`*${bot.translate(bot, language, "none")}*`]
       }
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setAuthor(bot.translate(bot, language, "autovoice.infotitle")
           .replace(/{BOTNAME}/g, bot.user.username))
@@ -269,7 +269,7 @@ module.exports = {
       if (!args[1]) {
         if (guildData.autovoicecategory === "none") {
           let category = "not set"
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.main)
             .setAuthor(bot.translate(bot, language, "autovoice.viewcategorytitle")
               .replace(/{BOTNAME}/g, bot.user.username))
@@ -280,7 +280,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         } else {
           let category = guildData.autovoicecategory
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.main)
             .setDescription(bot.translate(bot, language, "autovoice.viewcategory").join("\n")
               .replace(/{CATEGORY}/g, bot.guilds.cache.get(message.guild.id).channels.cache.get(category))
@@ -292,7 +292,7 @@ module.exports = {
       }
       if (args[1].toLowerCase() === "clear") {
         if (guildData.autovoicecategory === "none") {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "autovoice.alreadydisabled").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
@@ -305,7 +305,7 @@ module.exports = {
           bot.db.prepare("UPDATE guilddata SET autovoicecategory=? WHERE guildid=?").run("none", message.guild.id)
           bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run("[]", message.guild.id)
           bot.db.prepare("UPDATE guilddata SET tempchannels=? WHERE guildid=?").run("[]", message.guild.id)
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription(bot.translate(bot, language, "autovoice.disabled").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
@@ -328,7 +328,7 @@ module.exports = {
         if (categoriesarray.length === 0) {
           categoriesarray = [`*${bot.translate(bot, language, "none")}*`];
         }
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.notacategory").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -337,7 +337,7 @@ module.exports = {
       }
       let permissionsInChannel = message.guild.me.permissionsIn(possiblechannel)
       if (!permissionsInChannel || !permissionsInChannel.has(["MANAGE_CHANNELS", "MOVE_MEMBERS"])) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.nopermissionincategory").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -347,7 +347,7 @@ module.exports = {
       bot.db.prepare("UPDATE guilddata SET autovoicecategory=? WHERE guildid=?").run(possiblechannel.id, message.guild.id)
       bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(1, message.guild.id)
       bot.voicechannels.set(message.guild.id, possiblechannel.id);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "autovoice.categoryset").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
@@ -356,7 +356,7 @@ module.exports = {
           .replace(/{INFO}/g, bot.emoji.info));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     } else {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setAuthor(bot.translate(bot, language, "autovoice.helptitle")
           .replace(/{BOTNAME}/g, bot.user.username))

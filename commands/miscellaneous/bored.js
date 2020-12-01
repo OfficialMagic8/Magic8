@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const activities = ["recreational", "relaxation", "education", "cooking", "diy", "social", "music", "busywork", "charity"]
 module.exports = {
   aliases: ["imbored"],
@@ -14,7 +14,7 @@ module.exports = {
       try {
         req = await bot.fetch("https://www.boredapi.com/api/activity").then(res => res.json()).then(json => { return json });
       } catch (e) { return bot.error(bot, message, language, e); };
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "bored.title")
           .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: "true" }))
         .setColor(bot.colors.blue)
@@ -28,7 +28,7 @@ module.exports = {
       try {
         req = await bot.fetch(`http://www.boredapi.com/api/activity?type=${args[0].toLowerCase()}`).then(res => res.json()).then(json => { return json });
       } catch (e) { return bot.error(bot, message, language, e); };
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "bored.title")
           .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: "true" }))
         .setColor(bot.colors.blue)
@@ -38,7 +38,7 @@ module.exports = {
           .replace(/{PEOPLE}/g, req.participants))
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "bored.invalidcategory").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["8c"],
   category: "MINIGAME",
@@ -10,7 +10,7 @@ module.exports = {
     let removemessage = false;
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (bot.playing8color.has(message.author.id)) {
-      let alreadyplaying = new Discord.MessageEmbed()
+      let alreadyplaying = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "8color.alreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross).
           replace(/{USER}/g, message.author))
@@ -35,7 +35,7 @@ module.exports = {
       // console.log(`⬛ ${message.author.tag}: ${object.original}`)
       let timeMemorize = 10000 + ((Math.ceil(object.level / 2) - 1) * 1000)
       let timeMemorizeShort = (timeMemorize / 1000).toFixed(0);
-      let game = new Discord.MessageEmbed()
+      let game = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "8color.game.playing.title")
           .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: true }))
         .setDescription(bot.translate(bot, language, "8color.game.playing.description").join("\n")

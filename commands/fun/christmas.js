@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["xmas"],
   category: "FUN",
@@ -12,7 +12,7 @@ module.exports = {
       .then(json => {
         return json;
       }).catch(e => { return bot.error(bot, message, language, e); });
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(bot.colors.green)
       .setThumbnail("https://i.imgur.com/ACaHu30.png")
       .setDescription(bot.translate(bot, language, "christmas.description").join("\n")

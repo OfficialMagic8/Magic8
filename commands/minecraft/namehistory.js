@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const MojangAPI = require("mojang-api");
 // const bodyURL = "https://minotar.net/armor/body/{USER}/300.png";
 // const headURL = "https://minotar.net/cube/{USER}/100.png";
@@ -17,7 +17,7 @@ module.exports = {
     let toSearch = args.join(" ")
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!toSearch) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "namehistory.enterusername")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -30,7 +30,7 @@ module.exports = {
       uuid = toSearch;
       MojangAPI.nameHistory(uuid, function (err, res) {
         if (err) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setDescription(bot.translate(bot, language, "namehistory.invalidusername")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, message.author)
@@ -59,7 +59,7 @@ module.exports = {
         }
         let helmLink = helmURL.replace(/{USER}/g, uuid);
         let profileLink = profileURL.replace(/{USER}/g, toSearch);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "namehistory.success.title")
             .replace(/{TOSEARCH}/g, toSearch), helmLink, profileLink)
           .setThumbnail(helmLink)
@@ -73,7 +73,7 @@ module.exports = {
       let date = new Date();
       MojangAPI.uuidAt(toSearch, date, function (err, res) {
         if (err) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setDescription(bot.translate(bot, language, "namehistory.invalidusername")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, message.author)
@@ -85,7 +85,7 @@ module.exports = {
         let parsedUUID = bot.utils.UUIDfromString(uuid);
         MojangAPI.nameHistory(uuid, function (err, res) {
           if (err) {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "namehistory.invalidusername")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -114,7 +114,7 @@ module.exports = {
           }
           let helmLink = helmURL.replace(/{USER}/g, parsedUUID);
           let profileLink = profileURL.replace(/{USER}/g, toSearch);
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setAuthor(bot.translate(bot, language, "namehistory.success.title")
               .replace(/{TOSEARCH}/g, toSearch), helmLink, profileLink)
             .setColor(bot.colors.main)

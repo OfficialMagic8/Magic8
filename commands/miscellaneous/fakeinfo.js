@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const faker = require('faker');
 module.exports = {
   aliases: ["fi"],
@@ -28,7 +28,7 @@ module.exports = {
       longitude: faker.address.longitude(),
       birthday: faker.date.between('1955-01-01', '2001-12-30').toLocaleString().split(",")[0].trim()
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(bot.colors.blue)
       .setDescription(bot.translate(bot, language, "fakeinfo.description").join("\n")
         .replace(/{CHECK}/g, bot.emoji.check)

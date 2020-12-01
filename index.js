@@ -10,7 +10,7 @@ const server = http.createServer(app)
 const Database = require('better-sqlite3');
 const DBL = require('dblapi.js');
 const BOATS = require('boats.js');
-const Discord = require("discord.js");
+const { Client, Collection } = require("discord.js");
 const STATCORRD = require("statcord.js");
 const discordsettings = {
   restRequestTimeout: 60000,
@@ -24,7 +24,7 @@ const discordsettings = {
     ]
   }
 }
-const bot = new Discord.Client(discordsettings);
+const bot = new Client(discordsettings);
 bot.starttime = new Date()
 const statcordsettings = {
   client: bot,
@@ -88,10 +88,10 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
       }]
     })
   } catch (e) {
-  console.error(`Error Backing Up`);
-  console.error(e);
-  logs.send(`${bot.emoji.cross} **Backup Failed**`).catch(e => { });
-}
+    console.error(`Error Backing Up`);
+    console.error(e);
+    logs.send(`${bot.emoji.cross} **Backup Failed**`).catch(e => { });
+  }
 });
 
 app.post("/votes", async function (request, response) {
@@ -107,24 +107,24 @@ app.post("/votes", async function (request, response) {
   } else return;
 });
 
-bot.battling = new Discord.Collection();
-bot.fakepingcooldown = new Discord.Collection();
-bot.playerhacked = new Discord.Collection();
-bot.onthephone = new Discord.Collection();
-bot.playing8color = new Discord.Collection();
-bot.playingakinator = new Discord.Collection();
-bot.playinganagrams = new Discord.Collection();
-bot.playingcasino = new Discord.Collection();
-bot.playingconnect4 = new Discord.Collection();
-bot.playingfindme = new Discord.Collection();
-bot.playingmallet = new Discord.Collection()
-bot.playingrtd = new Discord.Collection();
-bot.playingslotmachine = new Discord.Collection();
-bot.playingtictactoe = new Discord.Collection();
-bot.playingtrivia = new Discord.Collection();
-bot.spinningspinner = new Discord.Collection();
-bot.welcomecasino = new Discord.Collection();
-bot.playingimage = new Discord.Collection();
+bot.battling = new Collection();
+bot.fakepingcooldown = new Collection();
+bot.playerhacked = new Collection();
+bot.onthephone = new Collection();
+bot.playing8color = new Collection();
+bot.playingakinator = new Collection();
+bot.playinganagrams = new Collection();
+bot.playingcasino = new Collection();
+bot.playingconnect4 = new Collection();
+bot.playingfindme = new Collection();
+bot.playingmallet = new Collection()
+bot.playingrtd = new Collection();
+bot.playingslotmachine = new Collection();
+bot.playingtictactoe = new Collection();
+bot.playingtrivia = new Collection();
+bot.spinningspinner = new Collection();
+bot.welcomecasino = new Collection();
+bot.playingimage = new Collection();
 
 /*
 const Scraper = require('images-scraper');
@@ -136,13 +136,13 @@ bot.google = new Scraper({
 });
 */
 
-bot.aliases = new Discord.Collection();
-bot.commands = new Discord.Collection();
-bot.events = new Discord.Collection();
-bot.languages = new Discord.Collection();
-bot.languagesprogress = new Discord.Collection();
+bot.aliases = new Collection();
+bot.commands = new Collection();
+bot.events = new Collection();
+bot.languages = new Collection();
+bot.languagesprogress = new Collection();
 bot.languagesprogress.set("en", { lang: "English", flag: "🇺🇸", progress: 100, authors: ["Fyrlex#2740", "AlonsoAliaga#0017"], link: "https://github.com/OfficialMagic8/Languages/blob/master/languages/en.json" })
-bot.lastfetched = new Discord.Collection();
+bot.lastfetched = new Collection();
 bot.utils.fetchLanguages(bot);
 app.get("/pingstatus", function (request, response) {
   response.sendStatus(200)
@@ -167,87 +167,82 @@ app.get("/pingstatus", function (request, response) {
 //   response.json(finalarray)
 // })
 
-bot.prefixes = new Discord.Collection();
+bot.prefixes = new Collection();
 
 bot.duo = 1;
 bot.trio = 1;
 bot.squad = 1;
-bot.voicechannels = new Discord.Collection();
-bot.voicecooldown = new Discord.Collection();
+bot.voicechannels = new Collection();
+bot.voicecooldown = new Collection();
 
-bot.listscooldown = new Discord.Collection();
+bot.listscooldown = new Collection();
 
-bot.lfgusers = new Discord.Collection();
-bot.lfgroles = new Discord.Collection();
-bot.lfgnotifychannels = new Discord.Collection();
+bot.lfgusers = new Collection();
+bot.lfgroles = new Collection();
+bot.lfgnotifychannels = new Collection();
 
-bot.antipingusers = new Discord.Collection();
-bot.antipingbypassroles = new Discord.Collection();
-bot.antipinglogchannels = new Discord.Collection();
+bot.antipingusers = new Collection();
+bot.antipingbypassroles = new Collection();
+bot.antipinglogchannels = new Collection();
 
-bot.reactionchannels = new Discord.Collection();
-bot.miscellaneouschannels = new Discord.Collection();
-bot.minigamechannels = new Discord.Collection();
-bot.funchannels = new Discord.Collection();
+bot.reactionchannels = new Collection();
+bot.miscellaneouschannels = new Collection();
+bot.minigamechannels = new Collection();
+bot.funchannels = new Collection();
 
-bot.responsestypes = new Discord.Collection();
-bot.responsestypes.set("clean", 0)
-bot.responsestypes.set("all", 1)
-bot.responsestypes.set("explicit", 2)
-bot.responsestypes.set("custom", 3)
-bot.responsestypes.set(0, "clean")
-bot.responsestypes.set(1, "all")
-bot.responsestypes.set(2, "explicit")
-bot.responsestypes.set(3, "custom")
+bot.repliestypes = new Collection();
+bot.repliestypes.set("clean", 0)
+bot.repliestypes.set("all", 1)
+bot.repliestypes.set("explicit", 2)
+bot.repliestypes.set("custom", 3)
+bot.repliestypes.set(0, "clean")
+bot.repliestypes.set(1, "all")
+bot.repliestypes.set(2, "explicit")
+bot.repliestypes.set(3, "custom")
 
-bot.maxballresponses = new Discord.Collection();
-bot.maxballresponses.set(0, 20);
-bot.maxballresponses.set(1, 50);
-bot.maxballresponses.set(2, 100);
+bot.maxballreplies = new Collection();
+bot.maxballreplies.set(0, 20);
+bot.maxballreplies.set(1, 50);
+bot.maxballreplies.set(2, 100);
 
-bot.disabledcommands = new Discord.Collection();
+bot.disabledcommands = new Collection();
 
-bot.maxtoggledcommands = new Discord.Collection();
+bot.maxtoggledcommands = new Collection();
 bot.maxtoggledcommands.set(0, 5);
 bot.maxtoggledcommands.set(1, 10);
 bot.maxtoggledcommands.set(2, 30);
 
-bot.maxautovoicechannels = new Discord.Collection();
+bot.maxautovoicechannels = new Collection();
 bot.maxautovoicechannels.set(0, 2);
 bot.maxautovoicechannels.set(1, 3);
 bot.maxautovoicechannels.set(2, 5);
 
-bot.maxrestrictedchannels = new Discord.Collection();
+bot.maxrestrictedchannels = new Collection();
 bot.maxrestrictedchannels.set(0, 2);
 bot.maxrestrictedchannels.set(1, 5);
 bot.maxrestrictedchannels.set(2, 20);
 
-bot.maxantipingusers = new Discord.Collection();
+bot.maxantipingusers = new Collection();
 bot.maxantipingusers.set(0, 10);
 bot.maxantipingusers.set(1, 20);
 bot.maxantipingusers.set(2, 50);
 
-bot.premium = new Discord.Collection();
-bot.usage = new Discord.Collection();
-bot.adtype = new Discord.Collection();
+bot.premium = new Collection();
+bot.usage = new Collection();
+bot.adtype = new Collection();
 bot.ads = require("./utils/ads.json");
 
-bot.maxusage = new Discord.Collection();
-bot.maxusage.set(0, 100)
-bot.maxusage.set(1, 250)
-bot.maxusage.set(2, 500)
+bot.monthlyvotes = new Collection();
+bot.totalvotes = new Collection();
 
-bot.monthlyvotes = new Discord.Collection();
-bot.totalvotes = new Discord.Collection();
-
-bot.mcservers = new Discord.Collection();
+bot.mcservers = new Collection();
 
 bot.calling = [];
 
 bot.helpEmbed;
 bot.staffEmbed;
-bot.helpmenus = new Discord.Collection();
-bot.adminmenus = new Discord.Collection();
+bot.helpmenus = new Collection();
+bot.adminmenus = new Collection();
 
 bot.developer = undefined;
 bot.maindeveloper = undefined;
@@ -255,7 +250,7 @@ bot.developerid = bot.config.ownerid
 bot.maindeveloperid = bot.config.alonsoid
 
 bot.customemojisobject = require("./customemojis")
-bot.customemojis = new Discord.Collection();
+bot.customemojis = new Collection();
 Object.keys(bot.customemojisobject).forEach(cat => {
   Object.keys(bot.customemojisobject[cat].emojis).forEach(identifier => {
     bot.customemojis.set(identifier, cat);
@@ -330,8 +325,8 @@ bot.on("voiceStateUpdate", (oldState, newState) => {
   let event = bot.events.get("voiceStateUpdate");
   if (event) event.run(bot, oldState, newState)
 });
-  bot.utils.loadCommands(bot);
-  bot.utils.loadEvents(bot);
+bot.utils.loadCommands(bot);
+bot.utils.loadEvents(bot);
 
 // ["command", "event"].forEach(handler => {
 //   require(`./handler/${handler}`)(bot);

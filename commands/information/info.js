@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["si"],
   category: "INFO",
@@ -17,7 +17,7 @@ module.exports = {
       premiumstatus = "💎 **Premium: `II`**\n";
     }
     let bots = message.guild.members.cache.filter(c => c.user.bot).size;
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "info.title")
         .replace(/{GUILDNAME}/g, message.guild.name))
       .setColor(bot.colors.main)

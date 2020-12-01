@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["t"],
   category: "UTILITIES",
@@ -14,14 +14,14 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   if (guildData.ticketstatus === 0) {
     //     bot.database.prepare("UPDATE guilddata SET ticketstatus=? WHERE guildid=?").run(1, message.guild.id);
-    //     let enabled = new Discord.MessageEmbed()
+    //     let enabled = new MessageEmbed()
     //       .setColor(bot.colors.green)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.toggle.enabled").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //         .replace(/{INFO}/g, bot.emoji.info).replace(/{PREFIX}/g, prefix).replace(/{CHECK}/g, bot.emoji.check))
     //     return message.channel.send(enabled).then(m => m.delete({ timeout: 15000 }).catch(console.error)).catch(console.error)
     //   } else {
     //     bot.database.prepare("UPDATE guilddata SET ticketstatus=? WHERE guildid=?").run(0, message.guild.id);
-    //     let disabled = new Discord.MessageEmbed()
+    //     let disabled = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.toggle.disabled").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //         .replace(/{INFO}/g, bot.emoji.info).replace(/{PREFIX}/g, prefix).replace(/{CHECK}/g, bot.emoji.check))
@@ -31,7 +31,7 @@ module.exports = {
     // if (guildData.ticketstatus === 0) {
     //   if (message.member.hasPermission("ADMINISTRATOR")) {
     //     message.delete({ timeout: 500 }).catch(console.error)
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.disabled").replace(/{CROSS}/g, bot.emoji.cross).replace(/{PREFIX}/g, prefix))
     //     return message.channel.send(error).then(m => m.delete({ timeout: 10000 }).catch(console.error));
@@ -45,7 +45,7 @@ module.exports = {
     // let type = guildData.tickettype
     // if (!subcommand) {
     //   message.delete({ timeout: 500 }).catch(console.error)
-    //   let help = new Discord.MessageEmbed()
+    //   let help = new MessageEmbed()
     //     .setAuthor(bot.utils.getTranslation(bot, language, "ticket.help.title").replace(/{BOTNAME}/g, bot.user.username))
     //     .setThumbnail(bot.user.displayAvatarURL())
     //     .setDescription(bot.utils.getTranslation(bot, language, `ticket.help.${message.member.hasPermission("ADMINISTRATOR") ? "administrator" : "user"}.description`).join("\n")
@@ -59,7 +59,7 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   let category = message.guild.channels.cache.get(guildData.ticketcategoryid)
     //   if (!category || category.type !== "category") {
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.new.notsetup").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //         .replace(/{INFO}/g, bot.emoji.info))
@@ -73,7 +73,7 @@ module.exports = {
     //   let currentticket = 1
     //   if (actualOpenedTickets.size >= 1) {
     //     if (actualTicketsAmount >= guildData.ticketmaxamount) {
-    //       let error = new Discord.MessageEmbed()
+    //       let error = new MessageEmbed()
     //         .setColor(bot.colors.red)
     //         .setDescription(bot.utils.getTranslation(bot, language, "ticket.new.maxtickets").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //           .replace(/{AMOUNT}/g, ticketmaxamount).replace(/{INFO}/g, bot.emoji.info))
@@ -101,7 +101,7 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   if (bot.closingtickets.has(message.channel.id)) {
     //     let object = bot.closingtickets.get(message.channel.id);
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.close.alreadyclosing").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //         .replace(/{USER}/g, object.executor.user).replace(/{ID}/g, object.executor.user.id).replace(/{INFO}/g, bot.emoji.info))
@@ -158,7 +158,7 @@ module.exports = {
     //     bot.closingtickets.delete(message.channel.id)
     //     let ticketslog = message.guild.channels.cache.get(guildData.ticketslogchannelid)
     //     if (ticketslog) {
-    //       let embed = new Discord.MessageEmbed()
+    //       let embed = new MessageEmbed()
     //         .setAuthor(bot.utils.getTranslation(bot, language, "ticket.close.closed.title"), "https://cdn.discordapp.com/emojis/690971830433087599.png", null)
     //         .setDescription(bot.utils.getTranslation(bot, language, "ticket.close.closed.description" + (successfile ? "" : "error")).join("\n")
     //           .replace(/{CREATOR}/g, creator ? creator : "Unknown User#0000").replace(/{CREATORID}/g, creatorid)
@@ -177,7 +177,7 @@ module.exports = {
     //         ticketslog.send(embed).catch(console.error)
     //       }
     //     } else {
-    //       let embed = new Discord.MessageEmbed()
+    //       let embed = new MessageEmbed()
     //         .setAuthor(bot.utils.getTranslation(bot, language, "ticket.close.closed.title"), "https://cdn.discordapp.com/emojis/690971830433087599.png", null)
     //         .setDescription(bot.utils.getTranslation(bot, language, "ticket.close.closed.description" + (successfile ? "" : "error")).join("\n")
     //           .replace(/{CREATOR}/g, creator ? creator : "Unknown User#0000").replace(/{CREATORID}/g, creatorid)
@@ -240,7 +240,7 @@ module.exports = {
     //   }
     //   let check = bot.emoji.check
     //   let cross = bot.emoji.cross
-    //   let information = new Discord.MessageEmbed()
+    //   let information = new MessageEmbed()
     //     .setDescription(bot.utils.getTranslation(bot, language, "ticket.setup.description").join("\n")
     //       .replace(/{TICKETCATEGORYSTATUS}/g, ticketcategorystatus ? check : cross).replace(/{TICKETSTATUS}/g, ticketstatus ? check : cross)
     //       .replace(/{SUPPORTROLESTATUS}/g, supportRole ? check : cross).replace(/{LOGCHANNELSTATUS}/g, ticketlogchannel ? check : cross)
@@ -256,13 +256,13 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   let amount = args[0];
     //   if (!amount || isNaN(amount)) {
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.amount.error").join("\n").replace(/{CROSS}/g, bot.emoji.cross))
     //     return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(console.error)).catch(console.error)
     //   }
     //   if (amount < 1 || amount > 20) {
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.amount.errorbounds").join("\n").replace(/{CROSS}/g, bot.emoji.cross))
     //     return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(console.error)).catch(console.error)
@@ -270,7 +270,7 @@ module.exports = {
     //   bot.ticketreactionmap.delete(message.channel.id)
     //   amount = parseInt(args[0]);
     //   bot.database.prepare("UPDATE guilddata SET ticketmaxamount=?,ticketsystemready=? WHERE guildid=?").run(amount, 0, message.guild.id);
-    //   let success = new Discord.MessageEmbed()
+    //   let success = new MessageEmbed()
     //     .setColor(bot.colors.green)
     //     .setDescription(bot.utils.getTranslation(bot, language, "ticket.amount.success").join("\n")
     //       .replace(/{CHECK}/g, bot.emoji.check).replace(/{AMOUNT}/g, amount))
@@ -280,7 +280,7 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   let clear = args[1] && args[1].toLowerCase() === "clear";
     //   bot.database.prepare("UPDATE guilddata SET ticketslogchannelid=?,ticketsystemready=? WHERE guildid=?").run(clear ? "none" : message.channel.id, 0, message.guild.id);
-    //   let selected = new Discord.MessageEmbed()
+    //   let selected = new MessageEmbed()
     //     .setColor(bot.colors.green)
     //     .setDescription(bot.utils.getTranslation(bot, language, `ticket.setlogchannel.${clear ? "cleared" : "selected"}`).join("\n")
     //       .replace(/{CHECK}/g, bot.emoji.check).replace(/{PREFIX}/g, prefix).replace(/{INFO}/g, bot.emoji.info).replace(/{CHANNEL}/g, message.channel).replace(/{CROSS}/g, bot.emoji.cross))
@@ -290,7 +290,7 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   let clear = args[1] && args[1].toLowerCase() === "clear";
     //   bot.database.prepare("UPDATE guilddata SET ticketchannelid=?,ticketsystemready=? WHERE guildid=?").run(clear ? "none" : message.channel.id, 0, message.guild.id);
-    //   let selected = new Discord.MessageEmbed()
+    //   let selected = new MessageEmbed()
     //     .setColor(bot.colors.green)
     //     .setDescription(bot.utils.getTranslation(bot, language, `ticket.setchannel.${clear ? "cleared" : "selected"}`).join("\n")
     //       .replace(/{CHECK}/g, bot.emoji.check).replace(/{INFO}/g, bot.emoji.info).replace(/{PREFIX}/g, prefix).replace(/{CHANNEL}/g, message.channel))
@@ -299,7 +299,7 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   let categoryid = args[1];
     //   if (!categoryid || !message.guild.channels.cache.has(categoryid) || message.guild.channels.cache.get(categoryid).type !== "category") {
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.setcategory.error").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{PREFIX}/g, prefix).replace(/{INFO}/g, bot.emoji.info))
     //     return message.channel.send(error).then(m => m.delete({ timeout: 15000 }).catch(console.error)).catch(console.error)
@@ -307,7 +307,7 @@ module.exports = {
     //   bot.ticketreactionmap.delete(message.channel.id)
     //   let ticketCategory = message.guild.channels.cache.get(categoryid);
     //   bot.database.prepare("UPDATE guilddata SET ticketcategoryid=?,ticketsystemready=? WHERE guildid=?").run(categoryid, 0, message.guild.id);
-    //   let selected = new Discord.MessageEmbed()
+    //   let selected = new MessageEmbed()
     //     .setColor(bot.colors.green)
     //     .setDescription(bot.utils.getTranslation(bot, language, "ticket.setcategory.selected").join("\n")
     //       .replace(/{CHECK}/g, bot.emoji.check).replace(/{PREFIX}/g, prefix).replace(/{INFO}/g, bot.emoji.info).replace(/{CHANNEL}/g, ticketCategory.name))
@@ -317,7 +317,7 @@ module.exports = {
     //   //tickettype 0 command | 1 reaction
     //   let type = args[1] ? args[1].toLowerCase() : args[1];
     //   if (!type || !["command", "reaction"].includes(type)) {
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.setmode.error").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{INFO}/g, bot.emoji.info)
     //         .replace(/{WARNING}/g, bot.emoji.warning).replace(/{PREFIX}/g, prefix))
@@ -326,7 +326,7 @@ module.exports = {
     //   bot.ticketreactionmap.delete(message.channel.id)
     //   type = type === "command" ? 0 : 1
     //   bot.database.prepare("UPDATE guilddata SET tickettype=?,ticketsystemready=? WHERE guildid=?").run(type, 0, message.guild.id);
-    //   let selected = new Discord.MessageEmbed()
+    //   let selected = new MessageEmbed()
     //     .setColor(bot.colors.green)
     //     .setDescription(bot.utils.getTranslation(bot, language, "ticket.setmode.selected").join("\n").replace(/{PREFIX}/g, prefix).replace(/{WARNING}/g, bot.emoji.warning)
     //       .replace(/{CHECK}/g, bot.emoji.check).replace(/{PREFIX}/g, prefix).replace(/{INFO}/g, bot.emoji.info).replace(/{MODE}/g, type === 0 ? "Command" : "Reaction"))
@@ -346,7 +346,7 @@ module.exports = {
     //     }
     //   }
     //   if (!ticketmessage) {
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.setmessageid.error").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //         .replace(/{WARNING}/g, bot.emoji.warning).replace(/{INFO}/g, bot.emoji.info))
@@ -355,7 +355,7 @@ module.exports = {
     //   try {
     //     await ticketmessage.react("🎟️")
     //   } catch (e) {
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.setmessageid.nopermission").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{CHECK}/g, bot.emoji.check)
     //         .replace(/{WARNING}/g, bot.emoji.warning).replace(/{INFO}/g, bot.emoji.info).replace(/{MESSAGELINK}/g, ticketmessage.url))
@@ -363,7 +363,7 @@ module.exports = {
     //   }
     //   bot.ticketreactionmap.delete(message.channel.id)
     //   bot.database.prepare("UPDATE guilddata SET ticketmessageid=?,ticketmessagechannelid=?,ticketsystemready=? WHERE guildid=?").run(ticketmessage.id, ticketmessage.channel.id, 0, message.guild.id);
-    //   let selected = new Discord.MessageEmbed()
+    //   let selected = new MessageEmbed()
     //     .setColor(bot.colors.green)
     //     .setDescription(bot.utils.getTranslation(bot, language, "ticket.setmessageid.selected").join("\n").replace(/{CROSS}/g, bot.emoji.cross).replace(/{CHECK}/g, bot.emoji.check)
     //       .replace(/{WARNING}/g, bot.emoji.warning).replace(/{PREFIX}/g, prefix).replace(/{INFO}/g, bot.emoji.info).replace(/{MESSAGELINK}/g, ticketmessage.url))
@@ -372,7 +372,7 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   //ticketmessage
     //   if (!args[1]) {
-    //     let error = new Discord.MessageEmbed()
+    //     let error = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.setmessage.error").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
     //         .replace(/{WARNING}/g, bot.emoji.warning).replace(/{INFO}/g, bot.emoji.info))
@@ -384,7 +384,7 @@ module.exports = {
     //   let supportRole = message.guild.roles.cache.has(guildData.supportroleid) ? message.guild.roles.cache.get(guildData.supportroleid) : "`No Support Role`"
     //   let exampleMessage = finalmessage.replace(/{EVERYONE}/gi, "@everyone").replace(/{HERE}/gi, "@here").replace(/{SUPPORTROLE}/gi, supportRole).replace(/{USER}/gi, message.author)
     //   bot.database.prepare("UPDATE guilddata SET ticketmessage=?,ticketsystemready=? WHERE guildid=?").run(finalmessage, 0, message.guild.id);
-    //   let selected = new Discord.MessageEmbed()
+    //   let selected = new MessageEmbed()
     //     .setColor(bot.colors.green)
     //     .setDescription(bot.utils.getTranslation(bot, language, "ticket.setmessage.selected").join("\n").replace(/{MESSAGE}/g, exampleMessage)
     //       .replace(/{CHECK}/g, bot.emoji.check).replace(/{INFO}/g, bot.emoji.info).replace(/{PREFIX}/g, prefix).replace(/{VERIFIED}/g, bot.emoji.verified).replace(/{WARNING}/g, bot.emoji.warning))
@@ -393,7 +393,7 @@ module.exports = {
     //   message.delete({ timeout: 500 }).catch(console.error)
     //   let supportroleid = args[1];
     //   if (!supportroleid || !message.guild.roles.cache.has(supportroleid)) {
-    //     let selected = new Discord.MessageEmbed()
+    //     let selected = new MessageEmbed()
     //       .setColor(bot.colors.red)
     //       .setDescription(bot.utils.getTranslation(bot, language, "ticket.setsupportrole.error").join("\n")
     //         .replace(/{CROSS}/g, bot.emoji.cross).replace(/{INFO}/g, bot.emoji.info).replace(/{PREFIX}/g, prefix))
@@ -402,14 +402,14 @@ module.exports = {
     //   bot.ticketreactionmap.delete(message.channel.id)
     //   let supportrole = message.guild.roles.cache.get(supportroleid);
     //   bot.database.prepare("UPDATE guilddata SET supportroleid=?,ticketsystemready=? WHERE guildid=?").run(supportrole.id, 0, message.guild.id);
-    //   let selected = new Discord.MessageEmbed()
+    //   let selected = new MessageEmbed()
     //     .setColor(bot.colors.green)
     //     .setDescription(bot.utils.getTranslation(bot, language, "ticket.setsupportrole.selected").join("\n")
     //       .replace(/{CHECK}/g, bot.emoji.check).replace(/{INFO}/g, bot.emoji.info).replace(/{SUPPORTROLE}/g, `${supportrole}`))
     //   return message.channel.send(selected).catch(console.error).then(m => m.delete({ timeout: 15000 }).catch(console.error))
     // } else {
     //   message.delete({ timeout: 500 }).catch(console.error)
-    //   let help = new Discord.MessageEmbed()
+    //   let help = new MessageEmbed()
     //     .setAuthor(bot.utils.getTranslation(bot, language, "ticket.help.title").replace(/{BOTNAME}/g, bot.user.username))
     //     .setThumbnail(bot.user.displayAvatarURL())
     //     .setDescription(bot.utils.getTranslation(bot, language, `ticket.help.${message.member.hasPermission("ADMINISTRATOR") ? "administrator" : "user"}.description`).join("\n")

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["spin"],
   category: "FUN",
@@ -9,7 +9,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (bot.spinningspinner.has(message.author.id)) {
-      let alreadyspinning = new Discord.MessageEmbed()
+      let alreadyspinning = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "spinner.alreadyspinning")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -26,7 +26,7 @@ module.exports = {
     let spinnerMessage;
     let spinner;
     try {
-      spinner = new Discord.MessageEmbed()
+      spinner = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "spinner.spinning")
           .replace(/{SPINNER}/g, bot.emoji.spinner)

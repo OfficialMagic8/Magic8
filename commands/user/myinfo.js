@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["me"],
   category: "USER",
@@ -11,14 +11,14 @@ module.exports = {
     if (args[0] && message.author.id === "292821168833036288") {
       try {
         let user = await bot.users.fetch(args[0])
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(`${user.username}'s Profile`)
           .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
           .setColor(bot.colors.main)
           .setDescription([`**Created:** ${new Date(user.createdTimestamp).toLocaleString().split(" ")[0].replace(/\,/g, "")}`])
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } catch (e) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription([
             `${bot.emoji.cross} **Could not find that user.**`])
@@ -39,7 +39,7 @@ module.exports = {
       rolesarray.push(message.guild.roles.cache.get(role));
     })
     rolesarray.pop();
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "myinfo.title")
         .replace(/{USERNAME}/g, bot.users.cache.get(member.id).username))
       .setThumbnail(bot.users.cache.get(member.id).displayAvatarURL({ format: "png", dynamic: true }))

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   category: "REACTIONS",
@@ -14,7 +14,7 @@ module.exports = {
         let id = args[0].replace(/[^0-9]/g, "");
         target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -23,7 +23,7 @@ module.exports = {
       }
     }
     let link = bot.links.pat[Math.floor(Math.random() * bot.links.pat.length)];
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor("RANDOM")
       .setImage(link)
       .setDescription(bot.translate(bot, language, `pat.${target.id === message.author.id ? "self" : "other"}`)

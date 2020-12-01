@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["ap"],
   category: "ADMIN",
@@ -27,7 +27,7 @@ module.exports = {
         users.forEach((item, index) => {
           array.push(`**${index + 1}.** ${message.guild.members.cache.get(item)}`);
         })
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.reachedlimit").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -45,7 +45,7 @@ module.exports = {
         if (antipingusers.length === 0) {
           usersarray = [`*${bot.translate(bot, language, "none")}*`];
         }
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(bot.translate(bot, language, "antiping.addusermenutitle")
             .replace(/{BOTNAME}/g, bot.user.username))
@@ -60,7 +60,7 @@ module.exports = {
         let id = args[1].replace(/[^0-9]/g, "");
         target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -68,7 +68,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!target) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -76,14 +76,14 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (target.id === bot.user.id) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.cannotbebot")
             .replace(/{CROSS}/g, bot.emoji.cross));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (users.includes(target.id)) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.targetalreadydisabled")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -93,7 +93,7 @@ module.exports = {
         users.push(target.id);
         bot.antipingusers.set(message.guild.id, users);
         bot.db.prepare("UPDATE guilddata SET antipingusers=? WHERE guildid=?").run(JSON.stringify(users), message.guild.id);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.nowdisabled")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -103,7 +103,7 @@ module.exports = {
     } else if (subcommand === "removeuser") {
       if (!bot.antipingusers.has(message.guild.id) || bot.antipingusers.get(message.guild.id).length <= 0) {
         bot.antipingusers.delete(message.guild.id)
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.nousers").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -117,7 +117,7 @@ module.exports = {
           let fetched = await message.guild.members.fetch(u) || message.guild.members.cache.get(u);
           usersarray.push(`${fetched} (${fetched.id})`);
         });
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(bot.translate(bot, language, "antiping.removeusermenutitle")
             .replace(/{BOTNAME}/g, bot.user.username))
@@ -131,7 +131,7 @@ module.exports = {
       if (args[1].toLowerCase() === "all") {
         bot.db.prepare("UPDATE guilddata SET antipingusers=? WHERE guildid=?").run("[]", message.guild.id);
         bot.antipingusers.delete(message.guild.id)
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.removeall")
             .replace(/{CHECK}/g, bot.emoji.check));
@@ -141,7 +141,7 @@ module.exports = {
         let id = args[1].replace(/[^0-9]/g, "");
         target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invaliduser").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -150,7 +150,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (!bot.antipingusers.get(message.guild.id).includes(target.id)) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.alreadyenabled")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -165,7 +165,7 @@ module.exports = {
           bot.antipingusers.set(message.guild.id, removed);
         }
         bot.db.prepare("UPDATE guilddata SET antipingusers=? WHERE guildid=?").run(JSON.stringify(removed), message.guild.id);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.nowenabled")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -176,7 +176,7 @@ module.exports = {
       let newmessage = args.slice(1).join(" ");
       let oldmessage = guildData.antipingmessage;
       if (!newmessage) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setAuthor(bot.translate(bot, language, "antiping.messageinfotitle")
             .replace(/{BOTNAME}/g, bot.user.username))
@@ -185,7 +185,7 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "antiping.messageupdated").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
@@ -207,7 +207,7 @@ module.exports = {
         if (getroles.length === 0) {
           rolesarray = [`*${bot.translate(bot, language, "none")}*`];
         }
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invalidrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -216,7 +216,7 @@ module.exports = {
       }
       let bypassroles = JSON.parse(guildData.antipingbypassroles)
       if (bypassroles.includes(targetrole.id)) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.alreadybypass").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -228,7 +228,7 @@ module.exports = {
         bypassroles.push(targetrole.id)
         bot.antipingbypassroles.set(message.guild.id, bypassroles)
         bot.db.prepare("UPDATE guilddata SET antipingbypassroles=? WHERE guildid=?").run(JSON.stringify(bypassroles), message.guild.id);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.nowbypass").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -240,7 +240,7 @@ module.exports = {
     } else if (subcommand === "removerole") {
       let bypassroles = JSON.parse(guildData.antipingbypassroles);
       if (bypassroles.length === 0) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.noroles").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -260,7 +260,7 @@ module.exports = {
             rolesarray.push(`${message.guild.roles.cache.get(roleid)}(${roleid})`);
           }
         })
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invalidbypassrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -268,7 +268,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (!bypassroles.includes(targetrole.id)) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
         setDescription(bot.translate(bot, language, "antiping.alreadydoesnotbypass").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
@@ -285,7 +285,7 @@ module.exports = {
           }
         }
         bot.db.prepare("UPDATE guilddata SET antipingbypassroles=? WHERE guildid=?").run(JSON.stringify(removed), message.guild.id);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.nolongerbypass").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -308,7 +308,7 @@ module.exports = {
         bypassarray = [`*${bot.translate(bot, language, "none")}*`];
         bot.antipingbypassroles.delete(message.guild.id);
       }
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "antiping.viewrolestitle")
           .replace(/{BOTNAME}/g, bot.user.username))
         .setColor(bot.colors.main)
@@ -331,7 +331,7 @@ module.exports = {
         usersarray = [`*${bot.translate(bot, language, "none")}*`];
         bot.antipingusers.delete(message.guild.id);
       }
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "antiping.viewuserstitle")
           .replace(/{BOTNAME}/g, bot.user.username))
         .setColor(bot.colors.main)
@@ -341,7 +341,7 @@ module.exports = {
     } else if (subcommand === "logchannel") {
       if (args[1] && args[1].toLowerCase() === "remove") {
         if (guildData.antipinglogchannel === "none") {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "antiping.logchannelnotset").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -351,7 +351,7 @@ module.exports = {
         }
         bot.antipinglogchannels.delete(message.guild.id)
         bot.db.prepare("UPDATE guilddata SET antipinglogchannel=? WHERE guildid=?").run("none", message.guild.id);
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "antiping.logchannelremove").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -361,7 +361,7 @@ module.exports = {
       }
       bot.antipinglogchannels.set(message.guild.id, message.channel.id)
       bot.db.prepare("UPDATE guilddata SET antipinglogchannel=? WHERE guildid=?").run(message.channel.id, message.guild.id);
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "antiping.logchannelset").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
@@ -371,7 +371,7 @@ module.exports = {
           .replace(/{PREFIX}/g, prefix));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     } else {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "antiping.menutitle")
           .replace(/{BOTNAME}/g, bot.user.username))
         .setColor(bot.colors.main)

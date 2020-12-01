@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["urls", "links", "website"],
   category: "USER",
@@ -23,7 +23,7 @@ module.exports = {
       } else {
         color = guildData.mediacolor
       }
-      let mediaEmbed = new Discord.MessageEmbed()
+      let mediaEmbed = new MessageEmbed()
         .setThumbnail(message.guild.iconURL({ format: "png", dynamic: true }))
         .setImage(image)
         .setAuthor(bot.translate(bot, language, "media.title")
@@ -33,7 +33,7 @@ module.exports = {
       return message.channel.send(mediaEmbed).catch(e => { return bot.error(bot, message, language, e); })
     } else {
       if (!message.member.hasPermission("ADMINISTRATOR")) return;
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "media.nomedia").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const battleImages = [
   "https://i.imgur.com/twa7UYI.gif",
   "https://i.pinimg.com/originals/49/1f/8c/491f8c735cfe482b5ce2552380990eea.gif",
@@ -17,7 +17,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (bot.battling.has(message.author.id)) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "battle.error.alreadybattling")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -25,7 +25,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (!args[0]) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -37,7 +37,7 @@ module.exports = {
       let id = args[0].replace(/[^0-9]/g, "")
       target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
     } catch (e) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
       .setColor(bot.colors.red)
       .setDescription(bot.translate(bot, language, "it")
         .replace(/{CROSS}/g, bot.emoji.cross)
@@ -45,7 +45,7 @@ module.exports = {
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (!target) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -53,7 +53,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (target.id === message.author.id) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "battle.error.cannotbeauthor")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -61,7 +61,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (bot.battling.has(target.id)) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "battle.error.targetbattling")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -91,13 +91,13 @@ module.exports = {
     bot.battling.set(target.id, secondobject)
     startBattle(bot, message.channel, language, message.author, target.user, firstobject, secondobject);
     function startBattle(bot, channel, language, first, second, firstobject, secondobject) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "battle.title")
           .replace(/{BOTNAME}/g, bot.user.username))
         .setImage("https://thumbs.gfycat.com/DirtyMeagerAss-small.gif")
         .setColor(bot.colors.yellow)
       channel.send(embed).then(duelMessage => {
-        let battleEmbed = new Discord.MessageEmbed()
+        let battleEmbed = new MessageEmbed()
           .setImage(battleImages[Math.floor(Math.random() * battleImages.length)])
           .setAuthor(bot.translate(bot, language, "battle.title")
             .replace(/{BOTNAME}/g, bot.user.username))

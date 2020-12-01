@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["cm"],
   category: "FUN",
@@ -9,7 +9,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!args[0]) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "clapme.nomessage")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
@@ -19,7 +19,7 @@ module.exports = {
     let msg = args.filter(arg => arg.length >= 1).join(" 👏 ")
       .replace(/@everyone/gi, "<everyone>")
       .replace(/@here/gi, "<here>")
-    let clapme = new Discord.MessageEmbed()
+    let clapme = new MessageEmbed()
       .setDescription(bot.translate(bot, language, "clapme.success")
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)

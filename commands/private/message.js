@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["msg"],
   name: "message",
@@ -11,7 +11,7 @@ module.exports = {
       try{
         target = bot.users.cache.get(id) || await bot.users.fetch(id);
       }catch(e){
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setDescription(`provide user`)
           .setColor(bot.colors.red)
         return message.channel.send(error).catch(e=>{});

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["s"],
   category: "ADMIN",
@@ -22,7 +22,7 @@ module.exports = {
         } else {
           upgradestring = `Anti-Ping users cannot be increased through packages anymore.`;
         }
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription([
             `${bot.emoji.cross} **Toggled Commands Limit Reached:** \`${max}\``,
@@ -34,7 +34,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (!cmdToDisable) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription([
             `${bot.emoji.cross} **Please provide a valid command to toggle.**`,
@@ -46,7 +46,7 @@ module.exports = {
           let commandToDisable = bot.commands.get(cmdToDisable);
           if (!commandToDisable.dev) {
             if (!commandToDisable.toggleable) {
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription([
                   `${bot.emoji.cross} **Command Not Toggleable:** \`${commandToDisable.name}\``,
@@ -72,7 +72,7 @@ module.exports = {
                 bot.db.prepare("UPDATE guilddata SET disabledcommands=? WHERE guildid=?").run(JSON.stringify(commandsToSave), message.guild.id)
                 if (bot.helpmenus.has(message.guild.id)) bot.helpmenus.delete(message.guild.id)
                 if (bot.adminmenus.has(message.guild.id)) bot.adminmenus.delete(message.guild.id)
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.green)
                   .setDescription([
                     `${bot.emoji.check} **Command Enabled:** \`${commandToDisable.name}\``,
@@ -88,7 +88,7 @@ module.exports = {
                 if (bot.helpmenus.has(message.guild.id)) bot.helpmenus.delete(message.guild.id)
                 if (bot.adminmenus.has(message.guild.id)) bot.adminmenus.delete(message.guild.id)
                 bot.db.prepare("UPDATE guilddata SET disabledcommands=? WHERE guildid=?").run(JSON.stringify(disabledCommands), message.guild.id)
-                let embed = new Discord.MessageEmbed()
+                let embed = new MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription([
                     `${bot.emoji.cross} **Command Disabled:** \`${commandToDisable.name}\``,
@@ -100,7 +100,7 @@ module.exports = {
             }
           }
         }
-        let info = new Discord.MessageEmbed()
+        let info = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription([
             `${bot.emoji.cross} **Invalid Command Provided:** \`${cmdToDisable}\``,
@@ -109,7 +109,7 @@ module.exports = {
             `${disabledCommandsString}`,
             ``,
             `${bot.emoji.info} View all commands with \`${prefix}help\` or check if a command can be toggled with \`${prefix}help <command>\``])
-        return message.channel.send(info).catch(e => { });
+        return message.channel.send(info).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "toggled") {
       let get = JSON.parse(guildData.disabledcommands)
@@ -119,7 +119,7 @@ module.exports = {
         disabled = `*none*`
       }
       let max = bot.maxtoggledcommands.get(bot.premium.get(message.guild.id))
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setDescription([
           `**Disabled Commands: ${get.length}/${max}**`,
@@ -130,7 +130,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     } else if (subcommand === "prefix") {
       if (!args[1] || args[1].length <= 0) {
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setColor(bot.colors.main)
           .setDescription([
             `${bot.emoji.info} **Current Prefix:** \`${prefix}\``,
@@ -138,12 +138,12 @@ module.exports = {
             `**To set prefix:** \`${prefix}s prefix <prefix>\``,
             ``,
             `${bot.emoji.warning} Make sure you don't use special characters like chinese or unicode emojis!`])
-        return message.channel.send(error).catch(e => { });
+        return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
       }
       let newPrefix = args[1];
       bot.prefixes.set(message.guild.id, newPrefix)
       bot.db.prepare("UPDATE guilddata SET prefix=? WHERE guildid=?").run(newPrefix, message.guild.id)
-      let success = new Discord.MessageEmbed()
+      let success = new MessageEmbed()
         .setColor(bot.colors.main)
         .setDescription([
           `${bot.emoji.check} **You updated this server's prefix to \`${newPrefix}\`!**`,
@@ -151,11 +151,11 @@ module.exports = {
           `Magic8 will no longer reply with other previous prefixes! Tag Magic8 in chat if you forgot the prefix!`,
           ``,
           `${bot.emoji.verified} If you have problems with your prefix, join our [Support Server](${bot.invite}) and let us know!.`])
-      return message.channel.send(success).catch(e => { });
+      return message.channel.send(success).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "8ball") {
       if (subcommand2 === "setreplies") {
         if (!args[2] || args.slice(2).join(" ").split("|").length < 2) {
-          let error = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Please provide at least 2 replies separated by: \`|\`**`,
@@ -163,12 +163,12 @@ module.exports = {
               `**Example:** \`${prefix}s 8ball setreplies Reply 1 | Reply 2 ...\``,
               ``,
               `${bot.emoji.info} If you want to add new replies, you'll have to copy your old replies in addition to your new ones.`])
-          return message.channel.send(error).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let replies = args.slice(2).join(" ").split("|");
         let cleanReplies = replies.map(reply => reply.trim()).filter(reply => reply.length >= 1);
         if (cleanReplies < 2) {
-          let error = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Please provide at least 2 replies separated by: \`|\`**`,
@@ -176,76 +176,67 @@ module.exports = {
               `**Example:** \`${prefix}s 8ball setreplies Reply 1 | Reply 2 ...\``,
               ``,
               `${bot.emoji.info} If you want to add new replies, you'll have to copy your old replies in addition to your new ones.`])
-          return message.channel.send(error).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
-        let max = bot.maxballresponses.get(bot.premium.get(message.guild.id))
+        let max = bot.maxballreplies.get(bot.premium.get(message.guild.id))
         let upgradestring;
         if ([0, 1].includes(bot.premium.get(message.guild.id))) {
           upgradestring = `Please upgrade to the [${bot.premium.get(message.guild.id) === 1 ? `**Triple Package**` : `**Single or Triple Package**`}](${bot.config.donatelink}) to restrict more channels.`
         } else {
-          upgradestring = `Magic 8 Ball Custom Responses cannot be increased through packages anymore.`
+          upgradestring = `Magic 8 Ball Custom Replies cannot be increased through packages anymore.`
         }
         if (cleanReplies.length > max) {
-          let error = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
-              `${bot.emoji.cross} **Custom Responses Limit Reached:** \`${max}\``,
+              `${bot.emoji.cross} **Custom Replies Limit Reached:** \`${max}\``,
               ``,
-              upgradestring])
-          return message.channel.send(error).catch(e => { });
+              upgradestring]);
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
-        bot.db.prepare("UPDATE guilddata SET ballcustomresponses=? WHERE guildid=?").run(cleanReplies.join("|"), message.guild.id)
-        let success = new Discord.MessageEmbed()
+        bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run(cleanReplies, message.guild.id);
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription([
-            `${bot.emoji.check} **Successfully Saved ${cleanReplies.length}/${bot.maxballresponses.get(bot.premium.get(message.guild.id))} Custom Replies**`,
+            `${bot.emoji.check} **Successfully Saved ${cleanReplies.length}/${bot.maxballreplies.get(bot.premium.get(message.guild.id))} Custom Replies**`,
             ``,
             `To enable custom replies use \`${prefix}s 8ball mode custom\``,
             ``,
-            `${bot.emoji.info} If you want to add new replies, you'll have to use the command with all **previous** replies again.`])
-        return message.channel.send(success).catch(e => { });
+            `${bot.emoji.info} If you want to add new replies, you'll have to use the command with all **previous** replies again.`]);
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (subcommand2 === "replies") {
-        if (guildData.ballcustomresponses === "none") {
-          let replies = new Discord.MessageEmbed()
+        let getreplies = JSON.parse(guildData.ballcustomreplies)
+        if (getreplies.length <= 0) {
+          let replies = new MessageEmbed()
             .setColor(bot.colors.main)
             .setDescription([
-              `${bot.emoji.cross} **There are no custom replies for this server.**`,
+              `${bot.emoji.cross} **No Custom Replies**`,
               ``,
               `${bot.emoji.info} If you want to add new replies, use \`${prefix}s setreplies\` for more information.`])
-          return message.channel.send(replies).catch(e => { });
+          return message.channel.send(replies).catch(e => { return bot.error(bot, message, language, e); });
         }
-        let finalReplies = `- ${guildData.ballcustomresponses.split("|").join("\n- ")}`
-        let finalDoc = finalReplies + "\r\n\r\n**Preformatted Current Replies:**\r\n" + guildData.ballcustomresponses;
+        let finalReplies = `- ${getreplies.map(r => `**-** ${r}`).join("\n")}`
+        let finalDoc = finalReplies + "\r\n\r\n**Preformatted Current Replies:**\r\n" + getreplies.join(" | ");
         if (finalReplies.length < 1750) {
-          let replies = new Discord.MessageEmbed()
+          let replies = new MessageEmbed()
             .setColor(bot.colors.main)
-            .setAuthor(`${bot.user.username} - Magic 8 Ball - Custom Responses (${guildData.ballcustomresponses.split("|").length}/${ bot.maxballresponses.get(bot.premium.get(message.guild.id))})`)
+            .setAuthor(`Magic 8 Ball - Custom Replies (${getreplies.length}/${bot.maxballreplies.get(bot.premium.get(message.guild.id))})`)
             .setDescription([
               `**Current Replies:**`,
               `${finalDoc}`,
               ``,
               `${bot.emoji.info} To enable custom replies use \`${prefix}s 8ball mode custom\`. If you want to add new replies, you'll have to copy your old replies in addition to your new ones.`])
-          return message.channel.send(replies).catch(e => { });
+          return message.channel.send(replies).catch(e => { return bot.error(bot, message, language, e); });
         } else {
-          let replies = new Discord.MessageEmbed()
+          let replies = new MessageEmbed()
             .setColor(bot.colors.main)
-            
-            .setAuthor(`${bot.user.username} - Magic 8 Ball - Custom Responses (${guildData.ballcustomresponses.split("|").length}/${ bot.maxballresponses.get(bot.premium.get(message.guild.id))})`)
+            .setAuthor(`Magic 8 Ball - Custom Replies (${getreplies.length}/${bot.maxballreplies.get(bot.premium.get(message.guild.id))})`)
             .setDescription([
               `${bot.emoji.info} To enable custom replies use \`${prefix}s 8ball mode custom\`. If you want to add new replies, you'll have to copy your old replies in addition to your new ones.`])
           try {
             bot.fs.writeFileSync("././templates/customr8ballreplies.txt", finalDoc, 'utf8')
           } catch (e) {
-            console.error(e)
-            replies = new Discord.MessageEmbed()
-              .setColor(bot.colors.main)
-              .setDescription([
-                `${bot.emoji.cross} **Custom Replies: ${guildData.ballcustomresponses.split("|").length}**`,
-                ``,
-                `Could not send your actual replies, try again in a few minutes!`,
-                ``,
-                `${bot.emoji.verified} If you want to add new replies, you'll have to copy your old replies in addition to your new ones.`].join("\n"))
-            return message.channel.send(replies).catch(e => { });
+            return bot.error(bot, message, language, e);
           }
           return message.channel.send("", {
             embed: replies,
@@ -253,11 +244,11 @@ module.exports = {
               attachment: "././templates/customr8ballreplies.txt",
               name: `Custom_Replies.txt`
             }]
-          }).catch(e => { });
+          }).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (subcommand2 === "mode") {
         if (!args[2]) {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setAuthor(`Magic 8 Ball - Mode Settings`)
             .setColor(bot.colors.main)
             .setDescription([
@@ -265,11 +256,11 @@ module.exports = {
               `\`all\`, \`clean\`, \`explicit\` or \`custom\``,
               ``,
               `${bot.emoji.info} Type the command again with a mode to update.`])
-          return message.channel.send(error).catch(e => { });
+          return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
         }
         let mode = args[2].toLowerCase();
-        if (!bot.responsestypes.has(mode)) {
-          let error = new Discord.MessageEmbed()
+        if (!bot.repliestypes.has(mode)) {
+          let error = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Invalid Mode Provided:** \`${mode}\``,
@@ -278,22 +269,22 @@ module.exports = {
               `\`all\`, \`clean\`, \`explicit\` or \`custom\``,
               ``,
               `${bot.emoji.info} Type the command again with a mode to update.`])
-          return message.channel.send(error).catch(e => { });
+          return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
         }
-        let oldMode = bot.responsestypes.get(guildData.ballreplytype)
-        let newMode = bot.responsestypes.get(mode);
+        let oldMode = bot.repliestypes.get(guildData.ballreplytype)
+        let newMode = bot.repliestypes.get(mode);
         bot.db.prepare("UPDATE guilddata SET ballreplytype=? WHERE guildid=?").run(newMode, message.guild.id)
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription([
-            `${bot.emoji.check} **Magic8 8 Ball Response Mode Updated**`,
+            `${bot.emoji.check} **Magic8 8 Ball Reply Mode Updated**`,
             ``,
             `**Old:** ${oldMode}`,
             `**New:** ${mode}`])
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else if (subcommand2 === "color") {
         if (!args[2]) {
-          let error = new Discord.MessageEmbed()
+          let error = new MessageEmbed()
             .setAuthor(`Magic 8 Ball - Color Settings`)
             .setColor(bot.colors.main)
             .setDescription([
@@ -302,11 +293,11 @@ module.exports = {
               `**Current Color:** \`${guildData.ballcolor}\``,
               ``,
               `${bot.emoji.info} Invalid colors will default to black.`])
-          return message.channel.send(error).catch(e => { });
+          return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
         }
         let newcolor = args[2].toUpperCase();
         bot.db.prepare("UPDATE guilddata SET ballcolor=? WHERE guildid=?").run(newcolor, message.guild.id)
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription([
             `${bot.emoji.check} **Magic 8 Ball Color Updated**`,
@@ -316,25 +307,25 @@ module.exports = {
             `${bot.emoji.info} To check it out, type \`${prefix}8ball <question>\``])
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else {
-        let help = new Discord.MessageEmbed()
+        let help = new MessageEmbed()
           .setAuthor(`${b} Magic 8 Ball Settings`)
           .setColor(bot.colors.main)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setDescription([
             `\`${prefix}s 8ball color\` - Change Message Color`,
-            `\`${prefix}s 8ball mode\` - Select Responses Mode`,
+            `\`${prefix}s 8ball mode\` - Select Replies Mode`,
             `\`${prefix}s 8ball replies\` - List Custom Replies`,
-            `\`${prefix}s 8ball setreplies\` - Set Custom Responses`,
+            `\`${prefix}s 8ball setreplies\` - Set Custom Replies`,
             ``,
             `${bot.emoji.info} Use these commands for more information!`])
-        return message.channel.send(help).catch(e => { });
+        return message.channel.send(help).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "media") {
       if (subcommand2 === "text") {
         if (guildData.mediatext === "none") {
           let media = args.slice(2).join(" ")
           if (!media) {
-            let error = new Discord.MessageEmbed()
+            let error = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription([
                 `${bot.emoji.cross} **Please type a message about your media!**`,
@@ -349,20 +340,20 @@ module.exports = {
                 `Follow our **Twitter** page @ __https://twitter.com/MyTwitter__`,
                 `Check out our new website: __https://website.net/__`,
                 `\`\`\``])
-            return message.channel.send(error).catch(e => { });
+            return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
           } else if (media === "none") {
             bot.db.prepare("UPDATE guilddata SET mediatext=? WHERE guildid=?").run("none", message.guild.id)
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.green)
               .setDescription([
                 `${bot.emoji.check} **Server Media Removed**`,
                 ``,
                 `${bot.emoji.info} To add a media page in the future, type \`${prefix}s media text\``])
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           } else {
             bot.db.prepare("UPDATE guilddata SET mediatext=? WHERE guildid=?").run(media, message.guild.id)
             bot.hastebin(`## Beautiful Preformatted Media by Magic8 <3\nJust copy the text below!\n\n${prefix}s media text ${guildData.mediatext}`, { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription([
                   `${bot.emoji.check} **Server Media Updated**`,
@@ -371,10 +362,10 @@ module.exports = {
                   ``,
                   `${bot.emoji.info} If you would like to make edits, here is a link of your text:`,
                   `**${haste}**`])
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) })
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
             }).catch(e => {
               console.error(e)
-              let error = new Discord.MessageEmbed()
+              let error = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription([
                   `${bot.emoji.cross} **Unexpected error occured when making a copy of your media!`,
@@ -382,7 +373,7 @@ module.exports = {
                   `Your media still should have updated.`,
                   ``,
                   `*If you still receive this error when updating media, join our **[Support Server](${bot.invite})** for assistance.*`])
-              return message.channel.send(error).catch(e => { });
+              return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
             });
           }
         }
@@ -390,7 +381,7 @@ module.exports = {
           let media = args.slice(2).join(" ")
           if (media === "none") {
             bot.db.prepare("UPDATE guilddata SET mediatext=? WHERE guildid=?").run("none", message.guild.id)
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.green)
               .setDescription([
                 `${bot.emoji.check} **Server Media Removed**`,
@@ -401,17 +392,17 @@ module.exports = {
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
           } else if (!media) {
             bot.hastebin(`## Beautiful Preformatted Media by Magic8 <3\nJust copy the text below!\n\n${prefix}s media text ${guildData.mediatext}`, { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-              let error = new Discord.MessageEmbed()
+              let error = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription([
                   `${bot.emoji.cross} **Update Server Media Text**`,
                   ``,
                   `${bot.emoji.info} Here is a text document of your current media text:`,
                   `**${haste}**`])
-              return message.channel.send(error).catch(e => { });
+              return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
             }).catch(e => {
               console.error(e);
-              let error = new Discord.MessageEmbed()
+              let error = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription([
                   `${bot.emoji.cross} **Unexpected error occured when making a copy of your media!**`,
@@ -419,12 +410,12 @@ module.exports = {
                   `Your media still should have updated.`,
                   ``,
                   `${bot.emoji.info} If you still receive this error when updating media, join our **[Support Server](${bot.invite})** for assistance.`])
-              return message.channel.send(error).catch(e => { });
+              return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
             });
           } else {
             bot.db.prepare("UPDATE guilddata SET mediatext=? WHERE guildid=?").run(media, message.guild.id)
             bot.hastebin(`## Beautiful Preformatted Media by Magic8 <3\nJust copy the text below!\n\n${prefix}s media text ${guildData.mediatext}`, { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-              let complete = new Discord.MessageEmbed()
+              let complete = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription([
                   `${bot.emoji.check} **Server Media Text Updated**`,
@@ -433,10 +424,10 @@ module.exports = {
                   ``,
                   `${bot.emoji.info} If you would like to make edits, here is a link of your text:`,
                   `**${haste}**`])
-              message.channel.send(complete).catch(e => { });
+              message.channel.send(complete).catch(e => { return bot.error(bot, message, language, e); });
             }).catch(e => {
               console.error(e)
-              let error = new Discord.MessageEmbed()
+              let error = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription([
                   `${bot.emoji.cross} **Unexpected error occured when making a copy of your media!`,
@@ -444,7 +435,7 @@ module.exports = {
                   `Your media still should have updated.`,
                   ``,
                   `*If you still receive this error when updating media, join our **[Support Server](${bot.invite})** for assistance.*`])
-              return message.channel.send(error).catch(e => { });
+              return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
             });
           }
         }
@@ -452,20 +443,20 @@ module.exports = {
         let url = args[2]
         if (url === "none") {
           bot.db.prepare("UPDATE guilddata SET mediaimage=? WHERE guildid=?").run("none", message.guild.id)
-          let complete = new Discord.MessageEmbed()
+          let complete = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **Image URL Removed**`,
               `Your media page will no longer have an image below the description!`])
-          message.channel.send(complete).catch(e => { });
+          message.channel.send(complete).catch(e => { return bot.error(bot, message, language, e); });
         } else if (!url || args[3]) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **Please provide an image URL and make sure it works!**`])
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         } else {
           bot.db.prepare("UPDATE guilddata SET mediaimage=? WHERE guildid=?").run(url, message.guild.id)
-          let complete = new Discord.MessageEmbed()
+          let complete = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **Image URL Updated**`,
@@ -473,11 +464,11 @@ module.exports = {
               `**Link:** __${url}__`,
               ``,
               `To view your media, type \`${prefix}media\``].join("\n"))
-          message.channel.send(complete).catch(e => { });
+          message.channel.send(complete).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (subcommand2 === "color") {
         if (!args[2]) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Server Media Color**`,
@@ -491,7 +482,7 @@ module.exports = {
         }
         let newcolor = args[2].toUpperCase();
         bot.db.prepare("UPDATE guilddata SET mediacolor=? WHERE guildid=?").run(newcolor, message.guild.id)
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setDescription([
             `${bot.emoji.check} **Server Media Color Updated**`,
             ``,
@@ -501,7 +492,7 @@ module.exports = {
           .setColor(bot.colors.green)
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(`${b} Server Media Settings`)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setColor(bot.colors.main)
@@ -517,17 +508,17 @@ module.exports = {
       if (args[1] && args[1].toLowerCase() === "clear") {
         let channels = JSON.parse(guildData.funchannel);
         if (channels.length === 0) {
-          let notselected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Fun\` commands.**`])
             .setColor(bot.colors.red)
-          return message.channel.send(notselected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         bot.funchannels.delete(message.guild.id);
         bot.db.prepare("UPDATE guilddata SET funchannel=? WHERE guildid=?").run("[]", message.guild.id)
-        let selected = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setDescription([`${bot.emoji.check} **You have cleared all channels for \`Fun\` commands!**`])
           .setColor(bot.colors.green)
-        return message.channel.send(selected).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
         let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id));
         let channels = JSON.parse(guildData.funchannel);
@@ -542,7 +533,7 @@ module.exports = {
           } else {
             upgradestring = `Fun Restricted Channels cannot be increased through packages anymore.`;
           }
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Fun Restricted Channels Limit Reached:** \`${max}\``,
@@ -554,20 +545,20 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
         if (guildData.funchannel.includes(message.channel.id)) {
-          let alreadysaved = new Discord.MessageEmbed()
+          let alreadysaved = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is already saved for \`Fun\` commands!**`])
-          return message.channel.send(alreadysaved).catch(e => { });
+          return message.channel.send(alreadysaved).catch(e => { return bot.error(bot, message, language, e); });
         } else if (!guildData.funchannel.includes(message.channel.id)) {
           let channels = JSON.parse(guildData.funchannel);
           channels.push(message.channel.id);
-          bot.funchannels.set(message.guild.id, channels)
-          bot.db.prepare("UPDATE guilddata SET funchannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id)
+          bot.funchannels.set(message.guild.id, channels);
+          bot.db.prepare("UPDATE guilddata SET funchannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id);
           let channelarray = [];
           channels.forEach(c => {
-            channelarray.push(`${bot.guilds.cache.get(message.guild.id).channels.cache.get(c)}`)
-          })
-          let selected = new Discord.MessageEmbed()
+            channelarray.push(`${bot.guilds.cache.get(message.guild.id).channels.cache.get(c)}`);
+          });
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **\`Fun\` commands are now accessible through ${message.channel}**`,
@@ -576,15 +567,15 @@ module.exports = {
               `${channelarray.join("\n")}`,
               ``,
               `${bot.emoji.info} To unrestrict \`Fun\` commands, type: \`${prefix}s funchannel remove/clear\``])
-          return message.channel.send(selected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (args[1] && args[1].toLowerCase() === "remove") {
         let channels = JSON.parse(guildData.funchannel)
         if (!channels.includes(message.channel.id)) {
-          let notsaved = new Discord.MessageEmbed()
+          let notsaved = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is not saved for \`Fun\` commands.**`])
-          return message.channel.send(notsaved).catch(e => { });
+          return message.channel.send(notsaved).catch(e => { return bot.error(bot, message, language, e); });
         } else if (channels.includes(message.channel.id)) {
           let selectedchannel = channels.find(c => c === message.channel.id)
           channels.splice(channels.indexOf(selectedchannel), 1)
@@ -598,14 +589,14 @@ module.exports = {
             channelarray = ["*Open to all channels*"]
             bot.funchannels.delete(message.guild.id)
           }
-          let selected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setDescription([
               `${bot.emoji.check} **\`Fun\` commands are no longer accessible through ${message.channel}**`,
               ``,
               `**Channel List:**`,
               `${channelarray.join("\n")}`])
             .setColor(bot.colors.green)
-          return message.channel.send(selected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
         let channels = JSON.parse(guildData.funchannel)
@@ -616,7 +607,7 @@ module.exports = {
         if (channels.length === 0) {
           channelarray = ["*Open to all channels*"]
         }
-        let help = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(`${b} Fun Commands - Channel Settings`)
           .setColor(bot.colors.main)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -629,23 +620,23 @@ module.exports = {
             ``,
             `**Channel List:**`,
             `${channelarray.join("\n")}`].join("\n"))
-        return message.channel.send(help).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "minigamechannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
         let channels = JSON.parse(guildData.minigamechannel)
         if (channels.length === 0) {
-          let notselected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Minigames\`.**`])
             .setColor(bot.colors.red)
-          return message.channel.send(notselected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         bot.minigamechannels.delete(message.guild.id)
         bot.db.prepare("UPDATE guilddata SET minigamechannel=? WHERE guildid=?").run("[]", message.guild.id)
-        let selected = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setDescription([`${bot.emoji.check} **You have cleared all channels for \`Minigames\`!**`])
           .setColor(bot.colors.green)
-        return message.channel.send(selected).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
         let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id));
         let channels = JSON.parse(guildData.minigamechannel);
@@ -660,7 +651,7 @@ module.exports = {
           } else {
             upgradestring = `Minigame Restricted Channels cannot be increased through packages anymore.`;
           }
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Minigame Restricted Channels Limit Reached:** \`${max}\``,
@@ -672,10 +663,10 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
         if (guildData.minigamechannel.includes(message.channel.id)) {
-          let alreadysaved = new Discord.MessageEmbed()
+          let alreadysaved = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is already saved for \`Minigames\`!**`].join("\n"))
-          return message.channel.send(alreadysaved).catch(e => { });
+          return message.channel.send(alreadysaved).catch(e => { return bot.error(bot, message, language, e); });
         } else if (!guildData.minigamechannel.includes(message.channel.id)) {
           let channels = JSON.parse(guildData.minigamechannel);
           channels.push(message.channel.id);
@@ -690,7 +681,7 @@ module.exports = {
           }
           template.push(message.channel.id);
           bot.minigamechannels.set(message.guild.id, template);
-          let selected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **\`Minigames\` are now accessible through ${message.channel}**`,
@@ -699,15 +690,15 @@ module.exports = {
               `${channelarray.join("\n")}`,
               ``,
               `${bot.emoji.info} To unrestrict \`Minigames\`, type: \`${prefix}s funchannel remove/clear\``])
-          return message.channel.send(selected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (args[1] && args[1].toLowerCase() === "remove") {
         let channels = JSON.parse(guildData.minigamechannel)
         if (!channels.includes(message.channel.id)) {
-          let notsaved = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is not saved for \`Minigames\`.**`].join("\n"))
-          return message.channel.send(notsaved).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else if (channels.includes(message.channel.id)) {
           let selectedchannel = channels.find(c => c === message.channel.id)
           channels.splice(channels.indexOf(selectedchannel), 1)
@@ -721,25 +712,25 @@ module.exports = {
             channelarray = ["*Open to all channels*"]
             bot.minigamechannels.delete(message.guild.id)
           }
-          let selected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setDescription([
               `${bot.emoji.check} **\`Minigames\` are no longer accessible through ${message.channel}**`,
               ``,
               `**Channel List:**`,
               `${channelarray.join("\n")}`])
             .setColor(bot.colors.green)
-          return message.channel.send(selected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
-        let channels = JSON.parse(guildData.minigamechannel)
-        let channelarray = []
+        let channels = JSON.parse(guildData.minigamechannel);
+        let channelarray = [];
         channels.forEach(c => {
-          channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c))
-        })
+          channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c));
+        });
         if (channels.length === 0) {
           channelarray = ["*Open to all channels*"]
         }
-        let help = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(`${b} Minigames - Channel Settings`)
           .setColor(bot.colors.main)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -751,31 +742,31 @@ module.exports = {
             `\`${prefix}s minigamechannel clear\``,
             ``,
             `**Channel List:**`,
-            `${channelarray.join("\n")}`].join("\n"))
-        return message.channel.send(help).catch(e => { });
+            `${channelarray.join("\n")}`]);
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "miscellaneouschannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
         let channels = JSON.parse(guildData.miscellaneouschannel)
         if (channels.length === 0) {
-          let notselected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Miscellaneous\` commands.**`])
             .setColor(bot.colors.red)
-          return message.channel.send(notselected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         bot.miscellaneouschannels.delete(message.guild.id)
         bot.db.prepare("UPDATE guilddata SET miscellaneouschannel=? WHERE guildid=?").run("[]", message.guild.id)
-        let selected = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setDescription([`${bot.emoji.check} **You have cleared all channels for \`Miscellaneous\` commands!**`])
           .setColor(bot.colors.green)
-        return message.channel.send(selected).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
         let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id))
-        let channels = JSON.parse(guildData.miscellaneouschannel)
+        let channels = JSON.parse(guildData.miscellaneouschannel);
         if (channels.length >= max) {
           let channelarray = []
           channels.forEach(c => {
-            channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c))
+            channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c));
           });
           let upgradestring;
           if ([0, 1].includes(bot.premium.get(message.guild.id))) {
@@ -783,7 +774,7 @@ module.exports = {
           } else {
             upgradestring = `Miscellaneous Restricted Channels cannot be increased through packages anymore.`
           }
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Miscellaneous Restricted Channels Limit Reached:** \`${max}\``,
@@ -795,10 +786,10 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
         if (guildData.miscellaneouschannel.includes(message.channel.id)) {
-          let alreadysaved = new Discord.MessageEmbed()
+          let alreadysaved = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is already saved for \`Miscellaneous\` commands!**`].join("\n"))
-          return message.channel.send(alreadysaved).catch(e => { });
+          return message.channel.send(alreadysaved).catch(e => { return bot.error(bot, message, language, e); });
         } else if (!guildData.miscellaneouschannel.includes(message.channel.id)) {
           let channels = JSON.parse(guildData.miscellaneouschannel)
           let x = message.channel.id
@@ -814,7 +805,7 @@ module.exports = {
           }
           template.push(message.channel.id)
           bot.miscellaneouschannels.set(message.guild.id, template)
-          let selected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **\`Miscellaneous\` commands are now accessible through ${message.channel}**`,
@@ -823,36 +814,36 @@ module.exports = {
               `${channelarray.join("\n")}`,
               ``,
               `${bot.emoji.info} To unrestrict \`Miscellaneous\` commands, type: \`${prefix}s miscellaneouschannel remove/clear\``])
-          return message.channel.send(selected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (args[1] && args[1].toLowerCase() === "remove") {
         let channels = JSON.parse(guildData.miscellaneouschannel)
         if (channels.includes(message.channel.id)) {
-          let notsaved = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is not saved for \`Miscellaneous\` commands.**`].join("\n"))
-          return message.channel.send(notsaved).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else if (channels.includes(message.channel.id)) {
-          let selectedchannel = channels.find(c => c === message.channel.id)
+          let selectedchannel = channels.find(c => c === message.channel.id);
           channels.splice(channels.indexOf(selectedchannel), 1)
           bot.db.prepare("UPDATE guilddata SET miscellaneouschannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id)
-          let channelarray = []
+          let channelarray = [];
           channels.forEach(c => {
             channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c));
           })
           bot.miscellaneouschannels.set(message.guild.id, bot.miscellaneouschannels.get(message.guild.id).filter(c => c !== message.channel.id))
           if (channels.length === 0) {
             channelarray = ["*Open to all channels*"]
-            bot.miscellaneouschannels.delete(message.guild.id)
+            bot.miscellaneouschannels.delete(message.guild.id);
           }
-          let selected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **\`Miscellaneous\` commands are no longer accessible through ${message.channel}**`,
               ``,
               `**Channel List:**`,
               `${channelarray.join("\n")}`])
-          return message.channel.send(selected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
         let channels = JSON.parse(guildData.miscellaneouschannel)
@@ -863,7 +854,7 @@ module.exports = {
         if (channels.length === 0) {
           channelarray = ["*Open to all channels*"]
         }
-        let help = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(`${b} Miscellaneous Commands - Channel Settings`)
           .setColor(bot.colors.main)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -876,23 +867,23 @@ module.exports = {
             ``,
             `**Channel List:**`,
             `${channelarray.join("\n")}`])
-        return message.channel.send(help).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "reactionchannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
         let channels = JSON.parse(guildData.reactionchannel)
         if (channels.length === 0) {
-          let notselected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Reaction\` commands.**`])
             .setColor(bot.colors.red)
-          return message.channel.send(notselected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         bot.reactionchannels.set(message.guild.id)
         bot.db.prepare("UPDATE guilddata SET reactionchannel=? WHERE guildid=?").run("[]", message.guild.id)
-        let selected = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setDescription([`${bot.emoji.check} **You have cleared all channels for \`Reaction\` commands!**`])
           .setColor(bot.colors.green)
-        return message.channel.send(selected).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
         let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id))
         let channels = JSON.parse(guildData.reactionchannel)
@@ -907,7 +898,7 @@ module.exports = {
           } else {
             upgradestring = `Reaction Restricted Channels cannot be increased through packages anymore.`
           }
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([
               `${bot.emoji.cross} **Reaction Restricted Channels Limit Reached:** \`${max}\``,
@@ -919,10 +910,10 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
         if (guildData.reactionchannel.includes(message.channel.id)) {
-          let alreadysaved = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is already saved for \`Reaction\` commands.**`].join("\n"))
-          return message.channel.send(alreadysaved).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else if (!guildData.reactionchannel.includes(message.channel.id)) {
           let channels = JSON.parse(guildData.reactionchannel)
           channels.push(message.guild.id)
@@ -937,7 +928,7 @@ module.exports = {
           }
           template.push(message.channel.id)
           bot.reactionchannels.set(message.guild.id, template)
-          let selected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **\`Reaction\` commands are now accessible through ${message.channel}**`,
@@ -946,15 +937,15 @@ module.exports = {
               `${channelarray.join("\n")}`,
               ``,
               `${bot.emoji.info} To unrestrict \`Reaction\` commands, type: \`${prefix}s reactionchannel remove/clear\``])
-          return message.channel.send(selected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (args[1] && args[1].toLowerCase() === "remove") {
-        let channels = JSON.parse(guildData.reactionchannel)
+        let embed = JSON.parse(guildData.reactionchannel)
         if (!channels.includes(message.channel.id)) {
-          let notsaved = new Discord.MessageEmbed()
+          let notsaved = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is not saved for \`Reaction\` commands!**`].join("\n"))
-          return message.channel.send(notsaved).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else if (channels.includes(message.channel.id)) {
           let selectedchannel = channels.find(c => c === message.channel.id)
           channels.splice(channels.indexOf(selectedchannel), 1)
@@ -974,14 +965,14 @@ module.exports = {
             template.splice(template.indexOf(message.channel.id), 1)
             bot.reactionchannels.set(message.guild.id, template)
           }
-          let selected = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **\`Reaction\` commands are no longer accessible through ${message.channel}**`,
               ``,
               `**Channel List:**`,
               `${channelarray.join("\n")}`])
-          return message.channel.send(selected).catch(e => { });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
         let channels = JSON.parse(guildData.reactionchannel)
@@ -992,7 +983,7 @@ module.exports = {
         if (channels.length === 0) {
           channelarray = ["*Open to all channels*"]
         }
-        let help = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setAuthor(`${b} Reaction Commands - Channel Settings`)
           .setColor(bot.colors.main)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -1005,14 +996,14 @@ module.exports = {
             ``,
             `**Channel List:**`,
             `${channelarray.join("\n")}`])
-        return message.channel.send(help).catch(e => { });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "lfg") {
       if ([1, 2].includes(bot.premium.get(message.guild.id))) {
         if (subcommand2 === "notifychannel") {
           if (args[2] && args[2].toLowerCase() === "remove") {
             if (guildData.lfgnotifychannel === "none") {
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription([
                   `${bot.emoji.cross} **LFG Notify Channel Already Not Set**`,
@@ -1022,7 +1013,7 @@ module.exports = {
             } else {
               bot.lfgnotifychannels.delete(message.guild.id)
               bot.db.prepare("UPDATE guilddata SET lfgnotifychannel=? WHERE guildid=?").run("none", message.guild.id);
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription([
                   `${bot.emoji.check} **LFG Notify Channel Removed**`,
@@ -1033,7 +1024,7 @@ module.exports = {
           }
           bot.lfgnotifychannels.set(message.guild.id, message.channel.id)
           bot.db.prepare("UPDATE guilddata SET lfgnotifychannel=? WHERE guildid=?").run(message.channel.id, message.guild.id);
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **LFG Notify Channel Set**`,
@@ -1046,7 +1037,7 @@ module.exports = {
           if (!args[2]) {
             let role = bot.guilds.cache.get(message.guild.id).roles.cache.get(guildData.lfgrole)
             if (!role) role = "none"
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.main)
               .setAuthor(`${b} Looking For Group Role`)
               .setDescription([
@@ -1057,7 +1048,7 @@ module.exports = {
           }
           if (args[2].toLowerCase() === "clear") {
             if (guildData.lfgrole === "none") {
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colord.red)
                 .setDescription([
                   `${bot.emoji.cross} **There is already no LFG role.**`])
@@ -1065,7 +1056,7 @@ module.exports = {
             } else {
               bot.lfgroles.delete(message.guild.id)
               bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run("none", message.guild.id);
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription([
                   `${bot.emoji.check} **LFG Role Removed**`,
@@ -1087,7 +1078,7 @@ module.exports = {
             if (getroles.length === 0) {
               rolesarray = ["*none*"]
             }
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription([
                 `${bot.emoji.cross} **Invalid Role Provided:** \`${args[1]}\``,
@@ -1098,7 +1089,7 @@ module.exports = {
           }
           bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run(targetrole.id, message.guild.id);
           bot.lfgroles.set(message.guild.id, targetrole.id)
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription([
               `${bot.emoji.check} **LFG Role Set**`,
@@ -1110,7 +1101,7 @@ module.exports = {
         } else if (subcommand2 === "notifymessage") {
           let notifymessage = args.slice(2).join(" ")
           if (!notifymessage) {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription([
                 `${bot.emoji.cross} **Please provide a notify message.**`,
@@ -1121,7 +1112,7 @@ module.exports = {
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
           } else {
             bot.db.prepare("UPDATE guilddata SET lfgnotifymessage=? WHERE guildid=?").run(notifymessage, message.guild.id);
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.green)
               .setDescription([
                 `${bot.emoji.check} **LFG Notify Message Set**`,
@@ -1132,7 +1123,7 @@ module.exports = {
         } else if (subcommand2 === "time") {
           if (bot.premium.get(message.guild.id) === 2) {
             if (!args[2] || !["2", "3", "4", "5"].includes(args[2])) {
-              let embed = new Discord.MessageEmbed()
+              let embed = new MessageEmbed()
                 .setColor(bot.colors.red)
                 .setDescription([
                   `${bot.emoji.cross} **Please provide a number between \`2\` and \`5\`**`,
@@ -1143,7 +1134,7 @@ module.exports = {
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
             }
             bot.db.prepare("UPDATE guilddata SET lfgcooldown=? WHERE guildid=?").run(parseInt(args[2]), message.guild.id);
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.green)
               .setDescription([
                 `${bot.emoji.check} **LFG Cooldown Updated**`,
@@ -1151,7 +1142,7 @@ module.exports = {
                 `**New Cooldown:** ${parseInt(args[2])} hours`])
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
           } else {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription([
                 `${bot.emoji.cross} **You cannot set the cooldown with the package you currently have.**`,
@@ -1160,7 +1151,7 @@ module.exports = {
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
           }
         } else {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setAuthor(`${b} Looking For Group Settings`)
             .setColor(bot.colors.main)
             .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -1174,7 +1165,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
       } else if (bot.premium.get(message.guild.id) === 0) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setDescription([
             `💎 **Premium Feature** 💎`,
@@ -1183,7 +1174,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
     } else {
-      let help = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setAuthor(`${b} Advanced Settings Menu`)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
         .setColor(bot.colors.main)
@@ -1205,7 +1196,7 @@ module.exports = {
           `\`${prefix}s reactionchannel\` - Manage Reaction Commands Channel`,
           ``,
           `${bot.emoji.info} Use these commands for more information!`])
-      return message.channel.send(help).catch(e => { });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
 }

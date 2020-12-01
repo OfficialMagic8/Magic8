@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["inv"],
   category: "INFO",
@@ -7,7 +7,7 @@ module.exports = {
   name: "invite",
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "invite.title")
         .replace(/{BOTNAME}/g, bot.user.username))
       .setDescription(bot.translate(bot, language, "invite.description").join("\n")

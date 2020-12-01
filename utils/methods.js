@@ -1,9 +1,9 @@
 module.exports.loadCommands = (bot) => {
   let reloading = false;
-  // if (bot.commands.size >= 1) {
-  //   bot.commands.clear();
-  //   reloading = true;
-  // }
+  if (bot.commands.size >= 1) {
+    bot.commands.clear();
+    reloading = true;
+  }
   console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
   bot.fs.readdirSync("./commands/").forEach(dir => {
     if (!dir.includes(".js")) {
@@ -66,7 +66,7 @@ async function fetchMessages(fetchedMessages, channel) { // long time no glitch.
   }
 }
 module.exports.error = (bot, message, language, e) => {
-  const Discord = require("discord.js");
+  const { MessageEmbed } = require("discord.js");
   let logs = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.caughterrors)
   let startedwith;
   let prefix = bot.prefixes.get(message.guild.id)
@@ -88,7 +88,7 @@ module.exports.error = (bot, message, language, e) => {
     `\`\`\``
   ];
   logs.send(error).catch(e => { });
-  let embed = new Discord.MessageEmbed()
+  let embed = new MessageEmbed()
     .setColor(bot.colors.red)
     .setDescription(bot.translate(bot, language, "unexpectederror").join("\n")
       .replace(/{CROSS}/g, bot.emoji.cross)
@@ -107,8 +107,8 @@ module.exports.loadLanguageProgress = (bot) => {
       progress = progress.toFixed(2);
       langArray.push(`| ${lang}`);
       bot.languagesprogress.set(lang, { lang: object.languagenamelong, flag: object.flag, progress: progress, authors: object.authors, link: object.link })
-    }
-  })
+    };
+  });
   bot.languagesprogress.sort(function (a, b) {
     return b.progress - a.progress;
   });
@@ -218,7 +218,7 @@ module.exports.UUIDfromString = (string) => {
     array.splice(i, 0, "-");
   return array.join("")
 }
-// const Discord = require("discord.js");
+// const { MessageEmbed } = require("discord.js");
 // const permsToDeny = ["READ_MESSAGE_HISTORY", "SEND_MESSAGES", "VIEW_CHANNEL", "EMBED_LINKS"]
 // const permsForCreator = ["READ_MESSAGE_HISTORY", "SEND_MESSAGES", "VIEW_CHANNEL", "EMBED_LINKS"]
 // const permsForSupport = ["READ_MESSAGE_HISTORY", "SEND_MESSAGES", "VIEW_CHANNEL", "EMBED_LINKS", "MANAGE_MESSAGES"]
@@ -235,7 +235,7 @@ module.exports.UUIDfromString = (string) => {
 //   try {
 //     ticketChannel = await member.guild.channels.create(newTicketName, { type: "text", permissionOverwrites: perms, parent: category.id });
 //   } catch (e) {
-//     let error = new Discord.MessageEmbed()
+//     let error = new MessageEmbed()
 //       .setColor(bot.colors.red)
 //       .setDescription(bot.translate(bot, language, "ticket.new.errorcreating").join("\n").replace(/{CROSS}/g, bot.emoji.cross)
 //         .replace(/{INFO}/g, bot.emoji.info))
@@ -256,7 +256,7 @@ module.exports.UUIDfromString = (string) => {
 //   }
 //   let ticketslog = member.guild.channels.cache.get(guildData.ticketslogchannelid)
 //   if (ticketslog) {
-//     let created = new Discord.MessageEmbed()
+//     let created = new MessageEmbed()
 //       .setColor(bot.colors.green)
 //       .setAuthor(bot.translate(bot, language, "ticket.new.created.title"), "https://cdn.discordapp.com/emojis/690971832387502180.png")
 //       .setDescription(bot.translate(bot, language, "ticket.new.created.description").join("\n").replace(/{CROSS}/g, bot.emoji.cross)

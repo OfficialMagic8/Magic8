@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "voiceStateUpdate",
   run: async (bot, oldState, newState) => {

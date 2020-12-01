@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const hastebin = require("hastebin-gen");
 module.exports = {
   aliases: [],
@@ -18,7 +18,7 @@ module.exports = {
                    `prefix: ${guildData.prefix}`].join("\n"))
     }
     hastebin(info.join("\n\n"), { url: "https://paste.mod.gg", extension: "txt"  }).then(haste => {
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(bot.colors.main)
       .setDescription(haste)
     message.channel.send(embed)

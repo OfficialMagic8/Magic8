@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["howhomo", "hg"],
   category: "FUN",
@@ -14,7 +14,7 @@ module.exports = {
         let id = args[0].replace(/[^0-9]/g, "");
         target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -22,7 +22,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(guildData.funcolor)
       .setDescription(bot.translate(bot, language, "howgay.success")
         .replace(/{TARGET}/g, target.user)

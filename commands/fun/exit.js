@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   category: "FUN",
@@ -20,7 +20,7 @@ module.exports = {
       bot.playingtictactoe.has(message.author.id) ||
       bot.playingtrivia.has(message.author.id) ||
       bot.spinningspinner.has(message.author.id)) {
-      let exitEmbed = new Discord.MessageEmbed()
+      let exitEmbed = new MessageEmbed()
         .setColor(bot.colors.lightred)
         .setDescription([`${bot.emoji.warning} **${message.author}, you are about to disconnect from all games you might be in!**`,
           `*If you really wish to leave, click ✅ within 20 seconds.*`])
@@ -28,7 +28,7 @@ module.exports = {
       try {
         exitMessage = await message.channel.send(exitEmbed)
       } catch (e) {
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setDescription(`${bot.emoji.cross} **${message.author}, there was an error disconnecting you from any games!**`)
           .setColor(bot.colors.red)
           .setFooter(bot.footer)
@@ -63,7 +63,7 @@ module.exports = {
               await exitMessage.reactions.removeAll().catch(e => { });
             } catch (e) {
               bot.playingcasino.delete(message.author.id);
-              let error = new Discord.MessageEmbed()
+              let error = new MessageEmbed()
                 .setDescription(`${bot.emoji.cross} **${message.author}, there was an error disconnecting you from any games!**`)
                 .setColor(bot.colors.red)
                 .setFooter(bot.footer)
@@ -72,7 +72,7 @@ module.exports = {
           }).catch(console.error)
       }, 1000)
     } else {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **${message.author}, you are not playing any games!**`)
       return message.channel.send(error).catch(e => { })

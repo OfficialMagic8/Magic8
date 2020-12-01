@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const botStats = {
   totalGuildsID: '652539034404519936',
   totalUsersID: '652538780376367104',
@@ -23,7 +23,7 @@ module.exports = {
     let channels = guild.channels.cache.filter(c => c.type !== "category").size
     let bots = guild.members.cache.filter(m => m.user.bot).size
     let created = guild.createdAt.toLocaleString().split("GMT")[0].trim()
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
     if (users <= 0 && channels <= 0 && bots <= 0) {
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       outage = true;
@@ -56,7 +56,7 @@ module.exports = {
       logsChannel.send(`Usage Data: ${haste}`).catch(e => { });
     }).catch(e => {
       console.error(e)
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **There was an error fetching the Guild Data!**`)
       return message.channel.send(error).catch(e => { });
@@ -65,7 +65,7 @@ module.exports = {
       logsChannel.send(`Guild Data: ${haste}`).catch(e => { });
     }).catch(e => {
       console.error(e)
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **There was an error fetching the Guild Data!**`)
       return message.channel.send(error).catch(e => { });

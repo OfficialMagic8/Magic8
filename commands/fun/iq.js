@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["myiq"],
   category: "FUN",
@@ -14,7 +14,7 @@ module.exports = {
       try {
         target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let embed = new Discord.MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
@@ -23,7 +23,7 @@ module.exports = {
       }
     }
     if (!target) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -48,7 +48,7 @@ module.exports = {
       let average = bot.translate(bot, language, "iq.average");
       finalmsg = average[Math.floor(Math.random() * average.length)];
     }
-    let embed = new Discord.MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(guildData.funcolor)
       .setThumbnail("https://cdn.discordapp.com/attachments/633725136163438592/709593616221339710/7b48zLprDHLzsc27xkCCKLI8w4T_8zokG-A4dVKvh2NBPXk_3Xto6R6TdEGFHV-0UHA.png")
       .setDescription(bot.translate(bot, language, "iq.description").join("\n")

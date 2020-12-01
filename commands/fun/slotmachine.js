@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["sm", "slot", "slots"],
   category: "FUN",
@@ -49,7 +49,7 @@ module.exports = {
       slot3 = emojis[nslot3];
     }
     if (bot.playingslotmachine.has(message.author.id)) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "slotmachine.alreadyplaying").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
@@ -62,7 +62,7 @@ module.exports = {
       .replace(/{USER}/g, message.author)
       .replace(/{LOADING}/g, bot.emoji.loading)
       .replace(/{ARROW}/g, bot.emoji.arrowright)
-    let slotEmbed = new Discord.MessageEmbed()
+    let slotEmbed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "slotmachine.title").replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: "true" }))
       .setColor(guildData.funcolor)
       .setDescription(startingdescription.replace(/{SPACE}/g, bot.emoji.emptyspace)

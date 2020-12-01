@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   description: "Toggle profanity filter",
@@ -13,14 +13,14 @@ module.exports = {
       if (!message.member.hasPermission("ADMINISTRATOR")) return;
       if (guildData.togglefilter === 0) {
         bot.database.prepare("UPDATE guilddata SET togglefilter=? WHERE guildid=?").run("1", message.guild.id)
-        let enable = new Discord.MessageEmbed()
+        let enable = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.utils.getTranslation(bot,language,"filter.toggle.enabled").join("\n").replace(/{CHECK}/g,bot.emoji.check).replace(/{INVITE}/g,bot.invite).replace(/{WARNING}/g,bot.emoji.warning))
           .setFooter(bot.footer)
         message.channel.send(enable).catch(e=>{}).then(m=>m.delete({timeout:15000}).catch(e=>{}))
       } else if (guildData.togglefilter === 1) {
         bot.database.prepare("UPDATE guilddata SET togglefilter=? WHERE guildid=?").run("0", message.guild.id)
-        let disable = new Discord.MessageEmbed()
+        let disable = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.utils.getTranslation(bot,language,"filter.toggle.disabled").join("\n").replace(/{CHECK}/g,bot.emoji.check).replace(/{WARNING}/g,bot.emoji.warning))
           .setFooter(bot.footer)

@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const faker = require('faker');
 module.exports = {
   aliases: [],
@@ -15,7 +15,7 @@ module.exports = {
       try {
         target = message.guild.members.cache.get(id) || await message.guild.members.fetch(id);
       } catch (e) {
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author))
@@ -24,7 +24,7 @@ module.exports = {
       }
     }
     if (!target) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -32,7 +32,7 @@ module.exports = {
       return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
     }
     if (bot.playerhacked.has(target.id)) {
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "hack.alreadyhacking")
           .replace(/{CROSS}/g, bot.emoji.cross)

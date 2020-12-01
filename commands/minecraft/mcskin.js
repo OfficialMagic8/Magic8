@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const MojangAPI = require("mojang-api");
 const helmURL = "https://minotar.net/helm/{USER}/100.png";
 const profileURL = "https://es.namemc.com/profile/{USER}";
@@ -14,7 +14,7 @@ module.exports = {
     let username = args.join(" ")
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!username) {
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "mcskin.enterusername")
           .replace(/{CROSS}/g, bot.emoji.cross)
@@ -30,14 +30,14 @@ module.exports = {
           let uuid = res.id;
           let niceLink = niceBodyURL.replace(/{UUID}/g, uuid);
           bot.canvas.loadImage(niceLink).then(image => {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setImage(niceLink)
               .setColor(bot.colors.main)
               .setAuthor(bot.translate(bot, language, "mcskin.success")
                 .replace(/{USER}/g, username), helmLink, profileLink);
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
           }).catch(e => {
-            let embed = new Discord.MessageEmbed()
+            let embed = new MessageEmbed()
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "mcskin.invalid")
                 .replace(/{CROSS}/g, bot.emoji.cross)
@@ -46,7 +46,7 @@ module.exports = {
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
           });
         } else if (err) {
-          let embed = new Discord.MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "mcskin.invalid")
               .replace(/{CROSS}/g, bot.emoji.cross)

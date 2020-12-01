@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "anal",
   aliases: [],
@@ -17,7 +17,7 @@ module.exports = {
       try{
         target = bot.users.cache.get(id) || await bot.users.fetch(id);
       }catch(e){
-        let error = new Discord.MessageEmbed()
+        let error = new MessageEmbed()
           .setDescription(bot.utils.getTranslation(bot,language,"it").replace(/{CROSS}/g,bot.emoji.cross).replace(/{USER}/g,message.author))
           .setColor(bot.colors.red)
         return message.channel.send(error);
@@ -25,14 +25,14 @@ module.exports = {
     }
     try{
       let link = await bot.nekos.nsfw.anal()
-      let anal = new Discord.MessageEmbed()
+      let anal = new MessageEmbed()
         .setDescription(bot.utils.getTranslation(bot,language,`anal.success.${target.id===message.author.id?"self":"other"}.description`).join("\n").replace(/{CHECK}/g,bot.emoji.check).replace(/{USER}/g,message.author).replace(/{TARGET}/g,target))
         .setColor("RANDOM")
         .setImage(link.url)
         .setFooter(`${bot.footer} - Anal`)
       message.channel.send(anal);
     }catch(e){
-      let error = new Discord.MessageEmbed()
+      let error = new MessageEmbed()
         .setDescription(bot.utils.getTranslation(bot,language,"anal.error.description").join("\n").replace(/{CROSS}/g,bot.emoji.cross).replace(/{USER}/g,message.author))
         .setColor(bot.colors.red)
       return message.channel.send(error);
