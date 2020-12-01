@@ -63,8 +63,8 @@ module.exports = {
           }
           let embed = new Discord.MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
-            .setThumbnail(`http://status.mclive.eu/${server}/${server}/banner.png`)
-            .setImage(data.icon)
+            .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
+            .setThumbnail(data.icon.replace(/\\/g, ""))
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
               .replace(/{STATUS}/g, data.online ? bot.translate(bot, language, "mcserver.online") : bot.translate(bot, language, "mcserver.offline"))
@@ -75,6 +75,7 @@ module.exports = {
               .replace(/{PLAYERS}/g, finalplayersarray.length >= 1 ? finalplayersarray.map(p => `**-** ${p.replace(/_/g, "\_")}`) : ""));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
+          console.error(e)
           let embed = new Discord.MessageEmbed()
             .setColor(bot.colors.red)
             .setFooter(bot.translate(bot, language, "mcserver.errorfooter"))
