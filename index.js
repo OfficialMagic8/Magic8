@@ -83,7 +83,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
     bot.fs.copyFileSync('./data/guildData.db', `./backups/${filename}.db`);
     logs.send(`${bot.emoji.check} **Backup Success**`, {
       files: [{
-        attachment: `./databackups/${filename}.db`,
+        attachment: `./backups/${filename}.db`,
         name: `${filename}`
       }]
     })
