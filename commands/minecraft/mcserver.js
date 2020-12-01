@@ -76,7 +76,7 @@ module.exports = {
               .replace(/{VERSIONS}/g, data.version ? data.version : bot.translate(bot, language, "none"))
               .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
               .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
-              .replace(/{PLAYERS}/g, finalplayersarray.length >= 1 ? finalplayersarray.map(p => `**-** ${p.replace(/_/g, "\_")}`) : ""));
+              .replace(/{PLAYERS}/g, finalplayersarray.length >= 1 ? finalplayersarray.map(p => `**-** ${p.replace(/_/g, "\_")}`).join("\n") : ""));
           if (thumbnail) embed.setThumbnail(thumbnail)
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
