@@ -10,8 +10,8 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let target = message.author;
     if (args[0]) {
-      let id = args[0].replace(/[^0-9]/g, "");
       try {
+        let id = args[0].replace(/[^0-9]/g, "");
         target = bot.users.cache.get(id) || await bot.users.fetch(id);
       } catch (e) {
         let embed = new MessageEmbed()
