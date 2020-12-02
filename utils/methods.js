@@ -11,7 +11,7 @@ module.exports.loadCommands = (bot) => {
         const commands = files.filter(f => f.split(".").pop() === "js");
         for (let file of commands) {
           if (reloading) {
-            delete require.cache[require.resolve(`../${dir}/${file}.js`)];
+            delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
           } else {
             let pull = require(`../commands/${dir}/${file}`);
             if (!pull) continue;
