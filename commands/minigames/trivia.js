@@ -1,5 +1,5 @@
-  const { MessageEmbed } = require("discord.js");
-const categories = new Discord.Collection();
+const { MessageEmbed, Collection } = require("discord.js");
+const categories = new Collection();
 categories.set("general", 9)
 categories.set("books", 10)
 categories.set("films", 11)
