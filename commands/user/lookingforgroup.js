@@ -25,15 +25,14 @@ module.exports = {
             // console.log("adding role")
             try {
               let cooldown = guildData.lfgcooldown;
-              member.roles.add(bot.lfgroles.get(message.guild.id))
-              let current = JSON.parse(guildData.lfgusers)
+              member.roles.add(bot.lfgroles.get(message.guild.id));
               // let object = {
               //   userid: message.author.id,
               //   time: Date.now()
               // }
-              current.push(message.author.id)
+              data.push(message.author.id)
               // bot.lfgusers.set(message.guild.id, current)
-              bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run(JSON.stringify(current), message.guild.id)
+              bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run(JSON.stringify(data), message.guild.id)
               setTimeout(async () => {
                 let current = JSON.parse(guildData.lfgusers)
                 // let current = bot.lfgusers.get(message.guild.id)
@@ -80,7 +79,7 @@ module.exports = {
                 let embed = new MessageEmbed()
                   .setColor(bot.colors.main)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.memberlist").join("\n")
-                    .replace(/{LIST}/g, memberarray.map(m => `**-** ${m}`).join("\n")));
+                    .replace(/{LIST}/g, memberarray.map(m => `**•** ${m}`).join("\n")));
                 return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
               }
             }
@@ -99,7 +98,7 @@ module.exports = {
               let embed = new MessageEmbed()
                 .setColor(bot.colors.main)
                 .setDescription(bot.translate(bot, language, "lookingforgroup.memberlist").join("\n")
-                  .replace(/{LIST}/g, memberarray.map(m => `**-** ${m}`).join("\n")));
+                  .replace(/{LIST}/g, memberarray.map(m => `**•** ${m}`).join("\n")));
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
             }
             if (args[0].toLowerCase() === "removeall") {

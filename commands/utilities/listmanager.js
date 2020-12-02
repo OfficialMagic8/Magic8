@@ -29,13 +29,13 @@ module.exports = {
       });
       let listarray = [];
       lists.forEach(list => {
-        listarray.push(`**-** ${list.name} (${list.items.length}) - ${list.creationdate.split(" ")[0].replace(",", "")}`);
+        listarray.push(`**•** ${list.name} (${list.items.length}) - ${list.creationdate.split(" ")[0].replace(",", "")}`);
       });
       let finallistarray = lists.length === 0 ? `*${bot.translate(bot, language, "none")}*` : listarray.join("\n");
       let listname = args.slice(1).join(" ")
       if (listname && listnames.includes(listname.toLowerCase())) {
         let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
-        let items = list.items.length === 0 ? `*${bot.translate(bot, language, "none")}*` : list.items.map(i => `**-** ${i.trim()}`).join("\n");
+        let items = list.items.length === 0 ? `*${bot.translate(bot, language, "none")}*` : list.items.map(i => `**•** ${i.trim()}`).join("\n");
         if (message.member.hasPermission("MANAGE_GUILD")) {
           let hastetext = [
             `Magic8 - ${message.guild.name} - List Manager`,
@@ -100,7 +100,7 @@ module.exports = {
       }
       let listsarray = [];
       lists.forEach(l => {
-        listsarray.push(`**-** ${l.name} (${l.items.length})`);
+        listsarray.push(`**•** ${l.name} (${l.items.length})`);
       })
       if (!args[1]) {
         let embed = new MessageEmbed()
@@ -291,7 +291,7 @@ module.exports = {
       })
       let listsarray = [];
       lists.forEach(l => {
-        listsarray.push(`**-** ${l.name}`);
+        listsarray.push(`**•** ${l.name}`);
       });
       let list = lists.find(l => l.name === listname.toLowerCase());
       if (!listcopy.includes(listname.toLowerCase())) {
@@ -341,7 +341,7 @@ module.exports = {
       });
       let listsarray = [];
       lists.forEach(l => {
-        listsarray.push(`**-** ${l.name} (${l.items.length})`);
+        listsarray.push(`**•** ${l.name} (${l.items.length})`);
       });
       let listname = args.slice(1).join(" ");
       if (!listname) {
@@ -404,7 +404,7 @@ module.exports = {
               .setDescription(bot.translate(bot, language, "listmanager.bulkaddsuccess")
                 .replace(/{CHECK}/g, bot.emoji.check)
                 .replace(/{LISTNAME}/g, list.name)
-                .replace(/{ITEMS}/g, list.items.map(i => `**-** ${i.trim()}`).join("\n")));
+                .replace(/{ITEMS}/g, list.items.map(i => `**•** ${i.trim()}`).join("\n")));
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }).catch(collected => {
             let embed = new MessageEmbed()
@@ -426,7 +426,7 @@ module.exports = {
       });
       let listsarray = [];
       lists.forEach(l => {
-        listsarray.push(`**-** ${l.name} (${l.items.length})`);
+        listsarray.push(`**•** ${l.name} (${l.items.length})`);
       });
       if (lists.length === 0) {
         let embed = new MessageEmbed()
@@ -486,7 +486,7 @@ module.exports = {
                 .setDescription(bot.translate(bot, language, "listmanager.addsuccess").join("\n")
                   .replace(/{CHECK}/g, bot.emoji.check)
                   .replace(/{LISTNAME}/g, list.name)
-                  .replace(/{ITEMS}/g, list.items.map(i => `**-** ${i.trim()}`).join("\n")))
+                  .replace(/{ITEMS}/g, list.items.map(i => `**•** ${i.trim()}`).join("\n")))
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
             }).catch(e => {
               return bot.error(bot, message, language, e);
@@ -518,7 +518,7 @@ module.exports = {
       });
       let listsarray = [];
       lists.forEach(list => {
-        listsarray.push(`**-** ${list.name}`);
+        listsarray.push(`**•** ${list.name}`);
       });
       let listname = args.slice(1).join(" ")
       if (!listname) {

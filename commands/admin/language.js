@@ -272,7 +272,7 @@ module.exports = {
             .replace(/{LANGUAGENAME}/g, `[${getlang.lang}](${getlang.link})`)
             .replace(/{LANGUAGESHORT}/g, args[1].toLowerCase())
             .replace(/{PROGRESS}/g, getlang.progress)
-            .replace(/{AUTHORS}/g, getlang.authors.map(a => `**-** ${a}`).join("\n")));
+            .replace(/{AUTHORS}/g, getlang.authors.map(a => `**•** ${a}`).join("\n")));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else {
         let embed = new MessageEmbed()

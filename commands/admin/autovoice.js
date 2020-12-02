@@ -40,7 +40,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{MAX}/g, max)
             .replace(/{UPGRADE}/g, upgradestring)
-            .replace(/{CURRENTCHANNELS}/g, available.map(a => `**-** ${a}`).join("\n")))
+            .replace(/{CURRENTCHANNELS}/g, available.map(a => `**•** ${a}`).join("\n")))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       let types = ["duo", "trio", "squad"]
@@ -160,7 +160,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "autovoice.invalidchannel").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INPUT}/g, args[1])
-            .replace(/{AVAILABLE}/g, available.map(a => `**-** ${a}`).join("\n")))
+            .replace(/{AVAILABLE}/g, available.map(a => `**•** ${a}`).join("\n")))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       } else {
         try {
@@ -263,7 +263,7 @@ module.exports = {
           .replace(/{ENABLED}/g, enabled)
           .replace(/{CATEGORY}/g, voicecategory)
           .replace(/{COOLDOWN}/g, guildData.autovoicecooldown)
-          .replace(/{CHANNELS}/g, thechannels.map(c => `**-** ${c}`).join("\n")));
+          .replace(/{CHANNELS}/g, thechannels.map(c => `**•** ${c}`).join("\n")));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     } else if (subcommand === "category") {
       if (!args[1]) {
@@ -332,7 +332,7 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.notacategory").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{CATEGORIES}/g, categoriesarray.map(c => `**-** ${c}`).join("\n")));
+            .replace(/{CATEGORIES}/g, categoriesarray.map(c => `**•** ${c}`).join("\n")));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       let permissionsInChannel = message.guild.me.permissionsIn(possiblechannel)

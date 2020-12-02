@@ -50,7 +50,7 @@ module.exports = {
           .setAuthor(bot.translate(bot, language, "antiping.addusermenutitle")
             .replace(/{BOTNAME}/g, bot.user.username))
           .setDescription(bot.translate(bot, language, "antiping.addusermenu").join("\n")
-            .replace(/{USERS}/g, usersarray.map(u => `**-** ${u}`).join("\n"))
+            .replace(/{USERS}/g, usersarray.map(u => `**•** ${u}`).join("\n"))
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
@@ -122,7 +122,7 @@ module.exports = {
           .setAuthor(bot.translate(bot, language, "antiping.removeusermenutitle")
             .replace(/{BOTNAME}/g, bot.user.username))
           .setDescription(bot.translate(bot, language, "antiping.removeusermenu").join("\n")
-            .replace(/{USERS}/g, usersarray.length <= 0 ? usersarray.map(u => `**-** ${u}`).join("\n") : `**-** *${bot.translate(bot, language, "none")}*`)
+            .replace(/{USERS}/g, usersarray.length <= 0 ? usersarray.map(u => `**•** ${u}`).join("\n") : `**•** *${bot.translate(bot, language, "none")}*`)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
@@ -211,7 +211,7 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invalidrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{ROLES}/g, rolesarray.map(r => `**-** ${r}`).join("\n")));
+            .replace(/{ROLES}/g, rolesarray.map(r => `**•** ${r}`).join("\n")));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       let bypassroles = JSON.parse(guildData.antipingbypassroles)
@@ -264,7 +264,7 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invalidbypassrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{BYPASSROLES}/g, rolesarray.map(r => `**-** ${r}`).join("\n")));
+            .replace(/{BYPASSROLES}/g, rolesarray.map(r => `**•** ${r}`).join("\n")));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       if (!bypassroles.includes(targetrole.id)) {
@@ -313,7 +313,7 @@ module.exports = {
           .replace(/{BOTNAME}/g, bot.user.username))
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "antiping.viewroles").join("\n")
-          .replace(/{BYPASSROLES}/g, bypassarray.map(r => `**-** ${r}`).join("\n")))
+          .replace(/{BYPASSROLES}/g, bypassarray.map(r => `**•** ${r}`).join("\n")))
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     } else if (subcommand === "users") {
       let usersarray = []
@@ -334,7 +334,7 @@ module.exports = {
           .replace(/{BOTNAME}/g, bot.user.username))
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "antiping.viewusers").join("\n")
-          .replace(/{USERS}/g, usersarray.map(u => `**-** ${u}`).join("\n")))
+          .replace(/{USERS}/g, usersarray.map(u => `**•** ${u}`).join("\n")))
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     } else if (subcommand === "logchannel") {
       if (args[1] && args[1].toLowerCase() === "remove") {
