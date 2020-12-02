@@ -12,7 +12,7 @@ module.exports = {
     if (isNaN(args[1])) return;
     if (bot.guilds.cache.has(guild.id)) {
       bot.db.prepare("UPDATE guilddata SET premium=? WHERE guildid=?").run(parseInt(args[1]), guild.id);
-      bot.premium.set(parseInt(args[1]), message.guild.id)
+      bot.premium.set(message.guild.id, parseInt(args[1]))
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([`${bot.emoji.check} **Set \`${guild.name}\` Premium To: ${parseInt(args[1])}**`]);

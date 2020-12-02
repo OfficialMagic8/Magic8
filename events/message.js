@@ -81,7 +81,7 @@ module.exports = {
                 .replace(/{WARNING}/g, bot.emoji.warning)
                 .replace(/{USER}/g, message.author)
                 .replace(/{PINGED}/g, mentionsarray.join("\n")));
-            return logchannel.send(embed).catch(e => { });
+            return logchannel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
         }
       }
