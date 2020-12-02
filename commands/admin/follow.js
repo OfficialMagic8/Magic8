@@ -5,7 +5,6 @@ module.exports = {
   description: "Get updates from the Support Server directly to yours.",
   emoji: "▶️",
   name: "follow",
-  dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!message.guild.me.hasPermission(["MANAGE_WEBHOOKS"])) {
