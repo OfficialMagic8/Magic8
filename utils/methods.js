@@ -10,17 +10,14 @@ module.exports.loadCommands = (bot) => {
         if (err) console.error(err);
         const commands = files.filter(f => f.split(".").pop() === "js");
         for (let file of commands) {
-          if (reloading) {
-            delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
-          } else {
-            let pull = require(`../commands/${dir}/${file}`);
-            if (!pull) continue;
-            if (pull.name) {
-              bot.commands.set(pull.name, pull);
-            } else continue;
-            if (pull.aliases) {
-              pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
-            }
+          if (reloading) delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
+          let pull = require(`../commands/${dir}/${file}`);
+          if (!pull) continue;
+          if (pull.name) {
+            bot.commands.set(pull.name, pull);
+          } else continue;
+          if (pull.aliases) {
+            pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
           }
         }
       });

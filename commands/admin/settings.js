@@ -215,7 +215,7 @@ module.exports = {
               `${bot.emoji.info} If you want to add new replies, use \`${prefix}s setreplies\` for more information.`])
           return message.channel.send(replies).catch(e => { return bot.error(bot, message, language, e); });
         }
-        let finalReplies = `- ${getreplies.map(r => `**-** ${r}`).join("\n")}`
+        let finalReplies = `${getreplies.map(r => `**-** ${r}`).join("\n")}`
         let finalDoc = finalReplies + "\r\n\r\n**Preformatted Current Replies:**\r\n" + getreplies.join(" | ");
         if (finalReplies.length < 1750) {
           let replies = new MessageEmbed()

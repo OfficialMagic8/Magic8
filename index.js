@@ -76,8 +76,8 @@ bot.schedule.scheduleJob("0 0 1 * *", async function () {
 bot.schedule.scheduleJob("0 * * * *", async function () {
   let logs = bot.channels.cache.get(bot.config.commandlogs);
   let getdate = new Date().toLocaleString();
-  let day = getdate.split(" ")[0].replace(/\\/g, "_").replace(/,/g, "__");
-  let time = getdate.split(" ")[1].replace(/\:/g, "_");
+  let day = getdate.split(" ")[0].replace(/\//g, ".").replace(/,/g, "__");
+  let time = getdate.split(" ")[1].replace(/\:/g, ".");
   let filename = `${day}${time}`;
   try {
     bot.fs.copyFileSync('./data/guildData.db', `./backups/${filename}.db`);
@@ -86,7 +86,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
         attachment: `./backups/${filename}.db`,
         name: `${filename}`
       }]
-    })
+    });
   } catch (e) {
     console.error(`Error Backing Up`);
     console.error(e);

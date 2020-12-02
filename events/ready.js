@@ -87,12 +87,15 @@ module.exports = {
         bot.utils.registerGuild(bot, guild)
         guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       }
-      if (JSON.parse(guildData.lfgusers).length >=1) {
+      if (JSON.parse(guildData.lfgusers).length >= 1) {
         bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run("[]", guild.id)
       }
-      if (guildData.ballcustomreplies === "none") {
+      if (["none", "[none]"].includes(guildData.ballcustomreplies)) {
+        bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run("[]", guild.id)
+      }
+      if (!["none", "[]"].includes(guildData.ballcustomreplies)) {
         let split = guildData.ballcustomreplies.split("|")
-        bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run(JSON.stringify(split), guild.id)
+        bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run(split, guild.id)
       }
       let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
       if (!usageData) {

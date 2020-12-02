@@ -63,7 +63,7 @@ module.exports.loadVotedUsers = async (bot) => {
     let idarray = [];
     for (let v of voted) {
       let repeats = voted.filter(i => i.name === v.name);
-      names.push(v.name)
+      names.push(v.name);
       if (names.filter(i => i === v.name).length <= 1) {
         let o = {
           name: v.name,

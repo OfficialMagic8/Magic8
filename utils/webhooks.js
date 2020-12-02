@@ -63,6 +63,7 @@ module.exports.dbl = async (bot, request) => {
   let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
   let weekend = body.isWeekend ? body.isWeekend : `false`;
+  const { MessageEmbed } = require("discord.js");
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -108,6 +109,7 @@ module.exports.labs = async (bot, request) => {
   };
   let usertag = user.tag;
   let votechannel = bot.channels.cache.get(bot.config.votechannel);
+  const { MessageEmbed } = require("discord.js");
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -147,6 +149,7 @@ module.exports.boats = async (bot, request) => {
       }
     }
   }
+  const { MessageEmbed } = require("discord.js");
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
