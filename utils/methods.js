@@ -1,7 +1,6 @@
 module.exports.loadCommands = (bot) => {
   let reloading = false;
   if (bot.commands.size >= 1) {
-    delete require.cache[require.resolve(`./${command.name}.js`)];
     reloading = true;
   }
   console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
