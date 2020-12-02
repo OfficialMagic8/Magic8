@@ -116,17 +116,17 @@ module.exports = {
       let disabled = get.map(c => `\`${c}\``).join(" ")
       if (get.length === 0) {
         bot.disabledcommands.delete(message.guild.id)
-        disabled = `*none*`
+        disabled = `\`${bot.translate(bot, language, "none")}\``;
       }
-      let max = bot.maxtoggledcommands.get(bot.premium.get(message.guild.id))
+      let max = bot.maxtoggledcommands.get(bot.premium.get(message.guild.id));
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
+        .setAuthor(`${bot.user.username} - Disabled Commands: (${get.length}/${max})`)
+        .setThumbnail(bot.user.displayAvatarURL({ formant: "png" }))
         .setDescription([
-          `**Disabled Commands: ${get.length}/${max}**`,
-          ``,
           `${disabled}`,
           ``,
-          `${bot.emoji.info} To disable or enable a command, type: \`${prefix}s toggle\``])
+          `${bot.emoji.info} To disable or enable a command, type: \`${prefix}s toggle\``]);
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     } else if (subcommand === "prefix") {
       if (!args[1] || args[1].length <= 0) {
@@ -135,7 +135,7 @@ module.exports = {
           .setDescription([
             `${bot.emoji.info} **Current Prefix:** \`${prefix}\``,
             ``,
-            `**To set prefix:** \`${prefix}s prefix <prefix>\``,
+            `**To Set Prefix:** \`${prefix}s prefix <prefix>\``,
             ``,
             `${bot.emoji.warning} Make sure you don't use special characters like chinese or unicode emojis!`])
         return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
@@ -194,7 +194,7 @@ module.exports = {
               upgradestring]);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
-        bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run(cleanReplies, message.guild.id);
+        bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run(JSON.stringify(cleanReplies), message.guild.id);
         let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription([
@@ -215,7 +215,7 @@ module.exports = {
               `${bot.emoji.info} If you want to add new replies, use \`${prefix}s setreplies\` for more information.`])
           return message.channel.send(replies).catch(e => { return bot.error(bot, message, language, e); });
         }
-        let finalReplies = `${getreplies.map(r => `**-** ${r}`).join("\n")}`
+        let finalReplies = `${getreplies.map(r => `**•** ${r}`).join("\n")}`
         let finalDoc = finalReplies + "\r\n\r\n**Preformatted Current Replies:**\r\n" + getreplies.join(" | ");
         if (finalReplies.length < 1750) {
           let replies = new MessageEmbed()
@@ -506,7 +506,7 @@ module.exports = {
       }
     } else if (subcommand === "funchannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
-        let channels = JSON.parse(guildData.funchannel);
+        let channels = bot.funchannels.get(message.guild.id) || JSON.parse(guildData.funchannel)
         if (channels.length === 0) {
           let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Fun\` commands.**`])
@@ -521,7 +521,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
         let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id));
-        let channels = JSON.parse(guildData.funchannel);
+        let channels = bot.funchannels.get(message.guild.id) || JSON.parse(guildData.funchannel);
         if (channels.length >= max) {
           let channelarray = [];
           channels.forEach(c => {
@@ -544,13 +544,12 @@ module.exports = {
               `${channelarray.join("\n")}`]);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
-        if (guildData.funchannel.includes(message.channel.id)) {
+        if (channels.includes(message.channel.id)) {
           let alreadysaved = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is already saved for \`Fun\` commands!**`])
           return message.channel.send(alreadysaved).catch(e => { return bot.error(bot, message, language, e); });
-        } else if (!guildData.funchannel.includes(message.channel.id)) {
-          let channels = JSON.parse(guildData.funchannel);
+        } else if (!channels.includes(message.channel.id)) {
           channels.push(message.channel.id);
           bot.funchannels.set(message.guild.id, channels);
           bot.db.prepare("UPDATE guilddata SET funchannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id);
@@ -570,7 +569,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (args[1] && args[1].toLowerCase() === "remove") {
-        let channels = JSON.parse(guildData.funchannel)
+        let channels = bot.funchannels.get(message.guild.id) || JSON.parse(guildData.funchannel)
         if (!channels.includes(message.channel.id)) {
           let notsaved = new MessageEmbed()
             .setColor(bot.colors.red)
@@ -599,13 +598,13 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
-        let channels = JSON.parse(guildData.funchannel)
+        let channels = bot.funchannels.get(message.guild.id) || JSON.parse(guildData.funchannel)
         let channelarray = []
         channels.forEach(c => {
           channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c))
-        })
+        });
         if (channels.length === 0) {
-          channelarray = ["*Open to all channels*"]
+          channelarray = ["*Open to all channels*"];
         }
         let embed = new MessageEmbed()
           .setAuthor(`${b} Fun Commands - Channel Settings`)
@@ -619,12 +618,12 @@ module.exports = {
             `\`${prefix}s funchannel clear\``,
             ``,
             `**Channel List:**`,
-            `${channelarray.join("\n")}`].join("\n"))
+            `${channelarray.join("\n")}`]);
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "minigamechannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
-        let channels = JSON.parse(guildData.minigamechannel)
+        let channels = bot.minigamechannels.get(message.guild.id) || JSON.parse(guildData.minigamechannel)
         if (channels.length === 0) {
           let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Minigames\`.**`])
@@ -639,7 +638,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
         let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id));
-        let channels = JSON.parse(guildData.minigamechannel);
+        let channels = bot.minigamechannels.get(message.guild.id) || JSON.parse(guildData.minigamechannel);
         if (channels.length >= max) {
           let channelarray = [];
           channels.forEach(c => {
@@ -662,13 +661,12 @@ module.exports = {
               `${channelarray.join("\n")}`]);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
-        if (guildData.minigamechannel.includes(message.channel.id)) {
+        if (channels.includes(message.channel.id)) {
           let alreadysaved = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is already saved for \`Minigames\`!**`].join("\n"))
           return message.channel.send(alreadysaved).catch(e => { return bot.error(bot, message, language, e); });
-        } else if (!guildData.minigamechannel.includes(message.channel.id)) {
-          let channels = JSON.parse(guildData.minigamechannel);
+        } else if (!channels.includes(message.channel.id)) {
           channels.push(message.channel.id);
           bot.db.prepare("UPDATE guilddata SET minigamechannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id)
           let channelarray = [];
@@ -693,7 +691,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (args[1] && args[1].toLowerCase() === "remove") {
-        let channels = JSON.parse(guildData.minigamechannel)
+        let channels = bot.minigamechannels.get(message.guild.id) || JSON.parse(guildData.minigamechannel)
         if (!channels.includes(message.channel.id)) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
@@ -722,7 +720,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
-        let channels = JSON.parse(guildData.minigamechannel);
+        let channels = bot.minigamechannels.get(message.guild.id) || JSON.parse(guildData.minigamechannel);
         let channelarray = [];
         channels.forEach(c => {
           channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c));
@@ -747,7 +745,7 @@ module.exports = {
       }
     } else if (subcommand === "miscellaneouschannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
-        let channels = JSON.parse(guildData.miscellaneouschannel)
+        let channels = bot.miscellaneouschannels.get(message.guild.id) || JSON.parse(guildData.miscellaneouschannel)
         if (channels.length === 0) {
           let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Miscellaneous\` commands.**`])
@@ -762,7 +760,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
         let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id))
-        let channels = JSON.parse(guildData.miscellaneouschannel);
+        let channels = bot.miscellaneouschannels.get(message.guild.id) || JSON.parse(guildData.miscellaneouschannel);
         if (channels.length >= max) {
           let channelarray = []
           channels.forEach(c => {
@@ -785,15 +783,13 @@ module.exports = {
               `${channelarray.join("\n")}`])
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
-        if (guildData.miscellaneouschannel.includes(message.channel.id)) {
+        if (channels.includes(message.channel.id)) {
           let alreadysaved = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is already saved for \`Miscellaneous\` commands!**`].join("\n"))
           return message.channel.send(alreadysaved).catch(e => { return bot.error(bot, message, language, e); });
-        } else if (!guildData.miscellaneouschannel.includes(message.channel.id)) {
-          let channels = JSON.parse(guildData.miscellaneouschannel)
-          let x = message.channel.id
-          channels.push(x)
+        } else if (!channels.includes(message.channel.id)) {
+          channels.push(message.channel.id);
           bot.db.prepare("UPDATE guilddata SET miscellaneouschannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id)
           let channelarray = [];
           channels.forEach(c => {
@@ -817,7 +813,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (args[1] && args[1].toLowerCase() === "remove") {
-        let channels = JSON.parse(guildData.miscellaneouschannel)
+        let channels = bot.miscellaneouschannels.get(message.guild.id) || JSON.parse(guildData.miscellaneouschannel)
         if (channels.includes(message.channel.id)) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
@@ -846,7 +842,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
-        let channels = JSON.parse(guildData.miscellaneouschannel)
+        let channels = bot.miscellaneouschannels.get(message.guild.id) || JSON.parse(guildData.miscellaneouschannel)
         let channelarray = []
         channels.forEach(c => {
           channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c));
@@ -871,7 +867,7 @@ module.exports = {
       }
     } else if (subcommand === "reactionchannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
-        let channels = JSON.parse(guildData.reactionchannel)
+        let channels = bot.reactionchannels.get(message.guild.id) || JSON.parse(guildData.reactionchannel)
         if (channels.length === 0) {
           let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Reaction\` commands.**`])
@@ -886,7 +882,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
         let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id))
-        let channels = JSON.parse(guildData.reactionchannel)
+        let channels = bot.reactionchannels.get(message.guild.id) || JSON.parse(guildData.reactionchannel)
         if (channels.length >= max) {
           let channelarray = []
           channels.forEach(c => {
@@ -909,13 +905,12 @@ module.exports = {
               `${channelarray.join("\n")}`])
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
         }
-        if (guildData.reactionchannel.includes(message.channel.id)) {
+        if (channels.includes(message.channel.id)) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is already saved for \`Reaction\` commands.**`].join("\n"))
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-        } else if (!guildData.reactionchannel.includes(message.channel.id)) {
-          let channels = JSON.parse(guildData.reactionchannel)
+        } else if (!channels.includes(message.channel.id)) {
           channels.push(message.guild.id)
           bot.db.prepare("UPDATE guilddata SET reactionchannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id)
           let channelarray = [];
@@ -940,9 +935,9 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (args[1] && args[1].toLowerCase() === "remove") {
-        let embed = JSON.parse(guildData.reactionchannel)
+        let channels = bot.reactionchannels.get(message.guild.id) || JSON.parse(guildData.reactionchannel)
         if (!channels.includes(message.channel.id)) {
-          let notsaved = new MessageEmbed()
+          let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **This channel is not saved for \`Reaction\` commands!**`].join("\n"))
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
@@ -975,7 +970,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
-        let channels = JSON.parse(guildData.reactionchannel)
+        let channels = bot.reactionchannels.get(message.guild.id) ||JSON.parse(guildData.reactionchannel)
         let channelarray = []
         channels.forEach(c => {
           channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c))
