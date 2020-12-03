@@ -41,7 +41,6 @@ module.exports = {
     ctx.textBaseline = 'middle'
     ctx.fillStyle = "#ffffff"
     ctx.fillText(messagetosend, width / 2, height / 2)
-    const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'supreme.png');
     message.channel.send({
       files: [{
         attachment: canvas.toBuffer(),
