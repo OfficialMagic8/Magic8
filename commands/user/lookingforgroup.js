@@ -8,38 +8,36 @@ module.exports = {
   toggleable: true,
   premium: true,
   run: async (bot, message, args, prefix, guildData) => {
-    // console.log("command run")
     let language = bot.utils.getLanguage(bot, guildData.language)
     if ([1, 2].includes(bot.premium.get(message.guild.id))) {
-      // console.log("has premium")
       if (bot.lfgroles.has(message.guild.id)) {
-        // console.log("not none")
         let role = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
-        if (message.guild.roles.cache.has(role.id)) {
+        if (role) {
           let member = await message.guild.members.fetch(message.author.id)
-          let data = JSON.parse(guildData.lfgusers)
-          // bot.lfgusers.set(message.guild.id, bot.lfgusers.has(message.guild.id) ? bot.lfgusers.get(message.guild.id) : new Array())
-          // let data = bot.lfgusers.get(message.guild.id)
-          let sort = data.find(userid => userid === message.author.id)
-          if (!member.roles.cache.has(bot.lfgroles.get(message.guild.id)) && sort === undefined && !args[0]) {
-            // console.log("adding role")
+          let users = bot.lfgusers.get(message.guild.id)
+          if (!users) {
+            let a = [];
+            a.push(message.author.id)
+            bot.lfgusers.set(message.guild.id, a);
+            users = bot.lfgusers.get(message.guild.id);
+          }
+          if (!member.roles.cache.has(bot.lfgroles.get(message.guild.id)) && !args[0]) {
             try {
               let cooldown = guildData.lfgcooldown;
               member.roles.add(bot.lfgroles.get(message.guild.id));
-              // let object = {
-              //   userid: message.author.id,
-              //   time: Date.now()
-              // }
-              data.push(message.author.id)
-              // bot.lfgusers.set(message.guild.id, current)
-              bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run(JSON.stringify(data), message.guild.id)
+              users.push(message.author.id);
+              bot.lfgusers.set(message.guild.id, users);
               setTimeout(async () => {
-                let current = JSON.parse(guildData.lfgusers)
-                // let current = bot.lfgusers.get(message.guild.id)
-                let sort = current.find(userid => userid === message.author.id)
-                current.splice(current.indexOf(sort), 1)
-                // bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run(JSON.stringify(current), message.guild.id)
-                let member1 = message.guild.members.get(message.author.id) || await message.guild.members.fetch(message.author.id)
+                let users = bot.lfgusers.get(message.guild.id);
+                if (!users) return;
+                let sort = users.find(userid => userid === message.author.id);
+                let member1 = message.guild.members.cache.get(message.author.id) || await message.guild.members.fetch(message.author.id);
+                if (!sort && !member1.roles.cache.has(bot.lfgroles.get(message.guild.id))) return;
+                let removed = users.filter(user => user !== member1.id);
+                bot.lfgusers.set(message.guild.id, removed);
+                if (bot.lfgusers.get(message.guild.id).length <= 0) {
+                  bot.lfgusers.delete(message.guild.id);
+                }
                 if (message.guild.roles.cache.has(bot.lfgroles.get(message.guild.id)) && message.guild.channels.cache.has(guildData.lfgnotifychannel) && guildData.lfgnotifymessage) {
                   let log = message.guild.channels.cache.get(guildData.lfgnotifychannel)
                   log.send(guildData.lfgnotifymessage.replace(/{USER}/g, message.author).replace(/{LFG}/, role)).catch(e => { });
@@ -64,17 +62,16 @@ module.exports = {
             }
           } else if (member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
             if (args[0] && args[0].toLowerCase() === "list") {
-              let data = JSON.parse(guildData.lfgusers)
-              // console.log(data)
-              let sort = data.find(userid => userid === message.author.id);
-              if (sort !== undefined) {
+              let users = bot.lfgusers.get(message.guild.id);
+              let sort = users.find(userid => userid === message.author.id);
+              if (sort) {
                 let memberarray = [];
                 let role = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id)) || await message.guild.roles.fetch(bot.lfgroles.get(message.guild.id))
                 role.members.forEach(member => {
                   memberarray.push(`${member} (${member.id})`)
                 })
-                if (data.length === 0) {
-                  memberarray = [`*${bot.translate(bot, language, "none")}*`]
+                if (memberarray.length === 0) {
+                  memberarray = [`*${bot.translate(bot, language, "none")}*`];
                 }
                 let embed = new MessageEmbed()
                   .setColor(bot.colors.main)
@@ -86,13 +83,13 @@ module.exports = {
           }
           if (message.member.hasPermission("ADMINISTRATOR") && args[0]) {
             if (args[0].toLowerCase() === "list") {
-              let data = JSON.parse(guildData.lfgusers)
+              let users = bot.lfgusers.get(message.guild.id);
               let memberarray = [];
               let role = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id)) || await message.guild.roles.fetch(bot.lfgroles.get(message.guild.id))
               role.members.forEach(member => {
                 memberarray.push(`${member} (${member.id})`)
               })
-              if (data.length === 0) {
+              if (memberarray.length === 0) {
                 memberarray = [`*${bot.translate(bot, language, "none")}*`]
               }
               let embed = new MessageEmbed()
@@ -104,7 +101,6 @@ module.exports = {
             if (args[0].toLowerCase() === "removeall") {
               let getrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
               if (getrole.members.size <= 0) {
-                bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run("[]", message.guild.id)
                 let embed = new MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.nouserswithrole")
@@ -132,7 +128,6 @@ module.exports = {
                       oldrole.delete('Magic8 - LFG Remove All Users').then(deleted => {
                         bot.lfgroles.set(message.guild.id, newrole.id)
                         bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run(newrole.id, message.guild.id)
-                        bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run("[]", message.guild.id);
                       }).catch(e => {
                         return bot.error(bot, message, language, e);
                       })
@@ -180,11 +175,14 @@ module.exports = {
               let member = message.guild.members.cache.get(target.id) || await message.guild.members.fetch(target.id);
               if (member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
                 member.roles.remove(bot.lfgroles.get(message.guild.id)).catch(e => { });
-                let current = JSON.parse(bot.lfgroles.get(message.guild.id))
-                let sort = current.find(userid => userid === target.id)
-                if (sort !== undefined) {
-                  current.splice(current.indexOf(sort), 1);
-                  bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run(JSON.stringify(current), message.guild.id);
+                let users = bot.lfgusers.get(message.guild.id);
+                let sort = users.find(userid => userid === target.id);
+                if (sort) {
+                  let removed = users.filter(user => user !== target.id);
+                  bot.lfgusers.set(message.guild.id, removed);
+                  if (bot.lfgusers.get(message.guild.id).length <= 0) {
+                    bot.lfgusers.delete(message.guild.id);
+                  }
                 }
                 let embed = new MessageEmbed()
                   .setColor(bot.colors.green)

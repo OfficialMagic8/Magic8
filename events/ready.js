@@ -81,14 +81,16 @@ module.exports = {
         }
       }).catch(e => { });
     }, 60000);
-    bot.guilds.cache.forEach(guild => {
+    bot.guilds.cache.forEach(async guild => {
+      try {
+        let fetched = await guild.members.fetch();
+      } catch (e) {
+        console.error(e);
+      }
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       if (!guildData) {
         bot.utils.registerGuild(bot, guild)
         guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
-      }
-      if (JSON.parse(guildData.lfgusers).length >= 1) {
-        bot.db.prepare("UPDATE guilddata SET lfgusers=? WHERE guildid=?").run("[]", guild.id)
       }
       bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run("[]", guild.id)
       let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);

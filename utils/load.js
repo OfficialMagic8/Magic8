@@ -131,6 +131,22 @@ module.exports.loadLFGRoles = async (bot) => {
   })
   console.log(`🎮 Guilds with LFG Roles: ${lfgroleguilds.length}`)
 };
+module.exports.loadLFGUsers = async (bot) => {
+  let guildsids = bot.guilds.cache.keyArray();
+  let lfgroleguilds = bot.db.prepare("SELECT * FROM guilddata WHERE lfgrole!=?").all("none").filter(row => guildsids.includes(row.guildid))
+  lfgroleguilds.forEach(row => {
+    let role = row.lfgrole;
+    if (bot.guilds.cache.get(row.guildid).roles.cache.has(role)) {
+      let a = [];
+      bot.guilds.cache.get(row.guildid).members.cache.forEach(member => {
+        if (member.roles.cache.has(role)) {
+          a.push(member.id);
+        }
+      })
+      bot.lfgusers.set(a, row.guildid);
+    }
+  });
+};
 module.exports.loadLFGNotificationChannels = (bot) => {
   let guildsids = bot.guilds.cache.keyArray();
   let lfgchannelguilds = bot.db.prepare("SELECT * FROM guilddata WHERE lfgnotifychannel!=?").all("none").filter(row => guildsids.includes(row.guildid))
