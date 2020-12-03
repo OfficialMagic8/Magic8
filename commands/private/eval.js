@@ -14,11 +14,17 @@ module.exports = {
     try {
       const code = args.join(" ");
       let evaled = eval(code);
-      if (typeof evaled !== "string")
-        evaled = require("util").inspect(evaled);
-      message.channel.send(clean(evaled), { code: "xl" });
+      if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+      return message.channel.send(clean(evaled), { code: "xl" });
     } catch (e) {
-      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(e)}\n\`\`\``);
+      let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
+        .setDescription([
+          `${bot.emoji.cross} **Error**`,
+          `\`\`\`xl`,
+          `\n${clean(e)}`,
+          `\`\`\``])
+      return message.channel.send(embed).catch(e => { });
     }
   }
 }  

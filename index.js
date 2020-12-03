@@ -39,12 +39,12 @@ bot.dbl = new DBL(process.env.DBL_TOKEN, { statsInterval: 1800000, webhookServer
 bot.boats = new BOATS(process.env.DISCORD_BOATS_AUTH);
 
 bot.config = require("./config.json");
-bot.docs = bot.config.docs
-bot.github = bot.config.github
+bot.docs = bot.config.docs;
+bot.github = bot.config.github;
 bot.pack = require("./package.json");
 bot.utils = require("./utils/methods.js");
-bot.error = bot.utils.error
-bot.translate = bot.utils.getTranslation
+bot.error = bot.utils.error;
+bot.translate = bot.utils.getTranslation;
 bot.webhooks = require("./utils/webhooks.js");
 bot.links = require("./catched/links.json");
 bot.canvas = require("canvas");
@@ -81,7 +81,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
   let filename = `${day}${time}`;
   try {
     bot.fs.copyFileSync('./data/guildData.db', `./backups/G${filename}.db`);
-    logs.send(`${bot.emoji.check} **Backup Success**`, {
+    logs.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
         attachment: `./backups/G${filename}.db`,
         name: `G${filename}`
@@ -90,7 +90,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
   } catch (e) {
     console.error(`Error Backing Up`);
     console.error(e);
-    logs.send(`${bot.emoji.cross} **Backup Failed**`).catch(e => { });
+    logs.send(`${bot.emoji.cross} **Guild Data Backup Failed**`).catch(e => { });
   }
 });
 bot.schedule.scheduleJob("0 * * * *", async function () {
@@ -101,7 +101,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
   let filename = `${day}${time}`;
   try {
     bot.fs.copyFileSync('./data/usageData.db', `./backups/U${filename}.db`);
-    logs.send(`${bot.emoji.check} **Backup Success**`, {
+    logs.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
         attachment: `./backups/U${filename}.db`,
         name: `U${filename}`
@@ -110,7 +110,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
   } catch (e) {
     console.error(`Error Backing Up`);
     console.error(e);
-    logs.send(`${bot.emoji.cross} **Backup Failed**`).catch(e => { });
+    logs.send(`${bot.emoji.cross} **Usage Data Backup Failed**`).catch(e => { });
   }
 });
 
@@ -161,12 +161,12 @@ bot.commands = new Collection();
 bot.events = new Collection();
 bot.languages = new Collection();
 bot.languagesprogress = new Collection();
-bot.languagesprogress.set("en", { lang: "English", flag: "🇺🇸", progress: 100, authors: ["Fyrlex#2740", "AlonsoAliaga#0017"], link: "https://github.com/OfficialMagic8/Languages/blob/master/languages/en.json" })
+bot.languagesprogress.set("en", { lang: "English", flag: "🇺🇸", progress: 100, authors: ["Fyrlex#2740", "AlonsoAliaga#0017"], link: "https://github.com/OfficialMagic8/languages/blob/master/languages/en.json" })
 bot.lastfetched = new Collection();
 bot.utils.fetchLanguages(bot);
 app.get("/pingstatus", function (request, response) {
   response.sendStatus(200)
-})
+});
 // app.get("/test", async function (request, response) {
 //   response.json(bot.languages.get("en"))
 //   let guildsids = bot.guilds.cache.keyArray();
