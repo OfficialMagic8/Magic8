@@ -1,4 +1,4 @@
-Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const MojangAPI = require("mojang-api");
 const bodyURL = "https://minotar.net/armor/body/{USER}/300.png";
 const headURL = "https://minotar.net/cube/{USER}/100.png";
@@ -22,7 +22,7 @@ module.exports = {
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "cape.invalid")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
+          .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     //   if(message.author.id !== "290640988677079041"){
@@ -58,7 +58,7 @@ module.exports = {
     //   return;
     //   }
     let uuid = undefined;
-    let matchRegex = toSearch.match(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/gi)
+    let matchRegex = toSearch.match(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/gi);
     if (matchRegex && matchRegex.length !== 0) {
       uuid = toSearch;
       let uuid2 = uuid.replace(/-/g, "");
@@ -69,7 +69,7 @@ module.exports = {
             .setDescription(bot.translate(bot, language, "cape.invalid")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, message.author));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let username = res.name;
         let helmLink = helmURL.replace(/{USER}/g, username);
@@ -83,7 +83,7 @@ module.exports = {
             .setThumbnail(cape.src)
             .setImage(resizeLink)
             .setColor(bot.colors.red)
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
@@ -91,7 +91,7 @@ module.exports = {
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, message.author)
               .replace(/{TOSEARCH}/g, username));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         })
       })
     } else {
@@ -103,7 +103,7 @@ module.exports = {
             .setDescription(bot.translate(bot, language, "cape.invalid")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, toSearch));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let username = res.name;
         let helmLink = helmURL.replace(/{USER}/g, username);
@@ -117,14 +117,14 @@ module.exports = {
               .replace(/{USER}/g, username), helmLink, profileLink)
             .setThumbnail(cape.src)
             .setImage(resizeLink);
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "cape.nocape")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, username));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         })
       })
     }

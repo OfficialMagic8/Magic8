@@ -7,7 +7,6 @@ module.exports = {
   name: "tickle",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
-    message.delete({ timeout: 500 }).catch(e => { });
     let language = bot.utils.getLanguage(bot, guildData.language);
     let target = message.author;
     if (args[0]) {
@@ -30,7 +29,7 @@ module.exports = {
       .setDescription(bot.translate(bot, language, `tickle.${target.id === message.author.id ? "self" : "other"}`)
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)
-        .replace(/{TARGET}/g, target))
+        .replace(/{TARGET}/g, target));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }  

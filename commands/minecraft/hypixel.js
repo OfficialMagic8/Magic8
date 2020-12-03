@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const requestpromise = require("request-promise");
 const helmURL = "https://minotar.net/helm/{USER}/100.png";
 module.exports = {
   aliases: ["hyp"],
@@ -19,16 +18,14 @@ module.exports = {
           .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
     }
-    let parsed;
+    let req;
     try {
-      let requested = await requestpromise(`https://api.hypixel.net/player?key=${process.env.HYPIXEL_TOKEN}&name=${toSearch}`);
-      parsed = JSON.parse(requested);
-      if (parsed.success) {
-        if (parsed.player === null) {
+      req = await bot.fetch(`https://api.hypixel.net/player?key=${process.env.HYPIXEL_TOKEN}&name=${toSearch}`).then(res => res.json()).then(json => { return json; });
+      if (req.success) {
+        if (req.player === null) {
           let matchRegex = toSearch.match(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/gi);
           if (matchRegex && matchRegex.length !== 0) {
-            requested = await requestpromise(`https://api.hypixel.net/player?key=${process.env.HYPIXEL_TOKEN}&uuid=${toSearch}`);
-            parsed = JSON.parse(requested);
+            req = await bot.fetch(`https://api.hypixel.net/player?key=${process.env.HYPIXEL_TOKEN}&uuid=${matchRegex}`).then(res => res.json()).then(json => { return json; });
           } else {
             let embed = new MessageEmbed()
               .setColor(bot.colors.red)
@@ -49,7 +46,7 @@ module.exports = {
     } catch (e) {
       return bot.error(bot, message, language, e);
     }
-    let player = parsed.player;
+    let player = req.player;
     let firstLogin = new Date(player.firstLogin);
     let lastLogin = new Date(player.lastLogin);
     let lastLogout = new Date(player.lastLogout);
@@ -83,7 +80,7 @@ module.exports = {
     let status = "Unknown";
     let uuid = bot.utils.UUIDfromString(player.uuid);
     try {
-      let statusres = JSON.parse(await requestpromise(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_TOKEN}&uuid=${uuid}`));
+      let statusres = await bot.fetch(`https://api.hypixel.net/status?key=${process.env.HYPIXEL_TOKEN}&uuid=${uuid}`).then(res => res.json()).then(json => { return json; });
       if (statusres.success) {
         if (statusres.session.online) {
           status = `\\🟢${bot.translate(bot, language, "hypixel.success.online").join("\n")
@@ -97,10 +94,11 @@ module.exports = {
     let rewardHighScore = player.rewardHighScore ? player.rewardHighScore : 0;
     // let rankPlusColor = player.rankPlusColor ? `${player.rankPlusColor.substring(0, 1)}${player.rankPlusColor.slice(1).toLowerCase()}`.replace(/_/g, " ") : "None"
     // let mostRecentGameType = player.mostRecentGameType ? `${player.mostRecentGameType.substring(0, 1)}${player.mostRecentGameType.slice(1).toLowerCase()}` : "Unknown"
+    let url = `https://plancke.io/hypixel/player/stats/${player.displayname}`
     let embed = new MessageEmbed()
       .setColor(bot.colors.yellow)
       .setAuthor(bot.translate(bot, language, "hypixel.success.title")
-        .replace(/{TARGET}/g, player.displayname), hypixel)
+        .replace(/{TARGET}/g, player.displayname), hypixel, url)
       .setThumbnail(helmURL.replace(/{USER}/g, player.uuid))
       .setFooter(bot.footer)
       .setDescription(bot.translate(bot, language, "hypixel.success.description").join("\n")

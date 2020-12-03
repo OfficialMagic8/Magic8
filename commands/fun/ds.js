@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const requestpromise = require("request-promise");
 module.exports = {
   aliases: ["ds", "penissize", "ps"],
   category: "FUN",
@@ -19,7 +18,7 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{USER}/g, message.author))
+            .replace(/{USER}/g, message.author));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }

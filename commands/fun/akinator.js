@@ -25,9 +25,9 @@ module.exports = {
       if (bot.playingakinator.has(message.author.id)) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "akinator.alreadyplaying").join("\n")
+          .setDescription(bot.translate(bot, language, "akinator.alreadyplaying")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{USER}/g, message.author))
+            .replace(/{USER}/g, message.author));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
       let defaultobject = {
@@ -72,7 +72,7 @@ module.exports = {
     }
     async function sendGuess(bot, message, object, akiGame, index) {
       if (index >= akiGame.answers.length) {
-        console.log(akiGame.answers)
+        // console.log(akiGame.answers)
         bot.playingakinator.delete(message.author.id)
         return message.channel.send(bot.translate(bot, language, "akinator.sendguess").replace(/{ANSWERS}/g, akiGame.answers.length)).catch(e => { });
       }
@@ -90,7 +90,7 @@ module.exports = {
           if (collected.first().content.toLowerCase() === "yes") {
             embed.setDescription(`**${guess.name}**\n\\🏆 **I KNEW IT!**`)
             bot.playingakinator.delete(message.author.id);
-            console.log("finish")
+            console.log("Finished Akinator")
             guessMessage.edit(embed);
           } else {
             sendGuess(bot, message, object, akiGame, index + 1);
@@ -109,14 +109,7 @@ module.exports = {
         sendGuess(bot, message, object, akiGame, index);
       }).catch(e => {
         bot.playingakinator.delete(message.author.id);
-        console.error(e)
-        let embed = new MessageEmbed()
-          .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "unexpectederror")
-            .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{USER}/g, message.author)
-            .replace(/{INVITE}/g, bot.invite));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return bot.error(bot, message, language, e);
       })
     }
     let answersInverse = {
@@ -134,8 +127,7 @@ module.exports = {
     let options = "**y**: Yes | **n**: No | **d**: Don't know\n**p**: Probably | **pn**: Probably not"
     async function askQuestion(bot, message, object, akiGame) {
       if (akiGame.progress > 98 || akiGame.currentStep >= 90) {
-        guessGame(bot, message, object, akiGame);
-        return;
+        return guessGame(bot, message, object, akiGame);
       }
       let embed = new MessageEmbed()
         .setColor("#f5e325")
@@ -144,27 +136,19 @@ module.exports = {
         .setDescription(options)
         .setFooter(`Progress ${Math.round(akiGame.progress)}%`)
       let allowed = Object.keys(answersInverse);
-      const filter = m => m.author.id === message.author.id && m.content && allowed.includes(m.content.toLowerCase())
       message.channel.send(embed).then(m => {
+        const filter = m => m.author.id === message.author.id && m.content && allowed.includes(m.content.toLowerCase());
         m.channel.awaitMessages(filter, { max: 1, time: 180000, errors: ["time"] }).then(collected => {
           let reply = answersInverse[collected.first().content.toLowerCase()];
           akiGame.step(reply).then(x => {
             askQuestion(bot, message, object, akiGame);
           }).catch(e => {
             bot.playingakinator.delete(message.author.id);
-            console.error(e)
-            let embed = new MessageEmbed()
-              .setColor(bot.colors.red)
-              .setDescription(bot.translate(bot, language, "unexpectederror")
-                .replace(/{CROSS}/g, bot.emoji.cross)
-                .replace(/{USER}/g, message.author)
-                .replace(/{INVITE}/g, bot.invite));
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return bot.error(bot, message, language, e);
           })
         }).catch(e => {
-          console.log(e);
           bot.playingakinator.delete(message.author.id);
-          return message.channel.send(`⏰ You never replied!`).catch(e => { });
+          return message.channel.send(`⏰ You never replied!`).catch(e => { return bot.error(bot, message, language, e); });
         })
       });
     }
