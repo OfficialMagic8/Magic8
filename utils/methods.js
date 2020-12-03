@@ -43,7 +43,7 @@ module.exports.loadEvents = (bot) => {
         bot.events.set(pull.name, pull);
       } else continue;
     }
-    console.log(`📢 Events ${reloading ? `rel` : `L`}loaded successfully!`);
+    console.log(`📢 Events ${reloading ? `re` : ``}loaded successfully!`);
   })
 }
 

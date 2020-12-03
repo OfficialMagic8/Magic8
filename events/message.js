@@ -112,12 +112,7 @@ module.exports = {
     if (command.category === "MISCELLANEOUS" && bot.miscellaneouschannels.has(message.guild.id) && bot.miscellaneouschannels.get(message.guild.id).length >= 1 && !bot.miscellaneouschannels.get(message.guild.id).includes(message.channel.id)) return;
     if (command.category === "REACTIONS" && bot.reactionchannels.has(message.guild.id) && bot.reactionchannels.get(message.guild.id).length >= 1 && !bot.reactionchannels.get(message.guild.id).includes(message.channel.id)) return;
     if (command.toggleable && bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(command.name)) return;
-    try {
-      command.run(bot, message, args, prefix, guildData);
-    } catch (e) {
-      let language = bot.utils.getLanguage(bot, guildData.language);
-      return bot.error(bot, message, language, e);
-    }
+    command.run(bot, message, args, prefix, guildData);
     if (command.dev) return;
     bot.statcord.postCommand(command.name, message.author.id);
     bot.usage.set(message.guild.id, (bot.usage.get(message.guild.id) + 1));

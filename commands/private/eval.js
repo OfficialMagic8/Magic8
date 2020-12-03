@@ -6,6 +6,11 @@ module.exports = {
   dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     if (message.author.id !== bot.developer.id) return;
+    const clean = text => {
+      if (typeof (text) === "string") {
+        return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+      } else return text;
+    }
     try {
       const code = args.join(" ");
       let evaled = eval(code);
@@ -14,12 +19,6 @@ module.exports = {
       message.channel.send(clean(evaled), { code: "xl" });
     } catch (e) {
       message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
-    }
-    const clean = text => {
-      if (typeof (text) === "string")
-        return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
-      else
-        return text;
     }
   }
 }  

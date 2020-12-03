@@ -21,7 +21,7 @@
     "canvas": "^2.6.1",
     "child-process": "^1.0.2",
     "dblapi.js": "^2.4.1",
-    "discord.js": "12.5.0",
+    "discord.js": "^12.5.1",
     "dotenv": "8.2.0",
     "express": "^4.17.1",
     "express-http-proxy": "^1.6.2",
