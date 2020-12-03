@@ -9,7 +9,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (message.member.hasPermission("MANAGE_GUILD")) {
-      if (args[0].toLowerCase() === "remove") {
+      if (args[0] && args[0].toLowerCase() === "remove") {
         bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run("none", message.guild.id);
         bot.mcservers.delete(message.guild.id);
         let embed = new MessageEmbed()
@@ -19,7 +19,7 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      if (args[0].toLowerCase() === "set") {
+      if (args[0] && args[0].toLowerCase() === "set") {
         let updating = new MessageEmbed()
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "mcserver.checking")
