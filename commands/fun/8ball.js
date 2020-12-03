@@ -32,7 +32,7 @@ module.exports = {
         } else {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
-            .setDescription(bot.translate(bot, language, "8ball.customresponses").join("\n")
+            .setDescription(bot.translate(bot, language, "8ball.customresponses")
               .replace(/{CROSS}/g, bot.emoji.cross));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
