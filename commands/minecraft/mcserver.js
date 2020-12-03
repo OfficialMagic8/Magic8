@@ -65,6 +65,8 @@ module.exports = {
         } catch (e) { }
         bot.fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(data => {
           let getplayers = data.players.list ? data.players.list : false;
+          let page;
+          let selectedplayers;
           if (getplayers) {
             let mapped = getplayers.map(p => `**•** ${p.replace(/_/g, "\_")}`);
             let size = mapped.length;
@@ -102,9 +104,6 @@ module.exports = {
           }
           let embed = new MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
-            .setFooter(bot.translate(bot, language, "mcserver.pagefooter")
-              .replace(/{PAGE}/g, page)
-              .replace(/{TOTALPAGES}/g, totalpages))
             .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
@@ -114,7 +113,10 @@ module.exports = {
               .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
               .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
               .replace(/{PLAYERS}/g, getplayers.length >= 1 ? selectedplayers.join("\n") : ""));
-          if (thumbnail) embed.setThumbnail(thumbnail)
+          if (thumbnail) embed.setThumbnail(thumbnail);
+          if (getplayers) embed.setFooter(bot.translate(bot, language, "mcserver.pagefooter")
+            .replace(/{PAGE}/g, page)
+            .replace(/{TOTALPAGES}/g, totalpages));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           console.error(e)
