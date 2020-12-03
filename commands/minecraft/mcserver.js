@@ -8,8 +8,8 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    if (message.member.hasPermission("MANAGE_GUILD") && args[0]) {
-      if (args[0] === "remove") {
+    if (message.member.hasPermission("MANAGE_GUILD")) {
+      if (args[0].toLowerCase() === "remove") {
         bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run("none", message.guild.id);
         bot.mcservers.delete(message.guild.id);
         let embed = new MessageEmbed()
@@ -19,36 +19,43 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let updating = new MessageEmbed()
-        .setColor(bot.colors.main)
-        .setDescription(bot.translate(bot, language, "mcserver.checking")
-          .replace(/{LOADING}/g, bot.emoji.loading));
-      let updatingMessage = await message.channel.send(updating).catch(e => {
-        return bot.error(bot, message, language, e);
-      });
-      let tryip = await bot.fetch(`https://api.mcsrvstat.us/2/${args[0]}`).then(res => res.json()).then(json => {
-        return json.ip;
-      }).catch(e => { return bot.error(bot, message, language, e); })
-      if (tryip.length >= 1) {
-        bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run(args[0], message.guild.id);
-        bot.mcservers.set(message.guild.id, args[0]);
-        updating.setColor(bot.colors.green);
-        updating.setFooter(bot.translate(bot, language, "mcserver.javawarning"))
-        updating.setDescription(bot.translate(bot, language, "mcserver.updated").join("\n")
-          .replace(/{CHECK}/g, bot.emoji.check)
-          .replace(/{SERVER}/g, args[0])
-          .replace(/{INFO}/g, bot.emoji.info)
-          .replace(/{PREFIX}/g, prefix));
-        updatingMessage.edit(updating).catch(e => { return bot.error(bot, message, language, e); });
+      if (args[0].toLowerCase() === "set") {
+        let updating = new MessageEmbed()
+          .setColor(bot.colors.main)
+          .setDescription(bot.translate(bot, language, "mcserver.checking")
+            .replace(/{LOADING}/g, bot.emoji.loading));
+        let updatingMessage = await message.channel.send(updating).catch(e => {
+          return bot.error(bot, message, language, e);
+        });
+        let tryip = await bot.fetch(`https://api.mcsrvstat.us/2/${args[1]}`).then(res => res.json()).then(json => {
+          return json.ip;
+        }).catch(e => { return bot.error(bot, message, language, e); })
+        if (tryip.length >= 1) {
+          bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run(args[1], message.guild.id);
+          bot.mcservers.set(message.guild.id, args[1]);
+          updating.setColor(bot.colors.green);
+          updating.setFooter(bot.translate(bot, language, "mcserver.javawarning"))
+          updating.setDescription(bot.translate(bot, language, "mcserver.updated").join("\n")
+            .replace(/{CHECK}/g, bot.emoji.check)
+            .replace(/{SERVER}/g, args[1])
+            .replace(/{INFO}/g, bot.emoji.info)
+            .replace(/{PREFIX}/g, prefix));
+          updatingMessage.edit(updating).catch(e => { return bot.error(bot, message, language, e); });
+        } else {
+          updating.setColor(bot.colors.red);
+          updating.setFooter(bot.translate(bot, language, "mcserver.errorfooter"));
+          updating.setDescription(bot.translate(bot, language, "mcserver.error").join("\n")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{SERVER}/g, args[1]));
+          updatingMessage.edit(updating).catch(e => { return bot.error(bot, message, language, e); });
+        }
       } else {
-        updating.setColor(bot.colors.red);
-        updating.setFooter(bot.translate(bot, language, "mcserver.errorfooter"));
-        updating.setDescription(bot.translate(bot, language, "mcserver.error").join("\n")
-          .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{SERVER}/g, args[0]));
-        updatingMessage.edit(updating).catch(e => { return bot.error(bot, message, language, e); });
+        checkStatus(bot, message)
       }
     } else {
+      checkStatus(bot, message)
+    }
+    async function checkStatus(bot, message) {
       if (bot.mcservers.has(message.guild.id)) {
         let server = bot.mcservers.get(message.guild.id);
         let url = `https://eu.mc-api.net/v3/server/favicon/${server}`
@@ -58,16 +65,46 @@ module.exports = {
         } catch (e) { }
         bot.fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(data => {
           let getplayers = data.players.list ? data.players.list : false;
-          let finalplayersarray = [];
           if (getplayers) {
-            for (player of getplayers) {
-              if (getplayers.indexOf(player) < 10) {
-                finalplayersarray.push(player);
+            let mapped = getplayers.map(p => `**•** ${p.replace(/_/g, "\_")}`);
+            let size = mapped.length;
+            let math = size / 8;
+            let fullpagecount = Math.floor(math);
+            let totalpages;
+            if (!Number.isInteger(math)) {
+              totalpages = fullpagecount + 1;
+            } else {
+              totalpages = fullpagecount;
+            }
+            let page = args[0] ? Math.abs(Math.floor(parseInt(args[0]))) : 1;
+            if (isNaN(page) || page > totalpages || page < 1) {
+              let embed = new MessageEmbed()
+                .setColor(bot.colors.red)
+                .setDescription(bot.translate(bot, language, "mcserver.invalidpage").join("\n")
+                  .replace(/{CROSS}/g, bot.emoji.cross)
+                  .replace(/{INPUT}/g, page)
+                  .replace(/{INFO}/g, bot.emoji.info)
+                  .replace(/{TOTALPAGES}/g, totalpages));
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+            }
+            let lastitemindex = page * 8;
+            let selectedplayers = [];
+            for (map of mapped) {
+              if (page === totalpages) {
+                if (mapped.indexOf(map) + 1 <= size && mapped.indexOf(map) + 1 > fullpagecount * 5) {
+                  selectedplayers.push(map);
+                }
+              }
+              if (mapped.indexOf(map) + 1 <= lastitemindex && mapped.indexOf(map) + 1 > lastitemindex - 5) {
+                if (!selectedplayers.includes(map)) selectedplayers.push(map);
               }
             }
           }
           let embed = new MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
+            .setFooter(bot.translate(bot, language, "mcserver.pagefooter")
+              .replace(/{PAGE}/g, page)
+              .replace(/{TOTALPAGES}/g, totalpages))
             .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
             .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
               .replace(/{CHECK}/g, bot.emoji.check)
@@ -76,7 +113,7 @@ module.exports = {
               .replace(/{VERSIONS}/g, data.version ? data.version : bot.translate(bot, language, "none"))
               .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
               .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
-              .replace(/{PLAYERS}/g, finalplayersarray.length >= 1 ? finalplayersarray.map(p => `**-** ${p.replace(/_/g, "\_")}`).join("\n") : ""));
+              .replace(/{PLAYERS}/g, getplayers.length >= 1 ? selectedplayers.join("\n") : ""));
           if (thumbnail) embed.setThumbnail(thumbnail)
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
