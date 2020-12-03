@@ -81,12 +81,7 @@ module.exports = {
         }
       }).catch(e => { });
     }, 60000);
-    bot.guilds.cache.forEach(async guild => {
-      try {
-        let fetched = await guild.members.fetch();
-      } catch (e) {
-        console.error(e);
-      }
+    bot.guilds.cache.forEach(guild => {
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       if (!guildData) {
         bot.utils.registerGuild(bot, guild)
