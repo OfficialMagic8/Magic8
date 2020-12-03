@@ -18,7 +18,7 @@ module.exports = {
         evaled = require("util").inspect(evaled);
       message.channel.send(clean(evaled), { code: "xl" });
     } catch (e) {
-      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+      message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(e)}\n\`\`\``);
     }
   }
 }  
