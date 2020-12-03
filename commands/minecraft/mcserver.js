@@ -55,7 +55,7 @@ module.exports = {
     } else {
       checkStatus(bot, message)
     }
-    async function checkStatus(bot, message) {
+    async function checkStatus() {
       if (bot.mcservers.has(message.guild.id)) {
         let server = bot.mcservers.get(message.guild.id);
         let url = `https://eu.mc-api.net/v3/server/favicon/${server}`
@@ -65,43 +65,7 @@ module.exports = {
         } catch (e) { }
         bot.fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(data => {
           let getplayers = data.players.list ? data.players.list : false;
-          let page;
-          let selectedplayers;
-          if (getplayers) {
-            let mapped = getplayers.map(p => `**•** ${p.replace(/_/g, "\_")}`);
-            let size = mapped.length;
-            let math = size / 8;
-            let fullpagecount = Math.floor(math);
-            let totalpages;
-            if (!Number.isInteger(math)) {
-              totalpages = fullpagecount + 1;
-            } else {
-              totalpages = fullpagecount;
-            }
-            let page = args[0] ? Math.abs(Math.floor(parseInt(args[0]))) : 1;
-            if (isNaN(page) || page > totalpages || page < 1) {
-              let embed = new MessageEmbed()
-                .setColor(bot.colors.red)
-                .setDescription(bot.translate(bot, language, "mcserver.invalidpage").join("\n")
-                  .replace(/{CROSS}/g, bot.emoji.cross)
-                  .replace(/{INPUT}/g, page)
-                  .replace(/{INFO}/g, bot.emoji.info)
-                  .replace(/{TOTALPAGES}/g, totalpages));
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-            }
-            let lastitemindex = page * 8;
-            let selectedplayers = [];
-            for (map of mapped) {
-              if (page === totalpages) {
-                if (mapped.indexOf(map) + 1 <= size && mapped.indexOf(map) + 1 > fullpagecount * 5) {
-                  selectedplayers.push(map);
-                }
-              }
-              if (mapped.indexOf(map) + 1 <= lastitemindex && mapped.indexOf(map) + 1 > lastitemindex - 5) {
-                if (!selectedplayers.includes(map)) selectedplayers.push(map);
-              }
-            }
-          }
+          let selectedplayers = getPlayers(bot, message, args, getplayers)
           let embed = new MessageEmbed()
             .setColor(data.online ? bot.colors.main : bot.colors.red)
             .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
@@ -136,6 +100,46 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }
+    }
+    function getPlayers(bot, message, args, getplayers) {
+      if (getplayers) {
+        let page;
+        let selectedplayers;
+        let mapped = getplayers.map(p => `**•** ${p.replace(/_/g, "\_")}`);
+        let size = mapped.length;
+        let math = size / 8;
+        let fullpagecount = Math.floor(math);
+        let totalpages;
+        if (!Number.isInteger(math)) {
+          totalpages = fullpagecount + 1;
+        } else {
+          totalpages = fullpagecount;
+        }
+        let page = args[0] ? Math.abs(Math.floor(parseInt(args[0]))) : 1;
+        if (isNaN(page) || page > totalpages || page < 1) {
+          let embed = new MessageEmbed()
+            .setColor(bot.colors.red)
+            .setDescription(bot.translate(bot, language, "mcserver.invalidpage").join("\n")
+              .replace(/{CROSS}/g, bot.emoji.cross)
+              .replace(/{INPUT}/g, page)
+              .replace(/{INFO}/g, bot.emoji.info)
+              .replace(/{TOTALPAGES}/g, totalpages));
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        }
+        let lastitemindex = page * 8;
+        let selectedplayers = [];
+        for (map of mapped) {
+          if (page === totalpages) {
+            if (mapped.indexOf(map) + 1 <= size && mapped.indexOf(map) + 1 > fullpagecount * 5) {
+              selectedplayers.push(map);
+            }
+          }
+          if (mapped.indexOf(map) + 1 <= lastitemindex && mapped.indexOf(map) + 1 > lastitemindex - 5) {
+            if (!selectedplayers.includes(map)) selectedplayers.push(map);
+          }
+        }
+        return selectedplayers;
       }
     }
   }
