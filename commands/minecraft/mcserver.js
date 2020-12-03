@@ -6,6 +6,7 @@ module.exports = {
   emoji: "🎮",
   name: "mcserver",
   toggleable: true,
+  dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (message.member.hasPermission("MANAGE_GUILD")) {
@@ -104,8 +105,6 @@ module.exports = {
     }
     function getPlayers(bot, message, args, getplayers) {
       if (getplayers) {
-        let page;
-        let selectedplayers;
         let mapped = getplayers.map(p => `**•** ${p.replace(/_/g, "\_")}`);
         let size = mapped.length;
         let math = size / 8;
