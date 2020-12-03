@@ -13,7 +13,7 @@ module.exports = {
       setTimeout(() => {
         bot.utils.loadLanguageProgress(bot);
         embed.setColor(bot.colors.green)
-        embed.setDescription(`${bot.emoji.check} **${bot.languagesprogress.size} languages successfully!**`)
+        embed.setDescription(`${bot.emoji.check} **${bot.languagesprogress.size} languages successfully fetched!**`)
         return embedmessage.edit(embed).catch(e => { })
       }, 5000)
     } catch (e) {

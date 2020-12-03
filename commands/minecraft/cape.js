@@ -23,7 +23,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "cape.invalid")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     //   if(message.author.id !== "290640988677079041"){
     //   let bodyLink = bodyURL.replace(/{USER}/g,username);

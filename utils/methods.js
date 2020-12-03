@@ -27,18 +27,23 @@ module.exports.loadCommands = (bot) => {
 }
 
 module.exports.loadEvents = (bot) => {
+  let reloading = false;
+  if (bot.events.size >= 1) {
+    reloading = true;
+  }
   bot.fs.readdir("./events/", (err, files) => {
     if (err) console.log(err);
-    console.log("📢 Loading events...")
+    console.log(`📢 ${reloading ? `Rel` : `L`}oading events...`)
     const events = files.filter(f => f.split(".").pop() === "js")
     for (let file of events) {
+      if (reloading) delete require.cache[require.resolve(`../events/${file}`)];
       let pull = require(`../events/${file}`);
       if (!pull) continue;
       if (pull.name) {
         bot.events.set(pull.name, pull);
       } else continue;
     }
-    console.log("📢 Events loaded successfully!");
+    console.log(`📢 Events ${reloading ? `rel` : `L`}loaded successfully!`);
   })
 }
 
@@ -82,7 +87,7 @@ module.exports.error = (bot, message, language, e) => {
     command = bot.commands.get(bot.aliases.get(input));
   } else return;
   let error = [
-    `\`\`\``,
+    `\`\`\`xl`,
     `Caught Error @ ${input}/${command.name}:`,
     `${e}`,
     `\`\`\``
