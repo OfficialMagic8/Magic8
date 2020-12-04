@@ -6,11 +6,10 @@ module.exports = {
   emoji: "🎮",
   name: "mcserver",
   toggleable: true,
-  dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (message.member.hasPermission("MANAGE_GUILD")) {
-      if (!args[0] && args[0].toLowerCase() === "help") {
+      if (args[0] && args[0].toLowerCase() === "help") {
         let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setAuthor(bot.translate(bot, language, "mcserver.menutitle")
@@ -87,7 +86,7 @@ module.exports = {
         bot.fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(data => {
           let getplayers = data.players.list ? data.players.list : false;
           if (getplayers) {
-            let mapped = getplayers.map(p => `**•** ${p.replace(/_/g, "\_")}`);
+            let mapped = getplayers.map(p => `**•** ${p.replace(/_/g, "\\_")}`);
             let size = mapped.length;
             let math = size / 8;
             let fullpagecount = Math.floor(math);
@@ -122,7 +121,8 @@ module.exports = {
             }
             let embed = new MessageEmbed()
               .setColor(data.online ? bot.colors.main : bot.colors.red)
-              .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
+              //         http://status.mclive.eu/play.mc-blaze.com/play.mc-blaze.com/25565/banner.png
+              .setImage(`http://status.mclive.eu/${server}/${server}/25565/banner.png`)
               .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
                 .replace(/{CHECK}/g, bot.emoji.check)
                 .replace(/{STATUS}/g, data.online ? bot.translate(bot, language, "mcserver.online") : bot.translate(bot, language, "mcserver.offline"))
@@ -130,8 +130,9 @@ module.exports = {
                 .replace(/{VERSIONS}/g, data.version ? data.version : bot.translate(bot, language, "none"))
                 .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
                 .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
-                .replace(/{PLAYERS}/g, getplayers ? selectedplayers.join("\n") : "")
-                .replace(/{INFO}/g, bot.emoji.info))
+                .replace(/{PLAYERS}/g, getplayers ? `${selectedplayers.join("\n")}\n` : "")
+                .replace(/{HASPAGES}/g, bot.translate(bot, language, "mcserver.haspages")
+                  .replace(/{INFO}/g, bot.emoji.info)))
               .setFooter(bot.translate(bot, language, "mcserver.pagefooter")
                 .replace(/{PAGE}/g, page)
                 .replace(/{TOTALPAGES}/g, totalpages));
@@ -140,7 +141,7 @@ module.exports = {
           } else {
             let embed = new MessageEmbed()
               .setColor(data.online ? bot.colors.main : bot.colors.red)
-              .setImage(`http://status.mclive.eu/${server}/${server}/banner.png`)
+              .setImage(`http://status.mclive.eu/${server}/${server}/25565/banner.png`)
               .setDescription(bot.translate(bot, language, "mcserver.status").join("\n")
                 .replace(/{CHECK}/g, bot.emoji.check)
                 .replace(/{STATUS}/g, data.online ? bot.translate(bot, language, "mcserver.online") : bot.translate(bot, language, "mcserver.offline"))
@@ -149,7 +150,7 @@ module.exports = {
                 .replace(/{ONLINEPLAYERS}/g, data.players.online ? data.players.online : "0")
                 .replace(/{MAXPLAYERS}/g, data.players.max ? data.players.max : "0")
                 .replace(/{PLAYERS}/g, "")
-                .replace(/{INFO}/g, bot.emoji.info));
+                .replace(/{HASPAGES}/g, ""));
             if (thumbnail) embed.setThumbnail(thumbnail);
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
