@@ -24,17 +24,14 @@ module.exports = {
     }
     bot.spinningspinner.set(message.author.id, object);
     let spinnerMessage;
-    let spinner;
-    try {
-      spinner = new MessageEmbed()
-        .setColor(bot.colors.green)
-        .setDescription(bot.translate(bot, language, "spinner.spinning")
-          .replace(/{SPINNER}/g, bot.emoji.spinner)
-          .replace(/{USER}/g, message.author));
-      spinnerMessage = await message.channel.send(spinner);
-    } catch (e) {
-      bot.error(bot, message, language, e);
-    }
+    let spinner = new MessageEmbed()
+      .setColor(bot.colors.green)
+      .setDescription(bot.translate(bot, language, "spinner.spinning")
+        .replace(/{SPINNER}/g, bot.emoji.spinner)
+        .replace(/{USER}/g, message.author));
+    let spinnerMessage = await message.channel.send(spinner).catch(e => {
+      return bot.error(bot, message, language, e);
+    });
     setTimeout(() => {
       bot.spinningspinner.delete(message.author.id);
       spinner.setDescription(bot.translate(bot, language, "spinner.spun")
@@ -44,6 +41,6 @@ module.exports = {
       spinnerMessage.edit(spinner).catch(e => {
         bot.error(bot, message, language, e);
       })
-    }, milliseconds)
+    }, milliseconds);
   }
 }

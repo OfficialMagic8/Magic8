@@ -10,12 +10,12 @@ module.exports = {
     let removemessage = false;
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (bot.playing8color.has(message.author.id)) {
-      let alreadyplaying = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setDescription(bot.translate(bot, language, "8color.alreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross).
           replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(alreadyplaying).catch(e => { });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let defaultObject = {
       level: 1,
@@ -44,12 +44,10 @@ module.exports = {
           .replace(/{PATTERN}/g, object.correct)
           .replace(/{TIME}/g, timeMemorizeShort))
         .setColor(bot.colors.main)
-      let gameMessage;
-      try {
-        gameMessage = await message.channel.send(game)
-      } catch (e) {
-        bot.error(bot, message, language, e);
-      }
+      let gameMessage = await message.channel.send(game).catch(e => {
+        bot.playing8color.delete(message.author.id)
+        return bot.error(bot, message, language, e);
+      });
       setTimeout(async () => {
         let time = 15000 + ((Math.ceil(object.level / 2) - 1) * 1000)
         let timeshort = (time / 1000).toFixed(0);

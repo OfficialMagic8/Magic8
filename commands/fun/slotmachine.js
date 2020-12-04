@@ -54,10 +54,9 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => {return bot.error(bot, message, language, e); });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     bot.playingslotmachine.set(message.author.id, object)
-    let slotMessage;
     let startingdescription = bot.translate(bot, language, "slotmachine.starting").join("\n")
       .replace(/{USER}/g, message.author)
       .replace(/{LOADING}/g, bot.emoji.loading)
@@ -69,12 +68,10 @@ module.exports = {
         .replace(/{TSLOT1}/g, tslot1).replace(/{TSLOT2}/g, tslot2).replace(/{TSLOT3}/g, tslot3)
         .replace(/{SLOT1}/g, mslot1).replace(/{SLOT2}/g, mslot2).replace(/{SLOT3}/g, mslot3)
         .replace(/{BSLOT1}/g, bslot1).replace(/{BSLOT2}/g, bslot2).replace(/{BSLOT3}/g, bslot3))
-    try {
-      slotMessage = await message.channel.send(slotEmbed)
-    } catch (e) {
+    let slotMessage = await message.channel.send(slotEmbed).catch(e => {
       bot.playingslotmachine.delete(message.author.id)
       return bot.error(bot, message, language, e);
-    }
+    })
     setTimeout(async () => {
       slotMessage.react("🔴").catch(e => { return bot.error(bot, message, language, e); });
       slotMessage.react("🕹️").catch(e => { return bot.error(bot, message, language, e); });
@@ -94,7 +91,7 @@ module.exports = {
         await slotMessage.edit(slotEmbed)
       } catch (e) {
         bot.playingslotmachine.delete(message.author.id)
-        bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       }
       const filter = (reaction, user) => !user.bot && user.id === message.author.id && reaction.emoji.name === "🕹️"
       let collected;

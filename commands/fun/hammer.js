@@ -42,7 +42,7 @@ module.exports = {
       malletMessage = await message.channel.send(malletEmbed);
     } catch (e) {
       bot.playingmallet.delete(message.author.id)
-      bot.error(bot, message, language, e);
+      return bot.error(bot, message, language, e);
     }
     setTimeout(async () => {
       malletMessage.react((bot.emoji.mallet).replace(">", "")).catch(e => {
