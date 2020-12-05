@@ -29,7 +29,7 @@ module.exports = {
       .setDescription(bot.translate(bot, language, `poke.${target.id === message.author.id ? "self" : "other"}`)
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)
-        .replace(/{TARGET}/g, target))
+        .replace(/{TARGET}/g, target));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
   }
 }  

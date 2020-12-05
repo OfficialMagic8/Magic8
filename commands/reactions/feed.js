@@ -19,7 +19,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     let link = bot.links.feed[Math.floor(Math.random() * bot.links.feed.length)];
@@ -29,7 +29,7 @@ module.exports = {
       .setDescription(bot.translate(bot, language, `feed.${target.id === message.author.id ? "self" : "other"}`)
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)
-        .replace(/{TARGET}/g, target))
+        .replace(/{TARGET}/g, target));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
   }
 }  
