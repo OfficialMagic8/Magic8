@@ -76,7 +76,7 @@ module.exports = {
       let minecraftarray = [];
       for (let c of bot.commands.array()) {
         if (!c.dev && c.category !== "ADMIN") {
-          let d = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(c.name) ? "!" : ""
+          let d = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(c.name) ? "!" : "";
           let category = c.category || "OTHERS";
           if (category === "FUN") {
             funarray.push(`\`${d}${c.name}\``);
@@ -97,6 +97,8 @@ module.exports = {
           }
         }
       }
+      let disabledwarningmessage = bot.translate(bot, language, "help.hasdisabledcommands").replace(/{WARNING}/g, bot.emoji.warning).replace(/{GUILDNAME}/g, message.guild.name);
+      let disabledwarning = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).length > 0 ? disabledwarningmessage : "";
       let embed = new MessageEmbed()
         .setAuthor(`${bot.user.username} - ${message.guild.name} - Help Menu`)
         .setColor(bot.colors.main)
@@ -111,8 +113,9 @@ module.exports = {
         .addField(`👤 ${bot.translate(bot, language, "help.category.user")}`, userarray.join(" "), false)
         .addField(`⚙️ ${bot.translate(bot, language, "help.category.utils")}`, utilsarray.join(" "), false)
         .addField(`\u200b`, bot.translate(bot, language, "help.bottom")
-          .replace(/{INVITE}/g, bot.invite), false)
-      bot.helpmenus.set(message.guild.id, embed)
+          .replace(/{INVITE}/g, bot.invite)
+          .replace(/{HASDISABLED}/g, disabledwarning), false);
+      bot.helpmenus.set(message.guild.id, embed);
     }
     if (!bot.adminmenus.get(message.guild.id)) {
       let tips = bot.translate(bot, language, "help.tips").join("\n")
@@ -131,7 +134,7 @@ module.exports = {
       let minecraftarray = [];
       for (let c of bot.commands.array()) {
         if (!c.dev) {
-          let d = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(c.name) ? "!" : ""
+          let d = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(c.name) ? "!" : "";
           let category = c.category || "OTHERS";
           if (category === "FUN") {
             funarray.push(`\`${d}${c.name}\``);
@@ -144,7 +147,7 @@ module.exports = {
           } else if (category === "UTILITIES") {
             utilsarray.push(`\`${d}${c.name}\``);
           } else if (category === "ADMIN") {
-            adminarray.push(`\`🔒${d}${c.name}\``);
+            adminarray.push(`\`${d}${c.name}\``);
           } else if (category === "MISCELLANEOUS") {
             miscellaneousarray.push(`\`${d}${c.name}\``);
           } else if (category === "REACTIONS") {
@@ -154,8 +157,8 @@ module.exports = {
           }
         }
       }
-      let disabledwarningmessage = bot.translate(bot, language, "help.hasdisabledcommands").replace(/{WARNING}/g, bot.emoji.warning).replace(/{PREFIX}/g, prefix)
-      let disabledwarning = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).length > 0 ? disabledwarningmessage : ""
+      let disabledwarningmessage = bot.translate(bot, language, "help.hasdisabledcommandsadmin").replace(/{WARNING}/g, bot.emoji.warning).replace(/{GUILDNAME}/g, message.guild.name).replace(/{PREFIX}/g, prefix);
+      let disabledwarning = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).length > 0 ? disabledwarningmessage : "";
       let embed = new MessageEmbed()
         .setAuthor(`${bot.user.username} - ${message.guild.name} - Administrator Menu`)
         .setColor(bot.colors.main)
