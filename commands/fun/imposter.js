@@ -17,9 +17,10 @@ module.exports = {
     if (!args[0]) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
+        .setImage(url)
         .setAuthor(bot.translate(bot, language, "imposter.title")
-          .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png" }))
-        .setImage(url);
+          .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png" })
+            .replace(/{GUILDNAME}/g, message.guild.name));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
