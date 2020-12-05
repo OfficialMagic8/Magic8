@@ -63,7 +63,12 @@ bot.invite = "https://discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
 bot.footer = ``;
 
-bot.schedule.scheduleJob("0 0 1 * *", async function () {
+bot.developer = undefined;
+bot.maindeveloper = undefined;
+bot.developerid = bot.config.ownerid
+bot.maindeveloperid = bot.config.alonsoid
+
+bot.schedule.scheduleJob("0 0 1 * *", function () {
   let guildsids = bot.guilds.cache.keyArray();
   let selected = bot.db.prepare("SELECT * FROM guilddata WHERE monthlyvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
   selected.forEach(row => {
@@ -75,16 +80,18 @@ bot.schedule.scheduleJob("0 0 1 * *", async function () {
 
 bot.schedule.scheduleJob("0 * * * *", async function () {
   let logs = bot.channels.cache.get(bot.config.commandlogs);
-  let getdate = new Date().toLocaleString();
-  let day = getdate.split(" ")[0].replace(/\//g, ".").replace(/,/g, "__");
-  let time = getdate.split(" ")[1].replace(/\:/g, ".");
-  let filename = `${day}${time}`;
   try {
-    bot.fs.copyFileSync('./data/guildData.db', `./backups/G${filename}.db`);
+    bot.fs.copyFileSync('./data/guildData.db', `./templates/latestGuildData.db`);
     logs.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
-        attachment: `./backups/G${filename}.db`,
-        name: `G${filename}`
+        attachment: `./templates/latestGuildData.db`,
+        name: `latestGuildData`
+      }]
+    });
+    bot.developer.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
+      files: [{
+        attachment: `./templates/latestGuildData.db`,
+        name: `latestGuildData`
       }]
     });
   } catch (e) {
@@ -92,19 +99,19 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
     console.error(e);
     logs.send(`${bot.emoji.cross} **Guild Data Backup Failed**`).catch(e => { });
   }
-});
-bot.schedule.scheduleJob("0 * * * *", async function () {
-  let logs = bot.channels.cache.get(bot.config.commandlogs);
-  let getdate = new Date().toLocaleString();
-  let day = getdate.split(" ")[0].replace(/\//g, ".").replace(/,/g, "__");
-  let time = getdate.split(" ")[1].replace(/\:/g, ".");
-  let filename = `${day}${time}`;
+
   try {
-    bot.fs.copyFileSync('./data/usageData.db', `./backups/U${filename}.db`);
+    bot.fs.copyFileSync('./data/usageData.db', `./templates/latestUsageData.db`);
     logs.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
-        attachment: `./backups/U${filename}.db`,
-        name: `U${filename}`
+        attachment: `./templates/latestUsageData.db`,
+        name: `latestUsageData`
+      }]
+    });
+    bot.developer.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
+      files: [{
+        attachment: `./templates/latestUsageData.db`,
+        name: `latestUsageData`
       }]
     });
   } catch (e) {
@@ -113,7 +120,6 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
     logs.send(`${bot.emoji.cross} **Usage Data Backup Failed**`).catch(e => { });
   }
 });
-
 app.post("/votes", async function (request, response) {
   response.sendStatus(200)
   let auth = request.headers.authorization
@@ -267,11 +273,6 @@ bot.staffEmbed;
 bot.helpmenus = new Collection();
 bot.adminmenus = new Collection();
 
-bot.developer = undefined;
-bot.maindeveloper = undefined;
-bot.developerid = bot.config.ownerid
-bot.maindeveloperid = bot.config.alonsoid
-
 bot.customemojisobject = require("./customemojis")
 bot.customemojis = new Collection();
 Object.keys(bot.customemojisobject).forEach(cat => {
@@ -356,7 +357,6 @@ bot.utils.loadEvents(bot);
 // });
 
 const nekoslifeclient = require("nekos.life");
-const { create } = require("domain");
 bot.nekos = new nekoslifeclient();
 module.exports = {
   bot: bot

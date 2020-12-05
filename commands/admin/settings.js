@@ -14,7 +14,7 @@ module.exports = {
       let max = bot.maxtoggledcommands.get(bot.premium.get(message.guild.id))
       let cmdToDisable = args[1] ? args[1].toLowerCase() : args[1];
       disabledCommands.sort()
-      let disabledCommandsString = disabledCommands.length === 0 ? `*none*` : disabledCommands.map(c => `\`${c.trim()}\``).join(" ")
+      let disabledCommandsString = disabledCommands.length === 0 ? `*${bot.translate(bot, language, "none")}*` : disabledCommands.map(c => `\`${c.trim()}\``).join(" ")
       if (disabledCommands.length >= max && !disabledCommands.includes(cmdToDisable)) {
         let upgradestring;
         if ([0, 1].includes(bot.premium.get(message.guild.id))) {
@@ -970,7 +970,7 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
-        let channels = bot.reactionchannels.get(message.guild.id) ||JSON.parse(guildData.reactionchannel)
+        let channels = bot.reactionchannels.get(message.guild.id) || JSON.parse(guildData.reactionchannel)
         let channelarray = []
         channels.forEach(c => {
           channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c))
