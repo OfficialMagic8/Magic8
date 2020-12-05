@@ -1,6 +1,7 @@
 module.exports.loadCommands = (bot) => {
   let reloading = false;
   if (bot.commands.size >= 1) {
+    bot.commands.clear();
     reloading = true;
   }
   console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
@@ -30,6 +31,7 @@ module.exports.loadEvents = (bot) => {
   let reloading = false;
   if (bot.events.size >= 1) {
     reloading = true;
+    bot.events.clear();
   }
   bot.fs.readdir("./events/", (err, files) => {
     if (err) console.log(err);

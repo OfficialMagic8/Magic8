@@ -19,8 +19,8 @@ module.exports = {
         .setColor(bot.colors.main)
         .setImage(url)
         .setAuthor(bot.translate(bot, language, "imposter.title")
-          .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png" })
-            .replace(/{GUILDNAME}/g, message.guild.name));
+          .replace(/{USERNAME}/g, message.author.username)
+          .replace(/{GUILDNAME}/g, message.guild.name), message.author.displayAvatarURL({ format: "png" }));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
