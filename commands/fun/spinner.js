@@ -23,22 +23,21 @@ module.exports = {
       duration: milliseconds
     }
     bot.spinningspinner.set(message.author.id, object);
-    let spinnerMessage;
-    let spinner = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(bot.colors.green)
       .setDescription(bot.translate(bot, language, "spinner.spinning")
         .replace(/{SPINNER}/g, bot.emoji.spinner)
         .replace(/{USER}/g, message.author));
-    let spinnerMessage = await message.channel.send(spinner).catch(e => {
+    let spinnerMessage = await message.channel.send(embed).catch(e => {
       return bot.error(bot, message, language, e);
     });
     setTimeout(() => {
       bot.spinningspinner.delete(message.author.id);
-      spinner.setDescription(bot.translate(bot, language, "spinner.spun")
+      embed.setDescription(bot.translate(bot, language, "spinner.spun")
         .replace(/{SPINNER}/g, bot.emoji.spinnerstopped)
         .replace(/{USER}/g, message.author)
         .replace(/{TIME}/g, bot.ms(milliseconds)));
-      spinnerMessage.edit(spinner).catch(e => {
+      spinnerMessage.edit(embed).catch(e => {
         bot.error(bot, message, language, e);
       })
     }, milliseconds);
