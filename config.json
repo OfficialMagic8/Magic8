@@ -1,51 +1,4 @@
 {
-  "clientsettings": {
-    "extras": {
-      "cacheGuilds": true,
-      "cacheChannels": true,
-      "cachePresences": false,
-      "cacheOverwrites": false,
-      "cacheRoles": false,
-      "cacheEmojis": false,
-      "disabledEvents": [
-        "channelCreate",
-        "channelUpdate",
-        "channelPinsUpdate",
-        "emojiCreate",
-        "emojiUpdate",
-        "emojiDelete",
-        "guildEmojisUpdate",
-        "guildBanAdd",
-        "guildBanRemove",
-        "inviteCreate",
-        "inviteDelete",
-        "guildIntegrationsUpdate",
-        "messageDelete",
-        "messageDeleteBulk",
-        "messageUpdate",
-        "messageReactionRemove",
-        "messageReactionRemoveEmoji",
-        "presenceUpdate",
-        "roleCreate",
-        "roleUpdate",
-        "typingStart",
-        "userUpdate",
-        "webhookUpdate"
-      ]
-    },
-    "main": {
-      "fetchAllMembers": true,
-      "restRequestTimeout": 60000,
-      "ws": {
-        "intents": [
-          "GUILDS",
-          "GUILD_VOICE_STATES",
-          "GUILD_MESSAGES",
-          "GUILD_MESSAGE_REACTIONS"
-        ]
-      }
-    }
-  },
   "maintenance": "If you are receiving this message, it is because there is an update or outage with the host. For more information, kindly join the Discord Server @ discord.gg/MCRbYdc",
   "ownerid": "292821168833036288",
   "alonsoid": "290640988677079041",
@@ -64,7 +17,8 @@
   "vote": {
     "dbl": "https://top.gg/bot/484148705507934208/vote",
     "db": "https://discord.boats/bot/484148705507934208/vote",
-    "dl": "https://bots.discordlabs.org/bot/484148705507934208"
+    "dl": "https://bots.discordlabs.org/bot/484148705507934208",
+    "bls": "https://botlist.space/bot/484148705507934208/upvote"
   },
   "botinvite": "https://discord.com/oauth2/authorize?client_id=484148705507934208&scope=bot&permissions=1879436400",
   "github": {

@@ -1,3 +1,5 @@
+const { request } = require("express");
+
 module.exports.dbl = async (bot, request) => {
   let body = request.body
   let unknown = false;
@@ -121,7 +123,7 @@ module.exports.labs = async (bot, request) => {
       `- Fyrlex#2740`])
   user.send(dm).catch(e => { });
   let votemsg = new MessageEmbed()
-    .setColor(body.type === "test" ? bot.colors.red : bot.colors.main)
+    .setColor(bot.colors.main)
     .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
     .setFooter(`Discord Labs`)
     .setDescription([
@@ -163,7 +165,7 @@ module.exports.boats = async (bot, request) => {
   let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
   let votemsg = new MessageEmbed()
-    .setColor(body.type === "test" ? bot.colors.red : bot.colors.main)
+    .setColor(bot.colors.main)
     .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
     .setFooter(`Discord Boats`)
     .setDescription([
@@ -171,5 +173,47 @@ module.exports.boats = async (bot, request) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote here @ ${bot.config.vote.db}*`]);
+  return votechannel.send(votemsg).catch(e => { });
+}
+module.exports.botlistspace = async (bot, request) => {
+  let body = request.body
+  let unknown = false;
+  let user;
+  if (bot.users.cache.has(body.user.id)) {
+    user = bot.users.cache.get(body.user.id);
+  } else {
+    try {
+      user = await bot.users.fetch(body.user.id);
+    } catch (e) {
+      console.error(e);
+      unknown = true;
+      user = {
+        id: body.user.id,
+        tag: "Unkown User#0000"
+      }
+    }
+  }
+  const { MessageEmbed } = require("discord.js");
+  let dm = new MessageEmbed()
+    .setColor(bot.colors.main)
+    .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
+    .setDescription([
+      `Hey, ${user}! Thank you for voting for me :)`,
+      ``,
+      `Make sure to check out the [rewards](${bot.docs.ads}) I give for voting!`,
+      ``,
+      `- Fyrlex#2740`]);
+  user.send(dm).catch(e => { });
+  let votechannel = bot.channels.cache.get(bot.config.votechannel);
+  let usertag = user.tag;
+  let votemsg = new MessageEmbed()
+    .setColor(bot.colors.main)
+    .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
+    .setFooter(`Discord Boats`)
+    .setDescription([
+      `**User:** ${unknown ? `<@${body.user.id}>` : user} (${usertag})`,
+      `**Voted For:** ${bot.user}`,
+      ``,
+      `*You can vote here @ ${bot.config.vote.bls}*`]);
   return votechannel.send(votemsg).catch(e => { });
 }

@@ -116,14 +116,17 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
 
 app.post("/votes", async function (request, response) {
   response.sendStatus(200)
-  if (request.headers.authorization === process.env.TOPGG_AUTH) {
+  let auth = request.headers.authorization
+  if (auth === process.env.TOPGG_AUTH) {
     bot.webhooks.dbl(bot, request);
-  } else if (request.headers.authorization === process.env.DISCORD_BOATS_AUTH) {
+  } else if (auth === process.env.DISCORD_BOATS_AUTH) {
     bot.webhooks.boats(bot, request);
-  } else if (request.headers.authorization === process.env.DISCORD_LABS_TOKEN) {
+  } else if (auth === process.env.DISCORD_LABS_TOKEN) {
     bot.webhooks.labs(bot, request);
-  } else if (request.headers.authorization === process.env.BOT_LIST_TOKEN) {
+  } else if (auth === process.env.BOT_LIST_TOKEN) {
     bot.webhooks.discordbotlist(bot, request);
+  } else if (auth === process.env.BOTLISTSPACE_TOKEN) {
+    bot.webhooks.botlistspace(bot, request);
   } else return;
 });
 
