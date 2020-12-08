@@ -142,14 +142,7 @@ module.exports = {
       let link = categorybaseurl.replace(/{CATEGORY}/g, object.category).replace(/{DIFFICULTY}/g, difficulty)
       request(link, function (err, response, body) {
         if (err) {
-          console.error(err);
-          let embed = new MessageEmbed()
-            .setColor(bot.colors.red)
-            .setDescription(bot.translate(bot, language, "unexpectederror")
-              .replace(/{CROSS}/g, bot.emoji.cross)
-              .replace(/{USER}/g, message.author)
-              .replace(/{INVITE}/g, bot.invite));
-          return message.channel.send(embed).catch(e => { });
+          return bot.error(bot, message, language, err);
         }
         let parsed = JSON.parse(body);
         let result = parsed.results[0];
