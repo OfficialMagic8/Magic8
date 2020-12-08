@@ -578,15 +578,15 @@ module.exports = {
         } else if (channels.includes(message.channel.id)) {
           let selectedchannel = channels.find(c => c === message.channel.id)
           channels.splice(channels.indexOf(selectedchannel), 1)
-          bot.db.prepare("UPDATE guilddata SET funchannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id)
+          bot.db.prepare("UPDATE guilddata SET funchannel=? WHERE guildid=?").run(JSON.stringify(channels), message.guild.id);
           let channelarray = []
           channels.forEach(c => {
             channelarray.push(bot.guilds.cache.get(message.guild.id).channels.cache.get(c))
           });
-          bot.funchannels.set(message.guild.id, bot.funchannels.get(message.guild.id).filter(c => c !== message.channel.id))
+          bot.funchannels.set(message.guild.id, bot.funchannels.get(message.guild.id).filter(c => c !== message.channel.id));
           if (channels.length === 0) {
             channelarray = ["*Open to all channels*"]
-            bot.funchannels.delete(message.guild.id)
+            bot.funchannels.delete(message.guild.id);
           }
           let embed = new MessageEmbed()
             .setDescription([
@@ -867,22 +867,22 @@ module.exports = {
       }
     } else if (subcommand === "reactionchannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
-        let channels = bot.reactionchannels.get(message.guild.id) || JSON.parse(guildData.reactionchannel)
+        let channels = bot.reactionchannels.get(message.guild.id) || JSON.parse(guildData.reactionchannel);
         if (channels.length === 0) {
           let embed = new MessageEmbed()
             .setDescription([`${bot.emoji.cross} **There are already no channels for \`Reaction\` commands.**`])
-            .setColor(bot.colors.red)
+            .setColor(bot.colors.red);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
-        bot.reactionchannels.set(message.guild.id)
+        bot.reactionchannels.delete(message.guild.id);
         bot.db.prepare("UPDATE guilddata SET reactionchannel=? WHERE guildid=?").run("[]", message.guild.id)
         let embed = new MessageEmbed()
           .setDescription([`${bot.emoji.check} **You have cleared all channels for \`Reaction\` commands!**`])
           .setColor(bot.colors.green)
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (args[1] && args[1].toLowerCase() === "add") {
-        let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id))
-        let channels = bot.reactionchannels.get(message.guild.id) || JSON.parse(guildData.reactionchannel)
+        let max = bot.maxrestrictedchannels.get(bot.premium.get(message.guild.id));
+        let channels = bot.reactionchannels.get(message.guild.id) || JSON.parse(guildData.reactionchannel);
         if (channels.length >= max) {
           let channelarray = []
           channels.forEach(c => {
@@ -890,9 +890,9 @@ module.exports = {
           })
           let upgradestring;
           if ([0, 1].includes(bot.premium.get(message.guild.id))) {
-            upgradestring = `Please upgrade to the [${bot.premium.get(message.guild.id) === 1 ? `**Triple Package**` : `**Single or Triple Package**`}](${bot.config.donatelink}) to restrict more channels.`
+            upgradestring = `Please upgrade to the [${bot.premium.get(message.guild.id) === 1 ? `**Triple Package**` : `**Single or Triple Package**`}](${bot.config.donatelink}) to restrict more channels.`;
           } else {
-            upgradestring = `Reaction Restricted Channels cannot be increased through packages anymore.`
+            upgradestring = `Reaction Restricted Channels cannot be increased through packages anymore.`;
           }
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
