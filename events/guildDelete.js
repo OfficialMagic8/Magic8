@@ -14,6 +14,7 @@ module.exports = {
         channel.setName(text);
       }
     }
+    bot.premium.delete(guild.id);
     if (bot.helpmenus.has(guild.id)) bot.helpmenus.delete(guild.id);
     if (bot.adminmenus.has(guild.id)) bot.adminmenus.delete(guild.id);
     bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("false", guild.id);
