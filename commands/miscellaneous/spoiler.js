@@ -15,23 +15,16 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "spoiler.messagerequired")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     try {
       let spoiler = await bot.nekos.sfw.spoiler({ text: msg })
       let spoiled = new MessageEmbed()
         .setColor(bot.colors.blue)
         .setDescription(`${bot.emoji.check} **${message.author.username}: ${spoiler.owo}**`);
-      message.channel.send(spoiled).catch(e => { });
+      return message.channel.send(spoiled).catch(e => { return bot.error(bot, message, language, e); });
     } catch (e) {
-      console.error(e);
-      let embed = new MessageEmbed()
-        .setColor(bot.colors.red)
-        .setDescription(bot.translate(bot, language, "unexpectederror")
-          .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author)
-          .replace(/{INVITE}/g, bot.invite));
-      return message.channel.send(embed).catch(e => { });
+      return bot.error(bot, message, language, e);
     }
   }
 }  
