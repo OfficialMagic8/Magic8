@@ -18,9 +18,11 @@ module.exports = {
     let isNewGuild = false;
     if (guildData) {
       bot.utils.updateGuild(bot, guild);
+      bot.premium.set(guild.id, guildData.premium);
     } else {
       isNewGuild = true;
       bot.utils.registerGuild(bot, guild);
+      bot.premium.set(guild.id, 0)
       guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
     }
     let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
@@ -58,6 +60,7 @@ module.exports = {
         ``,
         followstring,
         ``,
+        `- Please make sure I can send **Embed Links**, otherwise I will **not** work.`,
         `- If you need help, feel free to join our Support Server: <${bot.invite}>`,
         `- Follow our Terms & Conditions: <${bot.docs.terms}>`
       ];
