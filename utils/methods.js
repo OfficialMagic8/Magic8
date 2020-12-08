@@ -1,3 +1,9 @@
+module.exports.loadDatabases = (bot) => {
+  const Database = require('better-sqlite3');
+  bot.db = new Database('./data/guildData.db');
+  bot.udb = new Database('./data/usageData.db');
+  console.log("📊 Databases fetched!")
+}
 module.exports.loadCommands = (bot) => {
   let reloading = false;
   if (bot.commands.size >= 1) {
@@ -74,7 +80,7 @@ async function fetchMessages(fetchedMessages, channel) { // long time no glitch.
 }
 module.exports.error = (bot, message, language, e) => {
   const { MessageEmbed } = require("discord.js");
-  let logs = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.caughterrors)
+  let logs = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.caughterrors);
   let startedwith;
   let prefix = bot.prefixes.get(message.guild.id)
   if (message.content.startsWith(prefix)) startedwith = prefix.length
@@ -88,21 +94,33 @@ module.exports.error = (bot, message, language, e) => {
   } else if (bot.aliases.has(input)) {
     command = bot.commands.get(bot.aliases.get(input));
   } else return;
-  let error = [
+  let errormessage = [
     `\`\`\`xl`,
     `Caught Error @ ${input}/${command.name}:`,
     `${e}`,
     `\`\`\``
   ];
-  logs.send(error).catch(e => { });
+  logs.send(errormessage).catch(e => { });
+  let embederror = bot.translate(bot, language, "embederror").join("\n")
+    .replace(/{CROSS}/g, bot.emoji.cross)
+    .replace(/{USER}/g, message.author)
+    .replace(/{BOT}/g, bot.user)
+    .replace(/{PERMISSIONS}/g, bot.docs.permissions)
+    .replace(/{INFO}/g, bot.emoji.info)
+    .replace(/{INVITE}/g, bot.invite)
+  let regularerror = bot.translate(bot, language, "messageerror").join("\n")
+    .replace(/{CROSS}/g, bot.emoji.cross)
+    .replace(/{USER}/g, message.author)
+    .replace(/{BOT}/g, bot.user)
+    .replace(/{PERMISSIONS}/g, bot.docs.permissions)
+    .replace(/{INFO}/g, bot.emoji.info)
+    .replace(/{SHORTINVITE}/g, bot.shortinvite)
   let embed = new MessageEmbed()
     .setColor(bot.colors.red)
-    .setDescription(bot.translate(bot, language, "unexpectederror").join("\n")
-      .replace(/{CROSS}/g, bot.emoji.cross)
-      .replace(/{USER}/g, message.author)
-      .replace(/{INFO}/g, bot.emoji.info)
-      .replace(/{INVITE}/g, bot.invite));
-  return message.channel.send(embed).catch(e => { });
+    .setDescription(embederror);
+  return message.channel.send(embed).catch(e => {
+    return message.channel.send(regularerror).catch(e => { });
+  });
 }
 module.exports.loadLanguageProgress = (bot) => {
   let langEnPathsAmount = bot.utils.getAllPaths(bot.languages.get("en")).length;
