@@ -33,6 +33,7 @@
     "main": "https://docs.magic8.xyz/",
     "terms": "https://docs.magic8.xyz/info/terms",
     "triplepackage": "https://docs.magic8.xyz/info/premium#triple-package-usd-8-99-one-time-forever",
-    "progress": "https://docs.magic8.xyz/info/progress"
+    "progress": "https://docs.magic8.xyz/info/progress",
+    "permissions": "https://docs.magic8.xyz/#permissions"
   }
 }
