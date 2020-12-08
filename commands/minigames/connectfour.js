@@ -124,7 +124,7 @@ module.exports = {
       } catch (e) {
         bot.playingconnect4.delete(first.userid);
         bot.playingconnect4.delete(second.userid);
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       }
       try {
         for (let code of Object.values(emotes)) {
@@ -216,7 +216,7 @@ module.exports = {
             bot.playingconnect4.delete(second.user.id);
           }).catch(e => {
             if (connectMessage) connectMessage.reactions.removeAll().catch(e => { });
-            return bot.error(bot, message, language, e);
+            bot.error(bot, message, language, e);
           });
           return;
         }
@@ -241,7 +241,7 @@ module.exports = {
             bot.playingconnect4.delete(second.user.id);
           }).catch(e => {
             if (connectMessage) connectMessage.reactions.removeAll().catch(e => { });
-            return bot.error(bot, message, language, e);
+            bot.error(bot, message, language, e);
           });
           return;
         }
@@ -251,7 +251,7 @@ module.exports = {
         if (connectMessage) connectMessage.reactions.removeAll().catch(e => { });
         bot.playingtictactoe.delete(first.userid);
         bot.playingtictactoe.delete(second.userid);
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       });
     }
     function getWinner(board, col) {

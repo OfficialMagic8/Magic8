@@ -30,7 +30,7 @@ module.exports = {
           .replace(/{GUILDNAME}/g, message.guild.name))
         .setColor(color)
         .setDescription(mediatext)
-      return message.channel.send(mediaEmbed).catch(e => { return bot.error(bot, message, language, e); })
+      return message.channel.send(mediaEmbed).catch(e => { return bot.error(bot, message, language, e); });
     } else {
       if (!message.member.hasPermission("ADMINISTRATOR")) return;
       let embed = new MessageEmbed()

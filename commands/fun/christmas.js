@@ -15,7 +15,7 @@ module.exports = {
           .setThumbnail("https://i.imgur.com/ACaHu30.png")
           .setDescription(bot.translate(bot, language, "christmas.description").join("\n")
             .replace(/{DAYS}/g, json["Days to Christmas"]))
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }).catch(e => { return bot.error(bot, message, language, e); });
   }
 }  

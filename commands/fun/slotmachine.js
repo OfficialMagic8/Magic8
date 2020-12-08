@@ -70,7 +70,7 @@ module.exports = {
         .replace(/{BSLOT1}/g, bslot1).replace(/{BSLOT2}/g, bslot2).replace(/{BSLOT3}/g, bslot3))
     let slotMessage = await message.channel.send(slotEmbed).catch(e => {
       bot.playingslotmachine.delete(message.author.id)
-      return bot.error(bot, message, language, e);
+      bot.error(bot, message, language, e);
     })
     setTimeout(async () => {
       slotMessage.react("🔴").catch(e => { return bot.error(bot, message, language, e); });
@@ -91,7 +91,7 @@ module.exports = {
         await slotMessage.edit(slotEmbed)
       } catch (e) {
         bot.playingslotmachine.delete(message.author.id)
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       }
       const filter = (reaction, user) => !user.bot && user.id === message.author.id && reaction.emoji.name === "🕹️"
       let collected;
@@ -113,7 +113,7 @@ module.exports = {
         await slotMessage.edit(slotEmbed)
       } catch (e) {
         bot.playingslotmachine.delete(message.author.id)
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       }
       let interval = setInterval(async () => {
         let tempstoppingdescription;
@@ -136,7 +136,7 @@ module.exports = {
         try {
           await slotMessage.edit(slotEmbed)
         } catch (e) {
-          return bot.error(bot, message, language, e);
+          bot.error(bot, message, language, e);
         }
         if (slot > 3) {
           setTimeout(() => {
@@ -144,7 +144,7 @@ module.exports = {
             // console.log(`🎰[${win ? "✔️" : "❌"}] ${message.author.tag} ${win ? "won" : "lost"} in slot machine! (${slot1}${slot2}${slot3})`);
             bot.playingslotmachine.delete(message.author.id);
             slotMessage.reactions.removeAll().catch(e => {
-              return bot.error(bot, message, language, e);
+              bot.error(bot, message, language, e);
             });
             let finaldescription = bot.translate(bot, language, `slotmachine.${win ? "win" : "lose"}`).join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
@@ -163,7 +163,7 @@ module.exports = {
             }).catch(e => {
               bot.playingslotmachine.delete(message.author.id);
               slotMessage.delete({ timeout: 500 }).catch(e => { });
-              return bot.error(bot, message, language, e);
+              bot.error(bot, message, language, e);
             })
           }, 2000)
           clearInterval(interval);

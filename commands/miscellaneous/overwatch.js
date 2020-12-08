@@ -142,7 +142,7 @@ module.exports = {
           .replace(/{TANKICON}/g, ticon)
           .replace(/{DPSICON}/g, dicon)
           .replace(/{SUPPORTICON}/g, sicon));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
 }

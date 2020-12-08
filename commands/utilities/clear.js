@@ -16,7 +16,7 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author)
           .replace(/{BOT}/g, bot.user));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (!args[0]) {
       let embed = new MessageEmbed()
@@ -63,7 +63,7 @@ module.exports = {
           .replace(/{AMOUNT}/g, deleted.size));
       return message.channel.send(success).catch(e => { return bot.error(bot, message, language, e); });
     } catch (e) {
-      return bot.error(bot, message, language, e);
+      bot.error(bot, message, language, e);
     }
   }
 }

@@ -29,7 +29,7 @@ module.exports = {
         .replace(/{SPINNER}/g, bot.emoji.spinner)
         .replace(/{USER}/g, message.author));
     let spinnerMessage = await message.channel.send(embed).catch(e => {
-      return bot.error(bot, message, language, e);
+      bot.error(bot, message, language, e);
     });
     setTimeout(() => {
       bot.spinningspinner.delete(message.author.id);

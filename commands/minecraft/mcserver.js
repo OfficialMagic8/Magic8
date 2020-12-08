@@ -45,11 +45,11 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "mcserver.checking")
             .replace(/{LOADING}/g, bot.emoji.loading));
         let updatingMessage = await message.channel.send(updating).catch(e => {
-          return bot.error(bot, message, language, e);
+          bot.error(bot, message, language, e);
         });
         let tryip = await bot.fetch(`https://api.mcsrvstat.us/2/${args[1]}`).then(res => res.json()).then(json => {
           return json.ip;
-        }).catch(e => { return bot.error(bot, message, language, e); })
+        }).catch(e => { return bot.error(bot, message, language, e); });
         if (tryip.length >= 1) {
           bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run(args[1], message.guild.id);
           bot.mcservers.set(message.guild.id, args[1]);

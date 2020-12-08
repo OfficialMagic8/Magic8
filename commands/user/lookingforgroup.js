@@ -58,7 +58,7 @@ module.exports = {
                   .replace(/{COOLDOWN}/g, cooldown));
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             } catch (e) {
-              return bot.error(bot, message, language, e);
+              bot.error(bot, message, language, e);
             }
           } else if (member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
             if (args[0] && args[0].toLowerCase() === "list") {
@@ -77,7 +77,7 @@ module.exports = {
                   .setColor(bot.colors.main)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.memberlist").join("\n")
                     .replace(/{LIST}/g, memberarray.map(m => `**•** ${m}`).join("\n")));
-                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               }
             }
           }
@@ -96,7 +96,7 @@ module.exports = {
                 .setColor(bot.colors.main)
                 .setDescription(bot.translate(bot, language, "lookingforgroup.memberlist").join("\n")
                   .replace(/{LIST}/g, memberarray.map(m => `**•** ${m}`).join("\n")));
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }
             if (args[0].toLowerCase() === "removeall") {
               let getrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
@@ -107,7 +107,7 @@ module.exports = {
                     .replace(/{CROSS}/g, bot.emoji.cross)
                     .replace(/{USER}/g, message.author)
                     .replace(/{ROLE}/g, getrole));
-                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               }
               let embed = new MessageEmbed()
                 .setColor(bot.colors.red)
@@ -129,7 +129,7 @@ module.exports = {
                         bot.lfgroles.set(message.guild.id, newrole.id)
                         bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run(newrole.id, message.guild.id)
                       }).catch(e => {
-                        return bot.error(bot, message, language, e);
+                        bot.error(bot, message, language, e);
                       })
                       let embed = new MessageEmbed()
                         .setColor(bot.colors.green)
@@ -137,7 +137,7 @@ module.exports = {
                           .replace(/{CHECK}/g, bot.emoji.check)
                           .replace(/{NEWROLE}/g, newrole))
                       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-                    } catch (e) { return bot.error(bot, message, language, e); }
+                    } catch (e) { bot.error(bot, message, language, e); }
                   }
                 }).catch(collected => {
                   let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id));
@@ -150,7 +150,7 @@ module.exports = {
                       .replace(/{ROLE}/g, oldrole))
                   return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
                 });
-              }).catch(e => { return bot.error(bot, message, language, e); })
+              }).catch(e => { return bot.error(bot, message, language, e); });
             } else if (message.mentions.users) {
               let target;
               try {
@@ -189,21 +189,30 @@ module.exports = {
                   .setDescription(bot.translate(bot, language, "lookingforgroup.roleremoved")
                     .replace(/{CHECK}/g, bot.emoji.check)
                     .replace(/{TARGET}/g, target));
-                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               } else if (!member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
                 let embed = new MessageEmbed()
                   .setColor(bot.colors.red)
                   .setDescription(bot.translate(bot, language, "lookingforgroup.alreadynorole")
                     .replace(/{CROSS}/g, bot.emoji.cross)
                     .replace(/{TARGET}/g, target));
-                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               }
             }
           }
         } else if (!message.guild.roles.cache.has(role.id)) {
-          bot.lfgroles.delete(message.guild.id)
-          return bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run("none", message.guild.id)
+          bot.lfgroles.delete(message.guild.id);
+          return bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run("none", message.guild.id);
         }
+      } else {
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.red)
+          .setDescription(bot.translate(bot, language, "listmanager.norole").join("\n")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{BOT}/g, bot.user)
+            .replace(/{INFO}/g, bot.emoji.info)
+            .replace(/{PREFIX}/g, prefix));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (bot.premium.get(message.guild.id) === 0) {
       let embed = new MessageEmbed()
@@ -211,7 +220,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "lookingforgroup.premium").join("\n")
           .replace(/{BOT}/g, bot.user)
           .replace(/{PACKAGES}/g, bot.config.donatelink));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
 }

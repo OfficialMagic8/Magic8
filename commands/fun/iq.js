@@ -19,7 +19,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     if (!target) {
@@ -28,7 +28,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let useriq = Math.floor(Math.random() * 121) + 40;
     let finalmsg;
@@ -55,6 +55,6 @@ module.exports = {
         .replace(/{TARGET}/g, target)
         .replace(/{IQ}/g, useriq)
         .replace(/{MESSAGE}/g, finalmsg));
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

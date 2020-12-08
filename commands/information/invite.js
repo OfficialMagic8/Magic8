@@ -16,6 +16,6 @@ module.exports = {
         .replace(/{INVITE}/g, bot.config.botinvite)
         .replace(/{BOT}/g, bot.user))
       .setColor(bot.colors.main)
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

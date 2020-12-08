@@ -35,7 +35,7 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e);});
+      return message.channel.send(error).catch(e => { bot.error(bot, message, language, e);});
     }
     try {
       let id = args[0].replace(/[^0-9]/g, "");
@@ -46,7 +46,7 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e);});
+      return message.channel.send(embed).catch(e => { bot.error(bot, message, language, e);});
     }
     if (!target) {
       let embed = new MessageEmbed()
@@ -54,7 +54,7 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e);});
+      return message.channel.send(embed).catch(e => { bot.error(bot, message, language, e);});
     }
     if (message.author.id === target.id) {
       let embed = new MessageEmbed()
@@ -62,7 +62,7 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => {return bot.error(bot, message, language, e); });
+      return message.channel.send(embed).catch(e => {bot.error(bot, message, language, e); });
     }
     if (bot.playingtictactoe.has(target.id)) {
       let embed = new MessageEmbed()
@@ -70,7 +70,7 @@ module.exports = {
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => {return bot.error(bot, message, language, e); });
+      return message.channel.send(embed).catch(e => {bot.error(bot, message, language, e); });
     }
     let now = Date.now();
     let first = {
@@ -123,7 +123,7 @@ module.exports = {
       } catch (e) {
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       }
       try {
         for (let code of Object.values(emotes)) {
@@ -132,7 +132,7 @@ module.exports = {
       } catch (e) {
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       }
       let starter = Math.floor(Math.random() * 101) < 50 ? 0 : 1;
       first.turn = starter;
@@ -239,7 +239,7 @@ module.exports = {
             bot.playingtictactoe.delete(second.user.id);
           }).catch(e => {
             if (gameMessage) gameMessage.reactions.removeAll().catch(e => { })
-            return bot.error(bot, message, language, e);
+            bot.error(bot, message, language, e);
           });
           return;
         }
@@ -265,7 +265,7 @@ module.exports = {
             bot.playingtictactoe.delete(second.user.id);
           }).catch(e => {
             if (gameMessage) gameMessage.reactions.removeAll().catch(e => { });
-            return bot.error(bot, message, language, e);
+            bot.error(bot, message, language, e);
           });
           return;
         }
@@ -276,7 +276,7 @@ module.exports = {
         if (gameMessage) gameMessage.reactions.removeAll().catch(e => { });
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       });
     }
     function getWinner(bot, first) {

@@ -48,7 +48,7 @@ module.exports = {
             .replace(/{PREMIUM}/g, premium)
             .replace(/{DESCRIPTION}/g, cmd.description))
           .setFooter(bot.translate(bot, language, "help.footer"));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -57,7 +57,7 @@ module.exports = {
             .replace(/{INPUT}/g, args[0])
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     if (!bot.helpmenus.get(message.guild.id)) {
@@ -190,7 +190,7 @@ module.exports = {
           .replace(/{GUIDE}/g, bot.docs.main)
           .replace(/{INVITE}/g, bot.invite)
           .replace(/{MESSAGELINK}/g, m.url));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }).catch(e => {
       embed.setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "help.cannotsend").join("\n")
@@ -198,7 +198,7 @@ module.exports = {
           .replace(/{USER}/g, message.author)
           .replace(/{GUIDE}/g, bot.docs.main)
           .replace(/{INVITE}/g, bot.invite));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     })
   }
 }

@@ -256,9 +256,9 @@ bot.maxantipingusers.set(1, 20);
 bot.maxantipingusers.set(2, 50);
 
 bot.maxlists = new Collection();
-bot.maxlists.set(0, 5)
-bot.maxlists.set(1, 10)
-bot.maxlists.set(2, 20)
+bot.maxlists.set(0, 3)
+bot.maxlists.set(1, 5)
+bot.maxlists.set(2, 10)
 
 bot.premium = new Collection();
 bot.usage = new Collection();

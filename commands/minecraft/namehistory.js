@@ -22,7 +22,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "namehistory.enterusername")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let uuid = undefined;
     let matchRegex = toSearch.match(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/gi)
@@ -36,7 +36,7 @@ module.exports = {
               .replace(/{USER}/g, message.author)
               .replace(/{TOSEARCH}/g, toSearch.replace(/_/g, "\_")))
             .setColor(bot.colors.red)
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         res.reverse()
         let description;
@@ -67,7 +67,7 @@ module.exports = {
           // .setFooter(bot.translate(bot,language,"namehistory.success.footer").replace(/{BOTNAME}/g,bot.user.username)
           //            .replace(/{VERSION}/g,bot.botconfig.version).replace(/{AUTHOR}/g,message.author.tag))
           .setColor(bot.colors.main)
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       })
     } else {
       let date = new Date();
@@ -79,7 +79,7 @@ module.exports = {
               .replace(/{USER}/g, message.author)
               .replace(/{TOSEARCH}/g, toSearch))
             .setColor(bot.colors.red)
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         uuid = res.id;
         let parsedUUID = bot.utils.UUIDfromString(uuid);
@@ -91,7 +91,7 @@ module.exports = {
                 .replace(/{CROSS}/g, bot.emoji.cross)
                 .replace(/{UESR}/g, message.author)
                 .replace(/{TOSEARCH}/g, toSearch))
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
           res.reverse()
           let description;
@@ -122,7 +122,7 @@ module.exports = {
             .setDescription(description.replace(/{CHECK}/g, bot.emoji.check)
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, toSearch));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         })
         return;
       })

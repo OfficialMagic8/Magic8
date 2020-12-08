@@ -13,6 +13,6 @@ module.exports = {
       .setColor(bot.colors.main)
       .setDescription(bot.translate(bot, language, "premium.description").join("\n")
         .replace(/{DONATIONLINK}/g, bot.config.donatelink));
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

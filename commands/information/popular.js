@@ -30,6 +30,6 @@ module.exports = {
       embed.setDescription(bot.translate(bot, language, "popular.description").join("\n")
         .replace(/{COMMANDS}/g, popularcommandsarray.join("\n")));
       return embedmessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
-    }).catch(e => { return bot.error(bot, message, language, e); })
+    }).catch(e => { return bot.error(bot, message, language, e); });
   }
 }  

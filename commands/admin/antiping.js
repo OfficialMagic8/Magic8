@@ -88,7 +88,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "antiping.targetalreadydisabled")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{TARGET}/g, target));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (!users.includes(target.id)) {
         users.push(target.id);
         bot.antipingusers.set(message.guild.id, users);
@@ -98,7 +98,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "antiping.nowdisabled")
             .replace(/{CHECK}/g, bot.emoji.check)
             .replace(/{TARGET}/g, target));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "removeuser") {
       if (!bot.antipingusers.has(message.guild.id) || bot.antipingusers.get(message.guild.id).length <= 0) {
@@ -109,7 +109,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!args[1]) {
         let usersarray = [];
@@ -125,7 +125,7 @@ module.exports = {
             .replace(/{USERS}/g, usersarray.length <= 0 ? usersarray.map(u => `**•** ${u}`).join("\n") : `**•** *${bot.translate(bot, language, "none")}*`)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let target;
       if (args[1].toLowerCase() === "all") {
@@ -147,7 +147,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!bot.antipingusers.get(message.guild.id).includes(target.id)) {
         let embed = new MessageEmbed()
@@ -155,7 +155,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "antiping.alreadyenabled")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{TARGET}/g, target))
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (bot.antipingusers.get(message.guild.id).includes(target.id)) {
 
         let removed = bot.antipingusers.get(message.guild.id).filter(id => id !== target.id);
@@ -170,7 +170,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "antiping.nowenabled")
             .replace(/{CHECK}/g, bot.emoji.check)
             .replace(/{TARGET}/g, target));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "message") {
       let newmessage = args.slice(1).join(" ").replace(/@everyone/gi, "<everyone>").replace(/@here/gi, "<here>");
@@ -183,7 +183,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "antiping.messageinfo").join("\n")
             .replace(/{CURRENTMESSAGE}/g, oldmessage)
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
@@ -192,7 +192,7 @@ module.exports = {
           .replace(/{OLDMESSAGE}/g, oldmessage)
           .replace(/{NEWMESSAGE}/g, newmessage));
       bot.db.prepare("UPDATE guilddata SET antipingmessage=? WHERE guildid=?").run(newmessage, message.guild.id);
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "addrole") {
       let targetrole;
       try {
@@ -212,7 +212,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "antiping.invalidrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{ROLES}/g, rolesarray.map(r => `**•** ${r}`).join("\n")));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let bypassroles = JSON.parse(guildData.antipingbypassroles)
       if (bypassroles.includes(targetrole.id)) {
@@ -223,7 +223,7 @@ module.exports = {
             .replace(/{TARGETROLE}/g, targetrole)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (!bypassroles.includes(targetrole.id)) {
         bypassroles.push(targetrole.id)
         bot.antipingbypassroles.set(message.guild.id, bypassroles)
@@ -235,7 +235,7 @@ module.exports = {
             .replace(/{TARGETROLE}/g, targetrole)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "removerole") {
       let bypassroles = JSON.parse(guildData.antipingbypassroles);
@@ -246,7 +246,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let targetrole;
       try {
@@ -265,7 +265,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "antiping.invalidbypassrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{BYPASSROLES}/g, rolesarray.map(r => `**•** ${r}`).join("\n")));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!bypassroles.includes(targetrole.id)) {
         let embed = new MessageEmbed()
@@ -275,7 +275,7 @@ module.exports = {
           .replace(/{TARGETROLE}/g, targetrole)
           .replace(/{INFO}/g, bot.emoji.info)
           .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (bypassroles.includes(targetrole.id)) {
         let removed = bypassroles.filter(r => r !== targetrole.id);
         if (bot.antipingbypassroles.has(message.guild.id)) {
@@ -292,7 +292,7 @@ module.exports = {
             .replace(/{TARGETROLE}/g, targetrole)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "roles") {
       let bypassarray = []
@@ -314,7 +314,7 @@ module.exports = {
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "antiping.viewroles").join("\n")
           .replace(/{BYPASSROLES}/g, bypassarray.map(r => `**•** ${r}`).join("\n")))
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "users") {
       let usersarray = []
       let users = JSON.parse(guildData.antipingusers)
@@ -335,7 +335,7 @@ module.exports = {
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "antiping.viewusers").join("\n")
           .replace(/{USERS}/g, usersarray.map(u => `**•** ${u}`).join("\n")))
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "logchannel") {
       if (args[1] && args[1].toLowerCase() === "remove") {
         if (guildData.antipinglogchannel === "none") {
@@ -345,7 +345,7 @@ module.exports = {
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{INFO}/g, bot.emoji.info)
               .replace(/{PREFIX}/g, prefix));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         bot.antipinglogchannels.delete(message.guild.id)
         bot.db.prepare("UPDATE guilddata SET antipinglogchannel=? WHERE guildid=?").run("none", message.guild.id);
@@ -355,7 +355,7 @@ module.exports = {
             .replace(/{CHECK}/g, bot.emoji.check)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       bot.antipinglogchannels.set(message.guild.id, message.channel.id)
       bot.db.prepare("UPDATE guilddata SET antipinglogchannel=? WHERE guildid=?").run(message.channel.id, message.guild.id);
@@ -367,7 +367,7 @@ module.exports = {
           .replace(/{CHANNELID}/g, message.channel.id)
           .replace(/{INFO}/g, bot.emoji.info)
           .replace(/{PREFIX}/g, prefix));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else {
       let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "antiping.menutitle")
@@ -378,7 +378,7 @@ module.exports = {
           .replace(/{PREFIX}/g, prefix)
           .replace(/{WARNING}/g, bot.emoji.warning)
           .replace(/{INFO}/g, bot.emoji.info));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
 }

@@ -15,7 +15,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "belike.providename")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let name;
     let gendershort;
@@ -62,6 +62,6 @@ module.exports = {
       .setDescription(bot.translate(bot, language, "belike.description")
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author));
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }

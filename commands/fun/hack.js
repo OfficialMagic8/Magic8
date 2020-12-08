@@ -84,7 +84,7 @@ module.exports = {
         .replace(/{RANDOMEMAIL}/g, randomEmail(targetName)).replace(/{RANDOMPASSWORD}/g, faker.internet.password())
         .replace(/{RANDOMREGISTER}/g, randomregister[Math.floor(Math.random() * randomregister.length)])
       hackMessage.edit(old + "\n" + toAdd).catch(e => {
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       });
       index++;
       setTimeout(() => {

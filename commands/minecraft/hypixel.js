@@ -16,7 +16,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "hypixel.error.invalid")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let req;
     try {
@@ -44,7 +44,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } catch (e) {
-      return bot.error(bot, message, language, e);
+      bot.error(bot, message, language, e);
     }
     let player = req.player;
     let firstLogin = new Date(player.firstLogin);

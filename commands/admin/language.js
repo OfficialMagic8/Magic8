@@ -44,7 +44,7 @@ module.exports = {
                 .replace(/{INPUT}/g, page)
                 .replace(/{INFO}/g, bot.emoji.info)
                 .replace(/{TOTALPAGES}/g, totalpages));
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
           let lastitemindex = page * 5;
           let selectedlanguages = [];
@@ -72,7 +72,7 @@ module.exports = {
               .replace(/{INFO}/g, bot.emoji.info)
               .replace(/{LANGUAGES}/g, selectedlanguages.join("\n"))
               .replace(/{WARNING}/g, bot.emoji.warning));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (!bot.languages.has(args[1].toLowerCase())) {
           let embed = new MessageEmbed()
@@ -83,7 +83,7 @@ module.exports = {
               .replace(/{CURRENT}/g, guildData.language)
               .replace(/{AVAILABLE}/g, bot.languages.keyArray().sort().map(lg => `\`${lg}\``).join(" "))
               .replace(/{WARNING}/g, bot.emoji.warning));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (args[1].toLowerCase() === guildData.language) {
           let embed = new MessageEmbed()
@@ -92,7 +92,7 @@ module.exports = {
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{CURRENT}/g, args[1].toLowerCase())
               .replace(/{INFO}/g, bot.emoji.info));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (bot.helpmenus.has(message.guild.id)) bot.helpmenus.delete(message.guild.id);
         if (bot.adminmenus.has(message.guild.id)) bot.adminmenus.delete(message.guild.id);
@@ -118,7 +118,7 @@ module.exports = {
         let lastfetchedms = Date.parse(lastfetched)
         let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json()).then(json => {
           return Date.parse(json[0].updated_at)
-        }).catch(e => { return bot.error(bot, message, language, e); })
+        }).catch(e => { return bot.error(bot, message, language, e); });
         let uptodatestring;
         let condition;
         if (lastfetchedms < lastcommit) {
@@ -147,7 +147,7 @@ module.exports = {
               .replace(/{INPUT}/g, page)
               .replace(/{INFO}/g, bot.emoji.info)
               .replace(/{TOTALPAGES}/g, totalpages))
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let lastitemindex = page * 5;
         let selectedlanguages = [];
@@ -175,7 +175,7 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{LANGUAGES}/g, selectedlanguages.join("\n"))
             .replace(/{WARNING}/g, bot.emoji.warning));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (subcommand === "help") {
         let embed = new MessageEmbed()
           .setColor(bot.colors.main)
@@ -186,7 +186,7 @@ module.exports = {
             .replace(/{INVITE}/g, bot.invite)
             .replace(/{TRIPLEPACKAGE}/g, bot.docs.triplepackage)
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (subcommand === "info") {
         if (!args[1]) {
           let lastfetched = bot.lastfetched.get("lf")
@@ -214,7 +214,7 @@ module.exports = {
                 .replace(/{INPUT}/g, page)
                 .replace(/{INFO}/g, bot.emoji.info)
                 .replace(/{TOTALPAGES}/g, totalpages));
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
           let lastitemindex = page * 5;
           let selectedlanguages = [];
@@ -251,7 +251,7 @@ module.exports = {
               .replace(/{INFO}/g, bot.emoji.info)
               .replace(/{LANGUAGES}/g, selectedlanguages.join("\n"))
               .replace(/{WARNING}/g, bot.emoji.warning));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (!bot.languages.has(args[1].toLowerCase())) {
           let embed = new MessageEmbed()
@@ -262,7 +262,7 @@ module.exports = {
               .replace(/{CURRENT}/g, guildData.language)
               .replace(/{AVAILABLE}/g, bot.languages.keyArray().sort().map(lg => `\`${lg}\``).join(" "))
               .replace(/{WARNING}/g, bot.emoji.warning));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let getlang = bot.languagesprogress.get(args[1].toLowerCase());
         let embed = new MessageEmbed()
@@ -273,7 +273,7 @@ module.exports = {
             .replace(/{LANGUAGESHORT}/g, args[1].toLowerCase())
             .replace(/{PROGRESS}/g, getlang.progress)
             .replace(/{AUTHORS}/g, getlang.authors.map(a => `**•** ${a}`).join("\n")));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else {
         let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "language.menutitle")
@@ -288,7 +288,7 @@ module.exports = {
             .replace(/{PREFIX}/g, prefix)
             .replace(/{LANGUAGE}/g, guildData.language)
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
   }

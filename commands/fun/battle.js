@@ -66,7 +66,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "battle.error.targetbattling")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let firstobject = {
       userid: message.author.id,

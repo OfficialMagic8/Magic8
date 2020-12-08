@@ -19,7 +19,7 @@ module.exports = {
           .replace(/{PREFIX}/g, prefix)
           .replace(/{WARNING}/g, bot.emoji.warning)
           .replace(/{INVITE}/g, bot.invite))
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (subcommand === "start") {
       if (bot.playingakinator.has(message.author.id)) {
@@ -28,7 +28,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "akinator.alreadyplaying")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let defaultobject = {
         guildid: message.guild.id,
@@ -53,7 +53,7 @@ module.exports = {
           .replace(/{PREFIX}/g, prefix)
           .replace(/{WARNING}/g, bot.emoji.warning)
           .replace(/{INVITE}/g, bot.invite))
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     async function startGame(bot, message, object) {
       let akiGame = new aki.Aki("en");
@@ -109,7 +109,7 @@ module.exports = {
         sendGuess(bot, message, object, akiGame, index);
       }).catch(e => {
         bot.playingakinator.delete(message.author.id);
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       })
     }
     let answersInverse = {
@@ -144,7 +144,7 @@ module.exports = {
             askQuestion(bot, message, object, akiGame);
           }).catch(e => {
             bot.playingakinator.delete(message.author.id);
-            return bot.error(bot, message, language, e);
+            bot.error(bot, message, language, e);
           })
         }).catch(e => {
           bot.playingakinator.delete(message.author.id);

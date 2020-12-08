@@ -19,7 +19,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "listmanager.help").join("\n")
           .replace(/{PREFIX}/g, prefix)
           .replace(/{INFO}/g, bot.emoji.info))
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (["view", "v"].includes(subcommand)) {
       let lists = JSON.parse(guildData.listmanager);
@@ -51,7 +51,7 @@ module.exports = {
               message.channel.send(`**Preformatted Items:** ${haste}`)
             }, 1000)
           }).catch(e => {
-            return bot.error(bot, message, language, e);
+            bot.error(bot, message, language, e);
           })
         }
         let embed = new MessageEmbed()
@@ -61,7 +61,7 @@ module.exports = {
             .replace(/{LISTNAME}/g, list.name)
             .replace(/{CREATED}/g, list.creationdate.split(" ")[0].replace(",", ""))
             .replace(/{ITEMS}/g, items));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (listname && !listnames.includes(listname.toLowerCase())) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -70,7 +70,7 @@ module.exports = {
             .replace(/{INPUT}/g, listname)
             .replace(/{LISTS}/g, finallistarray)
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
@@ -78,7 +78,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "listmanager.viewlists").join("\n")
           .replace(/{LISTS}/g, finallistarray)
           .replace(/{INFO}/g, bot.emoji.info));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else if (["r", "randomize"].includes(subcommand)) {
       if (bot.listscooldown.has(message.author.id)) {
         let embed = new MessageEmbed()
@@ -86,7 +86,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "listmanager.cooldown")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let lists = JSON.parse(guildData.listmanager)
       if (lists.length === 0) {
@@ -96,7 +96,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let listsarray = [];
       lists.forEach(l => {
@@ -110,7 +110,7 @@ module.exports = {
             .replace(/{LISTS}/g, listsarray.join("\n"))
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let listnames = [];
       lists.forEach(l => {
@@ -132,7 +132,7 @@ module.exports = {
               .replace(/{INPUT}/g, listname)
               .replace(/{LISTS}/g, listsarray.join("\n"))
               .replace(/{INFO}/g, bot.emoji.info));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let cooldown = guildData.randomizercooldown;
         bot.listscooldown.set(message.author.id, Date.now());
@@ -159,7 +159,7 @@ module.exports = {
             .replace(/{FINALMESSAGE}/g, bot.translate(bot, language, "listmanager.singlerandomize"))
             .replace(/{RANDOMIZED}/g, randomitem))
           embed.setColor(bot.colors.green)
-          embedMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); })
+          embedMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
         }, 2000);
       } else {
         let randomcount = Math.abs(Math.floor(parseInt(args.pop())))
@@ -217,7 +217,7 @@ module.exports = {
             .replace(/{FINALMESSAGE}/g, bot.translate(bot, language, "listmanager.multirandomize"))
             .replace(/{RANDOMIZED}/g, randomized.join("\n")));
           embed.setColor(bot.colors.green);
-          embedMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); })
+          embedMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
         }, 2000)
       }
     } else if (subcommand === "create") {
@@ -234,17 +234,17 @@ module.exports = {
             .replace(/{OPTIONS}/g, bot.premium.get(message.guild.id) === 1 ?
               bot.translate(bot, language, "listmanager.upgrade.triple") :
               bot.translate(bot, language, "listmanager.upgrade.singleortriple"))
-            .replce(/{DONATELINK}/g, bot.config.donatelink);
+            .replace(/{DONATELINK}/g, bot.config.donatelink);
         } else {
           upgradestring = bot.translate(bot, language, "listmanager.upgrade.cannotupgrade");
         }
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "listmanager.reachedlimit")
+          .setDescription(bot.translate(bot, language, "listmanager.reachedlimit").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{MAX}/g, max)
             .replace(/{UPGRADE}/g, upgradestring)
-            .replace(/{CURRENTLISTS/g, lists.map(l => `**•** ${l.name} (${l.items.length})`))
+            .replace(/{CURRENTLISTS/g, lists.map(l => `**•** ${l.name} (${l.items.length})`).join("\n"))
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
@@ -264,7 +264,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "listmanager.listnametoolong").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (listnames.includes(listname.toLowerCase())) {
         let embed = new MessageEmbed()
@@ -273,7 +273,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INPUT}/g, listname)
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let date = new Date().toLocaleString("en");
       let listobject = {
@@ -291,7 +291,7 @@ module.exports = {
           .replace(/{DATE}/g, date)
           .replace(/{INFO}/g, bot.emoji.info)
           .replace(/{PREFIX}/g, prefix));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "delete") {
       let lists = JSON.parse(guildData.listmanager);
       let listname = args.slice(1).join(" ");
@@ -306,7 +306,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let listcopy = [];
       lists.forEach(l => {
@@ -325,7 +325,7 @@ module.exports = {
             .replace(/{INPUT}/g, listname)
             .replace(/{LISTS}/g, listsarray.join("\n"))
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let hastetext = [
         `Magic8 - ${message.guild.name} - List Manager`,
@@ -345,8 +345,8 @@ module.exports = {
             .replace(/{CHECK}/g, bot.emoji.check)
             .replace(/{LISTNAME}/g, list.name)
             .replace(/{ITEMSLINK}/g, haste));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
-      }).catch(e => { return bot.error(bot, message, language, e); })
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "bulkadd") {
       let lists = JSON.parse(guildData.listmanager)
       if (lists.length === 0) {
@@ -356,7 +356,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let listnames = [];
       lists.forEach(l => {
@@ -374,7 +374,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "listmanager.bulkaddmenu").join("\n")
             .replace(/{LISTS}/g, listsarray.join("\n"))
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!listnames.includes(listname.toLowerCase())) {
         let embed = new MessageEmbed()
@@ -384,7 +384,7 @@ module.exports = {
             .replace(/{INPUT}/g, listname)
             .replace(/{LISTS}/g, listsarray.join("\n"))
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
       let hastetext = [
@@ -439,7 +439,7 @@ module.exports = {
           })
         }).catch(e => { return bot.error(bot, message, language, e); });
       }).catch(e => {
-        return bot.error(bot, message, language, e);
+        bot.error(bot, message, language, e);
       });
     } else if (subcommand === "add") {
       let lists = JSON.parse(guildData.listmanager);
@@ -458,7 +458,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let listname = args.slice(1).join(" ");
       if (!listname) {
@@ -468,7 +468,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "listmanager.addmenu")
             .replace(/{LISTS}/g, listarray.join("\n"))
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!listnames.includes(listname.toLowerCase())) {
         let embed = new MessageEmbed()
@@ -478,7 +478,7 @@ module.exports = {
             .replace(/{INPUT}/g, listname)
             .replace(/{LISTS}/g, listsarray.join("\n"))
             .replace(/{INFO}/g, bot.emoji.info));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase())
       let hastetext = [
@@ -510,9 +510,9 @@ module.exports = {
                   .replace(/{CHECK}/g, bot.emoji.check)
                   .replace(/{LISTNAME}/g, list.name)
                   .replace(/{ITEMS}/g, list.items.map(i => `**•** ${i.trim()}`).join("\n")))
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }).catch(e => {
-              return bot.error(bot, message, language, e);
+              bot.error(bot, message, language, e);
             });
           }).catch(collected => {
             let embed = new MessageEmbed()
@@ -520,7 +520,7 @@ module.exports = {
               .setDescription(bot.translate(bot, language, "listmanager.addnoitems").join("\n")
                 .replace(/{CROSS}/g, bot.emoji.cross)
                 .replace(/{INFO}/g, bot.emoji.info))
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           });
         }).catch(e => { return bot.error(bot, message, language, e); });
       }).catch(e => { return bot.error(bot, message, language, e); });
@@ -533,7 +533,7 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let listnames = [];
       lists.forEach(l => {
@@ -613,7 +613,7 @@ module.exports = {
                     .replace(/{CHECK}/g, bot.emoji.check)
                     .replace(/{LISTNAME}/g, list.name)
                     .replace(/{LINK}/g, haste));
-                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               }).catch(e => { return bot.error(bot, message, language, e); });
             }
             let itemscopy = [];
@@ -651,7 +651,7 @@ module.exports = {
                   .replace(/{LISTNAME}/g, list.name)
                   .replace(/{LINK}/g, haste));
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-            }).catch(e => { return bot.error(bot, message, language, e); })
+            }).catch(e => { return bot.error(bot, message, language, e); });
           }).catch(collected => {
             let embed = new MessageEmbed()
               .setColor(bot.colors.red)
@@ -714,7 +714,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "listmanager.help").join("\n")
             .replace(/{PREFIX}/g, prefix)
             .replace(/{INFO}/g, bot.emoji.info))
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else return;
     }
   }

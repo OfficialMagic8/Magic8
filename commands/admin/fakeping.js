@@ -51,12 +51,12 @@ module.exports = {
       let pingimage = await bot.canvas.loadImage(pinglink)
       ctx.drawImage(pingimage, 441 + 1 - (pingimage.width / 2), 441 + 1 - (pingimage.height / 2), 210, 210)
       dataURL = await canvas.toDataURL();
-    } catch (e) { return bot.error(bot, message, language, e); }
+    } catch (e) { bot.error(bot, message, language, e); }
     let base64 = dataURL.slice(dataURL.indexOf("base64,") + 7);
     let parsed;
     try {
       parsed = await Imgur.uploadBase64(base64);
-    } catch (e) { return bot.error(bot, message, language, e); }
+    } catch (e) { bot.error(bot, message, language, e); }
     let link = parsed.data.link;
     let cooldownobject = {
       link: link,
@@ -108,7 +108,7 @@ module.exports = {
               return message.channel.send(success).catch(e => { });
             }).catch(e => {
               updateToManual(m, embed, bot, language, link);
-              return bot.error(bot, message, language, e);
+              bot.error(bot, message, language, e);
             })
           } else {
             updateToManual(m, embed, bot, language, link);

@@ -27,7 +27,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "hammer.alreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     bot.playingmallet.set(message.author.id);
     let malletEmbed = new MessageEmbed()
@@ -42,7 +42,7 @@ module.exports = {
       malletMessage = await message.channel.send(malletEmbed);
     } catch (e) {
       bot.playingmallet.delete(message.author.id)
-      return bot.error(bot, message, language, e);
+      bot.error(bot, message, language, e);
     }
     setTimeout(async () => {
       malletMessage.react((bot.emoji.mallet).replace(">", "")).catch(e => {

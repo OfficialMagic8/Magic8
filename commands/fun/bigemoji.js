@@ -19,7 +19,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "bigemoji.error")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let matchs = possibleEmoji.match(regex);
     let animated = possibleEmoji.startsWith(":a:");
@@ -31,7 +31,7 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "bigemoji.error")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let emojiid = idmatchs[idmatchs.length - 1]
     let emojilink = (animated ? basegiflink : basepnglink).replace(/{EMOJIID}/g, emojiid);
@@ -43,7 +43,7 @@ module.exports = {
           .replace(/{EMOJILINK}/g, emojilink))
         .setImage(emojilink)
         .setColor(bot.colors.funcolor)
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }).catch(e => {
       bot.error(bot, message, language, e);
     });

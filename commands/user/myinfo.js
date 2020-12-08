@@ -55,6 +55,6 @@ module.exports = {
         .replace(/{CREATED}/g, new Date(message.author.createdTimestamp).toLocaleString().split(" ")[0].replace(/\,/g, ""))
         .replace(/{BOOSTING}/g, boosting)
         .replace(/{ROLES}/g, rolesarray.join("\n")))
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }  

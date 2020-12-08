@@ -30,6 +30,6 @@ module.exports = {
         .replace(/{CHECK}/g, bot.emoji.check)
         .replace(/{USER}/g, message.author)
         .replace(/{TARGET}/g, target));
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }  

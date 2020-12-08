@@ -11,7 +11,7 @@ module.exports = {
     let req
     try {
       req = await bot.fetch(`https://api.yomomma.info/`).then(res => res.json()).then(json => { return json; })
-    } catch (e) { return bot.error(bot, message, language, e); };
+    } catch (e) { bot.error(bot, message, language, e); };
     let embed = new MessageEmbed()
       .setColor(bot.colors.blue)
       .setThumbnail("http://clipart-library.com/image_gallery/309987.png")

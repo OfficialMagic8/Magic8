@@ -13,7 +13,7 @@ module.exports = {
       let req;
       try {
         req = await bot.fetch("https://www.boredapi.com/api/activity").then(res => res.json()).then(json => { return json });
-      } catch (e) { return bot.error(bot, message, language, e); };
+      } catch (e) { bot.error(bot, message, language, e); };
       let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "bored.title")
           .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: "true" }))
@@ -27,7 +27,7 @@ module.exports = {
       let req;
       try {
         req = await bot.fetch(`http://www.boredapi.com/api/activity?type=${args[0].toLowerCase()}`).then(res => res.json()).then(json => { return json });
-      } catch (e) { return bot.error(bot, message, language, e); };
+      } catch (e) { bot.error(bot, message, language, e); };
       let embed = new MessageEmbed()
         .setAuthor(bot.translate(bot, language, "bored.title")
           .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: "true" }))

@@ -37,7 +37,7 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "say.permissionrequired")
             .replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else {
         if (message.member.hasPermission("MENTION_EVERYONE")) {
           return channel.send(msg

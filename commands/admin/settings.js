@@ -31,7 +31,7 @@ module.exports = {
             ``,
             `**Disabled Commands:**`,
             `${disabledCommandsString}`])
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!cmdToDisable) {
         let embed = new MessageEmbed()
@@ -40,7 +40,7 @@ module.exports = {
             `${bot.emoji.cross} **Please provide a valid command to toggle.**`,
             ``,
             `${bot.emoji.info} To get a list of available commands, type: \`${prefix}help\``])
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else {
         if (bot.commands.has(cmdToDisable)) {
           let commandToDisable = bot.commands.get(cmdToDisable);
@@ -55,7 +55,7 @@ module.exports = {
                   ``,
                   `**Disabled Commands:**`,
                   `${disabledCommandsString}`])
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             } else {
               if (disabledCommands.includes(commandToDisable.name)) {
                 let finalDisabled = disabledCommands.filter(dc => dc !== commandToDisable.name)
@@ -79,7 +79,7 @@ module.exports = {
                     ``,
                     `**Disabled Commands:**`,
                     `${disabledCommandsString}`])
-                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               } else {
                 disabledCommands.push(commandToDisable.name);
                 disabledCommands.sort();
@@ -95,7 +95,7 @@ module.exports = {
                     ``,
                     `**Disabled Commands:**`,
                     `${disabledCommandsFormat.join(" ")}`])
-                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
               }
             }
           }
@@ -127,7 +127,7 @@ module.exports = {
           `${disabled}`,
           ``,
           `${bot.emoji.info} To disable or enable a command, type: \`${prefix}s toggle\``]);
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "prefix") {
       if (!args[1] || args[1].length <= 0) {
         let error = new MessageEmbed()
@@ -236,7 +236,7 @@ module.exports = {
           try {
             bot.fs.writeFileSync("././templates/customr8ballreplies.txt", finalDoc, 'utf8')
           } catch (e) {
-            return bot.error(bot, message, language, e);
+            bot.error(bot, message, language, e);
           }
           return message.channel.send("", {
             embed: replies,
@@ -281,7 +281,7 @@ module.exports = {
             ``,
             `**Old:** ${oldMode}`,
             `**New:** ${mode}`])
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (subcommand2 === "color") {
         if (!args[2]) {
           let error = new MessageEmbed()
@@ -305,7 +305,7 @@ module.exports = {
             `**New Color:** \`${newcolor}\``,
             ``,
             `${bot.emoji.info} To check it out, type \`${prefix}8ball <question>\``])
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else {
         let help = new MessageEmbed()
           .setAuthor(`${b} Magic 8 Ball Settings`)
@@ -362,7 +362,7 @@ module.exports = {
                   ``,
                   `${bot.emoji.info} If you would like to make edits, here is a link of your text:`,
                   `**${haste}**`])
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }).catch(e => {
               console.error(e)
               let error = new MessageEmbed()
@@ -389,7 +389,7 @@ module.exports = {
                 `Non administrators will no longer be able to use the command!`,
                 ``,
                 `${bot.emoji.info} To add a media page in the future, type \`${prefix}s media text <text>\``].join("\n"))
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           } else if (!media) {
             bot.hastebin(`## Beautiful Preformatted Media by Magic8 <3\nJust copy the text below!\n\n${prefix}s media text ${guildData.mediatext}`, { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
               let error = new MessageEmbed()
@@ -453,7 +453,7 @@ module.exports = {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription([`${bot.emoji.cross} **Please provide an image URL and make sure it works!**`])
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else {
           bot.db.prepare("UPDATE guilddata SET mediaimage=? WHERE guildid=?").run(url, message.guild.id)
           let complete = new MessageEmbed()
@@ -478,7 +478,7 @@ module.exports = {
               `**Current Color:** ${guildData.mediacolor}`,
               ``,
               `${bot.emoji.warning} If the color provided is invalid. The embed color will be black.`])
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let newcolor = args[2].toUpperCase();
         bot.db.prepare("UPDATE guilddata SET mediacolor=? WHERE guildid=?").run(newcolor, message.guild.id)
@@ -490,7 +490,7 @@ module.exports = {
             ``,
             `${bot.emoji.info} To change the color, type \`${prefix}s media color\``].join("\n"))
           .setColor(bot.colors.green)
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else {
         let embed = new MessageEmbed()
           .setAuthor(`${b} Server Media Settings`)
@@ -502,7 +502,7 @@ module.exports = {
             `\`${prefix}s media text\` - Set Media Text Content`,
             ``,
             `${bot.emoji.info} Use these commands for more information!`].join("\n"))
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "funchannel") {
       if (args[1] && args[1].toLowerCase() === "clear") {
@@ -542,7 +542,7 @@ module.exports = {
               ``,
               `**Current Channels:**`,
               `${channelarray.join("\n")}`]);
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (channels.includes(message.channel.id)) {
           let alreadysaved = new MessageEmbed()
@@ -659,7 +659,7 @@ module.exports = {
               ``,
               `**Current Channels:**`,
               `${channelarray.join("\n")}`]);
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (channels.includes(message.channel.id)) {
           let alreadysaved = new MessageEmbed()
@@ -781,7 +781,7 @@ module.exports = {
               ``,
               `**Current Channels:**`,
               `${channelarray.join("\n")}`])
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (channels.includes(message.channel.id)) {
           let alreadysaved = new MessageEmbed()
@@ -903,7 +903,7 @@ module.exports = {
               ``,
               `**Current Channels:**`,
               `${channelarray.join("\n")}`])
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (channels.includes(message.channel.id)) {
           let embed = new MessageEmbed()
@@ -1004,7 +1004,7 @@ module.exports = {
                   `${bot.emoji.cross} **LFG Notify Channel Already Not Set**`,
                   ``,
                   `${bot.emoji.info} To set the LFG Notify Channel, type: \`${prefix}s lfg notifychannel\``])
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             } else {
               bot.lfgnotifychannels.delete(message.guild.id)
               bot.db.prepare("UPDATE guilddata SET lfgnotifychannel=? WHERE guildid=?").run("none", message.guild.id);
@@ -1014,7 +1014,7 @@ module.exports = {
                   `${bot.emoji.check} **LFG Notify Channel Removed**`,
                   ``,
                   `${bot.emoji.info} To set a new LFG Notify Channel, type: \`${prefix}s lfg notifychannel\``])
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }
           }
           bot.lfgnotifychannels.set(message.guild.id, message.channel.id)
@@ -1047,7 +1047,7 @@ module.exports = {
                 .setColor(bot.colord.red)
                 .setDescription([
                   `${bot.emoji.cross} **There is already no LFG role.**`])
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             } else {
               bot.lfgroles.delete(message.guild.id)
               bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run("none", message.guild.id);
@@ -1057,7 +1057,7 @@ module.exports = {
                   `${bot.emoji.check} **LFG Role Removed**`,
                   ``,
                   `${bot.emoji.info} To set the LFG role in the future, type: \`${prefix}s lfg role\``])
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }
           }
           let targetrole;
@@ -1080,7 +1080,7 @@ module.exports = {
                 ``,
                 `**Available Roles:**`,
                 `${rolesarray.join("\n")}`])
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
           bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run(targetrole.id, message.guild.id);
           bot.lfgroles.set(message.guild.id, targetrole.id)
@@ -1092,7 +1092,7 @@ module.exports = {
               `**Role:** ${targetrole}`,
               ``,
               `${bot.emoji.info} This role will be automatically removed from users who give it to themselves after **2 hours**.`])
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else if (subcommand2 === "notifymessage") {
           let notifymessage = args.slice(2).join(" ")
           if (!notifymessage) {
@@ -1104,7 +1104,7 @@ module.exports = {
                 `**Current Notification:** \`${guildData.lfgnotifymessage}\``,
                 ``,
                 `${bot.emoji.info} Placeholders: {USER} - Mentions the user that no longer has LFG Role, {LFG} - Mentions LFG role.`])
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           } else {
             bot.db.prepare("UPDATE guilddata SET lfgnotifymessage=? WHERE guildid=?").run(notifymessage, message.guild.id);
             let embed = new MessageEmbed()
@@ -1113,7 +1113,7 @@ module.exports = {
                 `${bot.emoji.check} **LFG Notify Message Set**`,
                 ``,
                 `**Message:** ${notifymessage}`])
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
         } else if (subcommand2 === "time") {
           if (bot.premium.get(message.guild.id) === 2) {
@@ -1126,7 +1126,7 @@ module.exports = {
                   `**Current Cooldown:** ${guildData.lfgcooldown}`,
                   ``,
                   `${bot.emoji.info} The number you select is the number of hours until LFG is removed from a user.`])
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }
             bot.db.prepare("UPDATE guilddata SET lfgcooldown=? WHERE guildid=?").run(parseInt(args[2]), message.guild.id);
             let embed = new MessageEmbed()
@@ -1135,7 +1135,7 @@ module.exports = {
                 `${bot.emoji.check} **LFG Cooldown Updated**`,
                 ``,
                 `**New Cooldown:** ${parseInt(args[2])} hours`])
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           } else {
             let embed = new MessageEmbed()
               .setColor(bot.colors.red)
@@ -1143,7 +1143,7 @@ module.exports = {
                 `${bot.emoji.cross} **You cannot set the cooldown with the package you currently have.**`,
                 ``,
                 `Please upgrade to the [**Triple Package**](${bot.config.donatelink}) to toggle all commands.`])
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
         } else {
           let embed = new MessageEmbed()
@@ -1157,7 +1157,7 @@ module.exports = {
               `\`${prefix}s lfg role\` - Set LFG Role`,
               ``,
               `${bot.emoji.info} Use these commands for more information!`])
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else if (bot.premium.get(message.guild.id) === 0) {
         let embed = new MessageEmbed()
@@ -1166,7 +1166,7 @@ module.exports = {
             `💎 **Premium Feature** 💎`,
             ``,
             `The **Looking For Group** system is premium! Support the developers and motivate them to continue investing hours a day into ${bot.user}. View the available packages [here](${bot.config.donatelink}).`])
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else {
       let embed = new MessageEmbed()

@@ -35,7 +35,7 @@ module.exports = {
         .replace(/{GITHUB}/g, bot.github.languages)
         .replace(/{STATUS}/g, bot.config.uptime)
         .replace(/{PROGRESS}/g, bot.docs.progress))
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     // function getMemoryUsage() {
     //   let total_rss = bot.fs.readFileSync("/sys/fs/cgroup/memory/memory.stat", "utf8").split("\n").filter(l => l.startsWith("total_rss"))[0].split(" ")[1];
     //   return Math.round(Number(total_rss) / 1e6) - 60;

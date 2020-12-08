@@ -187,7 +187,7 @@ module.exports = {
         try {
           exitMessage = await message.channel.send(exitEmbed)
         } catch (e) {
-          bot.playingcasino.delete(message.author.id);;
+          bot.playingcasino.delete(message.author.id);
           let error = new MessageEmbed()
             .setDescription(`${bot.emoji.cross} **${message.author}, there was an error escorting you out of the casino!**`)
             .setColor(bot.colors.red)
