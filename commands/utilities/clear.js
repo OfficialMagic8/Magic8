@@ -8,6 +8,7 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     if (!message.member.hasPermission("MANAGE_MESSAGES")) return;
+    let language = bot.utils.getLanguage(bot, guildData.language);
     if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.red)
@@ -17,7 +18,6 @@ module.exports = {
           .replace(/{BOT}/g, bot.user));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
     }
-    let language = bot.utils.getLanguage(bot, guildData.language);
     if (!args[0]) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.red)
