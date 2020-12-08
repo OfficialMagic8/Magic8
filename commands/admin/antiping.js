@@ -173,7 +173,7 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
       }
     } else if (subcommand === "message") {
-      let newmessage = args.slice(1).join(" ");
+      let newmessage = args.slice(1).join(" ").replace(/@everyone/gi, "<everyone>").replace(/@here/gi, "<here>");
       let oldmessage = guildData.antipingmessage;
       if (!newmessage) {
         let embed = new MessageEmbed()
