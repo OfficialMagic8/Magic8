@@ -1,10 +1,10 @@
 const { MessageEmbed } = require("discord.js");
 const MojangAPI = require("mojang-api");
-const bodyURL = "https://minotar.net/armor/body/{USER}/300.png";
-const headURL = "https://minotar.net/cube/{USER}/100.png";
-const helmURL = "https://minotar.net/helm/{USER}/100.png";
-const profileURL = "https://es.namemc.com/profile/{USER}";
-const capeURL = "http://s.optifine.net/capes/{USER}.png";
+const bodyURL = "https://minotar.net/armor/body/{TOSEARCH}/300.png";
+const headURL = "https://minotar.net/cube/{TOSEARCH}/100.png";
+const helmURL = "https://minotar.net/helm/{TOSEARCH}/100.png";
+const profileURL = "https://es.namemc.com/profile/{TOSEARCH}";
+const capeURL = "http://s.optifine.net/capes/{TOSEARCH}.png";
 const resizeURL = "https://images.weserv.nl/?url={URL}&w=300"
 module.exports = {
   aliases: ["capa", "capas", "capes"],
@@ -79,7 +79,7 @@ module.exports = {
         bot.canvas.loadImage(capeLink).then(cape => {
           let embed = new MessageEmbed()
             .setAuthor(bot.translate(bot, language, "cape.success")
-              .replace(/{USER}/g, username), helmLink, profileLink)
+              .replace(/{TOSEARCH}/g, username), helmLink, profileLink)
             .setThumbnail(cape.src)
             .setImage(resizeLink)
             .setColor(bot.colors.red)
@@ -102,19 +102,20 @@ module.exports = {
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "cape.invalid")
               .replace(/{CROSS}/g, bot.emoji.cross)
-              .replace(/{USER}/g, toSearch));
+              .replace(/{USER}/g, message.author)
+              .replace(/{TOSEARCH}/g, toSearch));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         let username = res.name;
-        let helmLink = helmURL.replace(/{USER}/g, username);
-        let profileLink = profileURL.replace(/{USER}/g, username);
-        let capeLink = capeURL.replace(/{USER}/g, username);
-        let resizeLink = resizeURL.replace(/{URL}/g, capeLink);
+        let helmLink = helmURL.replace(/{TOSEARCH}/g, username);
+        let profileLink = profileURL.replace(/{TOSEARCH}/g, username);
+        let capeLink = capeURL.replace(/{TOSEARCH}/g, username);
+        let resizeLink = resizeURL.replace(/{TOSEARCH}/g, capeLink);
         bot.canvas.loadImage(capeLink).then(cape => {
           let embed = new MessageEmbed()
             .setColor(bot.colors.main)
             .setAuthor(bot.translate(bot, language, "cape.success")
-              .replace(/{USER}/g, username), helmLink, profileLink)
+              .replace(/{TOSEARCH}/g, username), helmLink, profileLink)
             .setThumbnail(cape.src)
             .setImage(resizeLink);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
@@ -123,7 +124,8 @@ module.exports = {
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "cape.nocape")
               .replace(/{CROSS}/g, bot.emoji.cross)
-              .replace(/{USER}/g, username));
+              .replace(/{USER}/g, message.author)
+              .replace(/{TOSEARCH}/g, username));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         })
       })
