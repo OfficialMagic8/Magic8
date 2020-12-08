@@ -226,6 +226,29 @@ module.exports = {
       lists.forEach(l => {
         listnames.push(l.name.toLowerCase());
       });
+      let max = bot.maxlists.get(bot.premium.get(message.guild.id));
+      if (lists.length >= max) {
+        let upgradestring;
+        if ([0, 1].includes(bot.premium.get(message.guild.id))) {
+          upgradestring = bot.translate(bot, language, "listmanager.upgrade.description")
+            .replace(/{OPTIONS}/g, bot.premium.get(message.guild.id) === 1 ?
+              bot.translate(bot, language, "listmanager.upgrade.triple") :
+              bot.translate(bot, language, "listmanager.upgrade.singleortriple"))
+            .replce(/{DONATELINK}/g, bot.config.donatelink);
+        } else {
+          upgradestring = bot.translate(bot, language, "listmanager.upgrade.cannotupgrade");
+        }
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.red)
+          .setDescription(bot.translate(bot, language, "listmanager.reachedlimit")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{MAX}/g, max)
+            .replace(/{UPGRADE}/g, upgradestring)
+            .replace(/{CURRENTLISTS/g, lists.map(l => `**•** ${l.name} (${l.items.length})`))
+            .replace(/{INFO}/g, bot.emoji.info)
+            .replace(/{PREFIX}/g, prefix));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }
       let listname = args.slice(1).join(" ")
       if (!listname) {
         let embed = new MessageEmbed()
@@ -233,7 +256,7 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "listmanager.nonewlistname")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author));
-        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (listname.length > 30) {
         let embed = new MessageEmbed()
