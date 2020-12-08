@@ -7,7 +7,6 @@ const app = express();
 app.use(bodyParser.json());
 app.listen(process.env.PORT);
 const server = http.createServer(app)
-const Database = require('better-sqlite3');
 const DBL = require('dblapi.js');
 const BOATS = require('boats.js');
 const { Client, Collection } = require("discord.js");
@@ -54,12 +53,12 @@ bot.hastebin = require("hastebin-gen");
 bot.os = require("os");
 bot.ms = require("pretty-ms");
 bot.schedule = require("node-schedule");
-bot.db = new Database('./data/guildData.db');
-bot.udb = new Database('./data/usageData.db');
+bot.utils.loadDatabases(bot);
 bot.colors = require("./utils/colors.json");
 bot.color8 = require("./utils/color8.json");
 bot.emoji = require("./utils/emojis.json");
 bot.invite = "https://discord.gg/bUUggyCjvp";
+bot.shortinvite = "discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
 bot.footer = ``;
 
@@ -85,13 +84,13 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
     logs.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestGuildData.db`,
-        name: `latestGuildData`
+        name: `latestGuildData.db`
       }]
     });
     bot.developer.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestGuildData.db`,
-        name: `latestGuildData`
+        name: `latestGuildData.db`
       }]
     });
   } catch (e) {
@@ -105,13 +104,13 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
     logs.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestUsageData.db`,
-        name: `latestUsageData`
+        name: `latestUsageData.db`
       }]
     });
     bot.developer.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestUsageData.db`,
-        name: `latestUsageData`
+        name: `latestUsageData.db`
       }]
     });
   } catch (e) {
@@ -198,9 +197,9 @@ app.get("/pingstatus", function (request, response) {
 
 bot.prefixes = new Collection();
 
-bot.duo = 1;
-bot.trio = 1;
-bot.squad = 1;
+bot.duo = new Collection();
+bot.trio = new Collection();
+bot.squad = new Collection();
 bot.voicechannels = new Collection();
 bot.voicecooldown = new Collection();
 
@@ -248,13 +247,18 @@ bot.maxautovoicechannels.set(2, 5);
 
 bot.maxrestrictedchannels = new Collection();
 bot.maxrestrictedchannels.set(0, 2);
-bot.maxrestrictedchannels.set(1, 5);
-bot.maxrestrictedchannels.set(2, 20);
+bot.maxrestrictedchannels.set(1, 3);
+bot.maxrestrictedchannels.set(2, 5);
 
 bot.maxantipingusers = new Collection();
 bot.maxantipingusers.set(0, 10);
 bot.maxantipingusers.set(1, 20);
 bot.maxantipingusers.set(2, 50);
+
+bot.maxlists = new Collection();
+bot.maxlists.set(0, 5)
+bot.maxlists.set(1, 10)
+bot.maxlists.set(2, 20)
 
 bot.premium = new Collection();
 bot.usage = new Collection();
@@ -309,10 +313,10 @@ bot.on("guildDelete", guild => {
   let event = bot.events.get("guildDelete");
   if (event) event.run(bot, guild)
 });
-bot.on("guildMemberAdd", member => {
-  let event = bot.events.get("guildMemberAdd");
-  if (event) event.run(bot, member)
-});
+// bot.on("guildMemberAdd", member => {
+//   let event = bot.events.get("guildMemberAdd");
+//   if (event) event.run(bot, member)
+// });
 // bot.on("guildMembersChunk", () => {
 //   let event = bot.events.get("guildMembersChunk");
 //   if (event) event.run(bot)
@@ -351,10 +355,6 @@ bot.on("voiceStateUpdate", (oldState, newState) => {
 });
 bot.utils.loadCommands(bot);
 bot.utils.loadEvents(bot);
-
-// ["command", "event"].forEach(handler => {
-//   require(`./handler/${handler}`)(bot);
-// });
 
 const nekoslifeclient = require("nekos.life");
 bot.nekos = new nekoslifeclient();
