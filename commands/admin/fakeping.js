@@ -51,30 +51,12 @@ module.exports = {
       let pingimage = await bot.canvas.loadImage(pinglink)
       ctx.drawImage(pingimage, 441 + 1 - (pingimage.width / 2), 441 + 1 - (pingimage.height / 2), 210, 210)
       dataURL = await canvas.toDataURL();
-    } catch (e) {
-      console.error(e);
-      let embed = new MessageEmbed()
-        .setColor(bot.colors.red)
-        .setDescription(bot.translate(bot, language, "unexpectederror")
-          .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author)
-          .replace(/{INVITE}/g, bot.invite));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
-    }
+    } catch (e) { return bot.error(bot, message, language, e); }
     let base64 = dataURL.slice(dataURL.indexOf("base64,") + 7);
     let parsed;
     try {
       parsed = await Imgur.uploadBase64(base64);
-    } catch (e) {
-      console.error(e);
-      let embed = new MessageEmbed()
-        .setColor(bot.colors.red)
-        .setDescription(bot.translate(bot, language, "unexpectederror")
-          .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author)
-          .replace(/{INVITE}/g, bot.invite));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
-    }
+    } catch (e) { return bot.error(bot, message, language, e); }
     let link = parsed.data.link;
     let cooldownobject = {
       link: link,
@@ -126,14 +108,7 @@ module.exports = {
               return message.channel.send(success).catch(e => { });
             }).catch(e => {
               updateToManual(m, embed, bot, language, link);
-              console.error(e);
-              let embed = new MessageEmbed()
-                .setColor(bot.colors.red)
-                .setDescription(bot.translate(bot, language, "unexpectederror")
-                  .replace(/{CROSS}/g, bot.emoji.cross)
-                  .replace(/{USER}/g, message.author)
-                  .replace(/{INVITE}/g, bot.invite));
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+              return bot.error(bot, message, language, e);
             })
           } else {
             updateToManual(m, embed, bot, language, link);
