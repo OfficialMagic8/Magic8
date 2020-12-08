@@ -6,7 +6,7 @@ module.exports = {
     if (bot.voicechannels.has(guild.id)) {
       // console.log(`Guild In Voice Channels Collection`)
       // console.log(`Cate From Collection: ${category}`)
-      let getchannel
+      let getchannel;
       try {
         getchannel = await bot.channels.fetch((oldState.channel || newState.channel).id) || guild.channels.cache.get((oldState.channel || newState.channel).id)
       } catch (e) { }
@@ -14,8 +14,10 @@ module.exports = {
       // console.log(`Parent: ${getchannel.parentID}`)
       if (guild && getchannel.parentID === bot.voicechannels.get(guild.id)) {
         // console.log(`Channel Is In Parent`)
-        let user = bot.users.cache.get(newState.member.user.id) || (await bot.users.fetch(newState.member.user.id));
-        // if (guild.id === "610816275580583936") {
+        let user;
+        try {
+          user = bot.users.cache.get(newState.member.user.id) || await bot.users.fetch(newState.member.user.id);
+        } catch (e) { }  // if (guild.id === "610816275580583936") {
         let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get((newState.guild || oldState.guild).id);
         if (guildData.autovoicesystemready === 1) {
           // console.log("System Ready")
@@ -26,15 +28,15 @@ module.exports = {
           if (!oldState.channel && !newState.channel) return;
           if (newState.channel && getchannel.parentID === parent) {
             let createarray = []
-            createchannels.forEach((item, index) => {
-              if (item.id !== "none") {
-                createarray.push(item.id)
+            createchannels.forEach(channel => {
+              if (channel.id !== "none") {
+                createarray.push(channel.id)
               }
             })
             let fromchannel = []
             let t = JSON.parse(guildData.tempchannels)
-            t.forEach((item, index) => {
-              fromchannel.push(item.id)
+            t.forEach(tempchannel => {
+              fromchannel.push(tempchannel.id)
             })
             let match;
             if (oldState.channel) match = fromchannel.includes(oldState.channelID);
@@ -51,18 +53,21 @@ module.exports = {
                 userLimit: vc.limit,
                 parent: parent
               };
-              let number
+              let number;
               if (vc.type === "Duo") {
-                number = bot.duo + 0;
-                bot.duo++;
+                if (!bot.duo.has(guild.id)) bot.duo.set(guild.id, 0)
+                bot.duo.set(guild.id, bot.duo.get(guild.id) + 1)
+                number = bot.duo.get(guild.id)
               } else if (vc.type === "Trio") {
-                number = bot.trio + 0;
-                bot.trio++;
+                if (!bot.trio.has(guild.id)) bot.trio.set(guild.id, 0)
+                bot.trio.set(guild.id, bot.trio.get(guild.id) + 1)
+                number = bot.trio.get(guild.id)
               } else if (vc.type === "Squad") {
-                number = bot.squad + 0;
-                bot.squad++;
+                if (!bot.squad.has(guild.id)) bot.squad.set(guild.id, 0)
+                bot.squad.set(guild.id, bot.squad.get(guild.id) + 1)
+                number = bot.squad.get(guild.id)
               }
-              let type = vc.type
+              let type = vc.type;
               let voice = await guild.channels.create(`${type} ${number}`, opts);
               await newState.setChannel(voice.id);
               let newobject = {
@@ -83,9 +88,9 @@ module.exports = {
           }
           let createchannels1 = JSON.parse(guildData.autovoicechannels);
           let a = []
-          createchannels1.forEach((item, index) => {
-            if (item.id !== "none") {
-              a.push(item.id);
+          createchannels1.forEach(channel => {
+            if (channel.id !== "none") {
+              a.push(channel.id);
             }
           })
           if (oldState.channel && !a.includes(oldState.channelID)) {
@@ -94,8 +99,8 @@ module.exports = {
             let a = [];
             let t = JSON.parse(guildData.tempchannels);
             // console.log(`Current Temp: ${JSON.stringify(t)}`)
-            t.forEach((item, index) => {
-              a.push(item.id)
+            t.forEach(channel => {
+              a.push(channel.id)
             })
             // console.log(`Possible Channels: ${JSON.stringify(a)}`)
             // console.log(`Old Channel: ${oldState.channelID}`)
@@ -109,11 +114,11 @@ module.exports = {
                   let vc = tempchannels.find(i => i.id === oldState.channelID);
                   // console.log(`Found: ${JSON.stringify(vc)}`)
                   if (vc.type === "Duo") {
-                    bot.duo--;
+                    bot.duo.set(guild.id, bot.duo.get(guild.id) - 1)
                   } else if (vc.type === "Trio") {
-                    bot.trio--;
+                    bot.trio.set(guild.id, bot.trio.get(guild.id) - 1)
                   } else if (vc.type === "Squad") {
-                    bot.squad--;
+                    bot.squad.set(guild.id, bot.squad.get(guild.id) - 1)
                   }
                   // console.log(`Channel Index: ${tempchannels.indexOf(vc)}`)
                   tempchannels.splice(tempchannels.indexOf(vc), 1);
