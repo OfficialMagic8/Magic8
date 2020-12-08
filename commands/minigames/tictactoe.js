@@ -121,21 +121,18 @@ module.exports = {
       try {
         gameMessage = await channel.send(gameEmbed);
       } catch (e) {
-        console.error(e)
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        sendUnexpectedError(bot, language, channel, first);
-        return;
+        return bot.error(bot, message, language, e);
       }
       try {
         for (let code of Object.values(emotes)) {
           await gameMessage.react(code).catch(e => { console.error(e) });
         }
       } catch (e) {
-        console.error(e)
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        sendUnexpectedError(bot, language, channel, first);
+        return bot.error(bot, message, language, e);
       }
       let starter = Math.floor(Math.random() * 101) < 50 ? 0 : 1;
       first.turn = starter;
@@ -237,13 +234,12 @@ module.exports = {
             .replace(/{CROSS}/g, second.user.username))
             .setColor(bot.colors.blue)
           gameMessage.edit(gameEmbed).then(m => {
-            m.reactions.removeAll().catch(e => { console.error(e) })
+            m.reactions.removeAll().catch(e => { })
             bot.playingtictactoe.delete(first.user.id);
             bot.playingtictactoe.delete(second.user.id);
           }).catch(e => {
-            if (gameMessage) gameMessage.reactions.removeAll().catch(e => { console.error(e) })
-            sendUnexpectedError(bot, language, channel, first);
-            console.error(e)
+            if (gameMessage) gameMessage.reactions.removeAll().catch(e => { })
+            return bot.error(bot, message, language, e);
           });
           return;
         }
@@ -269,8 +265,7 @@ module.exports = {
             bot.playingtictactoe.delete(second.user.id);
           }).catch(e => {
             if (gameMessage) gameMessage.reactions.removeAll().catch(e => { });
-            console.error(e)
-            sendUnexpectedError(bot, language, channel, first);
+            return bot.error(bot, message, language, e);
           });
           return;
         }
@@ -281,7 +276,7 @@ module.exports = {
         if (gameMessage) gameMessage.reactions.removeAll().catch(e => { });
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        sendUnexpectedError(bot, language, channel, first);
+        return bot.error(bot, message, language, e);
       });
     }
     function getWinner(bot, first) {
@@ -293,15 +288,6 @@ module.exports = {
         }
       }
       return false;
-    }
-    function sendUnexpectedError(bot, language, channel, first) {
-      let embed = new MessageEmbed()
-        .setColor(bot.colors.red)
-        .setDescription(bot.translate(bot, language, "unexpectederror")
-          .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, first.user)
-          .replace(/{INVITE}/g, bot.invite));
-      return channel.send(embed).catch(e => { });
     }
   }
 }
