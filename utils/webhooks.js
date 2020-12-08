@@ -1,7 +1,5 @@
-const { request } = require("express");
-
 module.exports.dbl = async (bot, request) => {
-  let body = request.body
+  let body = request.body;
   let unknown = false;
   let user;
   if (bot.users.cache.has(body.user)) {
@@ -31,7 +29,7 @@ module.exports.dbl = async (bot, request) => {
       let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(user.id))
       userguilds.forEach(guild => {
         bot.db.prepare("UPDATE guilddata SET hasvoted=? WHERE guildid=?").run("false", guild.id);
-        bot.usage.set(guild.id, 0)
+        bot.usage.set(guild.id, 0);
       });
       console.log(`☑️ Set 'hasvoted' to FALSE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`)
     }, 43200000)
@@ -39,7 +37,7 @@ module.exports.dbl = async (bot, request) => {
   function resetTimeout() {
     let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(user.id));
     userguilds.forEach(guild => {
-      console.log(`Updating: ${guild.name} (${guild.id})`)
+      console.log(`Updating: ${guild.name} (${guild.id})`);
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       bot.db.prepare("UPDATE guilddata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
       bot.db.prepare("UPDATE guilddata SET totalvotes=? WHERE guildid=?").run(guildData.totalvotes + 1, guild.id);
@@ -74,7 +72,7 @@ module.exports.dbl = async (bot, request) => {
       ``,
       `Make sure to check out the [rewards](${bot.docs.ads}) I give for voting!`,
       ``,
-      `- Fyrlex#2740`])
+      `- Magic8 Developers`])
   user.send(dm).catch(e => { });
   let votemsg = new MessageEmbed()
     .setColor(body.type === "test" ? bot.colors.red : bot.colors.main)
@@ -120,7 +118,7 @@ module.exports.labs = async (bot, request) => {
       ``,
       `Make sure to check out the [rewards](${bot.docs.ads}) I give for voting!`,
       ``,
-      `- Fyrlex#2740`])
+      `- Magic8 Developers`])
   user.send(dm).catch(e => { });
   let votemsg = new MessageEmbed()
     .setColor(bot.colors.main)
@@ -160,7 +158,7 @@ module.exports.boats = async (bot, request) => {
       ``,
       `Make sure to check out the [rewards](${bot.docs.ads}) I give for voting!`,
       ``,
-      `- Fyrlex#2740`]);
+      `- Magic8 Developers`]);
   user.send(dm).catch(e => { });
   let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
@@ -202,7 +200,7 @@ module.exports.botlistspace = async (bot, request) => {
       ``,
       `Make sure to check out the [rewards](${bot.docs.ads}) I give for voting!`,
       ``,
-      `- Fyrlex#2740`]);
+      `- Magic8 Developers`]);
   user.send(dm).catch(e => { });
   let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
