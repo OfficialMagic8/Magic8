@@ -8,6 +8,7 @@ module.exports = {
   dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     try {
+      bot.utils.loadDatabases(bot);
       bot.utils.loadCommands(bot);
       bot.utils.loadEvents(bot);
       let embed = new MessageEmbed()
