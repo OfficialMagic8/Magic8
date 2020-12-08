@@ -18,44 +18,41 @@ module.exports = {
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "mcskin.enterusername")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replae(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let profileLink = profileURL.replace(/{USER}/g, username);
     let helmLink = helmURL.replace(/{USER}/g, username);
-    if (true) {
-      let date = new Date();
-      MojangAPI.uuidAt(username, date, function (err, res) {
-        if (res) {
-          let uuid = res.id;
-          let niceLink = niceBodyURL.replace(/{UUID}/g, uuid);
-          bot.canvas.loadImage(niceLink).then(image => {
-            let embed = new MessageEmbed()
-              .setImage(niceLink)
-              .setColor(bot.colors.main)
-              .setAuthor(bot.translate(bot, language, "mcskin.success")
-                .replace(/{USER}/g, username), helmLink, profileLink);
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
-          }).catch(e => {
-            let embed = new MessageEmbed()
-              .setColor(bot.colors.red)
-              .setDescription(bot.translate(bot, language, "mcskin.invalid")
-                .replace(/{CROSS}/g, bot.emoji.cross)
-                .replace(/{USER}/g, message.author)
-                .replace(/{TOSEARCH}/g, username));
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
-          });
-        } else if (err) {
+    let date = new Date();
+    MojangAPI.uuidAt(username, date, function (err, res) {
+      if (res) {
+        let uuid = res.id;
+        let niceLink = niceBodyURL.replace(/{UUID}/g, uuid);
+        bot.canvas.loadImage(niceLink).then(image => {
+          let embed = new MessageEmbed()
+            .setImage(niceLink)
+            .setColor(bot.colors.main)
+            .setAuthor(bot.translate(bot, language, "mcskin.success")
+              .replace(/{USER}/g, username), helmLink, profileLink);
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        }).catch(e => {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "mcskin.invalid")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, message.author)
               .replace(/{TOSEARCH}/g, username));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e) });
-        }
-      });
-      return;
-    }
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        });
+      } else if (err) {
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.red)
+          .setDescription(bot.translate(bot, language, "mcskin.invalid")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{USER}/g, message.author)
+            .replace(/{TOSEARCH}/g, username));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }
+    });
   }
 }
