@@ -143,24 +143,24 @@ module.exports = {
       usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(message.guild.id);
     }
     let x = JSON.parse(usageData.usage);
-    if (!x.find(i => i.command === command.name)) {
+    let find = x.find(i => i.command === command.name);
+    if (!find) {
       let o = {
         command: command.name,
-        usage: 0
+        usage: 1
       };
       x.push(o);
       bot.udb.prepare("UPDATE usagedata SET usage=? WHERE guildid=?").run(JSON.stringify(x), message.guild.id);
+    } else {
+      find.usage = find.usage + 1;
+      bot.udb.prepare("UPDATE usagedata SET usage=? WHERE guildid=?").run(JSON.stringify(x), message.guild.id);
     }
-    let find = x.find(i => i.command === command.name);
-    find.usage = find.usage + 1;
-    bot.udb.prepare("UPDATE usagedata SET usage=? WHERE guildid=?").run(JSON.stringify(x), message.guild.id);
-    let bots = message.guild.members.cache.filter(c => c.user.bot).size
-    let online = message.guild.members.cache.filter(m => m.presence.status !== "offline").size;
+    let bots = message.guild.members.cache.filter(c => c.user.bot).size;
     let channels = message.guild.channels.cache.filter(c => c.type !== "category").size;
     let split = new Date().toLocaleString().split(" ");
     let formattedTime = `${split[1]}${split[2]}`;
     let performedCommand = `${command.emoji} __${formattedTime}__` +
-      ` **C:** \`${command.name}\` **| A:** \`${message.author.tag}\` **| S/ID:** \`${message.guild.name} (${message.guild.id})\` (${message.guild.members.cache.size - bots}/${bots}/${online}/${channels}) **| Full:** \`${message.content}\``;
+      ` **C:** \`${command.name}\` **| A:** \`${message.author.tag}\` **| S/ID:** \`${message.guild.name} (${message.guild.id})\` (${message.guild.members.cache.size - bots}/${bots}/${channels}) **| Full:** \`${message.content}\``;
     let commandsChannel = bot.channels.cache.get(bot.config.commandlogs);
     if (commandsChannel) commandsChannel.send(performedCommand).catch(e => { });
     // let t = new Date().toLocaleString("en").replace(/,/g, "")
