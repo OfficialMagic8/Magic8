@@ -30,7 +30,7 @@ module.exports = {
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
+          .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (!target) {
@@ -38,7 +38,7 @@ module.exports = {
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
+          .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (message.author.id === target.id) {
@@ -46,7 +46,7 @@ module.exports = {
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "connectfour.cannotyourself")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
+          .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (bot.playingconnect4.has(target.id)) {
@@ -54,7 +54,7 @@ module.exports = {
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "connectfour.targetalreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
+          .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let now = Date.now()
@@ -92,7 +92,6 @@ module.exports = {
     bot.playingconnect4.set(message.author.id, first);
     bot.playingconnect4.set(target.id, second);
     startGame(bot, language, message.channel, first, second);
-
     async function startGame(bot, language, channel, first, second) {
       let loadingdescription = bot.translate(bot, language, "connectfour.game.loadingdescription").join("\n")
         .replace(/{LOADING}/g, bot.emoji.loading)
@@ -124,7 +123,7 @@ module.exports = {
       } catch (e) {
         bot.playingconnect4.delete(first.userid);
         bot.playingconnect4.delete(second.userid);
-        bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       }
       try {
         for (let code of Object.values(emotes)) {
@@ -216,7 +215,7 @@ module.exports = {
             bot.playingconnect4.delete(second.user.id);
           }).catch(e => {
             if (connectMessage) connectMessage.reactions.removeAll().catch(e => { });
-            bot.error(bot, message, language, e);
+            return bot.error(bot, message, language, e);
           });
           return;
         }
@@ -241,7 +240,7 @@ module.exports = {
             bot.playingconnect4.delete(second.user.id);
           }).catch(e => {
             if (connectMessage) connectMessage.reactions.removeAll().catch(e => { });
-            bot.error(bot, message, language, e);
+            return bot.error(bot, message, language, e);
           });
           return;
         }
@@ -251,7 +250,7 @@ module.exports = {
         if (connectMessage) connectMessage.reactions.removeAll().catch(e => { });
         bot.playingtictactoe.delete(first.userid);
         bot.playingtictactoe.delete(second.userid);
-        bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       });
     }
     function getWinner(board, col) {

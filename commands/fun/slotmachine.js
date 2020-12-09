@@ -70,7 +70,7 @@ module.exports = {
         .replace(/{BSLOT1}/g, bslot1).replace(/{BSLOT2}/g, bslot2).replace(/{BSLOT3}/g, bslot3))
     let slotMessage = await message.channel.send(slotEmbed).catch(e => {
       bot.playingslotmachine.delete(message.author.id)
-      bot.error(bot, message, language, e);
+      return bot.error(bot, message, language, e);
     })
     setTimeout(async () => {
       slotMessage.react("🔴").catch(e => { return bot.error(bot, message, language, e); });
@@ -91,7 +91,7 @@ module.exports = {
         await slotMessage.edit(slotEmbed)
       } catch (e) {
         bot.playingslotmachine.delete(message.author.id)
-        bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       }
       const filter = (reaction, user) => !user.bot && user.id === message.author.id && reaction.emoji.name === "🕹️"
       let collected;
@@ -108,12 +108,12 @@ module.exports = {
         .replace(/{SLOT1}/g, slot1).replace(/{SLOT2}/g, bot.emoji.slot5).replace(/{SLOT3}/g, bot.emoji.slot8)
         .replace(/{BSLOT1}/g, bslot1).replace(/{BSLOT2}/g, bot.emoji.slot4).replace(/{BSLOT3}/g, bot.emoji.slot7);
       slotEmbed.setDescription(tempstoppingdescription)
-        .setColor("YELLOW")
+        .setColor("YELLOW");
       try {
-        await slotMessage.edit(slotEmbed)
+        await slotMessage.edit(slotEmbed);
       } catch (e) {
-        bot.playingslotmachine.delete(message.author.id)
-        bot.error(bot, message, language, e);
+        bot.playingslotmachine.delete(message.author.id);
+        return bot.error(bot, message, language, e);
       }
       let interval = setInterval(async () => {
         let tempstoppingdescription;
@@ -135,17 +135,13 @@ module.exports = {
         slot = slot + 1;
         try {
           await slotMessage.edit(slotEmbed)
-        } catch (e) {
-          bot.error(bot, message, language, e);
-        }
+        } catch (e) { return bot.error(bot, message, language, e); }
         if (slot > 3) {
           setTimeout(() => {
             let win = (nslot1 === nslot2 && nslot2 === nslot3)
             // console.log(`🎰[${win ? "✔️" : "❌"}] ${message.author.tag} ${win ? "won" : "lost"} in slot machine! (${slot1}${slot2}${slot3})`);
             bot.playingslotmachine.delete(message.author.id);
-            slotMessage.reactions.removeAll().catch(e => {
-              bot.error(bot, message, language, e);
-            });
+            slotMessage.reactions.removeAll().catch(e => { });
             let finaldescription = bot.translate(bot, language, `slotmachine.${win ? "win" : "lose"}`).join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{CHECK}/g, bot.emoji.check)
@@ -163,7 +159,7 @@ module.exports = {
             }).catch(e => {
               bot.playingslotmachine.delete(message.author.id);
               slotMessage.delete({ timeout: 500 }).catch(e => { });
-              bot.error(bot, message, language, e);
+              return bot.error(bot, message, language, e);
             })
           }, 2000)
           clearInterval(interval);

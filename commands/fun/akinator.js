@@ -91,16 +91,16 @@ module.exports = {
             embed.setDescription(`**${guess.name}**\n\\🏆 **I KNEW IT!**`)
             bot.playingakinator.delete(message.author.id);
             console.log("Finished Akinator")
-            guessMessage.edit(embed);
+            return guessMessage.edit(embed);
           } else {
             sendGuess(bot, message, object, akiGame, index + 1);
           }
         }).catch(e => {
-          bot.playingakinator.delete(message.author.id);
+          return bot.playingakinator.delete(message.author.id);
         });
       }).catch(e => {
-        message.channel.send(bot.translate(bot, language, "akinator.nomoreembeds").replace(/{GUESS}/g, guess.name)).catch(e => { });
         bot.playingakinator.delete(message.author.id);
+        return message.channel.send(bot.translate(bot, language, "akinator.nomoreembeds").replace(/{GUESS}/g, guess.name)).catch(e => { });
       })
     }
     async function guessGame(bot, message, object, akiGame) {
@@ -109,7 +109,7 @@ module.exports = {
         sendGuess(bot, message, object, akiGame, index);
       }).catch(e => {
         bot.playingakinator.delete(message.author.id);
-        bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       })
     }
     let answersInverse = {
@@ -144,7 +144,7 @@ module.exports = {
             askQuestion(bot, message, object, akiGame);
           }).catch(e => {
             bot.playingakinator.delete(message.author.id);
-            bot.error(bot, message, language, e);
+            return bot.error(bot, message, language, e);
           })
         }).catch(e => {
           bot.playingakinator.delete(message.author.id);

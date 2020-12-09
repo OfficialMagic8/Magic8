@@ -15,32 +15,32 @@ module.exports = {
       try {
         target = bot.users.cache.get(id) || await bot.users.fetch(id);
       } catch (e) {
-        let error = new MessageEmbed()
+        let embed = new MessageEmbed()
           .setDescription(bot.translate(bot, language, "it")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author))
           .setColor(bot.colors.red)
-        return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
     if (!target) {
-      let error = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
-      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (bot.playerhacked.has(target.id)) {
-      let error = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "hack.alreadyhacking")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{TARGET}/g, target))
-      return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let targetName = bot.cleanTags(target.username)
-    message.channel.send(bot.translate(bot, language, "hack.starting")
+    return message.channel.send(bot.translate(bot, language, "hack.starting")
       .replace(/{TARGET}/g, targetName)
       .replace(/{HACK}/g, bot.emoji.hack)).then(hackMessage => {
         bot.playerhacked.set(target.id)

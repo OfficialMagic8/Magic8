@@ -44,9 +44,7 @@ module.exports = {
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "mcserver.checking")
             .replace(/{LOADING}/g, bot.emoji.loading));
-        let updatingMessage = await message.channel.send(updating).catch(e => {
-          bot.error(bot, message, language, e);
-        });
+        let updatingMessage = await message.channel.send(updating).catch(e => { return bot.error(bot, message, language, e); });
         let tryip = await bot.fetch(`https://api.mcsrvstat.us/2/${args[1]}`).then(res => res.json()).then(json => {
           return json.ip;
         }).catch(e => { return bot.error(bot, message, language, e); });

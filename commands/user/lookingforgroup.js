@@ -13,8 +13,8 @@ module.exports = {
       if (bot.lfgroles.has(message.guild.id)) {
         let role = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
         if (role) {
-          let member = await message.guild.members.fetch(message.author.id)
-          let users = bot.lfgusers.get(message.guild.id)
+          let member = await message.guild.members.fetch(message.author.id);
+          let users = bot.lfgusers.get(message.guild.id);
           if (!users) {
             let a = [];
             a.push(message.author.id)
@@ -57,9 +57,7 @@ module.exports = {
                   .replace(/{ROLE}/g, role)
                   .replace(/{COOLDOWN}/g, cooldown));
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-            } catch (e) {
-              bot.error(bot, message, language, e);
-            }
+            } catch (e) { return bot.error(bot, message, language, e); }
           } else if (member.roles.cache.has(bot.lfgroles.get(message.guild.id))) {
             if (args[0] && args[0].toLowerCase() === "list") {
               let users = bot.lfgusers.get(message.guild.id);
@@ -83,7 +81,6 @@ module.exports = {
           }
           if (message.member.hasPermission("ADMINISTRATOR") && args[0]) {
             if (args[0].toLowerCase() === "list") {
-              let users = bot.lfgusers.get(message.guild.id);
               let memberarray = [];
               let role = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id)) || await message.guild.roles.fetch(bot.lfgroles.get(message.guild.id))
               role.members.forEach(member => {
@@ -99,7 +96,7 @@ module.exports = {
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }
             if (args[0].toLowerCase() === "removeall") {
-              let getrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
+              let getrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id));
               if (getrole.members.size <= 0) {
                 let embed = new MessageEmbed()
                   .setColor(bot.colors.red)
@@ -123,21 +120,19 @@ module.exports = {
                   if (confirm) {
                     try {
                       m.delete({ timeout: 500 }).catch(e => { });
-                      let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
-                      let newrole = await message.guild.roles.create({ data: oldrole })
+                      let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id));
+                      let newrole = await message.guild.roles.create({ data: oldrole });
                       oldrole.delete('Magic8 - LFG Remove All Users').then(deleted => {
                         bot.lfgroles.set(message.guild.id, newrole.id)
                         bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run(newrole.id, message.guild.id)
-                      }).catch(e => {
-                        bot.error(bot, message, language, e);
-                      })
+                      }).catch(e => { return bot.error(bot, message, language, e); });
                       let embed = new MessageEmbed()
                         .setColor(bot.colors.green)
                         .setDescription(bot.translate(bot, language, "lookingforgroup.removedall")
                           .replace(/{CHECK}/g, bot.emoji.check)
                           .replace(/{NEWROLE}/g, newrole))
                       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-                    } catch (e) { bot.error(bot, message, language, e); }
+                    } catch (e) { return bot.error(bot, message, language, e); }
                   }
                 }).catch(collected => {
                   let oldrole = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id));

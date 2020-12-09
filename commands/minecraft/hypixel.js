@@ -43,9 +43,7 @@ module.exports = {
             .replace(/{USER}/g, message.author));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-    } catch (e) {
-      bot.error(bot, message, language, e);
-    }
+    } catch (e) { return bot.error(bot, message, language, e); }
     let player = req.player;
     let firstLogin = new Date(player.firstLogin);
     let lastLogin = new Date(player.lastLogin);

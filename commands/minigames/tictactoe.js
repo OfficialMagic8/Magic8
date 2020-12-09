@@ -30,47 +30,47 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let target;
     if (bot.playingtictactoe.has(message.author.id)) {
-      let error = new MessageEmbed()
+      let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "tictactoe.alreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
-        .setColor(bot.colors.red)
-      return message.channel.send(error).catch(e => { bot.error(bot, message, language, e);});
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     try {
       let id = args[0].replace(/[^0-9]/g, "");
       target = bot.users.cache.get(id) || await bot.users.fetch(id);
     } catch (e) {
       let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
-        .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => { bot.error(bot, message, language, e);});
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (!target) {
       let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "it")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
-        .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => { bot.error(bot, message, language, e);});
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (message.author.id === target.id) {
       let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "tictactoe.cannotbeauthor")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
-        .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => {bot.error(bot, message, language, e); });
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (bot.playingtictactoe.has(target.id)) {
       let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "tictactoe.targetalreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
-        .setColor(bot.colors.red)
-      return message.channel.send(embed).catch(e => {bot.error(bot, message, language, e); });
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let now = Date.now();
     let first = {
@@ -112,27 +112,24 @@ module.exports = {
       })
       game = gameline.replace(/{ONE}/g, game.slice(0, 3).join("")).replace(/{TWO}/g, game.slice(3, 6).join("")).replace(/{THREE}/g, game.slice(6).join(""));
       let gameEmbed = new MessageEmbed()
+        .setColor(bot.colors.yellow)
         .setDescription(loadingdescription.replace(/{LOADING}/g, bot.emoji.loading)
           .replace(/{GAME}/g, game)
           .replace(/{CIRCLE}/g, first.user.username)
           .replace(/{CROSS}/g, second.user.username))
-        .setColor(bot.colors.yellow)
-      let gameMessage;
-      try {
-        gameMessage = await channel.send(gameEmbed);
-      } catch (e) {
+      let gameMessage = await channel.send(gameEmbed).catch(e => {
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        bot.error(bot, message, language, e);
-      }
+        return bot.error(bot, message, language, e);
+      });
       try {
         for (let code of Object.values(emotes)) {
-          await gameMessage.react(code).catch(e => { console.error(e) });
+          await gameMessage.react(code).catch(e => { });
         }
       } catch (e) {
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        bot.error(bot, message, language, e);
+        return  bot.error(bot, message, language, e);
       }
       let starter = Math.floor(Math.random() * 101) < 50 ? 0 : 1;
       first.turn = starter;
@@ -239,7 +236,7 @@ module.exports = {
             bot.playingtictactoe.delete(second.user.id);
           }).catch(e => {
             if (gameMessage) gameMessage.reactions.removeAll().catch(e => { })
-            bot.error(bot, message, language, e);
+            return bot.error(bot, message, language, e);
           });
           return;
         }
@@ -265,7 +262,7 @@ module.exports = {
             bot.playingtictactoe.delete(second.user.id);
           }).catch(e => {
             if (gameMessage) gameMessage.reactions.removeAll().catch(e => { });
-            bot.error(bot, message, language, e);
+            return bot.error(bot, message, language, e);
           });
           return;
         }
@@ -276,7 +273,7 @@ module.exports = {
         if (gameMessage) gameMessage.reactions.removeAll().catch(e => { });
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        bot.error(bot, message, language, e);
+        return  bot.error(bot, message, language, e);
       });
     }
     function getWinner(bot, first) {

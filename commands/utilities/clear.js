@@ -62,8 +62,6 @@ module.exports = {
           .replace(/{CHECK}/g, bot.emoji.check)
           .replace(/{AMOUNT}/g, deleted.size));
       return message.channel.send(success).catch(e => { return bot.error(bot, message, language, e); });
-    } catch (e) {
-      bot.error(bot, message, language, e);
-    }
+    } catch (e) { return bot.error(bot, message, language, e); }
   }
 }

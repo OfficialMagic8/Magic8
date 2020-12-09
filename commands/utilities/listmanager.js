@@ -50,9 +50,7 @@ module.exports = {
             setTimeout(async () => {
               message.channel.send(`**Preformatted Items:** ${haste}`)
             }, 1000)
-          }).catch(e => {
-            bot.error(bot, message, language, e);
-          })
+          }).catch(e => { return bot.error(bot, message, language, e); })
         }
         let embed = new MessageEmbed()
           .setColor(bot.colors.main)

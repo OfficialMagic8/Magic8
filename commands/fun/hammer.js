@@ -37,17 +37,12 @@ module.exports = {
         .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: true }))
       .setImage("https://thumbs.gfycat.com/NaiveCelebratedDwarfrabbit-max-1mb.gif")
       .setDescription(bot.translate(bot, language, "hammer.starting.description"));
-    let malletMessage;
-    try {
-      malletMessage = await message.channel.send(malletEmbed);
-    } catch (e) {
-      bot.playingmallet.delete(message.author.id)
-      bot.error(bot, message, language, e);
-    }
+    let malletMessage = await message.channel.send(malletEmbed).catch(e => {
+      bot.playingmallet.delete(message.author.id);
+      return bot.error(bot, message, language, e);
+    });
     setTimeout(async () => {
-      malletMessage.react((bot.emoji.mallet).replace(">", "")).catch(e => {
-        bot.error(bot, message, language, e);
-      });
+      malletMessage.react((bot.emoji.mallet).replace(">", "")).catch(e => { return bot.error(bot, message, language, e); });
       let filter = (reaction, user) => !user.bot && user.id === message.author.id && reaction.emoji.id === "711678430302961785"
       let collected;
       try {
@@ -61,9 +56,8 @@ module.exports = {
       try {
         await malletMessage.edit(malletEmbed)
       } catch (e) {
-        console.error(e);
         bot.playingmallet.delete(message.author.id);
-        bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       }
       setTimeout(async () => {
         let tenValue = (Math.floor(Math.random() * 10) * 100);

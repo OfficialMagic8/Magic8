@@ -23,8 +23,6 @@ module.exports = {
         .setColor(bot.colors.blue)
         .setDescription(`${bot.emoji.check} **${message.author.username}: ${spoiler.owo}**`);
       return message.channel.send(spoiled).catch(e => { return bot.error(bot, message, language, e); });
-    } catch (e) {
-      bot.error(bot, message, language, e);
-    }
+    } catch (e) { return bot.error(bot, message, language, e); }
   }
 }  

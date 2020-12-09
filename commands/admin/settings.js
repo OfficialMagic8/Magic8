@@ -234,14 +234,14 @@ module.exports = {
             .setDescription([
               `${bot.emoji.info} To enable custom replies use \`${prefix}s 8ball mode custom\`. If you want to add new replies, you'll have to copy your old replies in addition to your new ones.`])
           try {
-            bot.fs.writeFileSync("././templates/customr8ballreplies.txt", finalDoc, 'utf8')
+            bot.fs.writeFileSync("././templates/custom8ballreplies.txt", finalDoc, 'utf8')
           } catch (e) {
             bot.error(bot, message, language, e);
           }
           return message.channel.send("", {
             embed: replies,
             files: [{
-              attachment: "././templates/customr8ballreplies.txt",
+              attachment: "././templates/custom8ballreplies.txt",
               name: `Custom_Replies.txt`
             }]
           }).catch(e => { return bot.error(bot, message, language, e); });
