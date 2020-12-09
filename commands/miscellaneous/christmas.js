@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["xmas"],
-  category: "FUN",
+  category: "MISCELLANEOUS",
   description: "A little Christmas message that is available year-round",
   emoji: "🎄",
   name: "christmas",

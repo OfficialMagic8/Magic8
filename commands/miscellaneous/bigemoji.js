@@ -5,7 +5,7 @@ const basepnglink = "https://cdn.discordapp.com/emojis/{EMOJIID}.png";
 const basegiflink = "https://cdn.discordapp.com/emojis/{EMOJIID}.gif";
 module.exports = {
   aliases: ["be"],
-  category: "FUN",
+  category: "MISCELLANEOUS",
   description: "Get the link to a custom emoji",
   emoji: "😜",
   name: "bigemoji",
