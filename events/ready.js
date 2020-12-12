@@ -187,7 +187,7 @@ module.exports = {
       let url = "https://discord.boats/api/bot/484148705507934208";
       let xhr = new XMLHttpRequest();
       xhr.open("POST", url);
-      xhr.setRequestHeader("Authorization", DISCORD_BOATS_API);
+      xhr.setRequestHeader("Authorization", process.env.DISCORD_BOATS_API);
       xhr.setRequestHeader("Content-Type", "application/json");
       let data = `{
         "server_count": ${bot.guilds.cache.size}
