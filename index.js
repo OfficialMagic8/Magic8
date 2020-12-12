@@ -91,10 +91,10 @@ bot.schedule.scheduleJob("0 0 1 * *", function () {
   });
   console.log(`☑️ Reset ${selected.length} guilds with monthly votes.`);
 });
-const logs = bot.channels.cache.get(bot.config.commandlogs);
 bot.schedule.scheduleJob("0 * * * *", async function () {
   bot.fs.copyFileSync('./data/guildData.db', `./templates/latestGuildData.db`, guildCallback);
   function guildCallback(err) {
+    let logs = bot.channels.cache.get(bot.config.commandlogs);
     if (err) return logs.send(`${bot.emoji.cross} **Guild Data Backup Failed**\n\`\`\`${err}\`\`\``).catch(e => { });
     logs.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
@@ -111,6 +111,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
   }
   bot.fs.copyFile('./data/usageData.db', `./templates/latestUsageData.db`, usageCallback);
   function usageCallback(err) {
+    let logs = bot.channels.cache.get(bot.config.commandlogs);
     if (err) return logs.send(`${bot.emoji.cross} **Usage Data Backup Failed**\n\`\`\`${err}\`\`\``).catch(e => { });
     logs.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
