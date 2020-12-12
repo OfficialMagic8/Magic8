@@ -26,7 +26,7 @@ module.exports = {
         .setAuthor(bot.translate(bot, language, "follow.nooptiontitle")
           .replace(/{BOTNAME}/g, bot.user.username))
         .setThumbnail(bot.user.displayAvatarURL({ formant: "png" }))
-        .setDescription(bot.translate(bot, language, "folow.nooption").join("\n")
+        .setDescription(bot.translate(bot, language, "follow.nooption").join("\n")
           .replace(/{INVITE}/g, bot.invite)
           .replace(/{OPTIONS}/g, options.map(o => `\`${o}\``).join(" "))
           .replace(/{INFO}/g, bot.emoji.info));
