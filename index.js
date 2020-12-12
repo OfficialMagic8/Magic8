@@ -62,6 +62,21 @@ bot.shortinvite = "discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
 bot.footer = ``;
 
+bot.reload = (bot) => {
+  delete require.cache[require.resolve("./utils/methods.js")];
+  bot.utils = require("./utils/methods.js");
+
+  delete require.cache[require.resolve("./config.json")];
+  bot.config = require("./config.json");
+
+  delete require.cache[require.resolve("./utils/webhooks.js")];
+  bot.webhooks = require("./utils/webhooks.js");
+
+  bot.utils.loadDatabases(bot);
+  bot.utils.loadCommands(bot);
+  bot.utils.loadEvents(bot);
+}
+
 bot.developer = undefined;
 bot.maindeveloper = undefined;
 bot.developerid = bot.config.ownerid
@@ -71,52 +86,44 @@ bot.schedule.scheduleJob("0 0 1 * *", function () {
   let guildsids = bot.guilds.cache.keyArray();
   let selected = bot.db.prepare("SELECT * FROM guilddata WHERE monthlyvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
   selected.forEach(row => {
-    bot.db.prepare("UPDATE guilddata SET monthlyvotes=? WHERE guildid=?").run(0, guild.id);
+    bot.db.prepare("UPDATE guilddata SET monthlyvotes=? WHERE guildid=?").run(0, row.guildid);
     bot.monthlyvotes.clear();
   });
   console.log(`☑️ Reset ${selected.length} guilds with monthly votes.`);
 });
-
+const logs = bot.channels.cache.get(bot.config.commandlogs);
 bot.schedule.scheduleJob("0 * * * *", async function () {
-  let logs = bot.channels.cache.get(bot.config.commandlogs);
-  try {
-    bot.fs.copyFileSync('./data/guildData.db', `./templates/latestGuildData.db`);
+  bot.fs.copyFileSync('./data/guildData.db', `./templates/latestGuildData.db`, guildCallback);
+  function guildCallback(err) {
+    if (err) return logs.send(`${bot.emoji.cross} **Guild Data Backup Failed**\n\`\`\`${err}\`\`\``).catch(e => { });
     logs.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestGuildData.db`,
         name: `latestGuildData.db`
       }]
     });
-    bot.developer.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
+    return bot.developer.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestGuildData.db`,
         name: `latestGuildData.db`
       }]
     });
-  } catch (e) {
-    console.error(`Error Backing Up`);
-    console.error(e);
-    logs.send(`${bot.emoji.cross} **Guild Data Backup Failed**`).catch(e => { });
   }
-
-  try {
-    bot.fs.copyFileSync('./data/usageData.db', `./templates/latestUsageData.db`);
+  bot.fs.copyFile('./data/usageData.db', `./templates/latestUsageData.db`, usageCallback);
+  function usageCallback(err) {
+    if (err) return logs.send(`${bot.emoji.cross} **Usage Data Backup Failed**\n\`\`\`${err}\`\`\``).catch(e => { });
     logs.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestUsageData.db`,
         name: `latestUsageData.db`
       }]
     });
-    bot.developer.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
+    return bot.developer.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestUsageData.db`,
         name: `latestUsageData.db`
       }]
     });
-  } catch (e) {
-    console.error(`Error Backing Up`);
-    console.error(e);
-    logs.send(`${bot.emoji.cross} **Usage Data Backup Failed**`).catch(e => { });
   }
 });
 app.post("/votes", async function (request, response) {

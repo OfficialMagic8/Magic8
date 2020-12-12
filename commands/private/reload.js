@@ -8,12 +8,10 @@ module.exports = {
   dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     try {
-      bot.utils.loadDatabases(bot);
-      bot.utils.loadCommands(bot);
-      bot.utils.loadEvents(bot);
+      bot.reload(bot);
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
-        .setDescription(`${bot.emoji.check} **Commands & Events were attempted to reload!**`);
+        .setDescription(`${bot.emoji.check} **${bot.user} was attempted to reload!**`);
       return message.channel.send(embed).catch(e => { });
     } catch (e) {
       let embed = new MessageEmbed()
