@@ -1,10 +1,10 @@
 const { MessageEmbed } = require("discord.js");
 const MojangAPI = require("mojang-api");
-const helmURL = "https://minotar.net/helm/{USER}/100.png";
-const profileURL = "https://es.namemc.com/profile/{USER}";
+const helmURL = "https://minotar.net/helm/{TOSEARCH}/100.png";
+const profileURL = "https://es.namemc.com/profile/{TOSEARCH}";
 const niceBodyURL = "https://visage.surgeplay.com/full/512/{UUID}.png";
 module.exports = {
-  aliases: ["skin", "mcs"],
+  aliases: [],
   category: "MINECRAFT",
   description: "Get a Minecrafter's Skin",
   emoji: "🎮",
@@ -21,8 +21,8 @@ module.exports = {
           .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
-    let profileLink = profileURL.replace(/{USER}/g, username);
-    let helmLink = helmURL.replace(/{USER}/g, username);
+    let profileLink = profileURL.replace(/{TOSEARCH}/g, username);
+    let helmLink = helmURL.replace(/{TOSEARCH}/g, username);
     let date = new Date();
     MojangAPI.uuidAt(username, date, function (err, res) {
       if (res) {
@@ -33,7 +33,7 @@ module.exports = {
             .setImage(niceLink)
             .setColor(bot.colors.main)
             .setAuthor(bot.translate(bot, language, "mcskin.success")
-              .replace(/{USER}/g, username), helmLink, profileLink);
+              .replace(/{TOSEARCH}/g, username), helmLink, profileLink);
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }).catch(e => {
           let embed = new MessageEmbed()
