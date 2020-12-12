@@ -14,6 +14,7 @@ module.exports = {
       }
     }
     // postdiscordbotlist();
+    postdsicordboats(bot);
     setInterval(() => {
       if (guildChannel) {
         let guildText = `📚 Guilds : ${(bot.guilds.cache.size).toLocaleString("en")}`;
@@ -22,6 +23,7 @@ module.exports = {
         }
       }
       // postdiscordbotlist();
+      postdsicordboats(bot);
     }, 1800000)
     let userStats = "652538780376367104";
     let userChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(userStats);
@@ -130,11 +132,17 @@ module.exports = {
     bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
     bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
     let statusList = [
-      { name: `new multiple language support!`, type: "PLAYING" },
-      { name: `with your mind | m!help`, type: "PLAYING" },
-      { name: `{SERVERS} servers | m!help`, type: "WATCHING" },
-      { name: `{USERS} users | m!help`, type: "WATCHING" },
-      { name: `for @Magic8`, type: "WATCHING" }
+      { name: `with 20+ languuages`, type: "PLAYING" },
+      { name: `with your mind`, type: "PLAYING" },
+      { name: `with your thoughts`, type: "PLAYING" },
+      { name: `by myself`, type: "PLAYING" },
+      { name: `{SERVERS} cool servers`, type: "WATCHING" },
+      { name: `{USERS} amazing users`, type: "WATCHING" },
+      { name: `for @Magic8`, type: "WATCHING" },
+      { name: `for @Magic8 help`, type: "WATCHING" },
+      { name: `for @Magic8 settings`, type: "WATCHING" },
+      { name: `for @Magic8 langs`, type: "WATCHING" },
+      { name: `for new updates`, type: "WATCHING" },
     ];
     let statusSize = statusList.length - 1;
     setInterval(() => {
@@ -174,19 +182,13 @@ module.exports = {
       }`;
       xhr.send(data);
     }
-    function postdsicordboats() {
+    function postdsicordboats(bot) {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discord.boats/api/bot/484148705507934208";
       let xhr = new XMLHttpRequest();
       xhr.open("POST", url);
-      xhr.setRequestHeader("Authorization", DISCORD_BOATS_AUTH);
+      xhr.setRequestHeader("Authorization", DISCORD_BOATS_API);
       xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          // console.log(xhr.status);
-          // console.log(xhr.responseText);
-        }
-      };
       let data = `{
         "server_count": ${bot.guilds.cache.size}
       }`;
