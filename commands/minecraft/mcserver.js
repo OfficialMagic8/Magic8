@@ -40,38 +40,38 @@ module.exports = {
               .replace(/{PREFIX}/g, prefix));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e,); })
         }
-        let updating = new MessageEmbed()
+        let embed = new MessageEmbed()
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "mcserver.checking")
             .replace(/{LOADING}/g, bot.emoji.loading));
-        let updatingMessage = await message.channel.send(updating).catch(e => { return bot.error(bot, message, language, e); });
+        let updatingMessage = await message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         let tryip = await bot.fetch(`https://api.mcsrvstat.us/2/${args[1]}`).then(res => res.json()).then(json => {
           return json.ip;
         }).catch(e => { return bot.error(bot, message, language, e); });
         if (tryip.length >= 1) {
           bot.db.prepare("UPDATE guilddata SET mcserverip=? WHERE guildid=?").run(args[1], message.guild.id);
           bot.mcservers.set(message.guild.id, args[1]);
-          updating.setColor(bot.colors.green);
-          updating.setFooter(bot.translate(bot, language, "mcserver.javawarning"))
-          updating.setDescription(bot.translate(bot, language, "mcserver.updated").join("\n")
+          embed.setColor(bot.colors.green);
+          embed.setFooter(bot.translate(bot, language, "mcserver.javawarning"))
+          embed.setDescription(bot.translate(bot, language, "mcserver.updated").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
             .replace(/{SERVER}/g, args[1])
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
-          updatingMessage.edit(updating).catch(e => { return bot.error(bot, message, language, e); });
+          return updatingMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else {
-          updating.setColor(bot.colors.red);
-          updating.setFooter(bot.translate(bot, language, "mcserver.errorfooter"));
-          updating.setDescription(bot.translate(bot, language, "mcserver.error").join("\n")
+          embed.setColor(bot.colors.red);
+          embed.setFooter(bot.translate(bot, language, "mcserver.errorfooter"));
+          embed.setDescription(bot.translate(bot, language, "mcserver.error").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{SERVER}/g, args[1]));
-          updatingMessage.edit(updating).catch(e => { return bot.error(bot, message, language, e); });
+          return updatingMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
       } else {
-        checkStatus(bot, message)
+        checkStatus(bot, message);
       }
     } else {
-      checkStatus(bot, message)
+      checkStatus(bot, message);
     }
     async function checkStatus() {
       if (bot.mcservers.has(message.guild.id)) {
