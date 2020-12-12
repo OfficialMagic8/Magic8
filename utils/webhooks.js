@@ -37,7 +37,6 @@ module.exports.dbl = async (bot, request) => {
   function resetTimeout() {
     let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(user.id));
     userguilds.forEach(guild => {
-      console.log(`Updating: ${guild.name} (${guild.id})`);
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       bot.db.prepare("UPDATE guilddata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
       bot.db.prepare("UPDATE guilddata SET totalvotes=? WHERE guildid=?").run(guildData.totalvotes + 1, guild.id);
