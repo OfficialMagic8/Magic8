@@ -464,7 +464,7 @@ module.exports = {
           .setAuthor(bot.translate(bot, language, "listmanager.addmenutitle"))
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "listmanager.addmenu")
-            .replace(/{LISTS}/g, listarray.join("\n"))
+            .replace(/{LISTS}/g, listsarray.join("\n"))
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
