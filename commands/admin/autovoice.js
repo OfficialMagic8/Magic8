@@ -191,7 +191,7 @@ module.exports = {
           .replace(/{INFO}/g, bot.emoji.info));
       return message.channel.send(embed).then(msg => {
         const filter = m => m.author.id === message.author.id && message.content;
-        return message.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] }).then(collected => {
+        return message.channel.awaitMessages(filter, { max: 1, time: 10000, errors: ["time"] }).then(collected => {
           let confirm = collected.first().content.toLowerCase() === "confirm";
           if (confirm) {
             try {
@@ -199,7 +199,7 @@ module.exports = {
               if (bot.avtempchannels.has(message.guild.id)) {
                 bot.avtempchannels.get(message.guild.id).forEach(async channel => {
                   channels.push(`${channel.type} ${message.guild.channels.cache.get(channel.id)}`);
-                  await message.guild.channels.cache.get(channel.id).delete();
+                  await message.guild.channels.cache.get(channel.id).delete().catch(e => { });
                 });
               }
               bot.avtempchannels.delete(message.guild.id);
@@ -230,7 +230,7 @@ module.exports = {
         let types = ["duo", "trio", "squad"];
         if (!args[1]) {
           let embed = new MessageEmbed()
-            .setColor(bot.colora.main)
+            .setColor(bot.colors.main)
             .setAuthor(bot.translate(bot, language, "autovoice.namemenutitle")
               .replace(/{BOTNAME}/g, bot.user.username))
             .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -242,7 +242,7 @@ module.exports = {
         }
         if (!types.includes(args[1].toLowerCase())) {
           let embed = new MessageEmbed()
-            .setColor(bot.colora.main)
+            .setColor(bot.colors.main)
             .setDescription(bot.translate(bot, language, "autovoice.nameinvalidtype").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{INPUT}/g, args[1])
@@ -256,11 +256,11 @@ module.exports = {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "autovoice.nametoolong").join("\n")
-              .replace(/{CROSS/g, bot.emoji.cross)
+              .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{INFO}/g, bot.emoji.info));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
-        if (!["{NUMBER}"].includes(name)) {
+        if (name.match(/{NUMBER}/g) === null) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "autovoice.nonumberwritten").join("\n")
@@ -273,7 +273,7 @@ module.exports = {
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "autovoice.nameupdated").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
-            .replace(/{TYPE}/g, nicetypes[types.indexOf(args[1].toLowerCase()) + 1])
+            .replace(/{TYPE}/g, nicetypes[types.indexOf(args[1].toLowerCase())])
             .replace(/{NEWNAME}/g, name)
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
