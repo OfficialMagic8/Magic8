@@ -86,6 +86,18 @@ module.exports = {
         bot.avcategories.delete(guild.id)
       }
     }
+    if (bot.avtempchannels.has(guild.id)) {
+      let channels = bot.avtempchannels.get(guild.id)
+      let channelids = []
+      channels.forEach(c => {
+        channelids.push(c.id);
+      })
+      if (channelids.includes(channel.id)) {
+        let removed = channels.filter(c => c.id !== channel.id);
+        bot.avtempchannels.set(guild.id, removed);
+        if (removed.length <= 0) bot.avtempchannels.delete(guild.id);
+      }
+    }
     if (bot.lfgnotifychannels.has(guild.id)) {
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       if (channel.id === guild.channels.cache.get(guildData.lfgnotifychannel)) {

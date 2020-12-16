@@ -104,7 +104,7 @@ module.exports = {
             });
             // console.log(`Possible Channels: ${JSON.stringify(a)}`)
             // console.log(`Old Channel: ${oldState.channelID}`)
-            let match = a.includes(oldState.channelID);
+            let match = array.includes(oldState.channelID);
             // console.log(`Match: ${match}`)
             if (match) {
               // function checkChannel(tempchannels) {
