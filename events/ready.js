@@ -95,15 +95,11 @@ module.exports = {
         bot.utils.registerGuildUsage(bot, guild)
         usageData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       }
-      // let usage = JSON.parse(usageData.usage)
-      // if (!usage.find(command => command.name === "language")) {
-      //   let o = {
-      //     command: "language",
-      //     usage: 0
-      //   }
-      //   usage.push(o)
-      //   bot.udb.prepare("UPDATE usagedata SET usage=? WHERE guildid=?").run(JSON.stringify(usage), guild.id)
-      // }
+      
+      bot.db.prepare("UPDATE guilddata SET duoname=? WHERE guildid=?").run("Duo {NUMBER}", guild.id)
+      bot.db.prepare("UPDATE guilddata SET trioname=? WHERE guildid=?").run("Trio {NUMBER}", guild.id)
+      bot.db.prepare("UPDATE guilddata SET squadname=? WHERE guildid=?").run("Squad {NUMBER}", guild.id)
+
       if (usageData.inguild === "false" || null) bot.db.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("true", guild.id);
       if (guildData.inguild === "false" || null) bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("true", guild.id);
       if (guildData.guildname !== guild.name) bot.db.prepare("UPDATE guilddata SET guildname=? WHERE guildid=?").run(guild.name, guild.id);
