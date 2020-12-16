@@ -62,21 +62,6 @@ bot.shortinvite = "discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
 bot.footer = ``;
 
-bot.reload = (bot) => {
-  delete require.cache[require.resolve("./utils/methods.js")];
-  bot.utils = require("./utils/methods.js");
-
-  delete require.cache[require.resolve("./config.json")];
-  bot.config = require("./config.json");
-
-  delete require.cache[require.resolve("./utils/webhooks.js")];
-  bot.webhooks = require("./utils/webhooks.js");
-
-  bot.utils.loadDatabases(bot);
-  bot.utils.loadCommands(bot);
-  bot.utils.loadEvents(bot);
-}
-
 bot.developer = undefined;
 bot.maindeveloper = undefined;
 bot.developerid = bot.config.ownerid
@@ -208,7 +193,8 @@ bot.prefixes = new Collection();
 bot.duo = new Collection();
 bot.trio = new Collection();
 bot.squad = new Collection();
-bot.voicechannels = new Collection();
+bot.avcategories = new Collection();
+bot.avtempchannels = new Collection();
 bot.voicecooldown = new Collection();
 
 bot.listscooldown = new Collection();
