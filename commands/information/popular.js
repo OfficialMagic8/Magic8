@@ -28,7 +28,9 @@ module.exports = {
       embed.setFooter(bot.translate(bot, language, "popular.footer"))
       embed.setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
       embed.setDescription(bot.translate(bot, language, "popular.description").join("\n")
-        .replace(/{COMMANDS}/g, popularcommandsarray.join("\n")));
+        .replace(/{COMMANDS}/g, popularcommandsarray.join("\n"))
+        .replace(/{INFO}/g, bot.emoji.info)
+        .replace(/{STATCORD}/g, "https://statcord.com/bot/484148705507934208"));
       return embedmessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
     }).catch(e => { return bot.error(bot, message, language, e); });
   }
