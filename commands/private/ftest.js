@@ -9,11 +9,11 @@ module.exports = {
   beta: true,
   dev: true,
   category: "FUN",
-  run: async(bot,message,args,prefix,guildData,log)=>{
-    message.delete({timeout:500}).catch(e=>{})
+  run: async (bot, message, args, prefix, guildData, log) => {
+    message.delete({ timeout: 500 }).catch(e => { })
     try {
       log.info("hello")
-    }catch (e) {
+    } catch (e) {
       console.error(e)
     }
   }

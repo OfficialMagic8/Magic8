@@ -32,7 +32,6 @@ module.exports.loadCommands = (bot) => {
   });
   console.log(`💻 Commands ${reloading ? `re` : ``}loaded successfully!`);
 }
-
 module.exports.loadEvents = (bot) => {
   let reloading = false;
   if (bot.events.size >= 1) {
@@ -97,7 +96,7 @@ module.exports.error = (bot, message, language, e) => {
   let errormessage = [
     `\`\`\`xl`,
     `Caught Error @ ${input}/${command.name}:`,
-    `${e}`,
+    `${e.stack}`,
     `\`\`\``
   ];
   logs.send(errormessage).catch(e => { });

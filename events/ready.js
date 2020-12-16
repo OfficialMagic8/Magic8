@@ -96,9 +96,9 @@ module.exports = {
         usageData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       }
       
-      bot.db.prepare("UPDATE guilddata SET duoname=? WHERE guildid=?").run("Duo {NUMBER}", guild.id)
-      bot.db.prepare("UPDATE guilddata SET trioname=? WHERE guildid=?").run("Trio {NUMBER}", guild.id)
-      bot.db.prepare("UPDATE guilddata SET squadname=? WHERE guildid=?").run("Squad {NUMBER}", guild.id)
+      // bot.db.prepare("UPDATE guilddata SET duoname=? WHERE guildid=?").run("Duo {NUMBER}", guild.id)
+      // bot.db.prepare("UPDATE guilddata SET trioname=? WHERE guildid=?").run("Trio {NUMBER}", guild.id)
+      // bot.db.prepare("UPDATE guilddata SET squadname=? WHERE guildid=?").run("Squad {NUMBER}", guild.id)
 
       if (usageData.inguild === "false" || null) bot.db.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("true", guild.id);
       if (guildData.inguild === "false" || null) bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("true", guild.id);
