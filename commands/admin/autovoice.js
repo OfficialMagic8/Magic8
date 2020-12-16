@@ -196,15 +196,17 @@ module.exports = {
           if (confirm) {
             try {
               let channels = [];
-              bot.avtempchannels.get(message.guild.id).forEach(async channel => {
-                channels.push(`${channel.type} ${message.guild.channels.cache.get(channel.id)}`);
-                await message.guild.channels.cache.get(channel.id).delete();
-              });
+              if (bot.avtempchannels.has(message.guild.id)) {
+                bot.avtempchannels.get(message.guild.id).forEach(async channel => {
+                  channels.push(`${channel.type} ${message.guild.channels.cache.get(channel.id)}`);
+                  await message.guild.channels.cache.get(channel.id).delete();
+                });
+              }
               bot.avtempchannels.delete(message.guild.id);
               bot.duo.delete(message.guild.id);
               bot.trio.delete(message.guild.id);
               bot.squad.delete(message.guild.id);
-              if (channels.length <= 0) channels = bot.translate(bot, language, "none");
+              if (channels.length <= 0) channels = [`*${bot.translate(bot, language, "none")}*`];
               let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription(bot.translate(bot, language, "autovoice.resetconfirmed").join("\n")
