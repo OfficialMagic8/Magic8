@@ -68,7 +68,7 @@ module.exports = {
                 number = bot.squad.get(guild.id);
               }
               let type = vc.type;
-              let name = guildData[`${type.toLowerCase()}name`]
+              let name = guildData[`${type.toLowerCase()}name`];
               let voice = await guild.channels.create(name.replace(/{NUMBER}/g, number), opts);
               await newState.setChannel(voice.id);
               let newobject = {
@@ -77,7 +77,7 @@ module.exports = {
               };
               let t = bot.avtempchannels.get(guild.id);
               t.push(newobject);
-              bot.avtempchannels.get(guild.id, t)
+              bot.avtempchannels.set(guild.id, t);
               // console.log(`New Temp Channels:\n${JSON.stringify(t)}`)
               bot.voicecooldown.set(user.id, Date.now());
               // console.log(`Cooldown Started: ${guildData.autovoicecooldown * 1000}`)
@@ -124,10 +124,9 @@ module.exports = {
                   t.splice(t.indexOf(vc), 1);
                   bot.avtempchannels.set(guild.id, t);
                   // console.log(`New Temp: ${JSON.stringify(tempchannels)}`)
-                  oldState.channel.delete("No one was left!");
+                  await oldState.channel.delete("No one was left!");
                 } catch (e) {
-                  // console.log("Couldn't delete channel!");
-                  console.error(e);
+                  return console.error(e);
                 }
               }
               // }

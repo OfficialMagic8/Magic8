@@ -209,7 +209,7 @@ module.exports = {
                 .setColor(bot.colors.green)
                 .setDescription(bot.translate(bot, language, "autovoice.resetconfirmed").join("\n")
                   .replace(/{CHECK}/g, bot.emoji.check)
-                  .replace(/{CHANNELSDELETED}/g, channels.map(c => `**•** ${c}`)));
+                  .replace(/{CHANNELSDELETED}/g, channels.map(c => `**•** ${c}`).join("\n")));
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             } catch (e) { return bot.error(bot, message, language, e); }
           }
@@ -338,7 +338,7 @@ module.exports = {
         bot.translate(bot, language, "false");
       let thechannels = [];
       if (category === "none") {
-        voicecategory = bot.translate(bot, language, "none")
+        voicecategory = bot.translate(bot, language, "none");
       } else {
         voicecategory = `${bot.guilds.cache.get(message.guild.id).channels.cache.get(category).name} (${category})`;
       }
@@ -347,7 +347,7 @@ module.exports = {
           thechannels.push(`${bot.guilds.cache.get(message.guild.id).channels.cache.get(vc.id).name} (${vc.id})`);
         });
       } else {
-        thechannels = [`*${bot.translate(bot, language, "none")}*`]
+        thechannels = [`*${bot.translate(bot, language, "none")}*`];
       }
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
