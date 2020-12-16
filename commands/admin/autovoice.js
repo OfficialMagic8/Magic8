@@ -183,18 +183,120 @@ module.exports = {
           }
         } catch (e) { return bot.error(bot, message, language, e); }
       }
+    } else if (subcommand === "reset") {
+      let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
+        .setDescription(bot.translate(bot, language, "autovoice.confirmreset").join("\n")
+          .replace(/{WARNING}/g, bot.emoji.warning)
+          .replace(/{INFO}/g, bot.emoji.info));
+      return message.channel.send(embed).then(msg => {
+        const filter = m => m.author.id === message.author.id && message.content;
+        return message.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] }).then(collected => {
+          let confirm = collected.first().content.toLowerCase() === "confirm";
+          if (confirm) {
+            try {
+              let channels = [];
+              bot.avtempchannels.get(message.guild.id).forEach(channel => {
+                channels.push(`${channel.type} ${message.guild.channels.cache.get(channel.id)}`);
+                await message.guild.channels.cache.get(channel.id).delete();
+              });
+              bot.avtempchannels.delete(message.guild.id);
+              bot.duo.delete(message.guild.id);
+              bot.trio.delete(message.guild.id);
+              bot.squad.delete(message.guild.id);
+              if (channels.length <= 0) channels = bot.translate(bot, language, "none");
+              let embed = new MessageEmbed()
+                .setColor(bot.colors.green)
+                .setDescription(bot.translate(bot, language, "autovoice.resetconfirmed").join("\n")
+                  .replace(/{CHECK}/g, bot.emoji.check)
+                  .replace(/{CHANNELSDELETED}/g, channels.map(c => `**•** ${c}`)));
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+            } catch (e) { return bot.error(bot, message, language, e); }
+          }
+        }).catch(collected => {
+          let embed = new MessageEmbed()
+            .setColor(bot.colors.red)
+            .setDescription(bot.translate(bot, language, "autovoice.didnotconfirm")
+              .replace(/{CROSS}/g, bot.emoji.cross)
+              .replace(/{USER}/g, message.author));
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        })
+      }).catch(e => { return bot.error(bot, message, language, e); });
+    } else if (subcommand === "name") {
+      if ([1, 2].includes(bot.premium.get(message.guild.id))) {
+        let nicetypes = ["Duo", "Trio", "Squad"];
+        let types = ["duo", "trio", "squad"];
+        if (!args[1]) {
+          let embed = new MessageEmbed()
+            .setColor(bot.colora.main)
+            .setAuthor(bot.translate(bot, language, "autovoice.namemenutitle")
+              .replace(/{BOTNAME}/g, bot.user.username))
+            .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
+            .setDescription(bot.translate(bot, language, "autovoice.namemenu").join("\n")
+              .replace(/{TYPES}/g, types.map(t => `**•** ${t}`).join("\n"))
+              .replace(/{INFO}/g, bot.emoji.info)
+              .replace(/{PREFIX}/g, prefix));
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        }
+        if (!types.includes(args[1].toLowerCase())) {
+          let embed = new MessageEmbed()
+            .setColor(bot.colora.main)
+            .setDescription(bot.translate(bot, language, "autovoice.nameinvalidtype").join("\n")
+              .replace(/{CROSS}/g, bot.emoji.cross)
+              .replace(/{INPUT}/g, args[1])
+              .replace(/{TYPES}/g, types.map(t => `**•** ${t}`).join("\n"))
+              .replace(/{INFO}/g, bot.emoji.info)
+              .replace(/{PREFIX}/g, prefix));
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        }
+        let name = args.slice(2).join(" ");
+        if (name.length - 8 > 8) {
+          let embed = new MessageEmbed()
+            .setColor(bot.colors.red)
+            .setDescription(bot.translate(bot, language, "autovoice.nametoolong").join("\n")
+              .replace(/{CROSS/g, bot.emoji.cross)
+              .replace(/{INFO}/g, bot.emoji.info));
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        }
+        if (!["{NUMBER}"].includes(name)) {
+          let embed = new MessageEmbed()
+            .setColor(bot.colors.red)
+            .setDescription(bot.translate(bot, language, "autovoice.nonumberwritten").join("\n")
+              .replace(/{CROSS}/g, bot.emoji.cross)
+              .replace(/{INFO}/g, bot.emoji.info));
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        }
+        bot.db.prepare(`UPDATE guilddata SET ${args[1].toLowerCase()}name=? WHERE guildid=?`).run(`${name}`, message.guild.id);
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.green)
+          .setDescription(bot.translate(bot, language, "autovoice.nameupdated").join("\n")
+            .replace(/{CHECK}/g, bot.emoji.check)
+            .replace(/{TYPE}/g, nicetypes[types.indexOf(args[1].toLowerCase()) + 1])
+            .replace(/{NEWNAME}/g, name)
+            .replace(/{INFO}/g, bot.emoji.info));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      } else if (bot.premium.get(message.guild.id) === 0) {
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.main)
+          .setDescription([
+            `💎 **Premium Feature** 💎`,
+            ``,
+            `Customizing the name of generated channels from AVC is premium! Support the developers and motivate them to continue investing hours a day into ${bot.user}. View the available packages [here](${bot.config.donatelink}).`]);
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }
     } else if (subcommand === "cooldown") {
       if (!args[1]) {
         let embed = new MessageEmbed()
-          .setColor(bot.colors.red)
+          .setColor(bot.colors.main)
           .setAuthor(bot.translate(bot, language, "autovoice.nocooldowntitle")
             .replace(/{BOTNAME}/g, bot.user.username))
+          .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setDescription(bot.translate(bot, language, "autovoice.nocooldown").join("\n")
             .replace(/{COOLDOWN}/g, guildData.autovoicecooldown)
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let cooldown = parseInt(Math.abs(Math.floor(args[1])))
+      let cooldown = parseInt(Math.abs(Math.floor(args[1])));
       if (isNaN(cooldown)) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -292,11 +394,12 @@ module.exports = {
               .replace(/{PREFIX}/g, prefix));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else {
-          bot.voicechannels.delete(message.guild.id);
           bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(0, message.guild.id);
           bot.db.prepare("UPDATE guilddata SET autovoicecategory=? WHERE guildid=?").run("none", message.guild.id);
           bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run("[]", message.guild.id);
-          bot.db.prepare("UPDATE guilddata SET tempchannels=? WHERE guildid=?").run("[]", message.guild.id);
+          // bot.db.prepare("UPDATE guilddata SET tempchannels=? WHERE guildid=?").run("[]", message.guild.id);
+          bot.avcategories.delete(message.guild.id);
+          bot.avtempchannels.delete(message.guild.id);
           let embed = new MessageEmbed()
             .setColor(bot.colors.green)
             .setDescription(bot.translate(bot, language, "autovoice.disabled").join("\n")
@@ -336,9 +439,9 @@ module.exports = {
             .replace(/{BOT}/g, bot.user));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      bot.db.prepare("UPDATE guilddata SET autovoicecategory=? WHERE guildid=?").run(possiblechannel.id, message.guild.id)
-      bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(1, message.guild.id)
-      bot.voicechannels.set(message.guild.id, possiblechannel.id);
+      bot.db.prepare("UPDATE guilddata SET autovoicecategory=? WHERE guildid=?").run(possiblechannel.id, message.guild.id);
+      bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(1, message.guild.id);
+      bot.avcategories.set(message.guild.id, possiblechannel.id);
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "autovoice.categoryset").join("\n")
