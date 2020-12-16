@@ -37,7 +37,7 @@ module.exports = {
       return false;
     });
     if (channelsToSend.size >= 1) {
-      let followstring = `${bot.emoji.check} Update notifications will automatically be sent here. To disable them, go to your Integrations settings for your server.`
+      let followstring = `${bot.emoji.check} Update notifications will automatically be sent here. To disable them, go to your Integrations settings for your server.`;
       let channelToSend = channelsToSend.random();
       if (guild.me.hasPermission(["MANAGE_WEBHOOKS"])) {
         bot.updates.addFollower(channelToSend.id, `Subscribed to updates`).then(() => {
@@ -54,7 +54,7 @@ module.exports = {
         ``,
         `📝 Prefix: \`${guildData.prefix}\``,
         `❔ Help Menu: \`${guildData.prefix}help\``,
-        `⚙️ Custom Prefix: \`${guildData.prefix}settings prefix\``,
+        `⚙️ Custom Prefix: \`${guildData.prefix}prefix\``,
         `🌎 **Languages:** \`${guildData.prefix}langs\``,
         `🔖 **Guide:** <${bot.docs.main}>`,
         ``,
@@ -81,10 +81,9 @@ module.exports = {
         ``,
         `**Users/Bots/Channels:** (${users}/${bots}/${channels})`,
         ``,
-        ``,
         `**Owner:** ${owner}/${owner.tag} (${owner.id})`,
         `**Joined:** ${joined}`,
-        `**Date Created:** ${created}`].join("\n"))
+        `**Date Created:** ${created}`])
     let logsChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.guildlogs);
     if (logsChannel) {
       logsChannel.send(embed).catch(e => { });
