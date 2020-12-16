@@ -191,7 +191,7 @@ module.exports = {
           .replace(/{INFO}/g, bot.emoji.info));
       return message.channel.send(embed).then(msg => {
         const filter = m => m.author.id === message.author.id && message.content;
-        return message.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] }).then(collected => {
+        return message.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] }).then(async collected => {
           let confirm = collected.first().content.toLowerCase() === "confirm";
           if (confirm) {
             try {
