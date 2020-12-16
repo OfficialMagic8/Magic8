@@ -128,30 +128,6 @@ module.exports = {
           ``,
           `${bot.emoji.info} To disable or enable a command, type: \`${prefix}s toggle\``]);
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-    } else if (subcommand === "prefix") {
-      if (!args[1] || args[1].length <= 0) {
-        let error = new MessageEmbed()
-          .setColor(bot.colors.main)
-          .setDescription([
-            `${bot.emoji.info} **Current Prefix:** \`${prefix}\``,
-            ``,
-            `**To Set Prefix:** \`${prefix}s prefix <prefix>\``,
-            ``,
-            `${bot.emoji.warning} Make sure you don't use special characters like chinese or unicode emojis!`])
-        return message.channel.send(error).catch(e => { return bot.error(bot, message, language, e); });
-      }
-      let newPrefix = args[1];
-      bot.prefixes.set(message.guild.id, newPrefix)
-      bot.db.prepare("UPDATE guilddata SET prefix=? WHERE guildid=?").run(newPrefix, message.guild.id)
-      let success = new MessageEmbed()
-        .setColor(bot.colors.main)
-        .setDescription([
-          `${bot.emoji.check} **You updated this server's prefix to \`${newPrefix}\`!**`,
-          ``,
-          `Magic8 will no longer reply with other previous prefixes! Tag Magic8 in chat if you forgot the prefix!`,
-          ``,
-          `${bot.emoji.verified} If you have problems with your prefix, join our [Support Server](${bot.invite}) and let us know!.`])
-      return message.channel.send(success).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "8ball") {
       if (subcommand2 === "setreplies") {
         if (!args[2] || args.slice(2).join(" ").split("|").length < 2) {
@@ -1181,7 +1157,6 @@ module.exports = {
           `\`${prefix}s 8ball\` - Magic 8 Ball Settings`,
           `\`${prefix}s media\` - Server Media Settings`,
           `\`${prefix}s lfg\` - Looking For Group Settings - **(PREMIUM)**`,
-          `\`${prefix}s prefix\` - Manage Custom Prefix - (\`${prefix}\`)`,
           `\`${prefix}s toggle\` - Enable/Disable Commands`,
           `\`${prefix}s toggled\` - View Disabled Commands`,
           ``,
