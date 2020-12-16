@@ -70,7 +70,7 @@ module.exports = {
               }
               let type = vc.type;
               let name = guildData[`${type.toLowerCase()}name`]
-              let voice = await guild.channels.create(name, opts);
+              let voice = await guild.channels.create(name.replace(/{NUMBER}/g, number), opts);
               await newState.setChannel(voice.id);
               let newobject = {
                 id: voice.id,
