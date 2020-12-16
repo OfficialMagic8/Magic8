@@ -230,8 +230,8 @@ module.exports = {
         if ([0, 1].includes(bot.premium.get(message.guild.id))) {
           upgradestring = bot.translate(bot, language, "listmanager.upgrade.description")
             .replace(/{OPTIONS}/g, bot.premium.get(message.guild.id) === 1 ?
-              bot.translate(bot, language, "listmanager.upgrade.triple") :
-              bot.translate(bot, language, "listmanager.upgrade.singleortriple"))
+              bot.translate(bot, language, "triple") :
+              bot.translate(bot, language, "singleortriple"))
             .replace(/{DONATELINK}/g, bot.config.donatelink);
         } else {
           upgradestring = bot.translate(bot, language, "listmanager.upgrade.cannotupgrade");
@@ -463,7 +463,7 @@ module.exports = {
         let embed = new MessageEmbed()
           .setAuthor(bot.translate(bot, language, "listmanager.addmenutitle"))
           .setColor(bot.colors.main)
-          .setDescription(bot.translate(bot, language, "listmanager.addmenu")
+          .setDescription(bot.translate(bot, language, "listmanager.addmenu").join("\n")
             .replace(/{LISTS}/g, listsarray.join("\n"))
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
@@ -471,7 +471,7 @@ module.exports = {
       if (!listnames.includes(listname.toLowerCase())) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "listmanager.invalidlist")
+          .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INPUT}/g, listname)
             .replace(/{LISTS}/g, listsarray.join("\n"))
