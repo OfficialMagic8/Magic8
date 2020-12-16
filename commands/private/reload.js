@@ -8,7 +8,15 @@ module.exports = {
   dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     try {
-      bot.reload(bot);
+      delete require.cache[require.resolve("../../utils/methods.js")];
+      bot.utils = require("../../utils/methods.js");
+
+      delete require.cache[require.resolve("../../utils/webhooks.js")];
+      bot.webhooks = require("../../utils/webhooks.js");
+
+      bot.utils.loadDatabases(bot);
+      bot.utils.loadCommands(bot);
+      bot.utils.loadEvents(bot);
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(`${bot.emoji.check} **${bot.user} was attempted to reload!**`);

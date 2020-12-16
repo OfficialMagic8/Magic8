@@ -11,4 +11,4 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     
   }
-}  
+}

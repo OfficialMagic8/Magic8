@@ -99,17 +99,17 @@ module.exports.loadAutoVoiceChannels = (bot) => {
   let guildsids = bot.guilds.cache.keyArray();
   let loaded = bot.db.prepare("SELECT * FROM guilddata WHERE autovoicesystemready!=?").all(0).filter(row => guildsids.includes(row.guildid));
   loaded.forEach(row => {
-    let category = row.autovoicecategory
+    let category = row.autovoicecategory;
     if (bot.guilds.cache.get(row.guildid).channels.cache.has(category)) {
-      bot.voicechannels.set(row.guildid, category)
-      let channels = JSON.parse(row.autovoicechannels)
-      let a = []
+      bot.avcategories.set(row.guildid, category);
+      let channels = JSON.parse(row.autovoicechannels);
+      let a = [];
       channels.forEach(c => {
         if (bot.guilds.cache.get(row.guildid).channels.cache.has(c.id)) {
-          a.push(c.id)
+          a.push(c.id);
         } else if (!bot.guilds.cache.get(row.guildid).channels.cache.has(c.id)) {
-          let v = channels.find(i => i.id === c.id)
-          channels.splice(channels.indexOf(v))
+          let v = channels.find(i => i.id === c.id);
+          channels.splice(channels.indexOf(v));
         }
       })
       if (a.length <= 0) {

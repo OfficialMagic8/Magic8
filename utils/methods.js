@@ -131,7 +131,7 @@ module.exports.loadLanguageProgress = (bot) => {
       let progress = (paths.length * 100) / langEnPathsAmount;
       progress = progress.toFixed(2);
       langArray.push(`| ${lang}`);
-      bot.languagesprogress.set(lang, { lang: object.languagenamelong, flag: object.flag, progress: progress, authors: object.authors, link: object.link })
+      bot.languagesprogress.set(lang, { lang: object.languagenamelong, flag: object.flag, progress: progress, authors: object.authors, link: object.link });
     };
   });
   bot.languagesprogress.sort(function (a, b) {
@@ -141,16 +141,16 @@ module.exports.loadLanguageProgress = (bot) => {
   console.log(langArray.join(" "));
 };
 module.exports.fetchLanguages = (bot) => {
-  // function postdsicordboats(bot) {
-  //   let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-  //   let url = "https://discord.boats/api/bot/484148705507934208";
-  //   let xhr = new XMLHttpRequest();
-  //   xhr.open("POST", url);
-  //   xhr.setRequestHeader("Authorization", "test");
-  //   xhr.setRequestHeader("Content-Type", "application/json");
-  //   let data = `${Object.fromEntries(bot.languagesprogress)}`;
-  //   xhr.send(data);
-  // }
+  function postLanguageProgress(bot) {
+    let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+    let url = "https://magic8-languages.glitch.me/";
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
+    xhr.setRequestHeader("Authorization", "test");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    let data = `${Object.fromEntries(bot.languagesprogress)}`;
+    xhr.send(data);
+  }
 
   bot.lastfetched.set("lf", new Date().toLocaleString("en"))
   bot.fetch("https://raw.githubusercontent.com/OfficialMagic8/Languages/master/links.json").then(res => res.json())
