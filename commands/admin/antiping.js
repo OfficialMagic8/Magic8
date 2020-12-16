@@ -17,9 +17,9 @@ module.exports = {
         if ([0, 1].includes(bot.premium.get(message.guild.id))) {
           upgradestring = bot.translate(bot, language, "antiping.upgrade.description")
             .replace(/{OPTIONS}/g, bot.premium.get(message.guild.id) === 1 ?
-              bot.translate(bot, language, "antiping.upgrade.triple") :
-              bot.translate(bot, language, "antiping.upgrade.singleortriple"))
-            .replce(/{DONATELINK}/g, bot.config.donatelink);
+              bot.translate(bot, language, "triple") :
+              bot.translate(bot, language, "singleortriple"))
+            .replace(/{DONATELINK}/g, bot.config.donatelink);
         } else {
           upgradestring = bot.translate(bot, language, "antiping.upgrade.cannotupgrade");
         }
