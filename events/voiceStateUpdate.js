@@ -21,8 +21,7 @@ module.exports = {
         if (guildData.autovoicesystemready === 1) {
           // console.log("System Ready")
           // let tempchannels = JSON.parse(guildData.tempchannels);
-          let a = []
-          if (!bot.avtempchannels.has(guild.id)) bot.avtempchannels.set(guild.id, a);
+          if (!bot.avtempchannels.has(guild.id)) bot.avtempchannels.set(guild.id, []);
           let tempchannels = bot.avtempchannels.get(guild.id)
           let createchannels = JSON.parse(guildData.autovoicechannels);
           let parent = guildData.autovoicecategory;
