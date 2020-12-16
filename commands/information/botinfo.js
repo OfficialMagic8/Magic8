@@ -21,8 +21,12 @@ module.exports = {
         .replace(/{GUILDS}/g, bot.guilds.cache.size.toLocaleString("en"))
         .replace(/{USERS}/g, bot.users.cache.size.toLocaleString("en"))
         .replace(/{CHANNELS}/g, bot.channels.cache.size.toLocaleString("en"))
-        .replace(/{NSFWCHANNELS}/g, bot.channels.cache.filter(c => c.nsfw).size.toLocaleString("en"))
+        // .replace(/{NSFWCHANNELS}/g, bot.channels.cache.filter(c => c.nsfw).size.toLocaleString("en"))
         // .replace(/{RAM}/g, `${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`)
+        .replace(/{DJS}/g, bot.emoji.djs)
+        .replace(/{DJSVERSION}/g, bot.pack.dependencies["discord.js"].replace(/\^/g, ""))
+        .replace(/{NODE}/g, bot.emoji.node)
+        .replace(/{NODEVERSION}/g, bot.pack.engines.node)
         .replace(/{UPTIME}/g, uptime)
         .replace(/{PING}/g, bot.ms(bot.ws.ping))
         // .replace(/{USAGE}/g, bot.os.loadavg().pop().toFixed(1))
@@ -34,7 +38,7 @@ module.exports = {
         .replace(/{SUPPORTSERVER}/g, bot.invite)
         .replace(/{GITHUB}/g, bot.github.languages)
         .replace(/{STATUS}/g, bot.config.uptime)
-        .replace(/{PROGRESS}/g, bot.docs.progress))
+        .replace(/{PROGRESS}/g, bot.docs.progress));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     // function getMemoryUsage() {
     //   let total_rss = bot.fs.readFileSync("/sys/fs/cgroup/memory/memory.stat", "utf8").split("\n").filter(l => l.startsWith("total_rss"))[0].split(" ")[1];
