@@ -97,11 +97,11 @@ module.exports = {
           })
           if (oldState.channel && !a.includes(oldState.channelID)) {
             // console.log(`Old Channel: ${oldState.channelID}`)
-            let a = [];
+            let array = [];
             let t = bot.avtempchannels.get(guild.id);
             // console.log(`Current Temp: ${JSON.stringify(t)}`)
             t.forEach(channel => {
-              a.push(channel.id);
+              array.push(channel.id);
             });
             // console.log(`Possible Channels: ${JSON.stringify(a)}`)
             // console.log(`Old Channel: ${oldState.channelID}`)
