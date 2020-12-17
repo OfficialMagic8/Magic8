@@ -53,7 +53,7 @@ module.exports = {
     }
     let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
     let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
-    bot.hastebin(JSON.stringify(usageData.usage, null, 2), { url: "https://paste.mod.gg", extension: "json" }).then(haste => {
+    bot.hastebin(JSON.stringify(JSON.parse(usageData.usage), null, 2), { url: "https://paste.mod.gg", extension: "json" }).then(haste => {
       logsChannel.send(`Usage Data: ${haste}`).catch(e => { });
     }).catch(e => {
       console.error(e);

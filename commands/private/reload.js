@@ -27,7 +27,7 @@ module.exports = {
         .setDescription([
           `${bot.emoji.cross} **Error**`,
           `\`\`\`xl`,
-          `${e.json}`,
+          `${e}`,
           `\`\`\``]);
       return message.channel.send(embed).catch(e => { });
     }

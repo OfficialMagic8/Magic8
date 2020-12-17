@@ -30,14 +30,14 @@ module.exports = {
     if (userChannel) {
       let userText = `👥 Users : ${(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")}`;
       if (userChannel.name !== userText) {
-        userChannel.setName(userText);
+        userChannel.setName(userText).catch(e => { });
       }
     }
     setInterval(() => {
       if (userChannel) {
         let userText = `👥 Users : ${(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")}`;
         if (userChannel.name !== userText) {
-          userChannel.setName(userText);
+          userChannel.setName(userText).catch(e => { });
         }
       }
     }, 1800000)
@@ -47,7 +47,7 @@ module.exports = {
       let votesChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(monthlyVotesStats);
       if (votesChannel) {
         if (votesChannel.name !== votesText) {
-          votesChannel.setName(votesText);
+          votesChannel.setName(votesText).catch(e => { });
         }
       }
     }).catch(e => { });
@@ -57,7 +57,7 @@ module.exports = {
       let votesChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(totalVotesStats);
       if (votesChannel) {
         if (votesChannel.name !== votesText) {
-          votesChannel.setName(votesText);
+          votesChannel.setName(votesText).catch(e => { });
         }
       }
     }).catch(e => { });
@@ -68,7 +68,7 @@ module.exports = {
         let votesChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(monthlyVoteStats);
         if (votesChannel) {
           if (votesChannel.name !== votesText) {
-            votesChannel.setName(votesText);
+            votesChannel.setName(votesText).catch(e => { });
           }
         }
       }).catch(e => { });
@@ -78,7 +78,7 @@ module.exports = {
         let votesChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(totalVotesStats);
         if (votesChannel) {
           if (votesChannel.name !== votesText) {
-            votesChannel.setName(votesText);
+            votesChannel.setName(votesText).catch(e => { });
           }
         }
       }).catch(e => { });
@@ -95,7 +95,7 @@ module.exports = {
         bot.utils.registerGuildUsage(bot, guild)
         usageData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       }
-      
+
       // bot.db.prepare("UPDATE guilddata SET duoname=? WHERE guildid=?").run("Duo {NUMBER}", guild.id)
       // bot.db.prepare("UPDATE guilddata SET trioname=? WHERE guildid=?").run("Trio {NUMBER}", guild.id)
       // bot.db.prepare("UPDATE guilddata SET squadname=? WHERE guildid=?").run("Squad {NUMBER}", guild.id)

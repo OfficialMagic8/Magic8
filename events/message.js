@@ -131,7 +131,7 @@ module.exports = {
           .replace(/{INFO}/g, bot.emoji.info));
       if (ad.image) embed.setImage(ad.image);
       if (ad.thumbnail) embed.setThumbnail(ad.thumbnail);
-      message.channel.send(embed).catch(e => console.error(e));
+      message.channel.send(embed).catch(e => { });
       bot.adtype.set(message.guild.id, (bot.adtype.get(message.guild.id) + 1))
       if (bot.adtype.get(message.guild.id) > 3) {
         bot.adtype.set(message.guild.id, 0);
