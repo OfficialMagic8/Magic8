@@ -21,9 +21,9 @@ module.exports = {
     bot.udb.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("false", guild.id);
     let outage = false;
     let users = guild.members.cache.filter(m => !m.user.bot).size;
-    let channels = guild.channels.cache.filter(c => c.type !== "category").size
-    let bots = guild.members.cache.filter(m => m.user.bot).size
-    let created = guild.createdAt.toLocaleString().split("GMT")[0].trim()
+    let channels = guild.channels.cache.filter(c => c.type !== "category").size;
+    let bots = guild.members.cache.filter(m => m.user.bot).size;
+    let created = guild.createdAt.toLocaleString().split("GMT")[0].trim();
     let embed = new MessageEmbed()
     if (users <= 0 && channels <= 0 && bots <= 0) {
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
@@ -47,16 +47,16 @@ module.exports = {
           ``,
           `**Date Created:** ${created} GMT`])
     }
-    let logsChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.guildlogs)                                                                                                                                                                                                                                                          // wait can there be emojis in title i forgot
+    let logsChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.guildlogs);                                                                                                                                                                                                                                         // wait can there be emojis in title i forgot
     if (logsChannel) {
       logsChannel.send(embed).catch(e => { });
     }
     let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
     let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
-    bot.hastebin(JSON.stringify(usageData, null, 2), { url: "https://paste.mod.gg", extension: "json" }).then(haste => {
+    bot.hastebin(JSON.stringify(usageData.usage, null, 2), { url: "https://paste.mod.gg", extension: "json" }).then(haste => {
       logsChannel.send(`Usage Data: ${haste}`).catch(e => { });
     }).catch(e => {
-      console.error(e)
+      console.error(e);
       let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **There was an error fetching the Guild Data!**`)
@@ -65,7 +65,7 @@ module.exports = {
     bot.hastebin(JSON.stringify(guildData, null, 2), { url: "https://paste.mod.gg", extension: "json" }).then(haste => {
       logsChannel.send(`Guild Data: ${haste}`).catch(e => { });
     }).catch(e => {
-      console.error(e)
+      console.error(e);
       let error = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(`${bot.emoji.cross} **There was an error fetching the Guild Data!**`)
