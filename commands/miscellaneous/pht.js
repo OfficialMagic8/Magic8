@@ -66,7 +66,10 @@ module.exports = {
     ctx.fillText(second, widthfirst + (widthsecond / 2) - (lettersize / 12), greaterheight / 2);
     return message.channel.send({
       files: [{ attachment: canvas.toBuffer(), name: 'ph.png' }]
-    }).catch(e => { return bot.error(bot, message, language, e); });
+    }).catch(e => {
+      let language = bot.utils.getLanguage(bot, guildData.language);
+      return bot.error(bot, message, language, e);
+    });
     function measureText(text = "") {
       if (text.length === 0) {
         return { width: 0, height: 0 };
