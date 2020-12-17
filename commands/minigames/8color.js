@@ -107,7 +107,7 @@ module.exports = {
           console.log(`⬛[⏰] ${message.author.tag} time out! Correct: ${object.original} | Streak: ${object.level - 1}`)
           bot.playing8color.delete(message.author.id)
           game.setAuthor(bot.translate(bot, language, "8color.game.lose.title")
-            .replace(/{TAG}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: true }))
+            .replace(/{USERNAME}/g, message.author.username), message.author.displayAvatarURL({ format: "png", dynamic: true }))
             .setDescription(bot.translate(bot, language, "8color.game.lose.descriptiontimeout").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{PATTERN}/g, object.original)
@@ -120,7 +120,7 @@ module.exports = {
             bot.error(bot, message, language, e);
           }
         })
-      }, timeMemorize)
+      }, timeMemorize);
     }
   }
 }
