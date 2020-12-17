@@ -5,53 +5,63 @@ module.exports.loadDatabases = (bot) => {
   console.log("📊 Databases fetched!")
 }
 module.exports.loadCommands = (bot) => {
-  let reloading = false;
-  if (bot.commands.size >= 1) {
-    bot.commands.clear();
-    reloading = true;
-  }
-  console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
-  bot.fs.readdirSync("./commands/").forEach(dir => {
-    if (!dir.includes(".js")) {
-      bot.fs.readdir(`./commands/${dir}`, (err, files) => {
-        if (err) console.error(err);
-        const commands = files.filter(f => f.split(".").pop() === "js");
-        for (let file of commands) {
-          if (reloading) delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
-          let pull = require(`../commands/${dir}/${file}`);
-          if (!pull) continue;
-          if (pull.name) {
-            bot.commands.set(pull.name, pull);
-          } else continue;
-          if (pull.aliases) {
-            pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
-          }
-        }
-      });
+  try {
+    let reloading = false;
+    if (bot.commands.size >= 1) {
+      bot.commands.clear();
+      reloading = true;
     }
-  });
-  console.log(`💻 Commands ${reloading ? `re` : ``}loaded successfully!`);
+    console.log(`💻 ${reloading ? `Rel` : `L`}oading commands...`)
+    bot.fs.readdirSync("./commands/").forEach(dir => {
+      if (!dir.includes(".js")) {
+        bot.fs.readdir(`./commands/${dir}`, (err, files) => {
+          if (err) console.error(err);
+          const commands = files.filter(f => f.split(".").pop() === "js");
+          for (let file of commands) {
+            if (reloading) delete require.cache[require.resolve(`../commands/${dir}/${file}`)];
+            let pull = require(`../commands/${dir}/${file}`);
+            if (!pull) continue;
+            if (pull.name) {
+              bot.commands.set(pull.name, pull);
+            } else continue;
+            if (pull.aliases) {
+              pull.aliases.forEach(alias => bot.aliases.set(alias, pull.name));
+            }
+          }
+        });
+      }
+    });
+    console.log(`💻 Commands ${reloading ? `re` : ``}loaded successfully!`);
+  } catch (e) {
+    console.error(`Couldn't Load Commands`)
+    console.error(e);
+  }
 }
 module.exports.loadEvents = (bot) => {
-  let reloading = false;
-  if (bot.events.size >= 1) {
-    reloading = true;
-    bot.events.clear();
-  }
-  bot.fs.readdir("./events/", (err, files) => {
-    if (err) console.log(err);
-    console.log(`📢 ${reloading ? `Rel` : `L`}oading events...`)
-    const events = files.filter(f => f.split(".").pop() === "js")
-    for (let file of events) {
-      if (reloading) delete require.cache[require.resolve(`../events/${file}`)];
-      let pull = require(`../events/${file}`);
-      if (!pull) continue;
-      if (pull.name) {
-        bot.events.set(pull.name, pull);
-      } else continue;
+  try {
+    let reloading = false;
+    if (bot.events.size >= 1) {
+      reloading = true;
+      bot.events.clear();
     }
-    console.log(`📢 Events ${reloading ? `re` : ``}loaded successfully!`);
-  })
+    bot.fs.readdir("./events/", (err, files) => {
+      if (err) console.error(err);
+      console.log(`📢 ${reloading ? `Rel` : `L`}oading events...`)
+      const events = files.filter(f => f.split(".").pop() === "js")
+      for (let file of events) {
+        if (reloading) delete require.cache[require.resolve(`../events/${file}`)];
+        let pull = require(`../events/${file}`);
+        if (!pull) continue;
+        if (pull.name) {
+          bot.events.set(pull.name, pull);
+        } else continue;
+      }
+      console.log(`📢 Events ${reloading ? `re` : ``}loaded successfully!`);
+    })
+  } catch (e) {
+    console.error(`Couldn't Load Events`)
+    console.error(e);
+  }
 }
 
 let thisclass = this;
