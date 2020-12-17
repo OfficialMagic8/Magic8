@@ -25,7 +25,6 @@ module.exports = {
       embed.setAuthor(bot.translate(bot, language, "popular.title")
         .replace(/{BOTNAME}/g, bot.user.username))
       embed.setColor(bot.colors.main)
-      embed.setFooter(bot.translate(bot, language, "popular.footer"))
       embed.setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
       embed.setDescription(bot.translate(bot, language, "popular.description").join("\n")
         .replace(/{COMMANDS}/g, popularcommandsarray.join("\n"))
