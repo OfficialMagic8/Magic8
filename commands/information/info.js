@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["si"],
-  category: INFORMATION,
+  category: "INFORMATION",
   description: "Your server information",
   emoji: "📚",
   name: "info",

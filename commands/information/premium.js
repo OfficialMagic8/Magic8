@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["donate", "p", "upgrade"],
-  category: INFORMATION,
+  category: "INFORMATION",
   description: "Magic8 Donation/Premium Page - We work hard to make Magic8 work well for you :)",
   emoji: "💸",
   name: "premium",

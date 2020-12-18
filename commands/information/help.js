@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["h", "ayuda", "?"],
-  category: INFORMATION,
+  category: "INFORMATION",
   description: "Magic8 Commands Help Menu - Type a command to get extra information about it",
   emoji: "❔",
   name: "help",

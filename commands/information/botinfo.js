@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js")
 module.exports = {
   aliases: ["bi", "binfo"],
-  category: INFORMATION,
+  category: "INFORMATION",
   description: "Magic8 Bot Information",
   emoji: "📚",
   name: "botinfo",
