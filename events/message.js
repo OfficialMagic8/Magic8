@@ -2,8 +2,10 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "message",
   run: async (bot, message) => {
-    // bot.users.fetch(message.author.id).catch(e => { })
-    // message.guild.members.fetch().catch(e => { });
+    try {
+      await bot.users.fetch(message.author.id)
+      await message.guild.members.fetch()
+    } catch (e) { }
     if (message.type !== "DEFAULT") return;
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;

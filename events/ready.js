@@ -3,7 +3,7 @@ const { loadMain, loadMCServers, loadAutoVoiceChannels, loadRestrictedChannels, 
 module.exports = {
   name: "ready",
   run: async (bot) => {
-    console.log(`✅ Ready event loading... ${bot.user.tag}`);
+    console.log(`✅ Ready event loading... ${bot.user.tag}`)
     bot.statcord.autopost();
     let guildStats = "652539034404519936";
     let guildChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(guildStats);
@@ -166,9 +166,6 @@ module.exports = {
     console.log(`📊 Users: ${(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")} - Guilds: ${(bot.guilds.cache.size).toLocaleString("en")}`);
     let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
     bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
-    bot.guilds.cache.forEach(guild => {
-      guild.members.fetch().catch(e => { });
-    });
     function postdiscordbotlist() {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discordbotlist.com/api/v1/bots/484148705507934208/stats";
