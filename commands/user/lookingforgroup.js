@@ -2,14 +2,14 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["lfg"],
   category: "USER",
-  description: "Send yourself to the (if set) server's Looking For Group channel!",
+  description: "Magic8's unique and efficient Looking For Group system",
   emoji: "🎮",
   name: "lookingforgroup",
   toggleable: true,
   premium: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language)
-    if ([1, 2].includes(bot.premium.get(message.guild.id))) {
+    // if ([1, 2].includes(bot.premium.get(message.guild.id))) {
       if (bot.lfgroles.has(message.guild.id)) {
         let role = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id))
         if (role) {
@@ -43,10 +43,7 @@ module.exports = {
                   log.send(guildData.lfgnotifymessage.replace(/{USER}/g, message.author).replace(/{LFG}/, role)).catch(e => { });
                 }
                 if (member1.roles.cache.has(message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id)).id)) {
-                  member1.roles.remove(role.id).catch(e => {
-                    console.error(`Could not remove LFG from ${member1.user.tag} of ${member1.guild.name} (${member1.guild.id}), it may have been deleted!`)
-                    console.error(e);
-                  });
+                  member1.roles.remove(role.id).catch(e => { });
                 }
               }, (cooldown * 3600000));
               let embed = new MessageEmbed()
@@ -202,20 +199,20 @@ module.exports = {
       } else {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "listmanager.norole").join("\n")
+          .setDescription(bot.translate(bot, language, "lookingforgroup.norole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{BOT}/g, bot.user)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-    } else if (bot.premium.get(message.guild.id) === 0) {
-      let embed = new MessageEmbed()
-        .setColor(bot.colors.red)
-        .setDescription(bot.translate(bot, language, "lookingforgroup.premium").join("\n")
-          .replace(/{BOT}/g, bot.user)
-          .replace(/{PACKAGES}/g, bot.config.donatelink));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-    }
+    // } else if (bot.premium.get(message.guild.id) === 0) {
+    //   let embed = new MessageEmbed()
+    //     .setColor(bot.colors.red)
+    //     .setDescription(bot.translate(bot, language, "lookingforgroup.premium").join("\n")
+    //       .replace(/{BOT}/g, bot.user)
+    //       .replace(/{PACKAGES}/g, bot.config.donatelink));
+    //   return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+    // }
   }
 }
