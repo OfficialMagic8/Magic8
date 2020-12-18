@@ -80,9 +80,9 @@ module.exports = {
           let category = c.category || "OTHERS";
           if (category === "ENTERTAINMENT") {
             funarray.push(`\`${d}${c.name}\``);
-          } else if (category === INFORMATION) {
+          } else if (category === "INFORMATION") {
             infoarray.push(`\`${d}${c.name}\``);
-          } else if (category === "MINIGAME") {
+          } else if (category === "MINIGAMES") {
             gamesarray.push(`\`${d}${c.name}\``);
           } else if (category === "USER") {
             userarray.push(`\`${d}${c.name}\``);
@@ -138,9 +138,9 @@ module.exports = {
           let category = c.category || "OTHERS";
           if (category === "ENTERTAINMENT") {
             funarray.push(`\`${d}${c.name}\``);
-          } else if (category === INFORMATION) {
+          } else if (category === "INFORMATION") {
             infoarray.push(`\`${d}${c.name}\``);
-          } else if (category === "MINIGAME") {
+          } else if (category === "MINIGAMES") {
             gamesarray.push(`\`${d}${c.name}\``);
           } else if (category === "USER") {
             userarray.push(`\`${d}${c.name}\``);
