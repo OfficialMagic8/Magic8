@@ -3,7 +3,7 @@ const { loadMain, loadMCServers, loadAutoVoiceChannels, loadRestrictedChannels, 
 module.exports = {
   name: "ready",
   run: async (bot) => {
-    console.log(`✅ Ready event loading... ${bot.user.tag}`)
+    console.log(`✅ Ready event loading... ${bot.user.tag}`);
     bot.statcord.autopost();
     let guildStats = "652539034404519936";
     let guildChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(guildStats);
@@ -133,6 +133,7 @@ module.exports = {
       { name: `with your mind`, type: "PLAYING" },
       { name: `with your friends`, type: "PLAYING" },
       { name: `with your thoughts`, type: "PLAYING" },
+      { name: `for safe holidays`, type: "WATCHING" },
       { name: `by myself`, type: "PLAYING" },
       { name: `{SERVERS} cool servers`, type: "WATCHING" },
       { name: `{USERS} amazing users`, type: "WATCHING" },
@@ -140,6 +141,7 @@ module.exports = {
       { name: `for @Magic8 help`, type: "WATCHING" },
       { name: `for @Magic8 settings`, type: "WATCHING" },
       { name: `for @Magic8 langs`, type: "WATCHING" },
+      { name: `for @Magic8 updates`, type: "WATCHING" },
       { name: `for new updates`, type: "WATCHING" },
     ];
     bot.channels.cache.get("766108811978080267").messages.fetch().then(() => { }).catch(e => { });
@@ -164,6 +166,9 @@ module.exports = {
     console.log(`📊 Users: ${(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")} - Guilds: ${(bot.guilds.cache.size).toLocaleString("en")}`);
     let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
     bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
+    bot.guilds.cache.forEach(guild => {
+      guild.members.fetch().catch(e => { });
+    });
     function postdiscordbotlist() {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discordbotlist.com/api/v1/bots/484148705507934208/stats";
@@ -171,12 +176,12 @@ module.exports = {
       xhr.open("POST", url);
       xhr.setRequestHeader("Authorization", process.env.BOT_LIST_TOKEN);
       xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          // console.log(xhr.status);
-          // console.log(xhr.responseText);
-        }
-      };
+      // xhr.onreadystatechange = function () {
+      //   if (xhr.readyState === 4) {
+      //     // console.log(xhr.status);
+      //     // console.log(xhr.responseText);
+      //   }
+      // };
       let data = `{
         "guilds": ${bot.guilds.cache.size}
       }`;
