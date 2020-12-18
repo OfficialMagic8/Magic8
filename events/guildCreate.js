@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "guildCreate",
   run: async (bot, guild) => {
+    guild.members.fetch().catch(e => { })
     let text = `📚 Guilds : ${bot.guilds.cache.size}`;
     let channel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.guildstats);
     if (channel) {
@@ -29,7 +30,7 @@ module.exports = {
     if (usageData) {
       bot.utils.updateGuildUsage(bot, guild);
     } else {
-      bot.utils.registerGuildUsage(bot, guild)
+      bot.utils.registerGuildUsage(bot, guild);
     }
     let channelsToSend = guild.channels.cache.filter(c => c.type === "text").filter(c => {
       let permissions = guild.me.permissionsIn(c);
