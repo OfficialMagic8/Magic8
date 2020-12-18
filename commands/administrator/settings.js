@@ -6,7 +6,8 @@ module.exports = {
   emoji: "⚙️",
   name: "settings",
   run: async (bot, message, args, prefix, guildData) => {
-    let b = `${bot.user.username} -`
+    let language = bot.utils.getLanguage(bot, guildData.language);
+    let b = `${bot.user.username} -`;
     let subcommand = args[0] ? args[0].toLowerCase() : args[0];
     let subcommand2 = args[1] ? args[1].toLowerCase() : args[1];
     if (subcommand === "toggle") {
