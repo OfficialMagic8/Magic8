@@ -8,7 +8,7 @@ module.exports = {
   ignore: true,
   beta: true,
   dev: true,
-  category: "FUN",
+  category: "ENTERTAINMENT",
   run: async (bot, message, args, prefix, guildData, log) => {
     message.delete({ timeout: 500 }).catch(e => { })
     try {

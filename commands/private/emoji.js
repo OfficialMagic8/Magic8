@@ -9,7 +9,7 @@ module.exports = {
   name: "emoji",
   dev: true,
   toggleable: true,
-  category: "FUN",
+  category: "ENTERTAINMENT",
   run: async (bot, message, args, prefix, guildData) => {
     message.delete({ timeout: 500 }).catch(e => { });
     let language = bot.utils.getLanguage(bot, guildData.language);

@@ -6,9 +6,9 @@ module.exports = {
       let fetchuser = await bot.users.fetch(message.author.id) || bot.users.cache.get(message.author.id);
       let fetchallmembers = await message.guild.members.fetch();
     } catch (e) { };
+    if (message.type !== "DEFAULT") return;
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
-    if (message.type !== "DEFAULT") return;
     let guildData;
     if (!bot.prefixes.has(message.guild.id)) {
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(message.guild.id);
@@ -91,7 +91,7 @@ module.exports = {
     if (!bot.adtype.has(message.guild.id)) bot.adtype.set(message.guild.id, 0);
     if (!bot.usage.has(message.guild.id)) bot.usage.set(message.guild.id, 0);
     let startedwith;
-    if (message.content.startsWith(prefix)) startedwith = prefix.length
+    if (message.content.startsWith(prefix)) startedwith = prefix.length;
     if (message.content.startsWith(`<@${bot.user.id}>`)) startedwith = `<@${bot.user.id}>`.length;
     if (message.content.startsWith(`<@!${bot.user.id}>`)) startedwith = `<@!${bot.user.id}>`.length;
     let args = message.content.slice(startedwith).trim().split(" ");
@@ -106,8 +106,8 @@ module.exports = {
     if (!guildData) {
       guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(message.guild.id);
     }
-    if (command.category === "ADMIN" && command.name !== "language" && !message.member.hasPermission("MANAGE_GUILD")) return;
-    if (command.category === "FUN" && bot.funchannels.has(message.guild.id) && bot.funchannels.get(message.guild.id).length >= 1 && !bot.funchannels.get(message.guild.id).includes(message.channel.id)) return;
+    if (command.category === "ADMINISTRATOR" && command.name !== "language" && !message.member.hasPermission("MANAGE_GUILD")) return;
+    if (command.category === "ENTERTAINMENT" && bot.funchannels.has(message.guild.id) && bot.funchannels.get(message.guild.id).length >= 1 && !bot.funchannels.get(message.guild.id).includes(message.channel.id)) return;
     if (command.category === "MINIGAME" && bot.minigamechannels.has(message.guild.id) && bot.minigamechannels.get(message.guild.id).length >= 1 && !bot.minigamechannels.get(message.guild.id).includes(message.channel.id)) return;
     if (command.category === "MISCELLANEOUS" && bot.miscellaneouschannels.has(message.guild.id) && bot.miscellaneouschannels.get(message.guild.id).length >= 1 && !bot.miscellaneouschannels.get(message.guild.id).includes(message.channel.id)) return;
     if (command.category === "REACTIONS" && bot.reactionchannels.has(message.guild.id) && bot.reactionchannels.get(message.guild.id).length >= 1 && !bot.reactionchannels.get(message.guild.id).includes(message.channel.id)) return;
