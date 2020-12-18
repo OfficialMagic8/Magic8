@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["myiq"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Check the IQ of yourself or a friend",
   emoji: "🧠",
   name: "iq",

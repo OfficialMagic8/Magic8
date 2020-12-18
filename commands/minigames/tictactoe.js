@@ -23,7 +23,7 @@ module.exports = {
   emoji: "#️⃣",
   name: "tictactoe",
   aliases: ["michi", "ttt"],
-  category: "MINIGAME",
+  category: "MINIGAMES",
   description: "Play TicTacToe with friends or Magic8.",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {

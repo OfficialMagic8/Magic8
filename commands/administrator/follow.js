@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
-  category: "ADMIN",
+  category: "ADMINISTRATOR",
   description: "Get updates from the Support Server directly to yours.",
   emoji: "▶️",
   name: "follow",

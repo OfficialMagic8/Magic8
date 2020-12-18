@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["inv"],
-  category: "INFO",
+  category: INFORMATION,
   description: "Invite Magic8 to your server.",
   emoji: "❕",
   name: "invite",

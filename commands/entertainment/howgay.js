@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["howhomo", "hg"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Show how gay is someone",
   emoji: "🌈",
   name: "howgay",

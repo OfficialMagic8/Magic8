@@ -1,10 +1,10 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["donate", "p", "upgrade"],
+  category: INFORMATION,
   description: "Magic8 Donation/Premium Page - We work hard to make Magic8 work well for you :)",
   emoji: "💸",
   name: "premium",
-  category: "INFO",
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let embed = new MessageEmbed()

@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Disconnect from all games",
   emoji: "🎮",
   name: "exit",

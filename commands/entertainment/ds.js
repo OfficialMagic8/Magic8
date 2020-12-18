@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["ds", "penissize", "ps"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Measure either yours or a friend's penis size.",
   emoji: "🍆",
   name: "dicksize",

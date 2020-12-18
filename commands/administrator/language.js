@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["lang", "langs"],
-  category: "ADMIN",
+  category: "ADMINISTRATOR",
   description: "Magic8 Language Settings - Requires `Manage Server` Permission",
   emoji: "🌎",
   name: "language",

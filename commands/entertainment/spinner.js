@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["spin"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Spin a fidghet spinner",
   emoji: "📦",
   name: "spinner",

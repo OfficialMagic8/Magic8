@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["8c"],
-  category: "MINIGAME",
+  category: "MINIGAMES",
   description: "Color Emoji Memory Game",
   emoji: "🎨",
   name: "8color",

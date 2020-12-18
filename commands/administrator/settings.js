@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["s"],
-  category: "ADMIN",
+  category: "ADMINISTRATOR",
   description: "Advanced Server Settings - Requires `Manage Server` Permission",
   emoji: "⚙️",
   name: "settings",

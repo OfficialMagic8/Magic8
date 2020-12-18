@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["pref"],
-  category: "ADMIN",
+  category: "ADMINISTRATOR",
   description: "",
   emoji: "📝",
   name: "prefix",

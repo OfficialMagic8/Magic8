@@ -9,7 +9,7 @@ const battleImages = [
 ]
 module.exports = {
   aliases: ["batalla", "duel", "fight", "battles"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Have an intense fight with others or Magic8.",
   emoji: "⚔️",
   name: "battle",

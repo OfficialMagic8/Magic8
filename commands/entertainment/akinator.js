@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const aki = require('aki-api');
 module.exports = {
   aliases: ["aki"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Akinator - Mind Reading Game - This game does not work properly all the time and may not be updated",
   emoji: "📦",
   name: "akinator",

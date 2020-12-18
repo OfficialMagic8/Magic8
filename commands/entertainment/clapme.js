@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["cm"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Clap in between a phrase",
   emoji: "👏",
   name: "clapme",

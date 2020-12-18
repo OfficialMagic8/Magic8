@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["8b", "ball"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "A Magic 8 Ball that will answer all your questions - Yes/No/Maybe questions are the best type to ask",
   emoji: "🎱",
   name: "8ball",

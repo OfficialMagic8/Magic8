@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const hastebin = require("hastebin-gen");
 module.exports = {
   aliases: ["guilddata"],
-  category: "ADMIN",
+  category: "ADMINISTRATOR",
   name: "data",
   description: "Guild Data",
   dev: true,

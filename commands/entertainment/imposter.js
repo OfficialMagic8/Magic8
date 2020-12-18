@@ -4,7 +4,7 @@ const isimposter = ["true", "false"];
 const baseURL = "https://vacefron.nl/api/ejected?name={USERNAME}&impostor={ISIMPOSTER}&crewmate={COLOR}";
 module.exports = {
   aliases: [],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Discover the real imposter in your Discord server",
   emoji: "🕵️",
   name: "imposter",

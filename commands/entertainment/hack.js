@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const faker = require('faker');
 module.exports = {
   aliases: [],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Pretend to hack a friend.",
   emoji: "💻",
   name: "hack",

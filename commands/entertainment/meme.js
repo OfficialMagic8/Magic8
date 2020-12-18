@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const Memejs = require("memejs");
 module.exports = {
   aliases: ["memes"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Get random memes!",
   emoji: "🤪",
   name: "meme",

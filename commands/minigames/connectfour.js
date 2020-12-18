@@ -6,7 +6,7 @@ const emotesnamerev = { 1: "1⃣", 2: "2⃣", 3: "3⃣", 4: "4⃣", 5: "5⃣", 6
 const emotes = {/*0:"\u0030\u20E3",*/1: "\u0031\u20E3", 2: "\u0032\u20E3", 3: "\u0033\u20E3", 4: "\u0034\u20E3", 5: "\u0035\u20E3", 6: "\u0036\u20E3", 7: "\u0037\u20E3", 8: "\u0038\u20E3"/*,9:"\u0039\u20E3"*/ }
 module.exports = {
   aliases: ["cf", "c4"],
-  category: "MINIGAME",
+  category: "MINIGAMES",
   description: "Play Connect4 with friends or Magic8",
   emoji: "🟡",
   name: "connectfour",

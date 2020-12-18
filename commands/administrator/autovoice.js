@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["av"],
-  category: "ADMIN",
+  category: "ADMINISTRATOR",
   description: "Create Automatic Voice Channels - Requires `Manage Server` Permission",
   emoji: "🔊",
   name: "autovoice",
@@ -257,6 +257,7 @@ module.exports = {
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "autovoice.nametoolong").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
+              .replace(/{INPUT}/g, name)
               .replace(/{INFO}/g, bot.emoji.info));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }

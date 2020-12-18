@@ -7,15 +7,14 @@ const profileURL = "https://es.namemc.com/profile/{TOSEARCH}";
 const capeURL = "http://s.optifine.net/capes/{TOSEARCH}.png";
 const resizeURL = "https://images.weserv.nl/?url={URL}&w=300"
 module.exports = {
-  aliases: ["capa", "capas", "capes"],
+  aliases: ["capa"],
   category: "MINECRAFT",
   description: "Get a Minecrafter's Cape",
   emoji: "🎮",
   name: "cape",
-  // dev: true,
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
-    let toSearch = args[0]
+    let toSearch = args[0];
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!toSearch) {
       let embed = new MessageEmbed()

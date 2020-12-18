@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["bl"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Recreate Be Like Billy",
   emoji: "👨",
   name: "belike",

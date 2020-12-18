@@ -5,7 +5,7 @@ const cooldown = 300000;
 const pinglink = "https://i.imgur.com/xX8vAaV.png";
 module.exports = {
   aliases: ["fp"],
-  category: "ADMIN",
+  category: "ADMINISTRATOR",
   description: "Create a fake notification using your server icon - Requires `Manage Server` Permission",
   emoji: "🔔",
   name: "fakeping",

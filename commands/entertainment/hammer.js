@@ -14,7 +14,7 @@ const medHighImage = [
 ]
 module.exports = {
   aliases: ["mallet"],
-  category: "FUN",
+  category: "ENTERTAINMENT",
   description: "Test your strength!",
   emoji: "🔨",
   name: "hammer",

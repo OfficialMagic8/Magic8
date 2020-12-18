@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["h", "ayuda", "?"],
-  category: "INFO",
+  category: INFORMATION,
   description: "Magic8 Commands Help Menu - Type a command to get extra information about it",
   emoji: "❔",
   name: "help",
@@ -40,14 +40,13 @@ module.exports = {
           .setColor(bot.colors.main)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setDescription(bot.translate(bot, language, "help.commandinfo").join("\n")
-            .replace(/{COMMANDNAME}/g, cmd.name)
+            .replace(/{COMMANDNAME}/g, `[${cmd.name}](https://docs.magic8.xyz/commands/${cmd.category.toLowerCase()})`)
             .replace(/{ALIASES}/g, finalaliases)
             .replace(/{CATEGORY}/g, cmd.category.toLowerCase())
-            .replace(/{EMOJI}/g, cmd.emoji)
+            .replace(/{ISDISABLED}/g, bot.disabledcommands.has(cmd.name) ? bot.translate(bot, language, "true") : bot.translate(bot, language, "false"))
             .replace(/{TOGGLEABLE}/g, toggleable)
             .replace(/{PREMIUM}/g, premium)
-            .replace(/{DESCRIPTION}/g, cmd.description))
-          .setFooter(bot.translate(bot, language, "help.footer"));
+            .replace(/{DESCRIPTION}/g, cmd.description));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else {
         let embed = new MessageEmbed()
@@ -75,12 +74,12 @@ module.exports = {
       let reactionarray = [];
       let minecraftarray = [];
       for (let c of bot.commands.array()) {
-        if (!c.dev && c.category !== "ADMIN") {
+        if (!c.dev && c.category !== "ADMINISTRATOR") {
           let d = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(c.name) ? "!" : "";
           let category = c.category || "OTHERS";
-          if (category === "FUN") {
+          if (category === "ENTERTAINMENT") {
             funarray.push(`\`${d}${c.name}\``);
-          } else if (category === "INFO") {
+          } else if (category === INFORMATION) {
             infoarray.push(`\`${d}${c.name}\``);
           } else if (category === "MINIGAME") {
             gamesarray.push(`\`${d}${c.name}\``);
@@ -136,9 +135,9 @@ module.exports = {
         if (!c.dev) {
           let d = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(c.name) ? "!" : "";
           let category = c.category || "OTHERS";
-          if (category === "FUN") {
+          if (category === "ENTERTAINMENT") {
             funarray.push(`\`${d}${c.name}\``);
-          } else if (category === "INFO") {
+          } else if (category === INFORMATION) {
             infoarray.push(`\`${d}${c.name}\``);
           } else if (category === "MINIGAME") {
             gamesarray.push(`\`${d}${c.name}\``);
@@ -146,7 +145,7 @@ module.exports = {
             userarray.push(`\`${d}${c.name}\``);
           } else if (category === "UTILITIES") {
             utilsarray.push(`\`${d}${c.name}\``);
-          } else if (category === "ADMIN") {
+          } else if (category === "ADMINISTRATOR") {
             adminarray.push(`\`${d}${c.name}\``);
           } else if (category === "MISCELLANEOUS") {
             miscellaneousarray.push(`\`${d}${c.name}\``);

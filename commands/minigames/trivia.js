@@ -33,7 +33,7 @@ const baseurl = 'https://opentdb.com/api.php?amount=1&encode=url3986'
 const categorybaseurl = 'https://opentdb.com/api.php?amount=1&category={CATEGORY}&difficulty={DIFFICULTY}&encode=url3986';
 module.exports = {
   aliases: ["triv"],
-  category: "MINIGAME",
+  category: "MINIGAMES",
   description: "Play Random Trivia - Others can help you but only you can answer",
   emoji: "🔠",
   name: "trivia",

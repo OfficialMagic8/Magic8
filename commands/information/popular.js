@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
-  category: "INFO",
+  category: INFORMATION,
   description: "View Magic8's most popular commands from Statcord",
   emoji: "📈",
   name: "popular",
