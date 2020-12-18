@@ -2,10 +2,8 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "message",
   run: async (bot, message) => {
-    try {
-      let fetchuser = await bot.users.fetch(message.author.id) || bot.users.cache.get(message.author.id);
-      let fetchallmembers = await message.guild.members.fetch();
-    } catch (e) { };
+    // bot.users.fetch(message.author.id).catch(e => { })
+    // message.guild.members.fetch().catch(e => { });
     if (message.type !== "DEFAULT") return;
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
@@ -53,7 +51,7 @@ module.exports = {
           bot.utils.registerGuild(bot, message.guild);
           guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(message.guild.id);
         }
-        let member = message.guild.members.cache.get(message.author.id) || await message.guild.members.fetch(message.author.id);
+        let member = message.guild.members.cache.get(message.author.id)
         let getbypassroles = JSON.parse(guildData.antipingbypassroles);
         let hasroles = false;
         getbypassroles.forEach(role => {
@@ -137,7 +135,7 @@ module.exports = {
           .replace(/{INFO}/g, bot.emoji.info));
       if (ad.image) embed.setImage(ad.image);
       if (ad.thumbnail) embed.setThumbnail(ad.thumbnail);
-      message.channel.send(embed).catch(e => { });
+      message.channel.send(embed).then(m => m.delete({ timeout: 60000 }).catch(e => { })).catch(e => { });
       bot.adtype.set(message.guild.id, (bot.adtype.get(message.guild.id) + 1))
       if (bot.adtype.get(message.guild.id) > 3) {
         bot.adtype.set(message.guild.id, 0);
