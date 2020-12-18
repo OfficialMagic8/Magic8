@@ -30,6 +30,14 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let time = Math.abs(Math.floor(parseInt(args[0])))
+    if (time > 21600) {
+      let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
+        .setDescription(bot.translate(bot, language, "slowmode.toolarge")
+          .replace(/{CROSS}/g, bot.emoji.cross)
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+    }
     return message.channel.edit({ rateLimitPerUser: time }).then(c => {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
