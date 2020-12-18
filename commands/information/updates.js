@@ -3,9 +3,8 @@ module.exports = {
   aliases: ["changelog", "cl"],
   category: "INFORMATION",
   description: "Get the most recent update on Magic8",
-  emoji: "",
-  name: "",
-  dev: true,
+  emoji: "⬆️",
+  name: "updates",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
