@@ -128,8 +128,10 @@ module.exports = {
     bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
     bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
     let statusList = [
-      { name: `with 20+ languuages`, type: "PLAYING" },
+      { name: `with 20+ languages`, type: "PLAYING" },
+      { name: `with new updates`, type: "PLAYING" },
       { name: `with your mind`, type: "PLAYING" },
+      { name: `with your friends`, type: "PLAYING" },
       { name: `with your thoughts`, type: "PLAYING" },
       { name: `by myself`, type: "PLAYING" },
       { name: `{SERVERS} cool servers`, type: "WATCHING" },
@@ -147,7 +149,7 @@ module.exports = {
       statusSize--;
       if (statusSize < 0) statusSize = statusList.length - 1;
     }, 10000);
-    bot.user.setStatus("online")
+    bot.user.setStatus("online");
     bot.utils.fetchLanguages(bot);
     setTimeout(() => {
       bot.utils.loadLanguageProgress(bot);
