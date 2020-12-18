@@ -214,3 +214,6 @@ module.exports.botlistspace = async (bot, request) => {
       `*You can vote here @ ${bot.config.vote.bls}*`]);
   return votechannel.send(votemsg).catch(e => { });
 }
+module.exports.botlistspace = async (bot, request) => {
+  console.log(request.body)
+}

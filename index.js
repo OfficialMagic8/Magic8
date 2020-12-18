@@ -125,6 +125,8 @@ app.post("/votes", async function (request, response) {
     bot.webhooks.discordbotlist(bot, request);
   } else if (auth === process.env.BOTLISTSPACE_TOKEN) {
     bot.webhooks.botlistspace(bot, request);
+  } else if (auth = process.env.ABSTRACTLIST) {
+
   } else return;
 });
 
