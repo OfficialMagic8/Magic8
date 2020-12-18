@@ -51,10 +51,10 @@ module.exports = {
           .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
-    message.delete({ timeout: 500 }).catch(e => { });
     try {
       let toDelete = await message.channel.messages.fetch({ limit: amount <= 100 ? amount : 100, before: message.id });
       let deleted = await message.channel.bulkDelete(toDelete, { filterOld: true });
+      message.delete({ timeout: 500 }).catch(e => { });
       let success = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "clear.deleted")
