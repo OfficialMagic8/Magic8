@@ -41,7 +41,7 @@ module.exports = {
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "language.invalidpage").join("\n")
                 .replace(/{CROSS}/g, bot.emoji.cross)
-                .replace(/{INPUT}/g, page === "NaN" ? args[1] : page)
+                .replace(/{INPUT}/g, args[1])
                 .replace(/{INFO}/g, bot.emoji.info)
                 .replace(/{TOTALPAGES}/g, totalpages));
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
@@ -144,7 +144,7 @@ module.exports = {
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "language.invalidpage").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
-              .replace(/{INPUT}/g, page === "NaN" ? args[1] : page)
+              .replace(/{INPUT}/g, args[1])
               .replace(/{INFO}/g, bot.emoji.info)
               .replace(/{TOTALPAGES}/g, totalpages))
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
@@ -211,7 +211,7 @@ module.exports = {
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "language.invalidpage").join("\n")
                 .replace(/{CROSS}/g, bot.emoji.cross)
-                .replace(/{INPUT}/g, page === "NaN" ? args[1] : page)
+                .replace(/{INPUT}/g, args[1])
                 .replace(/{INFO}/g, bot.emoji.info)
                 .replace(/{TOTALPAGES}/g, totalpages));
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
