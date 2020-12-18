@@ -44,7 +44,7 @@ module.exports = {
             .replace(/{URL}/g, `https://docs.magic8.xyz/commands/${cmd.category.toLowerCase()}`)
             .replace(/{ALIASES}/g, finalaliases)
             .replace(/{CATEGORY}/g, cmd.category.toLowerCase())
-            .replace(/{ISDISABLED}/g, bot.disabledcommands.has(cmd.name) ? bot.translate(bot, language, "true") : bot.translate(bot, language, "false"))
+            .replace(/{ISDISABLED}/g, bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(cmd.name) ? bot.translate(bot, language, "true") : bot.translate(bot, language, "false"))
             .replace(/{TOGGLEABLE}/g, toggleable)
             .replace(/{PREMIUM}/g, premium)
             .replace(/{DESCRIPTION}/g, cmd.description));
