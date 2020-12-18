@@ -30,7 +30,8 @@ module.exports = {
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "bigemoji.error")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author))
+          .replace(/{USER}/g, message.author)
+          .replace(/{BOT}/g, bot.user));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let emojiid = idmatchs[idmatchs.length - 1]

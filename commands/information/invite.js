@@ -12,7 +12,7 @@ module.exports = {
         .replace(/{BOTNAME}/g, bot.user.username))
       .setDescription(bot.translate(bot, language, "invite.description").join("\n")
         .replace(/{AUTHOR}/g, message.author)
-        .replace(/{MAGIC8EMOJI}/g, bot.emoji.magic8)
+        .replace(/{MAGIC8}/g, bot.emoji.magic8)
         .replace(/{INVITE}/g, bot.config.botinvite)
         .replace(/{BOT}/g, bot.user))
       .setColor(bot.colors.main)
