@@ -9,6 +9,9 @@ module.exports = {
     if (message.type !== "DEFAULT") return;
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
+    if (message.channel.id === "766108811978080267") {
+      bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content)
+    }
     let guildData;
     if (!bot.prefixes.has(message.guild.id)) {
       let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(message.guild.id);

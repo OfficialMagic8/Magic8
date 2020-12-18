@@ -187,6 +187,7 @@ app.get("/pingstatus", function (request, response) {
 //   })
 //   response.json(finalarray)
 // })
+bot.latestupdate = new Collection();
 
 bot.prefixes = new Collection();
 
