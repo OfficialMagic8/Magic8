@@ -76,7 +76,7 @@ module.exports = {
         }, 3000)
         return;
       }
-      let randomregister = ["Crunchydoll", "Netflix", "Minecraft", "Spotify", "Trivago"]
+      let randomregister = ["Crunchyroll", "Netflix", "Minecraft", "Spotify", "Trivago"]
       let processObject = processes[processList[index]];
       let time = Math.floor(Math.random() * ((processObject.time + 2000) - processObject.time) + processObject.time);
       let toAdd = processObject.message.replace(/{TARGET}/g, targetName).replace(/{LOADING}/g, bot.emoji.loading).replace(/{RANDOMIP}/g, randomIP()).replace(/{RANDOMCREDITCARD}/g, bot.utils.randomCreditCard("VISA"))
