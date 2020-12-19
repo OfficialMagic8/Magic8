@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
-  aliases: ["sm", "slot", "slots"],
+  aliases: ["slot", "slots"],
   category: "ENTERTAINMENT",
   description: "Roll a slot machine!",
   emoji: "🎰",
