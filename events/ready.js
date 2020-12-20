@@ -144,8 +144,9 @@ module.exports = {
       { name: `for @Magic8 updates`, type: "WATCHING" },
       { name: `for new updates`, type: "WATCHING" },
     ];
-    bot.channels.cache.get("766108811978080267").messages.fetch().then(() => { }).catch(e => { });
-    bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
+    bot.channels.cache.get("766108811978080267").messages.fetch().then(() => {
+      bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
+    }).catch(e => { });
     let statusSize = statusList.length - 1;
     setInterval(() => {
       let status = statusList[statusSize];
