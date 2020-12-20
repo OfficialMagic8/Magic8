@@ -122,7 +122,8 @@ module.exports = {
       }
       if (!end) {
         let listname = args.slice(1).join(" ");
-        if (!listnames.includes(listname.toLowerCase())) {
+        let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
+        if (!list) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
@@ -137,7 +138,6 @@ module.exports = {
         setTimeout(async () => {
           bot.listscooldown.delete(message.author.id);
         }, (cooldown * 1000));
-        let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
         let randomitem = list.items[Math.floor(Math.random() * list.items.length)];
         let embed = new MessageEmbed()
           .setColor(bot.colors.lightgreen)
@@ -162,7 +162,8 @@ module.exports = {
       } else {
         let randomcount = Math.abs(Math.floor(parseInt(args.pop())))
         let listname = args.slice(1).join(" ")
-        if (!listnames.includes(listname.toLowerCase())) {
+        let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase())
+        if (!list) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
@@ -172,7 +173,6 @@ module.exports = {
               .replace(/{INFO}/g, bot.emoji.info));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
-        let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase())
         if (!randomcount || randomcount < 2 || randomcount > list.items.length) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
@@ -293,10 +293,6 @@ module.exports = {
     } else if (subcommand === "delete") {
       let lists = JSON.parse(guildData.listmanager);
       let listname = args.slice(1).join(" ");
-      let listnames = [];
-      lists.forEach(l => {
-        listnames.push(l.name.toLowerCase());
-      });
       if (lists.length === 0) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -315,7 +311,7 @@ module.exports = {
         listsarray.push(`**•** ${l.name}`);
       });
       let list = lists.find(l => l.name === listname.toLowerCase());
-      if (!listcopy.includes(listname.toLowerCase())) {
+      if (!list) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
@@ -356,10 +352,6 @@ module.exports = {
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let listnames = [];
-      lists.forEach(l => {
-        listnames.push(l.name.toLowerCase());
-      });
       let listsarray = [];
       lists.forEach(l => {
         listsarray.push(`**•** ${l.name} (${l.items.length})`);
@@ -374,10 +366,10 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      if (!listnames.includes(listname.toLowerCase())) {
+      if (!list) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "listmanager.invalidlist")
+          .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INPUT}/g, listname)
             .replace(/{LISTS}/g, listsarray.join("\n"))
@@ -422,7 +414,7 @@ module.exports = {
             bot.db.prepare("UPDATE guilddata SET listmanager=? WHERE guildid=?").run(JSON.stringify(lists), message.guild.id);
             let embed = new MessageEmbed()
               .setColor(bot.colors.green)
-              .setDescription(bot.translate(bot, language, "listmanager.bulkaddsuccess")
+              .setDescription(bot.translate(bot, language, "listmanager.bulkaddsuccess").join("\n")
                 .replace(/{CHECK}/g, bot.emoji.check)
                 .replace(/{LISTNAME}/g, list.name)
                 .replace(/{ITEMS}/g, list.items.map(i => `**•** ${i.trim()}`).join("\n")));
@@ -430,7 +422,7 @@ module.exports = {
           }).catch(collected => {
             let embed = new MessageEmbed()
               .setColor(bot.colors.red)
-              .setDescription(bot.translate(bot, language, "listmanager.bulkaddnoitems")
+              .setDescription(bot.translate(bot, language, "listmanager.bulkaddnoitems").join("\n")
                 .replace(/{CROSS}/g, bot.emoji.cross)
                 .replace(/{INFO}/g, bot.emoji.info));
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
@@ -441,10 +433,6 @@ module.exports = {
       });
     } else if (subcommand === "add") {
       let lists = JSON.parse(guildData.listmanager);
-      let listnames = [];
-      lists.forEach(l => {
-        listnames.push(l.name.toLowerCase());
-      });
       let listsarray = [];
       lists.forEach(l => {
         listsarray.push(`**•** ${l.name} (${l.items.length})`);
@@ -468,7 +456,8 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      if (!listnames.includes(listname.toLowerCase())) {
+      let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase())
+      if (!list) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
@@ -478,7 +467,6 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase())
       let hastetext = [
         `Magic8 - ${message.guild.name} - List Manager`,
         ``,
@@ -533,10 +521,6 @@ module.exports = {
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let listnames = [];
-      lists.forEach(l => {
-        listnames.push(l.name.toLowerCase());
-      });
       let listsarray = [];
       lists.forEach(list => {
         listsarray.push(`**•** ${list.name}`);
@@ -551,7 +535,8 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      if (!listnames.includes(listname.toLowerCase())) {
+      let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
+      if (!list) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist")
@@ -561,7 +546,6 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
       if (list.items.length === 0) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
