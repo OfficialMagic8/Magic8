@@ -21,7 +21,7 @@ module.exports = {
       let customreplies = JSON.parse(guildData.ballcustomreplies);
       if (customreplies.length <= 0) {
         let language = bot.utils.getLanguage(bot, guildData.language);
-        if (message.member.hasPermission("ADMINISTRATOR")) {
+        if (message.member.hasPermission("MANAGE_GUILD")) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "8ball.customresponsesadmin").join("\n")
@@ -53,8 +53,8 @@ module.exports = {
     let question = args.join(" ");
     let reply = replies[Math.floor(Math.random() * replies.length)];
     let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(message.guild.id);
-    let usagearray = JSON.parse(usageData.usage)
-    let find = usagearray.find(i => i.command === "8ball")
+    let usagearray = JSON.parse(usageData.usage);
+    let find = usagearray.find(i => i.command === "8ball");
     let embed = new MessageEmbed()
       .setColor(guildData.ballcolor)
       .setAuthor(bot.translate(bot, language, "8ball.askedquestion")

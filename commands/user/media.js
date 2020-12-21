@@ -32,7 +32,7 @@ module.exports = {
         .setDescription(mediatext)
       return message.channel.send(mediaEmbed).catch(e => { return bot.error(bot, message, language, e); });
     } else {
-      if (!message.member.hasPermission("ADMINISTRATOR")) return;
+      if (!message.member.hasPermission("MANAGE_GUILD")) return;
       let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "media.nomedia").join("\n")

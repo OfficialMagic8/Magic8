@@ -6,7 +6,7 @@ module.exports = {
   emoji: "🎮",
   name: "lookingforgroup",
   toggleable: true,
-  premium: true,
+  // premium: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language)
     // if ([1, 2].includes(bot.premium.get(message.guild.id))) {
@@ -76,7 +76,7 @@ module.exports = {
               }
             }
           }
-          if (message.member.hasPermission("ADMINISTRATOR") && args[0]) {
+          if (message.member.hasPermission("MANAGE_GUILD") && args[0]) {
             if (args[0].toLowerCase() === "list") {
               let memberarray = [];
               let role = message.guild.roles.cache.get(bot.lfgroles.get(message.guild.id)) || await message.guild.roles.fetch(bot.lfgroles.get(message.guild.id))
