@@ -302,15 +302,15 @@ module.exports = {
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let listcopy = [];
+      let listnames = [];
       lists.forEach(l => {
-        listcopy.push(l.name.toLowerCase());
+        listnames.push(l.name);
       })
       let listsarray = [];
       lists.forEach(l => {
         listsarray.push(`**•** ${l.name}`);
       });
-      let list = lists.find(l => l.name === listname.toLowerCase());
+      let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
       if (!list) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -331,7 +331,7 @@ module.exports = {
         `This link will expire! Save this when you can!`,
       ];
       bot.hastebin(hastetext.join("\n"), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
-        lists.splice(listcopy.indexOf(list.name), 1);
+        lists.splice(listnames.indexOf(list.name), 1);
         bot.db.prepare("UPDATE guilddata SET listmanager=? WHERE guildid=?").run(JSON.stringify(lists), message.guild.id);
         let embed = new MessageEmbed()
           .setColor(bot.colors.green)
