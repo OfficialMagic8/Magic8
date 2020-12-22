@@ -5,10 +5,12 @@ module.exports = {
   run: async (bot) => {
     console.log(`✅ Ready event loading... ${bot.user.tag}`)
     bot.statcord.autopost();
-    let guildStats = "652539034404519936";
-    let guildChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(guildStats);
+    let guildChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get("652539034404519936");
     if (guildChannel) {
-      let guildText = `📚 Guilds : ${(bot.guilds.cache.size).toLocaleString("en")}`;
+      let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
+        return results.reduce((acc, guildCount) => acc + guildCount, 0)
+      }).catch(e => { console.error(e) });
+      let guildText = `📚 Guilds : ${guildsize.toLocaleString("en")}`;
       if (guildChannel.name !== guildText) {
         guildChannel.setName(guildText);
       }
@@ -17,7 +19,10 @@ module.exports = {
     postdsicordboats(bot);
     setInterval(() => {
       if (guildChannel) {
-        let guildText = `📚 Guilds : ${(bot.guilds.cache.size).toLocaleString("en")}`;
+        let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
+          return results.reduce((acc, guildCount) => acc + guildCount, 0)
+        }).catch(e => { console.error(e)});
+        let guildText = `📚 Guilds : ${guildsize.toLocaleString("en")}`;
         if (guildChannel.name !== guildText) {
           guildChannel.setName(guildText);
         }
@@ -25,8 +30,7 @@ module.exports = {
       // postdiscordbotlist();
       postdsicordboats(bot);
     }, 1800000)
-    let userStats = "652538780376367104";
-    let userChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(userStats);
+    let userChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get("652538780376367104");
     if (userChannel) {
       let userText = `👥 Users : ${(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")}`;
       if (userChannel.name !== userText) {
@@ -128,6 +132,7 @@ module.exports = {
     bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
     bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
     let statusList = [
+      // {name: `shard ${}`},
       { name: `with 20+ languages`, type: "PLAYING" },
       { name: `with new updates`, type: "PLAYING" },
       { name: `with your mind`, type: "PLAYING" },
@@ -149,12 +154,18 @@ module.exports = {
     }).catch(e => { });
     let statusSize = statusList.length - 1;
     setInterval(() => {
+      let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
+        return results.reduce((acc, guildCount) => acc + guildCount, 0)
+      }).catch(e => { return bot.error(bot, message, language, e); });
+      let users = client.shard.fetchClientValues('users.cache').then(results => {
+        return results.reduce((acc, users) => acc + users, 0)
+      }).catch(e => { return bot.error(bot, message, language, e); });
       let status = statusList[statusSize];
-      bot.user.setActivity(status.name.replace(/{SERVERS}/g, parseInt(bot.guilds.cache.size).toLocaleString("en")).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")), { type: status.type });
+      bot.user.setActivity(status.name.replace(/{SERVERS}/g, parseInt(guildsize.toLocaleString("en"))).replace(/{USERS}/g, parseInt(users.filter(u => !u.bot).size).toLocaleString("en")), { type: status.type }).catch(e => { });
       statusSize--;
       if (statusSize < 0) statusSize = statusList.length - 1;
     }, 10000);
-    bot.user.setStatus("online");
+    bot.user.setStatus("online").catch(e => { });
     bot.utils.fetchLanguages(bot);
     setTimeout(() => {
       bot.utils.loadLanguageProgress(bot);
@@ -164,7 +175,13 @@ module.exports = {
     let restartTime = bot.ms(new Date() - bot.starttime);
     console.log(`✅ Start Time: ${restartTime}`);
     console.log(`🛰️ Ping: ${bot.ms(bot.ws.ping)}`);
-    console.log(`📊 Users: ${(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")} - Guilds: ${(bot.guilds.cache.size).toLocaleString("en")}`);
+    let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
+      return results.reduce((acc, guildCount) => acc + guildCount, 0)
+    }).catch(e => { return bot.error(bot, message, language, e); });
+    let users = client.shard.fetchClientValues('users.cache').then(results => {
+      return results.reduce((acc, users) => acc + users, 0)
+    }).catch(e => { return bot.error(bot, message, language, e); });
+    console.log(`📊 Users: ${parseInt(users.filter(u => !u.bot).size).toLocaleString("en")} - Guilds: ${guildsize.toLocaleString("en")}`);
     let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
     bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
     function postdiscordbotlist() {
@@ -180,8 +197,11 @@ module.exports = {
       //     // console.log(xhr.responseText);
       //   }
       // };
+      let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
+        return results.reduce((acc, guildCount) => acc + guildCount, 0)
+      }).catch(e => { return bot.error(bot, message, language, e); });
       let data = `{
-        "guilds": ${bot.guilds.cache.size}
+        "guilds": ${guildsize}
       }`;
       xhr.send(data);
     }
@@ -192,8 +212,11 @@ module.exports = {
       xhr.open("POST", url);
       xhr.setRequestHeader("Authorization", process.env.DISCORD_BOATS_API);
       xhr.setRequestHeader("Content-Type", "application/json");
+      let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
+        return results.reduce((acc, guildCount) => acc + guildCount, 0)
+      }).catch(e => { return bot.error(bot, message, language, e); });
       let data = `{
-        "server_count": ${bot.guilds.cache.size}
+        "server_count": ${guildsize}
       }`;
       xhr.send(data);
     }
