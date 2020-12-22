@@ -268,7 +268,7 @@ bot.staffEmbed;
 bot.helpmenus = new Collection();
 bot.adminmenus = new Collection();
 
-bot.customemojisobject = require("./customemojis")
+bot.customemojisobject = require("./utils/customemojis")
 bot.customemojis = new Collection();
 Object.keys(bot.customemojisobject).forEach(cat => {
   Object.keys(bot.customemojisobject[cat].emojis).forEach(identifier => {
@@ -282,27 +282,31 @@ function removeDuplicates(myArr, prop) {
 }
 bot.on("ready", () => {
   let event = bot.events.get("ready");
-  if (event) event.run(bot)
+  if (event) event.run(bot);
 });
 bot.on("channelDelete", channel => {
   let event = bot.events.get("channelDelete");
-  if (event) event.run(bot, channel)
+  if (event) event.run(bot, channel);
 });
 bot.on("debug", info => {
   let event = bot.events.get("debug");
-  if (event) event.run(bot, info)
+  if (event) event.run(bot, info);
 });
 bot.on("error", error => {
   let event = bot.events.get("error");
-  if (event) event.run(bot, error)
+  if (event) event.run(bot, error);
+});
+bot.on("shardError", error => {
+  let event = bot.events.get("shardError");
+  if (event) event.run(bot, error, shardID);
 });
 bot.on("guildCreate", guild => {
   let event = bot.events.get("guildCreate");
-  if (event) event.run(bot, guild)
+  if (event) event.run(bot, guild);
 });
 bot.on("guildDelete", guild => {
   let event = bot.events.get("guildDelete");
-  if (event) event.run(bot, guild)
+  if (event) event.run(bot, guild);
 });
 // bot.on("guildMemberAdd", member => {
 //   let event = bot.events.get("guildMemberAdd");
@@ -314,19 +318,19 @@ bot.on("guildDelete", guild => {
 // });
 bot.on("guildMemberRemove", member => {
   let event = bot.events.get("guildMemberRemove");
-  if (event) event.run(bot, member)
+  if (event) event.run(bot, member);
 });
 bot.on("guildMemberUpdate", (oldMember, newMember) => {
   let event = bot.events.get("guildMemberUpdate")
-  if (event) event.run(bot, oldMember, newMember)
+  if (event) event.run(bot, oldMember, newMember);
 })
 bot.on("guildUpdate", (oldGuild, newGuild) => {
   let event = bot.events.get("guildUpdate");
-  if (event) event.run(bot, oldGuild, newGuild)
+  if (event) event.run(bot, oldGuild, newGuild);
 });
 bot.on("message", message => {
   let event = bot.events.get("message");
-  if (event) event.run(bot, message)
+  if (event) event.run(bot, message);
 });
 // bot.on("messageUpdate", (oldMessage, newMessage) => {
 //   let event = bot.events.get("messageUpdate");

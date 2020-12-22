@@ -7,7 +7,7 @@ module.exports = {
   run: async (bot, message, args, prefix, guildData) => {
     // bot.updates.addFollower(message.channel.id, "test").then(message.channel.send("works")).catch("doesn't works")
     // bot.error(bot, message, guildData.language)
-    // return
+    return
     //message.delete({timeout:500}).catch(e=>{});
     // try{
     //   await message.react("🎟️");

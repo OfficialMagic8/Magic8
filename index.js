@@ -12,5 +12,7 @@ const statcord = new Statcord.ShardingClient(statcordsettings);
 statcord.on("autopost-start", () => {
   console.log("Auto-Posting Statcord");
 });
-manager.on('shardCreate', shard => console.log(`Launched shard ${shard.id}`));
+manager.on('shardCreate', shard => {
+  console.log(`Launched Shard ${shard.id}`)
+});
 manager.spawn();
