@@ -172,7 +172,7 @@ module.exports = {
     console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${guilds}`);
     let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
     bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
-    function postdiscordbotlist(bot) {
+    async function postdiscordbotlist(bot) {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discordbotlist.com/api/v1/bots/484148705507934208/stats";
       let xhr = new XMLHttpRequest();
