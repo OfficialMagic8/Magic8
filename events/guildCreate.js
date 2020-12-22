@@ -5,10 +5,9 @@ module.exports = {
     try {
       await guild.members.fetch()
     } catch (e) { }
-    let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
-      return results.reduce((acc, guildCount) => acc + guildCount, 0)
-    }).catch(e => { console.error(e) });
-    let text = `📚 Guilds : ${guildsize.toLocaleString("en")}`;
+    let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+    let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+    let text = `📚 Guilds : ${guilds}`;
     let channel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.guildstats);
     if (channel) {
       if (channel.name !== text) {
