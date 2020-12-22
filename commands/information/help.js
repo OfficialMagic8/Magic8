@@ -80,20 +80,20 @@ module.exports = {
           let category = c.category || "OTHERS";
           if (category === "ENTERTAINMENT") {
             funarray.push(`\`${d}${c.name}\``);
-          } else if (category === "INFORMATION") {
-            infoarray.push(`\`${d}${c.name}\``);
           } else if (category === "MINIGAMES") {
             gamesarray.push(`\`${d}${c.name}\``);
+          } else if (category === "MINECRAFT") {
+            minecraftarray.push(`\`${d}${c.name}\``);
+          } else if (category === "REACTIONS") {
+            reactionarray.push(`\`${d}${c.name}\``);
+          } else if (category === "MISCELLANEOUS") {
+            miscellaneousarray.push(`\`${d}${c.name}\``);
+          } else if (category === "INFORMATION") {
+            infoarray.push(`\`${d}${c.name}\``);
           } else if (category === "USER") {
             userarray.push(`\`${d}${c.name}\``);
           } else if (category === "UTILITIES") {
             utilsarray.push(`\`${d}${c.name}\``);
-          } else if (category === "MISCELLANEOUS") {
-            miscellaneousarray.push(`\`${d}${c.name}\``);
-          } else if (category === "REACTIONS") {
-            reactionarray.push(`\`${d}${c.name}\``);
-          } else if (category === "MINECRAFT") {
-            minecraftarray.push(`\`${d}${c.name}\``);
           }
         }
       }
@@ -104,14 +104,14 @@ module.exports = {
         .setColor(bot.colors.main)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
         .setDescription(tips)
-        .addField(`🎉 ${bot.translate(bot, language, "help.category.fun")}`, funarray.join(" "), false)
+        .addField(`🎉 ${bot.translate(bot, language, "help.category.entertainment")}`, funarray.join(" "), false)
         .addField(`🕹️ ${bot.translate(bot, language, "help.category.minigames")}`, gamesarray.join(" "), false)
         .addField(`${bot.emoji.minecraft} ${bot.translate(bot, language, "help.category.minecraft")}`, minecraftarray.join(" "), false)
         .addField(`😍 ${bot.translate(bot, language, "help.category.reactions")}`, reactionarray.join(" "), false)
-        .addField(`🎀 ${bot.translate(bot, language, "help.category.misc")}`, miscellaneousarray.join(" "), false)
-        .addField(`📚 ${bot.translate(bot, language, "help.category.info")}`, infoarray.join(" "), false)
+        .addField(`🎀 ${bot.translate(bot, language, "help.category.miscellaneous")}`, miscellaneousarray.join(" "), false)
+        .addField(`📚 ${bot.translate(bot, language, "help.category.information")}`, infoarray.join(" "), false)
         .addField(`👤 ${bot.translate(bot, language, "help.category.user")}`, userarray.join(" "), false)
-        .addField(`⚙️ ${bot.translate(bot, language, "help.category.utils")}`, utilsarray.join(" "), false)
+        .addField(`⚙️ ${bot.translate(bot, language, "help.category.utilities")}`, utilsarray.join(" "), false)
         .addField(`\u200b`, bot.translate(bot, language, "help.bottom")
           .replace(/{INVITE}/g, bot.invite)
           .replace(/{HASDISABLED}/g, disabledwarning), false);
@@ -138,22 +138,22 @@ module.exports = {
           let category = c.category || "OTHERS";
           if (category === "ENTERTAINMENT") {
             funarray.push(`\`${d}${c.name}\``);
-          } else if (category === "INFORMATION") {
-            infoarray.push(`\`${d}${c.name}\``);
           } else if (category === "MINIGAMES") {
             gamesarray.push(`\`${d}${c.name}\``);
+          } else if (category === "MINECRAFT") {
+            minecraftarray.push(`\`${d}${c.name}\``);
+          } else if (category === "REACTIONS") {
+            reactionarray.push(`\`${d}${c.name}\``);
+          } else if (category === "MISCELLANEOUS") {
+            miscellaneousarray.push(`\`${d}${c.name}\``);
+          } else if (category === "INFORMATION") {
+            infoarray.push(`\`${d}${c.name}\``);
           } else if (category === "USER") {
             userarray.push(`\`${d}${c.name}\``);
           } else if (category === "UTILITIES") {
             utilsarray.push(`\`${d}${c.name}\``);
           } else if (category === "ADMINISTRATOR") {
             adminarray.push(`\`${d}${c.name}\``);
-          } else if (category === "MISCELLANEOUS") {
-            miscellaneousarray.push(`\`${d}${c.name}\``);
-          } else if (category === "REACTIONS") {
-            reactionarray.push(`\`${d}${c.name}\``);
-          } else if (category === "MINECRAFT") {
-            minecraftarray.push(`\`${d}${c.name}\``);
           }
         }
       }
@@ -164,21 +164,21 @@ module.exports = {
         .setColor(bot.colors.main)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
         .setDescription(tips)
-        .addField(`🎉 ${bot.translate(bot, language, "help.category.fun")}`, funarray.join(" "), false)
+        .addField(`🎉 ${bot.translate(bot, language, "help.category.entertainment")}`, funarray.join(" "), false)
         .addField(`🕹️ ${bot.translate(bot, language, "help.category.minigames")}`, gamesarray.join(" "), false)
         .addField(`${bot.emoji.minecraft} ${bot.translate(bot, language, "help.category.minecraft")}`, minecraftarray.join(" "), false)
         .addField(`😍 ${bot.translate(bot, language, "help.category.reactions")}`, reactionarray.join(" "), false)
-        .addField(`🎀 ${bot.translate(bot, language, "help.category.misc")}`, miscellaneousarray.join(" "), false)
-        .addField(`📚 ${bot.translate(bot, language, "help.category.info")}`, infoarray.join(" "), false)
+        .addField(`🎀 ${bot.translate(bot, language, "help.category.miscellaneous")}`, miscellaneousarray.join(" "), false)
+        .addField(`📚 ${bot.translate(bot, language, "help.category.information")}`, infoarray.join(" "), false)
         .addField(`👤 ${bot.translate(bot, language, "help.category.user")}`, userarray.join(" "), false)
-        .addField(`⚙️ ${bot.translate(bot, language, "help.category.utils")}`, utilsarray.join(" "), false)
-        .addField(`👮 ${bot.translate(bot, language, "help.category.admin")}`, adminarray.join(" "), false)
+        .addField(`⚙️ ${bot.translate(bot, language, "help.category.utilities")}`, utilsarray.join(" "), false)
+        .addField(`👮 ${bot.translate(bot, language, "help.category.administrator")}`, adminarray.join(" "), false)
         .addField(`\u200b`, bot.translate(bot, language, "help.adminbottom").join("\n")
           .replace(/{INFO}/g, bot.emoji.info)
           .replace(/{PREFIX}/g, prefix)
           .replace(/{INVITE}/g, bot.invite)
           .replace(/{HASDISABLED}/g, disabledwarning), false);
-      bot.adminmenus.set(message.guild.id, embed)
+      bot.adminmenus.set(message.guild.id, embed);
     }
     let embed = new MessageEmbed()
     let embedToSend = message.member.hasPermission("ADMINISTRATOR") ? bot.adminmenus.get(message.guild.id) : bot.helpmenus.get(message.guild.id)
