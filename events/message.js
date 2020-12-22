@@ -8,13 +8,13 @@ module.exports = {
       await message.guild.members.fetch()
     } catch (e) { }
     if (message.type !== "DEFAULT") return;
+    if (message.channel.id === "703285431910793286") {
+      message.crosspost().catch(e => { console.error(e); });
+    }
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.channel.id === "766108811978080267") {
       bot.latestupdate.set("latestupdate", message.content)
-    }
-    if (message.channel.id === "703285431910793286") {
-      message.crosspost().catch(e => { console.error(e); });
     }
     if (message.author.id === "292821168833036288" && message.content === "getupdate") {
       bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content)
