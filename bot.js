@@ -10,7 +10,6 @@ const server = http.createServer(app)
 const DBL = require('dblapi.js');
 const BOATS = require('boats.js');
 const { Client, Collection } = require("discord.js");
-const STATCORRD = require("statcord.js");
 const discordsettings = {
   restRequestTimeout: 60000,
   ws: {
@@ -25,14 +24,9 @@ const discordsettings = {
 }
 const bot = new Client(discordsettings);
 bot.starttime = new Date()
-const statcordsettings = {
-  client: bot,
-  key: process.env.STATCORD_TOKEN,
-}
-bot.statcord = new STATCORRD.Client(statcordsettings);
-bot.statcord.on("autopost-start", () => {
-  console.log("Auto-Posting Statcord");
-});
+
+const nekoslifeclient = require("nekos.life");
+bot.nekos = new nekoslifeclient();
 
 bot.dbl = new DBL(process.env.DBL_TOKEN, { statsInterval: 1800000, webhookServer: server, webhookAuth: process.env.TOPGG_AUTH }, bot);
 bot.boats = new BOATS(process.env.DISCORD_BOATS_AUTH);
@@ -62,10 +56,10 @@ bot.shortinvite = "discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
 bot.footer = ``;
 
-bot.developer = undefined;
-bot.maindeveloper = undefined;
-bot.developerid = bot.config.ownerid
-bot.maindeveloperid = bot.config.alonsoid
+// bot.developer = undefined;
+// bot.maindeveloper = undefined;
+// bot.developerid = bot.config.ownerid
+// bot.maindeveloperid = bot.config.alonsoid
 
 bot.schedule.scheduleJob("0 0 1 * *", function () {
   let guildsids = bot.guilds.cache.keyArray();
@@ -87,7 +81,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
         name: `latestGuildData.db`
       }]
     });
-    return bot.developer.send(`${bot.emoji.check} **Guild Data Backup Success**`, {
+    return bot.users.cache.get("292821168833036288").send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestGuildData.db`,
         name: `latestGuildData.db`
@@ -104,7 +98,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
         name: `latestUsageData.db`
       }]
     });
-    return bot.developer.send(`${bot.emoji.check} **Usage Data Backup Success**`, {
+    return bot.users.cache.get("292821168833036288").send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestUsageData.db`,
         name: `latestUsageData.db`
@@ -353,12 +347,24 @@ bot.on("voiceStateUpdate", (oldState, newState) => {
 bot.utils.loadCommands(bot);
 bot.utils.loadEvents(bot);
 
-const nekoslifeclient = require("nekos.life");
-bot.nekos = new nekoslifeclient();
-module.exports = {
-  bot: bot
-};
 bot.login(process.env.DISCORD_TOKEN);
 bot.cleanTags = (message) => {
   return message.replace(/@everyone/gi, "<everyone>").replace(/@here/gi, "<here>")
 }
+bot.getGuildSize = (bot) => {
+  try {
+    await bot.shard.broadcastEval('this.guilds.cache.size').then(results => {
+      return parseInt(results.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en");
+    }).catch(e => { });
+  } catch (e) { }
+}
+bot.getChannelSize = (bot) => {
+  try {
+    await bot.shard.broadcastEval('this.channels.cache.size').then(results => {
+      return parseInt(results.reduce((acc, channelCount) => acc + channelCount, 0)).toLocaleString("en");
+    }).catch(e => { });
+  } catch (e) { }
+}
+module.exports = {
+  bot: bot
+};
