@@ -13,6 +13,10 @@ module.exports = {
     // console.log(`~ RAM: ${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`);
     // let guildsize = bot.getguilds(bot);
     // console.log(guildsize)
+    let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+    let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+    let getchannels = await bot.shard.broadcastEval('this.channels.cache.size').catch(e => { })
+    let channels = parseInt(getchannels.reduce((acc, channelCount) => acc + channelCount, 0)).toLocaleString("en")
     let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "botinfo.title").replace(/{BOTNAME}/g, bot.user.username))
       .setColor(bot.colors.main)
@@ -20,9 +24,9 @@ module.exports = {
       // .setFooter(bot.translate(bot, language, "botinfo.footer")
       //   .replace(/{CPU}/g, bot.os.cpus().shift().model))
       .setDescription(bot.translate(bot, language, "botinfo.description").join("\n")
-        .replace(/{GUILDS}/g, bot.getGuildSize(bot))
+        .replace(/{GUILDS}/g, guilds)
         .replace(/{USERS}/g, bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))
-        .replace(/{CHANNELS}/g, bot.getChannelSize(bot))
+        .replace(/{CHANNELS}/g, channels)
         // .replace(/{NSFWCHANNELS}/g, bot.channels.cache.filter(c => c.nsfw).size.toLocaleString("en"))
         // .replace(/{RAM}/g, `${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`)
         .replace(/{DJS}/g, bot.emoji.djs)

@@ -4,12 +4,11 @@ module.exports = {
   name: "ready",
   run: async (bot) => {
     console.log(`✅ Ready event loading... ${bot.user.tag}`)
+    let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+    let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
     let guildChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get("652539034404519936");
     if (guildChannel) {
-      let guildsize = bot.shard.fetchClientValues('guilds.cache.size').then(results => {
-        return results.reduce((acc, guildCount) => acc + guildCount, 0)
-      }).catch(e => { console.error(e) });
-      let guildText = `📚 Guilds : ${bot.getGuildSize(bot)}`;
+      let guildText = `📚 Guilds : ${guilds}`;
       if (guildChannel.name !== guildText) {
         guildChannel.setName(guildText).catch(e => { });
       }
@@ -18,7 +17,7 @@ module.exports = {
     postdsicordboats(bot);
     setInterval(() => {
       if (guildChannel) {
-        let guildText = `📚 Guilds : ${bot.getGuildSize(bot)}`;
+        let guildText = `📚 Guilds : ${guilds}`;
         if (guildChannel.name !== guildText) {
           guildChannel.setName(guildText).catch(e => { });
         }
@@ -145,7 +144,7 @@ module.exports = {
     let statusSize = statusList.length - 1;
     setInterval(() => {
       let status = statusList[statusSize];
-      bot.user.setActivity(status.name.replace(/{SERVERS}/g, bot.getGuildSize(bot)).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")), { type: status.type }).catch(e => { });
+      bot.user.setActivity(status.name.replace(/{SERVERS}/g, guilds).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")), { type: status.type }).catch(e => { });
       statusSize--;
       if (statusSize < 0) statusSize = statusList.length - 1;
     }, 10000);
@@ -159,10 +158,10 @@ module.exports = {
     let restartTime = bot.ms(new Date() - bot.starttime);
     console.log(`✅ Start Time: ${restartTime}`);
     console.log(`🛰️ Ping: ${bot.ms(bot.ws.ping)}`);
-    console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${bot.getGuildSize(bot)}`);
+    console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${guilds}`);
     let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
     bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
-    function postdiscordbotlist() {
+    function postdiscordbotlist(guilds) {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discordbotlist.com/api/v1/bots/484148705507934208/stats";
       let xhr = new XMLHttpRequest();
@@ -176,11 +175,11 @@ module.exports = {
       //   }
       // };
       let data = `{
-        "guilds": ${bot.getGuildSize(bot)}
+        "guilds": ${guilds}
       }`;
       xhr.send(data);
     }
-    function postdsicordboats(bot) {
+    function postdsicordboats(guilds) {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discord.boats/api/bot/484148705507934208";
       let xhr = new XMLHttpRequest();
@@ -188,7 +187,7 @@ module.exports = {
       xhr.setRequestHeader("Authorization", process.env.DISCORD_BOATS_API);
       xhr.setRequestHeader("Content-Type", "application/json");
       let data = `{
-        "server_count": ${bot.getGuildSize(bot)}
+        "server_count": ${guilds}
       }`;
       xhr.send(data);
     }

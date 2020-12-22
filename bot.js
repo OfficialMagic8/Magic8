@@ -351,19 +351,13 @@ bot.login(process.env.DISCORD_TOKEN);
 bot.cleanTags = (message) => {
   return message.replace(/@everyone/gi, "<everyone>").replace(/@here/gi, "<here>")
 }
-bot.getGuildSize = async (bot) => {
-  try {
-    await bot.shard.broadcastEval('this.guilds.cache.size').then(results => {
-      return parseInt(results.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en");
-    }).catch(e => { });
-  } catch (e) { }
+bot.getGuildSize = async function () {
+  let req = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+  return parseInt(req.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
 }
-bot.getChannelSize = async (bot) => {
-  try {
-    await bot.shard.broadcastEval('this.channels.cache.size').then(results => {
-      return parseInt(results.reduce((acc, channelCount) => acc + channelCount, 0)).toLocaleString("en");
-    }).catch(e => { });
-  } catch (e) { }
+bot.getChannelSize = async function () {
+  let req = await bot.shard.broadcastEval('this.channels.cache.size').catch(e => { })
+  return parseInt(req.reduce((acc, channelCount) => acc + channelCount, 0)).toLocaleString("en")
 }
 module.exports = {
   bot: bot
