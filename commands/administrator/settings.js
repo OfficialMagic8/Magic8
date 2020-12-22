@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["s"],
   category: "ADMINISTRATOR",
-  description: "Advanced Server Settings - Requires `Manage Server` Permission",
+  description: "Advanced Server Settings\nRequires `Manage Server` Permission",
   emoji: "⚙️",
   name: "settings",
   run: async (bot, message, args, prefix, guildData) => {
@@ -66,7 +66,7 @@ module.exports = {
                   bot.disabledcommands.delete(message.guild.id)
                   disabledCommandsString = `*none*`
                 } else {
-                  disabledCommandsString = finalDisabled.map(c => `\`${c.trim()}\``).join(" ")
+                  disabledCommandsString = finalDisabled.map(c => `\`${c.trim()}\``).join(" ");
                 }
                 let commandsToSave = finalDisabled.length <= 0 ? [] : finalDisabled
                 bot.disabledcommands.set(message.guild.id, commandsToSave)

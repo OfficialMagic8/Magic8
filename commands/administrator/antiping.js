@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["ap"],
   category: "ADMINISTRATOR",
-  description: "Warn people who ping users protected by Anti-Ping - Requires `Manage Server` Permission",
+  description: "Warn people who ping users protected by Anti-Ping and don't have a bypass role\nRequires `Manage Server` Permission",
   emoji: "🔕",
   name: "antiping",
   toggleable: true,

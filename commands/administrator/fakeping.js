@@ -6,7 +6,7 @@ const pinglink = "https://i.imgur.com/xX8vAaV.png";
 module.exports = {
   aliases: ["fp"],
   category: "ADMINISTRATOR",
-  description: "Create a fake notification using your server icon - Requires `Manage Server` Permission",
+  description: "Create a fake ping badge on your server icon\nRequires `Manage Server` Permission",
   emoji: "🔔",
   name: "fakeping",
   toggleable: true,

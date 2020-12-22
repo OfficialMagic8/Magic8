@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
   category: "ADMINISTRATOR",
-  description: "Get updates from the Support Server directly to yours.",
+  description: "Follow updates from the Magic8 Support Server directly to yours.",
   emoji: "▶️",
   name: "follow",
   run: async (bot, message, args, prefix, guildData) => {

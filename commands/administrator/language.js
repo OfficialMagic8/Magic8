@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["lang", "langs"],
   category: "ADMINISTRATOR",
-  description: "Magic8 Language Settings - Requires `Manage Server` Permission",
+  description: "Magic8 Language Settings\nRequires `Manage Server` Permission",
   emoji: "🌎",
   name: "language",
   run: async (bot, message, args, prefix, guildData) => {
@@ -11,7 +11,7 @@ module.exports = {
       let subcommand = args[0] ? args[0].toLowerCase() : args[0];
       if (subcommand === "set") {
         if (!args[1]) {
-          let lastfetched = bot.lastfetched.get("lf");
+          let lastfetched = bot.lastfetched.get("lf");  
           let lastfetchedms = Date.parse(lastfetched);
           let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json()).then(json => {
             return Date.parse(json[0].pushed_at)

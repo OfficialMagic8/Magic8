@@ -1,8 +1,8 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
-  aliases: ["pref"],
+  aliases: ["pf"],
   category: "ADMINISTRATOR",
-  description: "",
+  description: "Set the custom prefix for your server\nRequires `Manage Server` Permission",
   emoji: "📝",
   name: "prefix",
   run: async (bot, message, args, prefix, guildData) => {

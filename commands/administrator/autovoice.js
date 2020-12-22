@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["av"],
   category: "ADMINISTRATOR",
-  description: "Create Automatic Voice Channels - Requires `Manage Server` Permission",
+  description: "Tidy up voice channels by creating temporary channels that delete when everyone leaves\nRequires `Manage Server` Permission",
   emoji: "🔊",
   name: "autovoice",
   run: async (bot, message, args, prefix, guildData) => {

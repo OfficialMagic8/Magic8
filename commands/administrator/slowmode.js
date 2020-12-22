@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: ["sm"],
   category: "ADMINISTRATOR",
-  description: "Set a custom slowmode for the channel! You can't do this in Server Settings!",
+  description: "Set a custom slowmode for any channel, you can't do this in regular channel settings!\nRequires `Manage Server` Permission",
   emoji: "⏱️",
   name: "slowmode",
   run: async (bot, message, args, prefix, guildData) => {
