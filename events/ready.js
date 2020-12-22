@@ -150,7 +150,7 @@ module.exports = {
     setInterval(async () => {
       let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
       let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-      bot.shard.count.forEach(shard => {
+      bot.shard.ids.forEach(shard => {
         let status = statusList[statusSize];
         bot.user.setActivity(status.name.replace(/{SERVERS}/g, guilds).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en").replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards)), { type: status.type }).catch(e => { });
         statusSize--;
