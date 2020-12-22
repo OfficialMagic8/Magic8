@@ -146,7 +146,7 @@ module.exports = {
     }
     let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(message.guild.id);
     if (!usageData) {
-      bot.utils.registerGuildUsage(bot, guild);
+      bot.utils.registerGuildUsage(bot, message.guild);
       usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(message.guild.id);
     }
     let x = JSON.parse(usageData.usage);
