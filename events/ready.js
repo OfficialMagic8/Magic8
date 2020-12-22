@@ -122,7 +122,7 @@ module.exports = {
     bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
     bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
     let statusList = [
-      { name: `with ${client.shard.count} shards`, type: "PLAYING" },
+      { name: `with ${bot.shard.count} shards`, type: "PLAYING" },
       { name: `with 20+ languages`, type: "PLAYING" },
       { name: `with new updates`, type: "PLAYING" },
       { name: `with your mind`, type: "PLAYING" },
