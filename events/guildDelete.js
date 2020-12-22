@@ -7,11 +7,14 @@ module.exports = {
   name: "guildDelete",
   run: async (bot, guild) => {
     if (!guild.available) return;
-    let text = `📚 Guilds : ${bot.guilds.cache.size}`;
+    let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
+      return results.reduce((acc, guildCount) => acc + guildCount, 0)
+    }).catch(e => { console.error(e) });
+    let text = `📚 Guilds : ${guildsize.toLocaleString("en")}`;
     let channel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(botStats.totalGuildsID);
     if (channel) {
       if (channel.name !== text) {
-        channel.setName(text);
+        channel.setName(text).catch(e => { });
       }
     }
     bot.premium.delete(guild.id);

@@ -2,16 +2,17 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "guildCreate",
   run: async (bot, guild) => {
-    guild.members.fetch().catch(e => { })
-    let text = `📚 Guilds : ${bot.guilds.cache.size}`;
+    try {
+      await guild.members.fetch()
+    } catch (e) { }
+    let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
+      return results.reduce((acc, guildCount) => acc + guildCount, 0)
+    }).catch(e => { console.error(e) });
+    let text = `📚 Guilds : ${guildsize.toLocaleString("en")}`;
     let channel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.guildstats);
     if (channel) {
       if (channel.name !== text) {
-        try {
-          channel.setName(text);
-        } catch (e) {
-          console.error(e);
-        }
+        channel.setName(text).catch(e => { });
       }
     }
     let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
@@ -86,9 +87,10 @@ module.exports = {
         `**Joined:** ${joined}`,
         `**Date Created:** ${created}`])
     let logsChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.guildlogs);
-    if (logsChannel) {
+    setTimeout(() => {
       logsChannel.send(embed).catch(e => { });
-    }
+    }, 2000)
+
     // let timechange = new Date(new Date().getTime() - 4 * 3600000).toLocaleString();
     // let cdate = guild.createdAt.toString().split(" ");
     // let users = guild.members.cache.filter(m => !m.user.bot).size;
