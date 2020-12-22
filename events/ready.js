@@ -15,7 +15,7 @@ module.exports = {
     }
     // postdiscordbotlist();
     postdsicordboats(bot);
-    setInterval(() => {
+    setInterval(async () => {
       if (guildChannel) {
         let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
         let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
@@ -147,7 +147,7 @@ module.exports = {
     }).catch(e => { });
     let statusSize = statusList.length - 1;
     let maxshards = bot.shard.count;
-    setInterval(() => {
+    setInterval(async () => {
       let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
       let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
       bot.shard.count.forEach(shard => {
@@ -192,7 +192,7 @@ module.exports = {
       }`;
       xhr.send(data);
     }
-    function postdsicordboats(bot) {
+    async function postdsicordboats(bot) {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discord.boats/api/bot/484148705507934208";
       let xhr = new XMLHttpRequest();
