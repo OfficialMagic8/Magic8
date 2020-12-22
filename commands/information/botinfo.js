@@ -11,12 +11,8 @@ module.exports = {
     // let memory = getMemoryUsage();
     // let maxRam = 2048;
     // console.log(`~ RAM: ${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`);
-    let guildsize = client.shard.fetchClientValues('guilds.cache.size').then(results => {
-      return results.reduce((acc, guilds) => acc + guilds, 0)
-    }).catch(e => { return bot.error(bot, message, language, e); });
-    let channelsize = client.shard.fetchClientValues('channels.cache.size').then(results => {
-      return results.reduce((acc, channels) => acc + channels, 0)
-    }).catch(e => { return bot.error(bot, message, language, e); });
+    // let guildsize = bot.getguilds(bot);
+    // console.log(guildsize)
     let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "botinfo.title").replace(/{BOTNAME}/g, bot.user.username))
       .setColor(bot.colors.main)
@@ -24,9 +20,9 @@ module.exports = {
       // .setFooter(bot.translate(bot, language, "botinfo.footer")
       //   .replace(/{CPU}/g, bot.os.cpus().shift().model))
       .setDescription(bot.translate(bot, language, "botinfo.description").join("\n")
-        .replace(/{GUILDS}/g, guildsize.toLocaleString("en"))
-        .replace(/{USERS}/g, bot.users.cache.size.toLocaleString("en"))
-        .replace(/{CHANNELS}/g, channelsize.toLocaleString("en"))
+        .replace(/{GUILDS}/g, bot.getGuildSize(bot))
+        .replace(/{USERS}/g, bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))
+        .replace(/{CHANNELS}/g, bot.getChannelSize(bot))
         // .replace(/{NSFWCHANNELS}/g, bot.channels.cache.filter(c => c.nsfw).size.toLocaleString("en"))
         // .replace(/{RAM}/g, `${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`)
         .replace(/{DJS}/g, bot.emoji.djs)
@@ -36,8 +32,8 @@ module.exports = {
         .replace(/{UPTIME}/g, uptime)
         .replace(/{PING}/g, bot.ms(bot.ws.ping))
         // .replace(/{USAGE}/g, bot.os.loadavg().pop().toFixed(1))
-        .replace(/{OWNER}/g, bot.developer)
-        .replace(/{HEADDEVELOPER}/g, bot.maindeveloper)
+        .replace(/{OWNER}/g, bot.users.cache.get("292821168833036288"))
+        .replace(/{HEADDEVELOPER}/g, bot.users.cache.get("290640988677079041"))
         .replace(/{GUIDE}/g, bot.docs.main)
         .replace(/{CREATIONDATE}/g, bot.user.createdAt.toLocaleString().split("GMT")[0].trim())
         .replace(/{DONATELINK}/g, bot.config.donatelink)

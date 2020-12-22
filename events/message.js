@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const Statcord = require("statcord.js");
 module.exports = {
   name: "message",
   run: async (bot, message) => {
@@ -12,7 +13,7 @@ module.exports = {
     if (message.channel.id === "766108811978080267") {
       bot.latestupdate.set("latestupdate", message.content)
     }
-    if (message.author.id === bot.developer.id && message.content === "getupdate") {
+    if (message.author.id === "292821168833036288" && message.content === "getupdate") {
       bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content)
     }
     let guildData;
@@ -118,14 +119,9 @@ module.exports = {
     if (command.category === "MISCELLANEOUS" && bot.miscellaneouschannels.has(message.guild.id) && bot.miscellaneouschannels.get(message.guild.id).length >= 1 && !bot.miscellaneouschannels.get(message.guild.id).includes(message.channel.id)) return;
     if (command.category === "REACTIONS" && bot.reactionchannels.has(message.guild.id) && bot.reactionchannels.get(message.guild.id).length >= 1 && !bot.reactionchannels.get(message.guild.id).includes(message.channel.id)) return;
     if (command.toggleable && bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(command.name)) return;
-    try {
-      command.run(bot, message, args, prefix, guildData);
-    } catch (e) {
-      let language = bot.utils.getLanguage(bot, guildData.language);
-      bot.error(bot, message, language, e);
-    }
+    command.run(bot, message, args, prefix, guildData);
     if (command.dev) return;
-    bot.statcord.postCommand(command.name, message.author.id);
+    Statcord.ShardingClient.postCommand(command.name, message.author.id, bot);
     bot.usage.set(message.guild.id, (bot.usage.get(message.guild.id) + 1));
     if (guildData.hasvoted === "false" && (bot.usage.get(message.guild.id) % 50 === 0) && bot.premium.get(message.guild.id) === 0) {
       let ad = bot.ads[bot.adtype.get(message.guild.id)];

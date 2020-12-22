@@ -6,12 +6,12 @@ module.exports = {
   emoji: "🌎",
   name: "language",
   run: async (bot, message, args, prefix, guildData) => {
-    if (message.member.hasPermission("MANAGE_GUILD") || message.member.roles.cache.has("704052899285696592") || message.author.id === bot.developer.id) {
+    if (message.member.hasPermission("MANAGE_GUILD") || message.member.roles.cache.has("704052899285696592") || message.author.id === "292821168833036288") {
       let language = bot.utils.getLanguage(bot, guildData.language);
       let subcommand = args[0] ? args[0].toLowerCase() : args[0];
       if (subcommand === "set") {
         if (!args[1]) {
-          let lastfetched = bot.lastfetched.get("lf");  
+          let lastfetched = bot.lastfetched.get("lf");
           let lastfetchedms = Date.parse(lastfetched);
           let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json()).then(json => {
             return Date.parse(json[0].pushed_at)
