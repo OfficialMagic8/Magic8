@@ -148,7 +148,7 @@ module.exports = {
       let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
       bot.shard.ids.forEach(shard => {
         let status = statusList[statusSize];
-        bot.user.setActivity(status.name.replace(/{SERVERS}/g, guilds).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en").replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards)), { type: status.type }).catch(e => { });
+        bot.user.setActivity(status.name.replace(/{SERVERS}/g, guilds).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")).replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards), { type: status.type }).catch(e => { });
         statusSize--;
         if (statusSize < 0) statusSize = statusList.length - 1;
       });
