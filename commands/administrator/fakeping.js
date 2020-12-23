@@ -82,53 +82,51 @@ module.exports = {
         await m.react("❌");
       } catch (e) { }
       const filter = (reaction, user) => !user.bot && ["✅", "❌"].includes(reaction.emoji.name) && user.id === message.author.id
-      m.awaitReactions(filter, { max: 1, time: 30000, errors: ["time"] })
-        .then(collected => {
-          m.reactions.removeAll().catch(e => { });
-          let reaction = collected.first();
-          if (reaction.emoji.name === "✅") {
-            if (!message.guild.me.hasPermission("MANAGE_GUILD")) {
-              updateToManual(m, embed, bot, language, link);
-              let embed = new MessageEmbed()
-                .setColor(bot.colors.red)
-                .setDescription(bot.translate(bot, language, "fakeping.notupdatedperms")
-                  .replace(/{CROSS}/g, bot.emoji.cross)
-                  .replace(/{USER}/g, message.author)
-                  .replace(/{BOT}/g, bot.user))
-              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-            }
-            console.log(link)
-            message.guild.setIcon(link, `Updated by ${message.author.tag}(${message.author.id}) using Magic8's FakePing feature!`).then(g => {
-              updateToManual(m, embed, bot, language, link);
-              let success = new MessageEmbed()
-                .setColor(bot.colors.green)
-                .setDescription(bot.translate(bot, language, "fakeping.updated")
-                  .replace(/{CHECK}/g, bot.emoji.check)
-                  .replace(/{USER}/g, message.author))
-              return message.channel.send(success).catch(e => { return bot.error(bot, message, language, e); });
-            }).catch(e => {
-              updateToManual(m, embed, bot, language, link);
-              return bot.error(bot, message, language, e);
-            })
-          } else {
+      m.awaitReactions(filter, { max: 1, time: 30000, errors: ["time"] }).then(collected => {
+        m.reactions.removeAll().catch(e => { });
+        let reaction = collected.first();
+        if (reaction.emoji.name === "✅") {
+          if (!message.guild.me.hasPermission("MANAGE_GUILD")) {
             updateToManual(m, embed, bot, language, link);
             let embed = new MessageEmbed()
               .setColor(bot.colors.red)
-              .setDescription(bot.translate(bot, language, "fakeping.notupdated")
+              .setDescription(bot.translate(bot, language, "fakeping.notupdatedperms")
                 .replace(/{CROSS}/g, bot.emoji.cross)
-                .replace(/{USER}/g, message.author))
+                .replace(/{USER}/g, message.author)
+                .replace(/{BOT}/g, bot.user))
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
-        }).catch(e => {
+          message.guild.setIcon(link, `Updated by ${message.author.tag}(${message.author.id}) using Magic8's FakePing feature!`).then(g => {
+            updateToManual(m, embed, bot, language, link);
+            embed = new MessageEmbed()
+              .setColor(bot.colors.green)
+              .setDescription(bot.translate(bot, language, "fakeping.updated")
+                .replace(/{CHECK}/g, bot.emoji.check)
+                .replace(/{USER}/g, message.author))
+            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+          }).catch(e => {
+            updateToManual(m, embed, bot, language, link);
+            return bot.error(bot, message, language, e);
+          })
+        } else {
           updateToManual(m, embed, bot, language, link);
-          m.reactions.removeAll().catch(e => { });
-          let embed = new MessageEmbed()
+          embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "fakeping.notupdated")
               .replace(/{CROSS}/g, bot.emoji.cross)
               .replace(/{USER}/g, message.author))
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-        });
+        }
+      }).catch(e => {
+        updateToManual(m, embed, bot, language, link);
+        m.reactions.removeAll().catch(e => { });
+        embed = new MessageEmbed()
+          .setColor(bot.colors.red)
+          .setDescription(bot.translate(bot, language, "fakeping.notupdated")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{USER}/g, message.author))
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      });
     }).catch(e => { });
     function updateToManual(message, embed, bot, language, link) {
       embed.setDescription(bot.translate(bot, language, "fakeping.successmanual").join("\n")
