@@ -90,13 +90,12 @@ module.exports = {
         bot.utils.registerGuild(bot, guild)
         guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       }
-      bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run("[]", guild.id)
+      // bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run("[]", guild.id)
       let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
       if (!usageData) {
         bot.utils.registerGuildUsage(bot, guild)
         usageData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       }
-
       if (usageData.inguild === "false" || null) bot.db.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("true", guild.id);
       if (guildData.inguild === "false" || null) bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("true", guild.id);
       if (guildData.guildname !== guild.name) bot.db.prepare("UPDATE guilddata SET guildname=? WHERE guildid=?").run(guild.name, guild.id);
