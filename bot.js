@@ -295,15 +295,20 @@ bot.on("channelDelete", channel => {
   let event = bot.events.get("channelDelete");
   if (event) event.run(bot, channel);
 });
+bot.debug = false;
 bot.on("debug", info => {
   let event = bot.events.get("debug");
   if (event) event.run(bot, info);
+});
+bot.on("rateLimit", rateLimitInfo => {
+  let event = bot.events.get("rateLimit");
+  if (event) event.run(bot, rateLimitInfo);
 });
 bot.on("error", error => {
   let event = bot.events.get("error");
   if (event) event.run(bot, error);
 });
-bot.on("shardError", error => {
+bot.on("shardError", (error, shardID) => {
   let event = bot.events.get("shardError");
   if (event) event.run(bot, error, shardID);
 });
