@@ -127,7 +127,8 @@ module.exports = {
     if (command.toggleable && bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).includes(command.name)) return;
     command.run(bot, message, args, prefix, guildData);
     if (command.dev) return;
-    Statcord.ShardingClient.postCommand(command.name, message.author.id, bot);
+    // Statcord.ShardingClient.postCommand(command.name, message.author.id, bot);
+    bot.statcord.postCommand(command.name, message.author.id);
     bot.usage.set(message.guild.id, (bot.usage.get(message.guild.id) + 1));
     if (guildData.hasvoted === "false" && (bot.usage.get(message.guild.id) % 50 === 0) && bot.premium.get(message.guild.id) === 0) {
       let ad = bot.ads[bot.adtype.get(message.guild.id)];
