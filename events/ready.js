@@ -96,10 +96,6 @@ module.exports = {
         bot.utils.registerGuildUsage(bot, guild)
         usageData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       }
-      bot.db.prepare("UPDATE guilddata SET quintetname=? WHERE guildid=?").run("Quintet {NUMBER}", guild.id)
-      bot.db.prepare("UPDATE guilddata SET sextetname=? WHERE guildid=?").run("Sextet {NUMBER}", guild.id)
-      bot.db.prepare("UPDATE guilddata SET heptetname=? WHERE guildid=?").run("Heptet {NUMBER}", guild.id)
-      bot.db.prepare("UPDATE guilddata SET octetname=? WHERE guildid=?").run("Octet {NUMBER}", guild.id)
 
       if (usageData.inguild === "false" || null) bot.db.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("true", guild.id);
       if (guildData.inguild === "false" || null) bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("true", guild.id);
