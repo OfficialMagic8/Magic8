@@ -140,7 +140,7 @@ module.exports = {
       bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
     }).catch(e => { });
     let statusSize = statusList.length - 1;
-    let maxshards = bot.shard.count;
+    // let maxshards = bot.shard.count;
     setInterval(async () => {
       // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
       // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
