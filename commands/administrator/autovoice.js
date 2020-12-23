@@ -1,5 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const nicetypes = { "Duo": 2, "Trio": 3, "Squad": 4, "Quintet": 5, "Sextet": 6, "Heptet": 7, "Octet": 8 };
+const types = Object.keys(nicetypes).map(t => `${t.toLowerCase()}`)
+const limits = Object.values(nicetypes)
 module.exports = {
   aliases: ["av"],
   category: "ADMINISTRATOR",
@@ -44,7 +46,6 @@ module.exports = {
             .replace(/{CURRENTCHANNELS}/g, available.map(a => `**•** ${a}`).join("\n")))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let types = Object.keys(nicetypes).map(t => `${t.toLowerCase()}`)
       if (!args[1]) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.main)
@@ -74,7 +75,7 @@ module.exports = {
         let object = {
           id: created.id,
           type: args[1].toLowerCase(),
-          limit: nicetypes[`${args[1].toLowerCase()}`]
+          limit: limits[`${types.indexOf(args[1].toLowerCase())}`]
         }
         voicechannels.push(object);
         bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(1, message.guild.id);
@@ -181,7 +182,6 @@ module.exports = {
       }).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "name") {
       if ([1, 2].includes(bot.premium.get(message.guild.id))) {
-        let types = nicetypes.map(t => `${t.toLowerCase()}`)
         if (!args[1]) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.main)
