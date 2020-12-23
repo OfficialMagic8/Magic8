@@ -113,27 +113,27 @@ module.exports.loadAutoVoiceChannels = (bot) => {
         }
       })
       if (a.length <= 0) {
-        bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(0, row.guildid)
+        bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(0, row.guildid);
       }
       bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(channels), row.guildid);
     }
   })
-  console.log(`🔊 Guilds with Auto Voice Channels Ready: ${loaded.length}`)
+  console.log(`🔊 Guilds with Auto Voice Channels Ready: ${loaded.length}`);
 };
 module.exports.loadLFGRoles = async (bot) => {
   let guildsids = bot.guilds.cache.keyArray();
-  let lfgroleguilds = bot.db.prepare("SELECT * FROM guilddata WHERE lfgrole!=?").all("none").filter(row => guildsids.includes(row.guildid))
+  let lfgroleguilds = bot.db.prepare("SELECT * FROM guilddata WHERE lfgrole!=?").all("none").filter(row => guildsids.includes(row.guildid));
   lfgroleguilds.forEach(row => {
     let role = row.lfgrole;
     if (bot.guilds.cache.get(row.guildid).roles.cache.has(role)) {
       bot.lfgroles.set(row.guildid, role);
     }
   })
-  console.log(`🎮 Guilds with LFG Roles: ${lfgroleguilds.length}`)
+  console.log(`🎮 Guilds with LFG Roles: ${lfgroleguilds.length}`);
 };
 module.exports.loadLFGUsers = async (bot) => {
   let guildsids = bot.guilds.cache.keyArray();
-  let lfgroleguilds = bot.db.prepare("SELECT * FROM guilddata WHERE lfgrole!=?").all("none").filter(row => guildsids.includes(row.guildid))
+  let lfgroleguilds = bot.db.prepare("SELECT * FROM guilddata WHERE lfgrole!=?").all("none").filter(row => guildsids.includes(row.guildid));
   lfgroleguilds.forEach(row => {
     let role = row.lfgrole;
     if (bot.guilds.cache.get(row.guildid).roles.cache.has(role)) {
