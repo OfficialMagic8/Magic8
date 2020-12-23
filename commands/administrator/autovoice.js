@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const nicetypes = { "Duo": 2, "Trio": 3, "Squad": 4, "Quintet": 5, "Sextet": 6, "Heptet": 7, "Octet": 8 };
 module.exports = {
   aliases: ["av"],
   category: "ADMINISTRATOR",
@@ -9,7 +10,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let subcommand = args[0] ? args[0].toLowerCase() : args[0];
     if (subcommand === "create") {
-      if (guildData.autovoicecategory === "none") {
+      if (!bot.avcategories.has(message.guild.id)) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "autovoice.nocategory").join("\n")
@@ -43,7 +44,7 @@ module.exports = {
             .replace(/{CURRENTCHANNELS}/g, available.map(a => `**•** ${a}`).join("\n")))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let types = ["duo", "trio", "squad"]
+      let types = Object.keys(nicetypes).map(t => `${t.toLowerCase()}`)
       if (!args[1]) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.main)
@@ -62,80 +63,30 @@ module.exports = {
             .replace(/{TYPES}/g, types.map(t => `\`${t}\``).join(" ")))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      if (args[1].toLowerCase() === "duo") {
-        let voicechannels = JSON.parse(guildData.autovoicechannels);
-        let category = guildData.autovoicecategory;
-        let opts = {
-          type: "voice",
-          parent: category,
-        };
-        try {
-          let created = await message.guild.channels.create(`[DUO]`, opts);
-          let object = {
-            id: created.id,
-            type: "Duo",
-            limit: 2
-          }
-          voicechannels.push(object);
-          bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(1, message.guild.id);
-          bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(voicechannels), message.guild.id);
-          let embed = new MessageEmbed()
-            .setColor(bot.colors.green)
-            .setDescription(bot.translate(bot, language, "autovoice.created").join("\n")
-              .replace(/{CHECK}/g, bot.emoji.check)
-              .replace(/{TYPE}/g, bot.translate(bot, language, "autovoice.type.duo"))
-              .replace(/{INFO}/g, bot.emoji.info));
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-        } catch (e) { return bot.error(bot, message, language, e); }
-      } else if (args[1].toLowerCase() === "trio") {
-        let voicechannels = JSON.parse(guildData.autovoicechannels);
-        let category = guildData.autovoicecategory;
-        let opts = {
-          type: "voice",
-          parent: category,
-        };
-        try {
-          let created = await message.guild.channels.create(`[TRIO]`, opts);
-          let object = {
-            id: created.id,
-            type: "Trio",
-            limit: 3
-          }
-          voicechannels.push(object)
-          bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(voicechannels), message.guild.id);
-          let embed = new MessageEmbed()
-            .setColor(bot.colors.green)
-            .setDescription(bot.translate(bot, language, "autovoice.created").join("\n")
-              .replace(/{CHECK}/g, bot.emoji.check)
-              .replace(/{TYPE}/g, bot.translate(bot, language, "autovoice.type.trio"))
-              .replace(/{INFO}/g, bot.emoji.info))
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-        } catch (e) { return bot.error(bot, message, language, e); }
-      } else if (args[1] === "squad") {
-        let voicechannels = JSON.parse(guildData.autovoicechannels);
-        let category = guildData.autovoicecategory;
-        let opts = {
-          type: "voice",
-          parent: category,
-        };
-        try {
-          let created = await message.guild.channels.create(`[SQUAD]`, opts);
-          let object = {
-            id: created.id,
-            type: "Squad",
-            limit: 4
-          }
-          voicechannels.push(object);
-          bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(voicechannels), message.guild.id);
-          let embed = new MessageEmbed()
-            .setColor(bot.colors.green)
-            .setDescription(bot.translate(bot, language, "autovoice.created").join("\n")
-              .replace(/{CHECK}/g, bot.emoji.check)
-              .replace(/{TYPE}/g, bot.translate(bot, language, "autovoice.type.squad"))
-              .replace(/{INFO}/g, bot.emoji.info))
-          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-        } catch (e) { return bot.error(bot, message, language, e); }
-      }
+      let voicechannels = JSON.parse(guildData.autovoicechannels);
+      let category = bot.avcategories.get(message.guild.id);
+      let opts = {
+        type: "voice",
+        parent: category,
+      };
+      try {
+        let created = await message.guild.channels.create(`[${args[1].toUpperCase()}]`, opts);
+        let object = {
+          id: created.id,
+          type: args[1].toLowerCase(),
+          limit: nicetypes[`${args[1].toLowerCase()}`]
+        }
+        voicechannels.push(object);
+        bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(1, message.guild.id);
+        bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(voicechannels), message.guild.id);
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.green)
+          .setDescription(bot.translate(bot, language, "autovoice.created").join("\n")
+            .replace(/{CHECK}/g, bot.emoji.check)
+            .replace(/{TYPE}/g, bot.translate(bot, language, `autovoice.type.${args[1].toLowerCase()}`))
+            .replace(/{INFO}/g, bot.emoji.info));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      } catch (e) { return bot.error(bot, message, language, e); }
     } else if (subcommand === "delete") {
       let getautochannels = JSON.parse(guildData.autovoicechannels);
       let a = [];
@@ -206,6 +157,10 @@ module.exports = {
               bot.duo.delete(message.guild.id);
               bot.trio.delete(message.guild.id);
               bot.squad.delete(message.guild.id);
+              bot.quintet.delete(message.guild.id);
+              bot.sextet.delete(message.guild.id);
+              bot.heptet.delete(message.guild.id);
+              bot.octet.delete(message.guild.id);
               if (channels.length <= 0) channels = [`*${bot.translate(bot, language, "none")}*`];
               let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
@@ -226,8 +181,7 @@ module.exports = {
       }).catch(e => { return bot.error(bot, message, language, e); });
     } else if (subcommand === "name") {
       if ([1, 2].includes(bot.premium.get(message.guild.id))) {
-        let nicetypes = ["Duo", "Trio", "Squad"];
-        let types = ["duo", "trio", "squad"];
+        let types = nicetypes.map(t => `${t.toLowerCase()}`)
         if (!args[1]) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.main)

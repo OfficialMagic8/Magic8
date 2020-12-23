@@ -190,6 +190,11 @@ bot.prefixes = new Collection();
 bot.duo = new Collection();
 bot.trio = new Collection();
 bot.squad = new Collection();
+bot.quintet = new Collection();
+bot.sextet = new Collection();
+bot.heptet = new Collection();
+bot.octet = new Collection();
+
 bot.avcategories = new Collection();
 bot.avtempchannels = new Collection();
 bot.voicecooldown = new Collection();

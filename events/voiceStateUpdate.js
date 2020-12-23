@@ -53,21 +53,10 @@ module.exports = {
                 userLimit: vc.limit,
                 parent: parent
               };
-              let number;
-              if (vc.type === "Duo") {
-                if (!bot.duo.has(guild.id)) bot.duo.set(guild.id, 0);
-                bot.duo.set(guild.id, bot.duo.get(guild.id) + 1);
-                number = bot.duo.get(guild.id);
-              } else if (vc.type === "Trio") {
-                if (!bot.trio.has(guild.id)) bot.trio.set(guild.id, 0);
-                bot.trio.set(guild.id, bot.trio.get(guild.id) + 1);
-                number = bot.trio.get(guild.id);
-              } else if (vc.type === "Squad") {
-                if (!bot.squad.has(guild.id)) bot.squad.set(guild.id, 0);
-                bot.squad.set(guild.id, bot.squad.get(guild.id) + 1);
-                number = bot.squad.get(guild.id);
-              }
               let type = vc.type;
+              if (!bot[`${type}`].has(guild.id)) bot[`${type}`].set(guild.id, 0);
+              bot[`${type}`].set(guild.id, bot[`${type}`].get(guild.id) + 1);
+              let number = bot[`${type}`].get(guild.id);
               let name = guildData[`${type.toLowerCase()}name`];
               let voice = await guild.channels.create(name.replace(/{NUMBER}/g, number), opts);
               await newState.setChannel(voice.id).catch(e => { });
@@ -113,13 +102,7 @@ module.exports = {
                 try {
                   let vc = t.find(i => i.id === oldState.channelID);
                   // console.log(`Found: ${JSON.stringify(vc)}`)
-                  if (vc.type === "Duo") {
-                    bot.duo.set(guild.id, bot.duo.get(guild.id) - 1);
-                  } else if (vc.type === "Trio") {
-                    bot.trio.set(guild.id, bot.trio.get(guild.id) - 1);
-                  } else if (vc.type === "Squad") {
-                    bot.squad.set(guild.id, bot.squad.get(guild.id) - 1);
-                  }
+                  bot[`${vc.type}`].set(guild.id, bot[`${vc.type}`].get(guild.id) - 1);
                   // console.log(`Channel Index: ${tempchannels.indexOf(vc)}`)
                   t.splice(t.indexOf(vc), 1);
                   bot.avtempchannels.set(guild.id, t);
