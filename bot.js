@@ -164,6 +164,8 @@ bot.utils.fetchLanguages(bot);
 app.get("/pingstatus", function (request, response) {
   response.sendStatus(200)
 });
+bot.guildfetched = new Collection();
+
 // app.get("/test", async function (request, response) {
 //   response.json(bot.languages.get("en"))
 //   let guildsids = bot.guilds.cache.keyArray();
