@@ -6,8 +6,8 @@ module.exports = {
     try {
       if (!bot.users.cache.has(message.author.id)) await bot.users.fetch(message.author.id)
       if (!bot.guildfetched.has(message.guild.id)) {
-        await message.guild.members.fetch()
         bot.guildfetched.set(message.guild.id, Date.now());
+        await message.guild.members.fetch();
       }
     } catch (e) { }
     if (message.type !== "DEFAULT") return;

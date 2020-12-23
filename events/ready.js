@@ -6,9 +6,9 @@ module.exports = {
     console.log(`✅ Ready event loading... ${bot.user.tag}`)
     let guildChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get("652539034404519936");
     if (guildChannel) {
-      let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-      let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-      let guildText = `📚 Guilds : ${guilds}`;
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      let guildText = `📚 Guilds : ${bot.guilds.cache.size}`;
       if (guildChannel.name !== guildText) {
         guildChannel.setName(guildText).catch(e => { });
       }
@@ -17,9 +17,9 @@ module.exports = {
     postdsicordboats(bot);
     setInterval(async () => {
       if (guildChannel) {
-        let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-        let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-        let guildText = `📚 Guilds : ${guilds}`;
+        // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+        // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+        let guildText = `📚 Guilds : ${bot.guilds.cache.size}`;
         if (guildChannel.name !== guildText) {
           guildChannel.setName(guildText).catch(e => { });
         }
@@ -90,7 +90,6 @@ module.exports = {
         bot.utils.registerGuild(bot, guild)
         guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
       }
-      // bot.db.prepare("UPDATE guilddata SET ballcustomreplies=? WHERE guildid=?").run("[]", guild.id)
       let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
       if (!usageData) {
         bot.utils.registerGuildUsage(bot, guild)
@@ -118,8 +117,8 @@ module.exports = {
     bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
     bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
     let statusList = [
-      { name: `on shard {SHARD}/{MAXSHARDS}`, type: "PLAYING" },
-      { name: `with ${bot.shard.count} shards`, type: "PLAYING" },
+      // { name: `on shard {SHARD}/{MAXSHARDS}`, type: "PLAYING" },
+      // { name: `with ${bot.shard.count} shards`, type: "PLAYING" },
       { name: `with 20+ languages`, type: "PLAYING" },
       { name: `with new updates`, type: "PLAYING" },
       { name: `with your mind`, type: "PLAYING" },
@@ -143,14 +142,14 @@ module.exports = {
     let statusSize = statusList.length - 1;
     let maxshards = bot.shard.count;
     setInterval(async () => {
-      let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-      let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-      bot.shard.ids.forEach(shard => {
-        let status = statusList[statusSize];
-        bot.user.setActivity(status.name.replace(/{SERVERS}/g, guilds).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")).replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards), { type: status.type }).catch(e => { });
-        statusSize--;
-        if (statusSize < 0) statusSize = statusList.length - 1;
-      });
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      // bot.shard.ids.forEach(shard => {
+      let status = statusList[statusSize];
+      bot.user.setActivity(status.name.replace(/{SERVERS}/g, bot.guilds.cache.size).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en"))/*.replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards)*/, { type: status.type/*, shardID: shard*/ }).catch(e => { });
+      statusSize--;
+      if (statusSize < 0) statusSize = statusList.length - 1;
+      // });
     }, 10000);
     bot.user.setStatus("online").catch(e => { });
     bot.utils.fetchLanguages(bot);
@@ -162,9 +161,9 @@ module.exports = {
     let restartTime = bot.ms(new Date() - bot.starttime);
     console.log(`✅ Start Time: ${restartTime}`);
     console.log(`🛰️ Ping: ${bot.ms(bot.ws.ping)}`);
-    let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-    let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-    console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${guilds}`);
+    // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+    // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+    console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${bot.guilds.cache.size}`);
     let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
     bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
     async function postdiscordbotlist(bot) {
@@ -180,10 +179,10 @@ module.exports = {
       //     // console.log(xhr.responseText);
       //   }
       // };
-      let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-      let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
       let data = `{
-        "guilds": ${guilds}
+        "guilds": ${bot.guilds.cache.size}
       }`;
       xhr.send(data);
     }
@@ -194,10 +193,10 @@ module.exports = {
       xhr.open("POST", url);
       xhr.setRequestHeader("Authorization", process.env.DISCORD_BOATS_API);
       xhr.setRequestHeader("Content-Type", "application/json");
-      let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-      let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
       let data = `{
-        "server_count": ${guilds}
+        "server_count": ${bot.guilds.cache.size}
       }`;
       xhr.send(data);
     }
