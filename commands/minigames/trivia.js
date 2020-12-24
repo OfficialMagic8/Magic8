@@ -142,6 +142,7 @@ module.exports = {
       let link = categorybaseurl.replace(/{CATEGORY}/g, object.category).replace(/{DIFFICULTY}/g, difficulty)
       request(link, function (err, response, body) {
         if (err) {
+          bot.playingtrivia.delete(user.id)
           return bot.error(bot, message, language, err);
         }
         let parsed = JSON.parse(body);

@@ -11,10 +11,10 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (bot.playing8color.has(message.author.id)) {
       let embed = new MessageEmbed()
-        .setDescription(bot.translate(bot, language, "8color.alreadyplaying")
-          .replace(/{CROSS}/g, bot.emoji.cross).
-          replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
+        .setDescription(bot.translate(bot, language, "8color.alreadyplaying")
+          .replace(/{CROSS}/g, bot.emoji.cross)
+          .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let defaultObject = {
@@ -55,11 +55,10 @@ module.exports = {
           .replace(/{LEVEL}/g, object.level)
           .replace(/{TIME}/g, timeshort))
           .setColor(bot.colors.yellow)
-        try {
-          await gameMessage.edit(game);
-        } catch (e) {
-          bot.error(bot, message, language, e);
-        }
+        gameMessage.edit(game).catch(e => {
+          bot.playing8color.delete(message.author.id)
+          return bot.error(bot, message, language, e);
+        })
         let filter = m => m.author.id === message.author.id;
         message.channel.awaitMessages(filter, { max: 1, time: time, errors: ['time'] }).then(async collected => {
           let replyMessage = collected.first()
@@ -81,7 +80,8 @@ module.exports = {
                 startGame(bot, message, removemessage, language)
               }, 10000)
             } catch (e) {
-              bot.error(bot, message, language, e);
+              bot.playing8color.delete(message.author.id)
+              return bot.error(bot, message, language, e);
             }
             if (removemessage) replyMessage.delete({ timeout: 500 }).catch(e => { });
           } else {
@@ -100,7 +100,8 @@ module.exports = {
               if (removemessage) replyMessage.delete({ timeout: 500 }).catch(e => { });
               if (removemessage) gameMessage.delete({ timeout: 10000 }).catch(e => { });
             } catch (e) {
-              bot.error(bot, message, language, e);
+              bot.playing8color.delete(message.author.id)
+              return bot.error(bot, message, language, e);
             }
           }
         }).catch(async e => {
@@ -117,7 +118,7 @@ module.exports = {
             await gameMessage.edit(game);
             if (removemessage) gameMessage.delete({ timeout: 10000 }).catch(e => { });
           } catch (e) {
-            bot.error(bot, message, language, e);
+            return bot.error(bot, message, language, e);
           }
         })
       }, timeMemorize);

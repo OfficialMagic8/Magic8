@@ -215,6 +215,9 @@ module.exports = {
             bot.playingconnect4.delete(second.user.id);
           }).catch(e => {
             if (connectMessage) connectMessage.reactions.removeAll().catch(e => { });
+
+            bot.playingconnect4.delete(first.userid);
+            bot.playingconnect4.delete(second.userid);
             return bot.error(bot, message, language, e);
           });
           return;
@@ -240,6 +243,9 @@ module.exports = {
             bot.playingconnect4.delete(second.user.id);
           }).catch(e => {
             if (connectMessage) connectMessage.reactions.removeAll().catch(e => { });
+
+            bot.playingconnect4.delete(first.userid);
+            bot.playingconnect4.delete(second.userid);
             return bot.error(bot, message, language, e);
           });
           return;

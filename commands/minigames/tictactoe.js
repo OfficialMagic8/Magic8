@@ -129,7 +129,7 @@ module.exports = {
       } catch (e) {
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        return  bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       }
       let starter = Math.floor(Math.random() * 101) < 50 ? 0 : 1;
       first.turn = starter;
@@ -236,6 +236,8 @@ module.exports = {
             bot.playingtictactoe.delete(second.user.id);
           }).catch(e => {
             if (gameMessage) gameMessage.reactions.removeAll().catch(e => { })
+            bot.playingtictactoe.set(message.author.id, first);
+            bot.playingtictactoe.set(target.id, second);
             return bot.error(bot, message, language, e);
           });
           return;
@@ -262,6 +264,8 @@ module.exports = {
             bot.playingtictactoe.delete(second.user.id);
           }).catch(e => {
             if (gameMessage) gameMessage.reactions.removeAll().catch(e => { });
+            bot.playingtictactoe.set(message.author.id, first);
+            bot.playingtictactoe.set(target.id, second);
             return bot.error(bot, message, language, e);
           });
           return;
@@ -273,7 +277,7 @@ module.exports = {
         if (gameMessage) gameMessage.reactions.removeAll().catch(e => { });
         bot.playingtictactoe.delete(first.user.id);
         bot.playingtictactoe.delete(second.user.id);
-        return  bot.error(bot, message, language, e);
+        return bot.error(bot, message, language, e);
       });
     }
     function getWinner(bot, first) {
