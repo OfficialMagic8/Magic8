@@ -47,7 +47,9 @@ module.exports = {
             .replace(/{HERE}/gi, "@here"))
             .catch(e => { });
         } else {
-          return channel.send(msg).catch(e => { return bot.error(bot, message, language, e); });
+          return channel.send(msg
+            .replace(/@everyone/gi, "@ everyone")
+            .replace(/@here/gi, "@ here")).catch(e => { return bot.error(bot, message, language, e); });
         }
       }
     }
