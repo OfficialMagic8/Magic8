@@ -35,7 +35,40 @@ module.exports = {
       let listname = args.slice(1).join(" ")
       if (listname && listnames.includes(listname.toLowerCase())) {
         let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
-        let items = list.items.length === 0 ? `*${bot.translate(bot, language, "none")}*` : list.items.map(i => `**•** ${i.trim()}`).join("\n");
+        let checkitems = list.items.length === 0 ? [`*${bot.translate(bot, language, "none")}*`] : list.items;
+        let mapped = checkitems.map(i => `**•** ${i.trim()}`).join("\n")
+        let itemslength = mapped.length;
+        let math = itemslength / 8;
+        let fullpagecount = Math.floor(math);
+        let totalpages;
+        if (!Number.isInteger(math)) {
+          totalpages = fullpagecount + 1;
+        } else {
+          totalpages = fullpagecount;
+        }
+        let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
+        if (isNaN(page) || page > totalpages || page < 1) {
+          let embed = new MessageEmbed()
+            .setColor(bot.colors.red)
+            .setDescription(bot.translate(bot, language, "listmanager.viewitemsinvalidpage").join("\n")
+              .replace(/{CROSS}/g, bot.emoji.cross)
+              .replace(/{INPUT}/g, args[1])
+              .replace(/{INFO}/g, bot.emoji.info)
+              .replace(/{TOTALPAGES}/g, totalpages));
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        }
+        let lastitemindex = page * 5;
+        let selecteditems = [];
+        for (map of mapped) {
+          if (page === totalpages) {
+            if (mapped.indexOf(map) + 1 <= itemslength && mapped.indexOf(map) + 1 > fullpagecount * 5) {
+              selecteditems.push(map);
+            }
+          }
+          if (mapped.indexOf(map) + 1 <= lastitemindex && mapped.indexOf(map) + 1 > lastitemindex - 5) {
+            if (!selecteditems.includes(map)) selecteditems.push(map);
+          }
+        }
         if (message.member.hasPermission("MANAGE_GUILD")) {
           let hastetext = [
             `Magic8 - ${message.guild.name} - List Manager`,
@@ -50,7 +83,7 @@ module.exports = {
             setTimeout(async () => {
               message.channel.send(`**Preformatted Items:** ${haste}`)
             }, 1000)
-          }).catch(e => { return bot.error(bot, message, language, e); })
+          }).catch(e => { return bot.error(bot, message, language, e); });
         }
         let embed = new MessageEmbed()
           .setColor(bot.colors.main)
@@ -58,7 +91,10 @@ module.exports = {
           .setDescription(bot.translate(bot, language, "listmanager.viewitems").join("\n")
             .replace(/{LISTNAME}/g, list.name)
             .replace(/{CREATED}/g, list.creationdate.split(" ")[0].replace(",", ""))
-            .replace(/{ITEMS}/g, items));
+            .replace(/{ITEMS}/g, selecteditems.join("\n")))
+          .setFooter(bot.translate(bot, language, "listmanager.viewitemspagefooter")
+            .replace(/{PAGE}/g, page)
+            .replace(/{TOTALPAGES}/g, totalpages));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (listname && !listnames.includes(listname.toLowerCase())) {
         let embed = new MessageEmbed()
@@ -397,6 +433,15 @@ module.exports = {
           const filter = m => m.author.id === message.author.id && message.content
           message.channel.awaitMessages(filter, { max: 1, time: 180000, errors: ["time"] }).then(collected => {
             let items = collected.first().content.split("|");
+            items.forEach(item => {
+              if (item.length > 80) {
+                let embed = new MessageEmbed()
+                  .setColor(bot.colors.red)
+                  .setDescription(bot.translate(bot, language, "listmanager.itemtoolong")
+                    .replace(/{CROSS}/g, bot.emoji.cross));
+                return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+              }
+            })
             let cleanItems = items.map(i => i.trim()).filter(i => i.length >= 2);
             if (cleanItems < 2) {
               m.delete({ timeout: 500 }).catch(e => { });
@@ -487,6 +532,13 @@ module.exports = {
           const filter = m => m.author.id === message.author.id && message.content
           message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ["time"] }).then(collected => {
             let item = collected.first().content;
+            if (item.length > 80) {
+              let embed = new MessageEmbed()
+                .setColor(bot.colors.red)
+                .setDescription(bot.translate(bot, language, "listmanager.itemtoolong")
+                  .replace(/{CROSS}/g, bot.emoji.cross));
+              return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+            }
             list.items.push(item);
             bot.db.prepare("UPDATE guilddata SET listmanager=? WHERE guildid=?").run(JSON.stringify(lists), message.guild.id);
             bot.hastebin(list.items.map(i => i.trim()).join(" | "), { url: "https://paste.mod.gg", extension: "txt" }).then(haste => {
