@@ -64,6 +64,7 @@ bot.invite = "https://discord.gg/bUUggyCjvp";
 bot.shortinvite = "discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
 bot.footer = ``;
+bot.debug = false;
 
 // bot.developer = undefined;
 // bot.maindeveloper = undefined;
@@ -304,7 +305,6 @@ bot.on("channelDelete", channel => {
   let event = bot.events.get("channelDelete");
   if (event) event.run(bot, channel);
 });
-bot.debug = false;
 bot.on("debug", info => {
   let event = bot.events.get("debug");
   if (event) event.run(bot, info);
@@ -313,10 +313,10 @@ bot.on("rateLimit", rateLimitInfo => {
   let event = bot.events.get("rateLimit");
   if (event) event.run(bot, rateLimitInfo);
 });
-bot.on("error", error => {
-  let event = bot.events.get("error");
-  if (event) event.run(bot, error);
-});
+// bot.on("error", error => {
+//   let event = bot.events.get("error");
+//   if (event) event.run(bot, error);
+// });
 // bot.on("shardError", (error, shardID) => {
 //   let event = bot.events.get("shardError");
 //   if (event) event.run(bot, error, shardID);
@@ -371,11 +371,13 @@ bot.on("voiceStateUpdate", (oldState, newState) => {
 });
 bot.utils.loadCommands(bot);
 bot.utils.loadEvents(bot);
-
-bot.login(process.env.DISCORD_TOKEN);
+module.exports = {
+  bot: bot
+};
 bot.cleanTags = (message) => {
   return message.replace(/@everyone/gi, "<everyone>").replace(/@here/gi, "<here>")
 }
+bot.login(process.env.DISCORD_TOKEN);
 // bot.getGuildSize = async function () {
 //   let req = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
 //   return parseInt(req.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
@@ -384,6 +386,3 @@ bot.cleanTags = (message) => {
 //   let req = await bot.shard.broadcastEval('this.channels.cache.size').catch(e => { })
 //   return parseInt(req.reduce((acc, channelCount) => acc + channelCount, 0)).toLocaleString("en")
 // }
-module.exports = {
-  bot: bot
-};

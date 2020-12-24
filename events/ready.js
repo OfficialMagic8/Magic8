@@ -84,21 +84,6 @@ module.exports = {
         }
       }).catch(e => { });
     }, 60000);
-    bot.guilds.cache.forEach(guild => {
-      let guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
-      if (!guildData) {
-        bot.utils.registerGuild(bot, guild)
-        guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
-      }
-      let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
-      if (!usageData) {
-        bot.utils.registerGuildUsage(bot, guild)
-        usageData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
-      }
-      if (usageData.inguild === "false" || null) bot.db.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("true", guild.id);
-      if (guildData.inguild === "false" || null) bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("true", guild.id);
-      if (guildData.guildname !== guild.name) bot.db.prepare("UPDATE guilddata SET guildname=? WHERE guildid=?").run(guild.name, guild.id);
-    });
     loadMain(bot);
     loadMCServers(bot);
     loadAutoVoiceChannels(bot);
@@ -150,7 +135,7 @@ module.exports = {
       statusSize--;
       if (statusSize < 0) statusSize = statusList.length - 1;
       // });
-    }, 10000);
+    }, 20000);
     bot.user.setStatus("online").catch(e => { });
     bot.utils.fetchLanguages(bot);
     setTimeout(() => {
@@ -160,7 +145,6 @@ module.exports = {
     let time = `${date[1]}${date[2]}`;
     let restartTime = bot.ms(new Date() - bot.starttime);
     console.log(`✅ Start Time: ${restartTime}`);
-    console.log(`🛰️ Ping: ${bot.ms(bot.ws.ping)}`);
     // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
     // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
     console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${bot.guilds.cache.size}`);
