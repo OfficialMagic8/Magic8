@@ -33,8 +33,8 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "randomnumber.onenumber").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
           .replace(/{USER}/g, message.author)
-          .replace(/{MAXNUMBER}/g, args[0])
-          .replace(/{RANDOMNUMBER}/g, random));
+          .replace(/{MAXNUMBER}/g, number.toLocaleString("en"))
+          .replace(/{RANDOMNUMBER}/g, random.toLocaleString("en")));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (Number.isInteger(number) && Number.isInteger(parseInt(args[1]))) {
@@ -44,9 +44,9 @@ module.exports = {
         .setDescription(bot.translate(bot, language, "randomnumber.twonumbers").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
           .replace(/{USER}/g, message.author)
-          .replace(/{MINNUMBER}/g, args[0])
-          .replace(/{MAXNUMBER}/g, args[1])
-          .replace(/{RANDOMNUMBER}/g, random));
+          .replace(/{MINNUMBER}/g, number.toLocaleString("en"))
+          .replace(/{MAXNUMBER}/g, parseInt(args[1]).toLocaleString("en"))
+          .replace(/{RANDOMNUMBER}/g, random.toLocaleString("en")));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
