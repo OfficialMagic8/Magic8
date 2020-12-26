@@ -402,6 +402,7 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
+      let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
       if (!list) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -412,7 +413,6 @@ module.exports = {
             .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
       let hastetext = [
         `Magic8 - ${message.guild.name} - List Manager`,
         ``,
