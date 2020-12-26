@@ -4,9 +4,9 @@
     "thumbnail": "https://cdn.discordapp.com/avatars/484148705507934208/98a7b6214cd7e14438709e2d0d3cc0bc.png",
     "description": [
       "**Hello my amazing friends!**",
-      "- Enjoy {BOT}? Give us a [**vote**](https://top.gg/bot/484148705507934208/vote)!",
-      "- Voting gives your server **rewards**!",
-      "- Join the official Magic8 [Support Server]({INVITE}) and meet new people!",
+      "• Enjoy {BOT}? Give us a [**vote**](https://top.gg/bot/484148705507934208/vote)!",
+      "• Voting gives your server **rewards**!",
+      "• Join the official Magic8 [Support Server]({INVITE}) and meet new people!",
       "",
       "{INFO} **Advertisement Info:** [here]({ADSINFO})"
     ]
@@ -16,9 +16,9 @@
     "image": "https://something.host/img/brand.png",
     "description": [
       "**Want to host a Discord Bot?**",
-      "- Check out [**Something.Host**](https://something.host/)!",
-      "- Join our growing community today @ [discord.gg/FZXaqgM](https://discord.gg/FZXaqgM)!",
-      "- Free 24/7 hosting coming soon!",
+      "• Check out [**Something.Host**](https://something.host/)!",
+      "• Join our growing community today @ [discord.gg/FZXaqgM](https://discord.gg/FZXaqgM)!",
+      "• Free 24/7 hosting coming soon!",
       "",
       "{INFO} **Advertisement Info:** [here]({ADSINFO})"
     ]
@@ -28,9 +28,9 @@
     "thumbnail": "https://cdn.discordapp.com/avatars/772935872646610994/b343b6889d62dc4caf4df62b2dd5c736.png",
     "description": [
       "**Need help with your project?**",
-      "- Join [**Résumé Development**]({INVITE})!",
-      "- Get help from experienced developers!",
-      "- Test or show your projects to the community!",
+      "• Join [**Résumé Development**]({INVITE})!",
+      "• Get help from experienced developers!",
+      "• Test or show your projects to the community!",
       "",
       "{INFO} **Advertisement Info:** [here]({ADSINFO})"
     ]
@@ -40,9 +40,27 @@
     "thumbnail": "https://cdn.discordapp.com/avatars/645737776783949873/5e17aa5babbe6adcbfba89e646999fcf.png",
     "description": [
       "**Looking for a Mod Mail system?**",
-      "- Invite [**MailBox**](https://discord.com/oauth2/authorize?client_id=645737776783949873&scope=bot&permissions=201714897) to your server!",
-      "- Easy community managment!",
-      "- Fast and customizable setup!",
+      "• Invite [**MailBox**](https://discord.com/oauth2/authorize?client_id=645737776783949873&scope=bot&permissions=201714897) to your server!",
+      "• Easy community managment!",
+      "• Fast and customizable setup!",
+      "",
+      "{INFO} **Advertisement Info:** [here]({ADSINFO})"
+    ]
+  },
+  {
+    "name": "Shopery",
+    "thumbnail": "https://cdn.discordapp.com/attachments/791728292377001984/791811002843791370/shopery.png",
+    "description": [
+      "**Information**",
+      "• Invite [**Shopery**](https://discord.com/oauth2/authorize?client_id=787854966882697216&scope=bot&permissions=19529) to your server!",
+      "• Request deliveries to your server!",
+      "• Always improving and easy to use!",
+      "",
+      "**Work for Us:**",
+      "• Join the Team as an employee",
+      "• Make customers' requests",
+      "• Deliver orders.",
+      "• Private channel in our [**Workshop**](https://discord.gg/tWXKWFdDnj).",
       "",
       "{INFO} **Advertisement Info:** [here]({ADSINFO})"
     ]
