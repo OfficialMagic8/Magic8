@@ -41,15 +41,14 @@ module.exports = {
       } else {
         if (message.member.hasPermission("MENTION_EVERYONE")) {
           return channel.send(msg
-            .replace(/@everyone/gi, "@ everyone")
-            .replace(/@here/gi, "@ here")
+            .replace(/@/g, "@\u200b")
             .replace(/{EVERYONE}/gi, "@everyone")
             .replace(/{HERE}/gi, "@here"))
-            .catch(e => { });
+            .catch(e => { return bot.error(bot, message, language, e); });
         } else {
           return channel.send(msg
-            .replace(/@everyone/gi, "@ everyone")
-            .replace(/@here/gi, "@ here")).catch(e => { return bot.error(bot, message, language, e); });
+            .replace(/@/g, "@\u200b"))
+            .catch(e => { return bot.error(bot, message, language, e); });
         }
       }
     }
