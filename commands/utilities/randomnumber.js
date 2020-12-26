@@ -26,7 +26,7 @@ module.exports = {
           .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
-    if (Number.isInteger(number)) {
+    if (Number.isInteger(number) && !Number.isInteger(parseInt(args[1]))) {
       let random = Math.floor(Math.random() * (number + 1));
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
@@ -38,7 +38,7 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     if (Number.isInteger(number) && Number.isInteger(parseInt(args[1]))) {
-      let random = Math.floor(Math.random() * (max + 1 - min) + min);
+      let random = Math.floor(Math.random() * (parseInt(args[1]) + 1 - number) + number);
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setDescription(bot.translate(bot, language, "randomnumber.twonumbers").join("\n")
