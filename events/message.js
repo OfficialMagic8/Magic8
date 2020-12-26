@@ -17,10 +17,10 @@ module.exports = {
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.channel.id === "766108811978080267") {
-      bot.latestupdate.set("latestupdate", message.content)
+      bot.latestupdate.set("latestupdate", message.content);
     }
     if (message.author.id === "292821168833036288" && message.content === "getupdate") {
-      bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content)
+      bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
     }
     let guildData;
     if (!bot.prefixes.has(guild.id)) {
@@ -84,7 +84,7 @@ module.exports = {
           if (bot.antipinglogchannels.has(guild.id) && guild.channels.cache.has(bot.antipinglogchannels.get(guild.id))) {
             let mentionsarray = [];
             tagged.forEach(t => {
-              mentionsarray.push(bot.users.cache.get(t))
+              mentionsarray.push(bot.users.cache.get(t));
             })
             let logchannel = guild.channels.cache.get(bot.antipinglogchannels.get(guild.id))
             let language = bot.utils.getLanguage(bot, guildData.language);
@@ -155,7 +155,7 @@ module.exports = {
       if (ad.thumbnail) embed.setThumbnail(ad.thumbnail);
       message.channel.send(embed).then(m => m.delete({ timeout: 60000 }).catch(e => { })).catch(e => { });
       bot.adtype.set(guild.id, (bot.adtype.get(guild.id) + 1));
-      if (bot.adtype.get(guild.id) > 3) {
+      if (bot.adtype.get(guild.id) > 4) {
         bot.adtype.set(guild.id, 0);
       }
     }
@@ -171,6 +171,7 @@ module.exports = {
     if (!find) {
       let o = {
         command: command.name,
+        category: command.category.toUpperCase(),
         usage: 1
       };
       x.push(o);

@@ -3,7 +3,75 @@ const { loadMain, loadMCServers, loadAutoVoiceChannels, loadRestrictedChannels, 
 module.exports = {
   name: "ready",
   run: async (bot) => {
-    console.log(`✅ Ready event loading... ${bot.user.tag}`)
+    console.log(`✅ Ready event loading... ${bot.user.tag}`);
+    bot.statcord.autopost();
+    bot.channels.cache.get("766108811978080267").messages.fetch().then(() => {
+      bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
+    }).catch(e => { });
+    loadMain(bot);
+    loadMCServers(bot);
+    loadAutoVoiceChannels(bot);
+    loadRestrictedChannels(bot);
+    loadLFGNotificationChannels(bot);
+    loadLFGRoles(bot);
+    loadAntiPingUsers(bot);
+    loadAntiPingChannels(bot);
+    loadAntiPingRoles(bot);
+    loadDisabledCommands(bot);
+    // loadMonthlyVotes(bot);
+    // loadTotalVotes(bot);
+    loadVotedUsers(bot);
+    loadEmojis(bot);
+    bot.announcements = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.announcements);
+    bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
+    bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
+    let statusList = [
+      // { name: `on shard {SHARD}/{MAXSHARDS}`, type: "PLAYING" },
+      // { name: `with ${bot.shard.count} shards`, type: "PLAYING" },
+      { name: `with 20+ languages`, type: "PLAYING" },
+      { name: `with new updates`, type: "PLAYING" },
+      { name: `with your mind`, type: "PLAYING" },
+      { name: `with your friends`, type: "PLAYING" },
+      { name: `with your thoughts`, type: "PLAYING" },
+      { name: `for safe holidays`, type: "WATCHING" },
+      { name: `for a Happy New Year`, type: "WATCHING" },
+      { name: `life`, type: "COMPETING" },
+      { name: `by myself`, type: "PLAYING" },
+      { name: `{SERVERS} cool servers`, type: "WATCHING" },
+      { name: `{USERS} amazing users`, type: "WATCHING" },
+      { name: `for @Magic8`, type: "WATCHING" },
+      { name: `for @Magic8 help`, type: "WATCHING" },
+      { name: `for @Magic8 settings`, type: "WATCHING" },
+      { name: `for @Magic8 langs`, type: "WATCHING" },
+      { name: `for @Magic8 updates`, type: "WATCHING" },
+      { name: `for new updates`, type: "WATCHING" },
+    ];
+    let statusSize = statusList.length - 1;
+    // let maxshards = bot.shard.count;
+    setInterval(async () => {
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      // bot.shard.ids.forEach(shard => {
+      let status = statusList[statusSize];
+      bot.user.setActivity(status.name.replace(/{SERVERS}/g, bot.guilds.cache.size).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en"))/*.replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards)*/, { type: status.type/*, shardID: shard*/ }).catch(e => { });
+      statusSize--;
+      if (statusSize < 0) statusSize = statusList.length - 1;
+      // });
+    }, 20000);
+    bot.user.setStatus("online").catch(e => { });
+    bot.utils.fetchLanguages(bot);
+    setTimeout(() => {
+      bot.utils.loadLanguageProgress(bot);
+    }, 5000)
+    let date = new Date().toLocaleString().split(" ");
+    let time = `${date[1]}${date[2]}`;
+    let restartTime = bot.ms(new Date() - bot.starttime);
+    console.log(`✅ Start Time: ${restartTime}`);
+    // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+    // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+    console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${bot.guilds.cache.size}`);
+    let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
+    bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
     let guildChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get("652539034404519936");
     if (guildChannel) {
       // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
@@ -84,72 +152,6 @@ module.exports = {
         }
       }).catch(e => { });
     }, 60000);
-    loadMain(bot);
-    loadMCServers(bot);
-    loadAutoVoiceChannels(bot);
-    loadRestrictedChannels(bot);
-    loadLFGNotificationChannels(bot);
-    loadLFGRoles(bot);
-    loadAntiPingUsers(bot);
-    loadAntiPingChannels(bot);
-    loadAntiPingRoles(bot);
-    loadDisabledCommands(bot);
-    // loadMonthlyVotes(bot);
-    // loadTotalVotes(bot);
-    loadVotedUsers(bot);
-    loadEmojis(bot);
-    bot.announcements = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.announcements);
-    bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
-    bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
-    let statusList = [
-      // { name: `on shard {SHARD}/{MAXSHARDS}`, type: "PLAYING" },
-      // { name: `with ${bot.shard.count} shards`, type: "PLAYING" },
-      { name: `with 20+ languages`, type: "PLAYING" },
-      { name: `with new updates`, type: "PLAYING" },
-      { name: `with your mind`, type: "PLAYING" },
-      { name: `with your friends`, type: "PLAYING" },
-      { name: `with your thoughts`, type: "PLAYING" },
-      { name: `for safe holidays`, type: "WATCHING" },
-      { name: `for your attention`, type: "COMPETING" },
-      { name: `by myself`, type: "PLAYING" },
-      { name: `{SERVERS} cool servers`, type: "WATCHING" },
-      { name: `{USERS} amazing users`, type: "WATCHING" },
-      { name: `for @Magic8`, type: "WATCHING" },
-      { name: `for @Magic8 help`, type: "WATCHING" },
-      { name: `for @Magic8 settings`, type: "WATCHING" },
-      { name: `for @Magic8 langs`, type: "WATCHING" },
-      { name: `for @Magic8 updates`, type: "WATCHING" },
-      { name: `for new updates`, type: "WATCHING" },
-    ];
-    bot.channels.cache.get("766108811978080267").messages.fetch().then(() => {
-      bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
-    }).catch(e => { });
-    let statusSize = statusList.length - 1;
-    // let maxshards = bot.shard.count;
-    setInterval(async () => {
-      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-      // bot.shard.ids.forEach(shard => {
-      let status = statusList[statusSize];
-      bot.user.setActivity(status.name.replace(/{SERVERS}/g, bot.guilds.cache.size).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en"))/*.replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards)*/, { type: status.type/*, shardID: shard*/ }).catch(e => { });
-      statusSize--;
-      if (statusSize < 0) statusSize = statusList.length - 1;
-      // });
-    }, 20000);
-    bot.user.setStatus("online").catch(e => { });
-    bot.utils.fetchLanguages(bot);
-    setTimeout(() => {
-      bot.utils.loadLanguageProgress(bot);
-    }, 5000)
-    let date = new Date().toLocaleString().split(" ");
-    let time = `${date[1]}${date[2]}`;
-    let restartTime = bot.ms(new Date() - bot.starttime);
-    console.log(`✅ Start Time: ${restartTime}`);
-    // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-    // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-    console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${bot.guilds.cache.size}`);
-    let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
-    bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
     async function postdiscordbotlist(bot) {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discordbotlist.com/api/v1/bots/484148705507934208/stats";
