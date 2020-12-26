@@ -1,9 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 module.exports = {
   aliases: [],
-  category: "",
-  description: "Reload a load commands",
-  emoji: "🔄",
   name: "reload",
   dev: true,
   run: async (bot, message, args, prefix, guildData) => {
@@ -14,6 +11,9 @@ module.exports = {
       delete require.cache[require.resolve("../../utils/webhooks.js")];
       bot.webhooks = require("../../utils/webhooks.js");
 
+      delete require.cache[require.resolve("../../utils/ads.json")];
+      bot.ads = require("../../utils/ads.json");
+      
       bot.utils.loadDatabases(bot);
       bot.utils.loadCommands(bot);
       bot.utils.loadEvents(bot);
