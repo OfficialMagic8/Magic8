@@ -32,11 +32,17 @@ module.exports = {
         listarray.push(`**•** ${list.name} (${list.items.length}) - ${list.creationdate.split(" ")[0].replace(",", "")}`);
       });
       let finallistarray = lists.length === 0 ? `*${bot.translate(bot, language, "none")}*` : listarray.join("\n");
-      let listname = args.slice(1).join(" ")
+      let listname = args.slice(1).join(" ");
+      // let end;
+      // try {
+      //   end = JSON.parse(args[args.length - 1]);
+      // } catch (e) {
+      //   end = false;
+      // }
       if (listname && listnames.includes(listname.toLowerCase())) {
         let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase());
         let checkitems = list.items.length === 0 ? [`*${bot.translate(bot, language, "none")}*`] : list.items;
-        let mapped = checkitems.map(i => `**•** ${i.trim()}`).join("\n")
+        let mapped = checkitems.map(i => `**•** ${i.trim()}`)
         let itemslength = mapped.length;
         let math = itemslength / 8;
         let fullpagecount = Math.floor(math);
@@ -46,7 +52,7 @@ module.exports = {
         } else {
           totalpages = fullpagecount;
         }
-        let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
+        let page = 1
         if (isNaN(page) || page > totalpages || page < 1) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
@@ -96,7 +102,8 @@ module.exports = {
             .replace(/{PAGE}/g, page)
             .replace(/{TOTALPAGES}/g, totalpages));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-      } else if (listname && !listnames.includes(listname.toLowerCase())) {
+      }
+      if (listname && !listnames.includes(listname.toLowerCase())) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
@@ -135,7 +142,7 @@ module.exports = {
       let listsarray = [];
       lists.forEach(l => {
         listsarray.push(`**•** ${l.name} (${l.items.length})`);
-      })
+      });
       if (!args[1]) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.main)
@@ -289,7 +296,8 @@ module.exports = {
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "listmanager.nonewlistname")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{USER}/g, message.author));
+            .replace(/{USER}/g, message.author)
+            .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (listname.length > 30) {
