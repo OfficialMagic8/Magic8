@@ -50,7 +50,7 @@ module.exports = {
     }
     if (bot.playingslotmachine.has(message.author.id)) {
       let embed = new MessageEmbed()
-        .setDescription(bot.translate(bot, language, "slotmachine.alreadyplaying").join("\n")
+        .setDescription(bot.translate(bot, language, "slotmachine.alreadyplaying")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author))
         .setColor(bot.colors.red)
