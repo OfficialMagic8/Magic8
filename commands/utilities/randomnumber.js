@@ -5,7 +5,6 @@ module.exports = {
   description: "Randomize any range of numbers you'd like. If one number is provided, the minimum number is zero.",
   emoji: "🔢",
   name: "randomnumber",
-  dev: true,
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
