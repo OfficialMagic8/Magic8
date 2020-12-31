@@ -9,7 +9,7 @@ app.listen(process.env.PORT);
 const server = http.createServer(app)
 const DBL = require('dblapi.js');
 const BOATS = require('boats.js');
-const { Client, Collection } = require("discord.js");
+const { Client, Collection, WebhookClient } = require("discord.js");
 const discordsettings = {
   restRequestTimeout: 60000,
   ws: {
@@ -48,6 +48,7 @@ bot.utils = require("./utils/methods.js");
 bot.error = bot.utils.error;
 bot.translate = bot.utils.getTranslation;
 bot.webhooks = require("./utils/webhooks.js");
+bot.webhook = new WebhookClient(process.env.VOTEWEBHOOK_ID, process.env.VOTEWEBHOOK_TOKEN);
 bot.links = require("./catched/links.json");
 bot.canvas = require("canvas");
 bot.fs = require("fs");

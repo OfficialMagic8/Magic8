@@ -59,7 +59,6 @@ module.exports.dbl = async (bot, request) => {
     clearTimeout(timeout);
     startTimeout();
   }
-  let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
   let weekend = body.isWeekend ? body.isWeekend : `false`;
   const { MessageEmbed } = require("discord.js");
@@ -71,7 +70,7 @@ module.exports.dbl = async (bot, request) => {
       ``,
       `Make sure to check out the [rewards](${bot.docs.ads}) I give for voting!`,
       ``,
-      `- Magic8 Developers`])
+      `- Magic8 Developers`]);
   user.send(dm).catch(e => { });
   let votemsg = new MessageEmbed()
     .setColor(body.type === "test" ? bot.colors.red : bot.colors.main)
@@ -83,10 +82,10 @@ module.exports.dbl = async (bot, request) => {
       `**Voted For:** ${votedfor}`,
       ``,
       `*You can vote here @ ${bot.config.vote.dbl}*`])
-  return votechannel.send(votemsg).catch(e => { });
+  return bot.webhook.send(votemsg).catch(e => { });
 }
 module.exports.discordbotlist = async (bot, request) => {
-  console.log(request.body)
+  // console.log(request.body)
 }
 module.exports.labs = async (bot, request) => {
   let body = request.body
@@ -107,7 +106,6 @@ module.exports.labs = async (bot, request) => {
     };
   };
   let usertag = user.tag;
-  let votechannel = bot.channels.cache.get(bot.config.votechannel);
   const { MessageEmbed } = require("discord.js");
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
@@ -128,7 +126,7 @@ module.exports.labs = async (bot, request) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote here @ ${bot.config.vote.dl}*`]);
-  return votechannel.send(votemsg).catch(e => { });
+  return bot.webhook.send(votemsg).catch(e => { });
 }
 module.exports.boats = async (bot, request) => {
   let body = request.body
@@ -159,7 +157,6 @@ module.exports.boats = async (bot, request) => {
       ``,
       `- Magic8 Developers`]);
   user.send(dm).catch(e => { });
-  let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
   let votemsg = new MessageEmbed()
     .setColor(bot.colors.main)
@@ -170,7 +167,7 @@ module.exports.boats = async (bot, request) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote here @ ${bot.config.vote.db}*`]);
-  return votechannel.send(votemsg).catch(e => { });
+  return bot.webhook.send(votemsg).catch(e => { });
 }
 module.exports.botlistspace = async (bot, request) => {
   let body = request.body
@@ -201,7 +198,6 @@ module.exports.botlistspace = async (bot, request) => {
       ``,
       `- Magic8 Developers`]);
   user.send(dm).catch(e => { });
-  let votechannel = bot.channels.cache.get(bot.config.votechannel);
   let usertag = user.tag;
   let votemsg = new MessageEmbed()
     .setColor(bot.colors.main)
@@ -212,7 +208,7 @@ module.exports.botlistspace = async (bot, request) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote here @ ${bot.config.vote.bls}*`]);
-  return votechannel.send(votemsg).catch(e => { });
+  return bot.webhook.send(votemsg).catch(e => { });
 }
 module.exports.botlistspace = async (bot, request) => {
   console.log(request.body)
