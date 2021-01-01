@@ -199,22 +199,112 @@ module.exports = {
         let id = args[1].replace(/[^0-9]/g, "");
         targetrole = message.guild.roles.cache.get(id) || await message.guild.roles.fetch(id);
       } catch (e) {
-        let rolesarray = []
-        let getroles = message.guild.roles.cache.keyArray()
+        let rolesarray = [];
+        let getroles = message.guild.roles.cache.keyArray();
         getroles.forEach(roleid => {
-          rolesarray.push(`${message.guild.roles.cache.get(roleid)}(${roleid})`)
+          rolesarray.push(`${message.guild.roles.cache.get(roleid)} (${roleid})`);
         })
         if (getroles.length === 0) {
           rolesarray = [`*${bot.translate(bot, language, "none")}*`];
         }
+        let mapped = rolesarray;
+        let roleslength = mapped.length;
+        let math = roleslength / 8;
+        let fullpagecount = Math.floor(math);
+        let totalpages;
+        if (!Number.isInteger(math)) {
+          totalpages = fullpagecount + 1;
+        } else {
+          totalpages = fullpagecount;
+        }
+        let page = 1;
+        let lastitemindex = page * 8;
+        let selectedroles = [];
+        for (map of mapped) {
+          if (page === totalpages) {
+            if (mapped.indexOf(map) + 1 <= roleslength && mapped.indexOf(map) + 1 > fullpagecount * 8) {
+              selectedroles.push(map);
+            }
+          }
+          if (mapped.indexOf(map) + 1 <= lastitemindex && mapped.indexOf(map) + 1 > lastitemindex - 8) {
+            if (!selectedroles.includes(map)) selectedroles.push(map);
+          }
+        }
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.red)
+          .setFooter(bot.translate(bot, language, "antiping.rolepagefooter")
+            .replace(/{PAGE}/g, page)
+            .replace(/{TOTALPAGES}/g, totalpages))
+          .setDescription(bot.translate(bot, language, "antiping.noroleprovided").join("\n")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{ROLES}/g, selectedroles.map(r => `**•** ${r}`).join("\n"))
+            .replace(/{INFO}/g, bot.emoji.info)
+            .replace(/{PREFIX}/g, prefix));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }
+      if (!targetrole.id && !Number.isInteger(parseInt(args[1]))) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invalidrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{ROLES}/g, rolesarray.map(r => `**•** ${r}`).join("\n")));
+            .replace(/{INPUT}/g, args[1])
+            .replace(/{INFO}/g, bot.emoji.info));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      let bypassroles = JSON.parse(guildData.antipingbypassroles)
+      if (Number.isInteger(parseInt(args[1]))) {
+        let rolesarray = [];
+        let getroles = message.guild.roles.cache.keyArray();
+        getroles.forEach(roleid => {
+          rolesarray.push(`${message.guild.roles.cache.get(roleid)} (${roleid})`);
+        })
+        if (getroles.length === 0) {
+          rolesarray = [`*${bot.translate(bot, language, "none")}*`];
+        }
+        let mapped = rolesarray;
+        let roleslength = mapped.length;
+        let math = roleslength / 8;
+        let fullpagecount = Math.floor(math);
+        let totalpages;
+        if (!Number.isInteger(math)) {
+          totalpages = fullpagecount + 1;
+        } else {
+          totalpages = fullpagecount;
+        }
+        let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
+        if (isNaN(page) || page > totalpages || page < 1) {
+          let embed = new MessageEmbed()
+            .setColor(bot.colors.red)
+            .setDescription(bot.translate(bot, language, "antiping.invalidpage").join("\n")
+              .replace(/{CROSS}/g, bot.emoji.cross)
+              .replace(/{INPUT}/g, args[1])
+              .replace(/{INFO}/g, bot.emoji.info)
+              .replace(/{TOTALPAGES}/g, totalpages));
+          return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        }
+        let lastitemindex = page * 8;
+        let selectedroles = [];
+        for (map of mapped) {
+          if (page === totalpages) {
+            if (mapped.indexOf(map) + 1 <= roleslength && mapped.indexOf(map) + 1 > fullpagecount * 8) {
+              selectedroles.push(map);
+            }
+          }
+          if (mapped.indexOf(map) + 1 <= lastitemindex && mapped.indexOf(map) + 1 > lastitemindex - 8) {
+            if (!selectedroles.includes(map)) selectedroles.push(map);
+          }
+        }
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.red)
+          .setFooter(bot.translate(bot, language, "antiping.rolepagefooter")
+            .replace(/{PAGE}/g, page)
+            .replace(/{TOTALPAGES}/g, totalpages))
+          .setDescription(bot.translate(bot, language, "antiping.rolepage").join("\n")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{ROLES}/g, selectedroles.map(r => `**•** ${r}`).join("\n"))
+            .replace(/{INFO}/g, bot.emoji.info));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }
+      let bypassroles = JSON.parse(guildData.antipingbypassroles);
       if (bypassroles.includes(targetrole.id)) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -270,11 +360,11 @@ module.exports = {
       if (!bypassroles.includes(targetrole.id)) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
-        setDescription(bot.translate(bot, language, "antiping.alreadydoesnotbypass").join("\n")
-          .replace(/{CHECK}/g, bot.emoji.check)
-          .replace(/{TARGETROLE}/g, targetrole)
-          .replace(/{INFO}/g, bot.emoji.info)
-          .replace(/{PREFIX}/g, prefix));
+          .setDescription(bot.translate(bot, language, "antiping.alreadydoesnotbypass").join("\n")
+            .replace(/{CHECK}/g, bot.emoji.check)
+            .replace(/{TARGETROLE}/g, targetrole)
+            .replace(/{INFO}/g, bot.emoji.info)
+            .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (bypassroles.includes(targetrole.id)) {
         let removed = bypassroles.filter(r => r !== targetrole.id);
