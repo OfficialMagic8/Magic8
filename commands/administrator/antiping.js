@@ -242,13 +242,14 @@ module.exports = {
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      if (!targetrole.id && !Number.isInteger(parseInt(args[1]))) {
+      if (targetrole === null && !Number.isInteger(parseInt(args[1]))) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invalidrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{INPUT}/g, args[1])
-            .replace(/{INFO}/g, bot.emoji.info));
+            .replace(/{INFO}/g, bot.emoji.info)
+            .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (Number.isInteger(parseInt(args[1]))) {
@@ -299,9 +300,9 @@ module.exports = {
             .replace(/{PAGE}/g, page)
             .replace(/{TOTALPAGES}/g, totalpages))
           .setDescription(bot.translate(bot, language, "antiping.rolepage").join("\n")
-            .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{ROLES}/g, selectedroles.map(r => `**•** ${r}`).join("\n"))
-            .replace(/{INFO}/g, bot.emoji.info));
+            .replace(/{INFO}/g, bot.emoji.info)
+            .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       let bypassroles = JSON.parse(guildData.antipingbypassroles);
