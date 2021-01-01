@@ -249,30 +249,6 @@ module.exports.loadDisabledCommands = (bot) => {
   })
   console.log(`🚫 Guilds with Disabled Commands: ${disabledcommandsguilds.length}`)
 };
-// module.exports.loadLanguageProgress = (bot) => {
-//   let langEnPathsAmount = bot.utils.getAllPaths(bot.languages.get("en")).length;
-//   let langArray = ["🌎 Languages: en"];
-//   bot.languages.forEach((object, lang) => {
-//     if (lang !== "en") {
-//       let paths = bot.utils.getAllPaths(object);
-//       let progress = (paths.length * 100) / langEnPathsAmount;
-//       progress = progress.toFixed(2);
-//       langArray.push(`| ${lang}`)
-//       bot.languagesprogress.set(lang, { lang: object.languagenamelong, flag: object.flag, progress: progress, authors: object.authors, link: object.link })
-//     }
-//   })
-//   bot.languagesprogress.sort(function (a, b) {
-//     return b.progress - a.progress;
-//   });
-//   console.log(`Loaded Language Progress:`);
-//   console.log(langArray.join(" "));
-// };
-// const updateDiscordBotList() {
-//   updateServers();
-//   setInterval(() => {
-//     updateServers();
-//   }, 1800000)
-// }
 // const updateServers() {
 //   console.log("🤖 Posted guild count in Discord Bot List!")
 //   bot.dbl.postStats(bot.guilds.cache.size).catch(e => { });

@@ -140,7 +140,7 @@ module.exports.loadLanguageProgress = (bot) => {
       let progress = (paths.length * 100) / langEnPathsAmount;
       progress = progress.toFixed(2);
       langArray.push(`| ${lang}`);
-      bot.languagesprogress.set(lang, { lang: object.languagenamelong, flag: object.flag, progress: progress, authors: object.authors, link: object.link });
+      bot.languagesprogress.set(lang, { lang: object.languagenamelong, flag: object.flag, progress: progress, authors: object.authors });
     };
   });
   bot.languagesprogress.sort(function (a, b) {

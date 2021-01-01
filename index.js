@@ -169,9 +169,8 @@ bot.commands = new Collection();
 bot.events = new Collection();
 bot.languages = new Collection();
 bot.languagesprogress = new Collection();
-bot.languagesprogress.set("en", { lang: "English", flag: "🇺🇸", progress: 100, authors: ["Fyrlex#2740", "AlonsoAliaga#0017"], link: "https://github.com/OfficialMagic8/languages/blob/master/languages/en.json" })
+bot.languagesprogress.set("en", { lang: "English", flag: "🇺🇸", progress: 100, authors: ["Fyrlex#2740", "AlonsoAliaga#0017"] })
 bot.lastfetched = new Collection();
-bot.utils.fetchLanguages(bot);
 app.get("/pingstatus", function (request, response) {
   response.sendStatus(200)
 });

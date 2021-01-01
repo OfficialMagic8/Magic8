@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const repolink = "https://github.com/OfficialMagic8/Languages/blob/master/languages/{SHORTLANG}.json"
 module.exports = {
   aliases: ["lang", "langs"],
   category: "ADMINISTRATOR",
@@ -14,7 +15,7 @@ module.exports = {
           let lastfetched = bot.lastfetched.get("lf");
           let lastfetchedms = Date.parse(lastfetched);
           let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json()).then(json => {
-            return Date.parse(json[0].pushed_at)
+            return Date.parse(json[0].pushed_at);
           }).catch(e => { return bot.error(bot, message, language, e); });
           let uptodatestring;
           let condition;
@@ -25,7 +26,7 @@ module.exports = {
             condition = true;
             uptodatestring = `${bot.emoji.check} **${bot.translate(bot, language, "language.uptodate")}**`;
           }
-          let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`);
+          let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${repolink.replace(/{SHORTLANG}/g, lg)}) (**\`${lg}\`**): **${obj.progress}**%`);
           let languageslength = bot.languagesprogress.size;
           let math = languageslength / 5;
           let fullpagecount = Math.floor(math);
@@ -128,7 +129,7 @@ module.exports = {
           condition = true;
           uptodatestring = `${bot.emoji.check} **${bot.translate(bot, language, "language.uptodate")}**`;
         }
-        let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`);
+        let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${repolink.replace(/{SHORTLANG}/g, lg)}) (**\`${lg}\`**): **${obj.progress}**%`);
         let languageslength = bot.languagesprogress.size;
         let math = languageslength / 5;
         let fullpagecount = Math.floor(math);
@@ -195,7 +196,7 @@ module.exports = {
             .then(json => {
               return Date.parse(json[0].updated_at);
             }).catch(e => { return bot.error(bot, message, language, e); });
-          let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${obj.link}) (**\`${lg}\`**): **${obj.progress}**%`);
+          let mapped = bot.languagesprogress.map((obj, lg) => `${obj.flag} [**${obj.lang}**](${repolink.replace(/{SHORTLANG}/g, lg)}) (**\`${lg}\`**): **${obj.progress}**%`);
           let languageslength = bot.languagesprogress.size;
           let math = languageslength / 5;
           let fullpagecount = Math.floor(math);
@@ -269,7 +270,7 @@ module.exports = {
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "language.info").join("\n")
             .replace(/{FLAG}/g, getlang.flag)
-            .replace(/{LANGUAGENAME}/g, `[${getlang.lang}](${getlang.link})`)
+            .replace(/{LANGUAGENAME}/g, `[${getlang.lang}](${repolink.replace(/{SHORTLANG}/g, args[1].toLowerCase())})`)
             .replace(/{LANGUAGESHORT}/g, args[1].toLowerCase())
             .replace(/{PROGRESS}/g, getlang.progress)
             .replace(/{AUTHORS}/g, getlang.authors.map(a => `**•** ${a}`).join("\n")));
