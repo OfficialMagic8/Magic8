@@ -980,7 +980,7 @@ module.exports = {
                 .setDescription([
                   `${bot.emoji.cross} **LFG Notify Channel Already Not Set**`,
                   ``,
-                  `${bot.emoji.info} To set the LFG Notify Channel, type: \`${prefix}s lfg notifychannel\``])
+                  `${bot.emoji.info} To set the LFG Notify Channel, type: \`${prefix}s lfg notifychannel\``]);
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             } else {
               bot.lfgnotifychannels.delete(message.guild.id)
@@ -994,7 +994,7 @@ module.exports = {
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }
           }
-          bot.lfgnotifychannels.set(message.guild.id, message.channel.id)
+          bot.lfgnotifychannels.set(message.guild.id, message.channel.id);
           bot.db.prepare("UPDATE guilddata SET lfgnotifychannel=? WHERE guildid=?").run(message.channel.id, message.guild.id);
           let embed = new MessageEmbed()
             .setColor(bot.colors.green)
@@ -1007,40 +1007,40 @@ module.exports = {
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         } else if (subcommand2 === "role") {
           if (!args[2]) {
-            let role = bot.guilds.cache.get(message.guild.id).roles.cache.get(guildData.lfgrole)
-            if (!role) role = "none"
+            let role = bot.guilds.cache.get(message.guild.id).roles.cache.get(guildData.lfgrole);
+            if (!role) role = "none";
             let embed = new MessageEmbed()
               .setColor(bot.colors.main)
               .setAuthor(`${b} Looking For Group Role`)
               .setDescription([
                 `**Role:** ${role}`,
                 ``,
-                `${bot.emoji.info} To disable LFG role, type: \`${prefix}s lfg role clear\``])
+                `${bot.emoji.info} To disable LFG role, type: \`${prefix}s lfg role clear\``]);
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
           if (args[2].toLowerCase() === "clear") {
             if (guildData.lfgrole === "none") {
               let embed = new MessageEmbed()
-                .setColor(bot.colord.red)
+                .setColor(bot.colors.red)
                 .setDescription([
-                  `${bot.emoji.cross} **There is already no LFG role.**`])
+                  `${bot.emoji.cross} **There is already no LFG role.**`]);
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             } else {
-              bot.lfgroles.delete(message.guild.id)
+              bot.lfgroles.delete(message.guild.id);
               bot.db.prepare("UPDATE guilddata SET lfgrole=? WHERE guildid=?").run("none", message.guild.id);
               let embed = new MessageEmbed()
                 .setColor(bot.colors.green)
                 .setDescription([
                   `${bot.emoji.check} **LFG Role Removed**`,
                   ``,
-                  `${bot.emoji.info} To set the LFG role in the future, type: \`${prefix}s lfg role\``])
+                  `${bot.emoji.info} To set the LFG role in the future, type: \`${prefix}s lfg role\``]);
               return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
             }
           }
           let targetrole;
           try {
             let id = args[2].replace(/[^0-9]/g, "");
-            targetrole = message.guild.roles.cache.get(id) || await message.guild.roles.fetch(id)
+            targetrole = message.guild.roles.cache.get(id) || await message.guild.roles.fetch(id);
           } catch (e) {
             let rolesarray = []
             let getroles = message.guild.roles.cache.keyArray()
