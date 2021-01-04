@@ -138,7 +138,7 @@ module.exports = {
     // Statcord.ShardingClient.postCommand(command.name, message.author.id, bot);
     bot.statcord.postCommand(command.name, message.author.id);
     bot.usage.set(guild.id, (bot.usage.get(guild.id) + 1));
-    if (guildData.hasvoted === "false" && (bot.usage.get(guild.id) % 50 === 0) && bot.premium.get(guild.id) === 0) {
+    if (guildData.hasvoted === "false" && (bot.usage.get(guild.id) % 100 === 0) && bot.premium.get(guild.id) === 0) {
       let ad = bot.ads[bot.adtype.get(guild.id)];
       console.log(`🗨️ ${ad.name} Advertisement Sent In: ${guild.name} (${guild.id})`);
       let embed = new MessageEmbed()
