@@ -363,12 +363,16 @@ bot.on("message", message => {
 // });
 bot.on("roleDelete", role => {
   let event = bot.events.get("roleDelete");
-  if (event) event.run(bot, role)
+  if (event) event.run(bot, role);
 })
 bot.on("voiceStateUpdate", (oldState, newState) => {
   let event = bot.events.get("voiceStateUpdate");
-  if (event) event.run(bot, oldState, newState)
+  if (event) event.run(bot, oldState, newState);
 });
+bot.ws.on("INTERACTION_CREATE", interaction => {
+  let event = bot.events.get("INTERACTION_CREATE")
+  if (event) event.run(bot, interaction);
+})
 bot.utils.loadCommands(bot);
 bot.utils.loadEvents(bot);
 module.exports = {
