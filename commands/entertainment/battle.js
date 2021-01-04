@@ -160,7 +160,7 @@ module.exports = {
               battleEmbed.fields = [];
               battleEmbed.addField(`\\🟢 ${first.username} HP`, `❤️ ${firstobject.hp}/100`, true)
               battleEmbed.addField(`\\🔴 ${second.username} HP`, `❤️ ${secondobject.hp}/100`, true)
-              duelMessage.edit(battleEmbed).catch(e => { return bot.error(bot, message, language, e); });
+              duelMessage.edit(battleEmbed).catch(e => { });
             }
           }, 5000);
         }, 1500)
