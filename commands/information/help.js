@@ -181,7 +181,7 @@ module.exports = {
       bot.adminmenus.set(message.guild.id, embed);
     }
     let embed = new MessageEmbed()
-    let embedToSend = message.member.hasPermission("ADMINISTRATOR") ? bot.adminmenus.get(message.guild.id) : bot.helpmenus.get(message.guild.id)
+    let embedToSend = message.member.hasPermission("MANAGE_GUILD") ? bot.adminmenus.get(message.guild.id) : bot.helpmenus.get(message.guild.id);
     return message.author.send(embedToSend).then(m => {
       embed.setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "help.sent").join("\n")
