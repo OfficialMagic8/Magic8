@@ -68,11 +68,11 @@ module.exports = {
             .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
             .setFooter(bot.translate(bot, language, "language.lastupdated")
               .replace(/{TIME}/g, bot.lastfetched.get("lf")))
-            .setDescription(bot.translate(bot, language, "language.available").join("\n")
+            .setDescription(bot.translate(bot, language, "language.languages").join("\n")
               .replace(/{UPTODATE}/g, uptodatestring)
-              .replace(/{INFO}/g, bot.emoji.info)
-              .replace(/{LANGUAGES}/g, selectedlanguages.join("\n"))
-              .replace(/{WARNING}/g, bot.emoji.warning));
+              .replace(/{STATEMENT}/g, bot.translate(bot, language, "language.statements.set")
+                .replace(/{INFO}/g, bot.emoji.info))
+              .replace(/{LANGUAGES}/g, selectedlanguages.join("\n")));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (!bot.languages.has(args[1].toLowerCase())) {
@@ -171,11 +171,11 @@ module.exports = {
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setFooter(bot.translate(bot, language, "language.lastupdated")
             .replace(/{TIME}/g, bot.lastfetched.get("lf")))
-          .setDescription(bot.translate(bot, language, "language.available").join("\n")
+          .setDescription(bot.translate(bot, language, "language.languages").join("\n")
             .replace(/{UPTODATE}/g, uptodatestring)
-            .replace(/{INFO}/g, bot.emoji.info)
-            .replace(/{LANGUAGES}/g, selectedlanguages.join("\n"))
-            .replace(/{WARNING}/g, bot.emoji.warning));
+            .replace(/{STATEMENT}/g, bot.translate(bot, language, "language.statements.togithub")
+              .replace(/{INFO}/g, bot.emoji.info))
+            .replace(/{LANGUAGES}/g, selectedlanguages.join("\n")));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else if (subcommand === "help") {
         let embed = new MessageEmbed()
@@ -247,11 +247,11 @@ module.exports = {
             .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
             .setFooter(bot.translate(bot, language, "language.lastupdated")
               .replace(/{TIME}/g, bot.lastfetched.get("lf")))
-            .setDescription(bot.translate(bot, language, "language.available").join("\n")
+            .setDescription(bot.translate(bot, language, "language.languages").join("\n")
               .replace(/{UPTODATE}/g, uptodatestring)
-              .replace(/{INFO}/g, bot.emoji.info)
-              .replace(/{LANGUAGES}/g, selectedlanguages.join("\n"))
-              .replace(/{WARNING}/g, bot.emoji.warning));
+              .replace(/{STATEMENT}/g, bot.translate(bot, language, "language.statements.info")
+                .replace(/{INFO}/g, bot.emoji.info))
+              .replace(/{LANGUAGES}/g, selectedlanguages.join("\n")));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
         }
         if (!bot.languages.has(args[1].toLowerCase())) {
