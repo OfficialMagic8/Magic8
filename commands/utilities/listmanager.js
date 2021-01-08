@@ -203,15 +203,15 @@ module.exports = {
           embedMessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
         }, 2000);
       } else {
-        let randomcount = Math.abs(Math.floor(parseInt(args.pop())))
-        let listname = args.slice(1).join(" ")
+        let randomcount = Math.abs(Math.floor(parseInt(args.pop())));
+        let listname = args.slice(1).join(" ");
         let list = lists.find(l => l.name.toLowerCase() === listname.toLowerCase())
         if (!list) {
           let embed = new MessageEmbed()
             .setColor(bot.colors.red)
             .setDescription(bot.translate(bot, language, "listmanager.invalidlist").join("\n")
               .replace(/{CROSS}/g, bot.emoji.cross)
-              .replace(/{INPUT}/g, listname)
+              .replace(/{INPUT}/g, `${listname.length > 0 ? `${listname} ` : ""}${end}`)
               .replace(/{LISTS}/g, listsarray.join("\n"))
               .replace(/{INFO}/g, bot.emoji.info));
           return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
