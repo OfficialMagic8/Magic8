@@ -100,7 +100,7 @@ module.exports = {
       let disabledwarningmessage = bot.translate(bot, language, "help.hasdisabledcommands").replace(/{WARNING}/g, bot.emoji.warning).replace(/{GUILDNAME}/g, message.guild.name);
       let disabledwarning = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).length > 0 ? disabledwarningmessage : "";
       let embed = new MessageEmbed()
-        .setAuthor(`${bot.user.username} - ${message.guild.name} - Help Menu`)
+        .setAuthor(bot.translate(bot, language, "help.helpmenutitle").replace(/{GUILDNAME}/g, message.guild.name))
         .setColor(bot.colors.main)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
         .setDescription(tips)
@@ -160,7 +160,7 @@ module.exports = {
       let disabledwarningmessage = bot.translate(bot, language, "help.hasdisabledcommandsadmin").replace(/{WARNING}/g, bot.emoji.warning).replace(/{GUILDNAME}/g, message.guild.name).replace(/{PREFIX}/g, prefix);
       let disabledwarning = bot.disabledcommands.has(message.guild.id) && bot.disabledcommands.get(message.guild.id).length > 0 ? disabledwarningmessage : "";
       let embed = new MessageEmbed()
-        .setAuthor(`${bot.user.username} - ${message.guild.name} - Administrator Menu`)
+        .setAuthor(bot.translate(bot, language, "help.administratormenutitle").replace(/{GUILDNAME}/g, message.guild.name))
         .setColor(bot.colors.main)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
         .setDescription(tips)
