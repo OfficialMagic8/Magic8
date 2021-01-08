@@ -119,7 +119,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
 app.post("/votes", async function (request, response) {
   response.sendStatus(200);
   let auth = request.headers.authorization;
-  if (debug) {
+  if (bot.debug) {
     console.log(`Headers:`)
     console.log(request.headers);
     console.log(`Body:`);

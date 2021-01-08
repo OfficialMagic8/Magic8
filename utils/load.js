@@ -74,7 +74,7 @@ module.exports.loadVotedUsers = async (bot) => {
         idarray.push(v.id);
       }
     }
-    console.log(`☑️ Loaded ${votesarray.length} DBL Voters This Month`);
+    // console.log(`☑️ Loaded ${votesarray.length} DBL Voters This Month`);
     idarray.forEach(userid => {
       let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(userid));
       userguilds.forEach(guild => {

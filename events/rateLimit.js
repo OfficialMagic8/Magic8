@@ -1,7 +1,9 @@
 module.exports = {
   name: "rateLimit",
   run: async (bot, rateLimitInfo) => {
-    console.log("Rate Limit:")
-    console.log(rateLimitInfo)
+    if (bot.debug) {
+      console.log("Rate Limit:");
+      console.log(rateLimitInfo);
+    }
   }
 }
