@@ -19,14 +19,14 @@
     "dl": "https://bots.discordlabs.org/bot/484148705507934208",
     "bls": "https://botlist.space/bot/484148705507934208/upvote"
   },
-  "botinvite": "https://discord.com/oauth2/authorize?client_id=484148705507934208&scope=bot&permissions=1896344688",
+  "botinvite": "https://discord.com/oauth2/authorize?client_id=484148705507934208&scope=bot%20applications.commands&permissions=1896344688",
   "github": {
     "org": "https://github.com/OfficialMagic8",
     "languages": "https://github.com/OfficialMagic8/languages",
     "issues": "https://github.com/OfficialMagic8/languages/issues"
   },
   "donatelink": "https://donatebot.io/checkout/610816275580583936",
-  "uptime": "https://uptime.magic8.xyz",
+  "status": "https://status.magic8.xyz",
   "docs": {
     "ads": "https://docs.magic8.xyz/info/ads",
     "main": "https://docs.magic8.xyz/",
