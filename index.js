@@ -60,7 +60,6 @@ bot.schedule = require("node-schedule");
 bot.utils.loadDatabases(bot);
 bot.colors = require("./utils/colors.json");
 bot.color8 = require("./utils/color8.json");
-bot.emoji = require("./utils/emojis.json");
 bot.invite = "https://discord.gg/bUUggyCjvp";
 bot.shortinvite = "discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
@@ -118,8 +117,14 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
   }
 });
 app.post("/votes", async function (request, response) {
-  response.sendStatus(200)
-  let auth = request.headers.authorization
+  response.sendStatus(200);
+  let auth = request.headers.authorization;
+  if (debug) {
+    console.log(`Headers:`)
+    console.log(request.headers);
+    console.log(`Body:`);
+    console.log(request.body);
+  }
   if (auth === process.env.TOPGG_AUTH) {
     bot.webhooks.dbl(bot, request);
   } else if (auth === process.env.DISCORD_BOATS_AUTH) {
@@ -131,8 +136,15 @@ app.post("/votes", async function (request, response) {
   } else if (auth === process.env.BOTLISTSPACE_TOKEN) {
     bot.webhooks.botlistspace(bot, request);
   } else if (auth = process.env.ABSTRACTLIST) {
-
+    bot.webhooks.abstractlist(bot, request);
+  } else if (auth = process.env.BLIST_WEBHOOK) {
+    bot.webhooks.blist(bot, request);
+  } else if (auth = process.env.IDLEDEV_WEBHOOK) {
+    bot.webhooks.idledev(bot, request);
   } else return;
+});
+app.get("/pingstatus", function (request, response) {
+  response.sendStatus(200);
 });
 
 bot.battling = new Collection();
@@ -171,9 +183,6 @@ bot.languages = new Collection();
 bot.languagesprogress = new Collection();
 bot.languagesprogress.set("en", { lang: "English", flag: "🇺🇸", progress: 100, authors: ["Fyrlex#2740", "AlonsoAliaga#0017"] })
 bot.lastfetched = new Collection();
-app.get("/pingstatus", function (request, response) {
-  response.sendStatus(200)
-});
 bot.guildfetched = new Collection();
 
 // app.get("/test", async function (request, response) {
@@ -372,7 +381,7 @@ bot.on("voiceStateUpdate", (oldState, newState) => {
 bot.ws.on("INTERACTION_CREATE", interaction => {
   let event = bot.events.get("INTERACTION_CREATE")
   if (event) event.run(bot, interaction);
-})
+});
 bot.utils.loadCommands(bot);
 bot.utils.loadEvents(bot);
 module.exports = {

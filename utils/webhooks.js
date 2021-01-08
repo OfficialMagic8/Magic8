@@ -84,11 +84,8 @@ module.exports.dbl = async (bot, request) => {
       `*You can vote here @ ${bot.config.vote.dbl}*`])
   return bot.webhook.send(votemsg).catch(e => { });
 }
-module.exports.discordbotlist = async (bot, request) => {
-  // console.log(request.body)
-}
 module.exports.labs = async (bot, request) => {
-  let body = request.body
+  let body = request.body;
   let unknown = false;
   let user;
   if (bot.users.cache.has(body.uid)) {
@@ -211,5 +208,12 @@ module.exports.botlistspace = async (bot, request) => {
   return bot.webhook.send(votemsg).catch(e => { });
 }
 module.exports.botlistspace = async (bot, request) => {
-  console.log(request.body)
+}
+module.exports.blist = async (bot, request) => {
+}
+module.exports.discordbotlist = async (bot, request) => {
+}
+module.exports.abstractlist = async (bot, request) => {
+}
+module.exports.idledev = async (bot, request) => {
 }
