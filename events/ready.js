@@ -81,9 +81,11 @@ module.exports = {
         guildChannel.setName(guildText).catch(e => { });
       }
     }
-    // postdiscordbotlist();
-    postdsicordboats(bot);
-    setInterval(async () => {
+    postbfd(bot);
+    postblistxyz(bot);
+    postdiscordboats(bot);
+    postdiscordextremelist(bot);
+    setInterval(() => {
       if (guildChannel) {
         // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
         // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
@@ -92,8 +94,10 @@ module.exports = {
           guildChannel.setName(guildText).catch(e => { });
         }
       }
-      // postdiscordbotlist();
-      postdsicordboats(bot);
+      postbfd(bot)
+      postblistxyz(bot);
+      postdiscordboats(bot);
+      postdiscordextremelist(bot);
     }, 1800000)
     let userChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get("652538780376367104");
     if (userChannel) {
@@ -172,12 +176,54 @@ module.exports = {
       }`;
       xhr.send(data);
     }
-    async function postdsicordboats(bot) {
+    async function postdiscordboats(bot) {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://discord.boats/api/bot/484148705507934208";
       let xhr = new XMLHttpRequest();
       xhr.open("POST", url);
       xhr.setRequestHeader("Authorization", process.env.DISCORD_BOATS_API);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      let data = `{
+        "server_count": ${bot.guilds.cache.size}
+      }`;
+      xhr.send(data);
+    }
+    async function postdiscordextremelist(bot) {
+      let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+      let url = "https://api.discordextremelist.xyz/v2/bot/484148705507934208/stats";
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", url);
+      xhr.setRequestHeader("Authorization", process.env.DEL_API);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      let data = `{
+        "guildCount": ${bot.guilds.cache.size}
+      }`;
+      xhr.send(data);
+    }
+    async function postblistxyz(bot) {
+      let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+      let url = "https://blist.xyz/api/v2/bot/484148705507934208/stats";
+      let xhr = new XMLHttpRequest();
+      xhr.open("PATCH", url);
+      xhr.setRequestHeader("Authorization", process.env.BLIST_API);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      let data = `{
+        "server_count": ${bot.guilds.cache.size}
+      }`;
+      xhr.send(data);
+    }
+    async function postbfd(bot) {
+      let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+      let url = "https://botsfordiscord.com/api/bot/484148705507934208";
+      let xhr = new XMLHttpRequest();
+      xhr.open("PATCH", url);
+      xhr.setRequestHeader("Authorization", process.env.BFD_API);
       xhr.setRequestHeader("Content-Type", "application/json");
       // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
       // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
