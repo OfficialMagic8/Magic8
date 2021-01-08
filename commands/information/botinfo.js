@@ -43,7 +43,7 @@ module.exports = {
         .replace(/{DONATELINK}/g, bot.config.donatelink)
         .replace(/{SUPPORTSERVER}/g, bot.invite)
         .replace(/{GITHUB}/g, bot.github.languages)
-        .replace(/{STATUS}/g, bot.config.uptime)
+        .replace(/{STATUS}/g, bot.config.status)
         .replace(/{PROGRESS}/g, bot.docs.progress));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     // function getMemoryUsage() {
