@@ -24,7 +24,7 @@ module.exports = {
     }
     let link = bot.links.cuddle[Math.floor(Math.random() * bot.links.cuddle.length)];
     let embed = new MessageEmbed()
-      .setColor("RANDOM")
+      .setColor(bot.colors.pink)
       .setImage(link)
       .setDescription(bot.translate(bot, language, `cuddle.${target.id === message.author.id ? "self" : "other"}`)
         .replace(/{CHECK}/g, bot.emoji.check)

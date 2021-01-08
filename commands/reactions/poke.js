@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const api = "https://shiro.gg/api/images/poke"
 module.exports = {
   aliases: [],
   category: "REACTIONS",
@@ -22,9 +23,11 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     }
-    let link = bot.links.poke[Math.floor(Math.random() * bot.links.poke.length)];
+    let link = await bot.fetch(api).then(res => res.json()).then(json => {
+      return json.url;
+    }).catch(e => { return bot.error(bot, message, language, e); });
     let embed = new MessageEmbed()
-      .setColor("RANDOM")
+      .setColor(bot.colors.pink)
       .setImage(link)
       .setDescription(bot.translate(bot, language, `poke.${target.id === message.author.id ? "self" : "other"}`)
         .replace(/{CHECK}/g, bot.emoji.check)
