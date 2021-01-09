@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const api = "https://shiro.gg/api/images/smug";
+const api = "https://shiro.gg/api/images/tickle";
 module.exports = {
   aliases: [],
   category: "REACTIONS",
