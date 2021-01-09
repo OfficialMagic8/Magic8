@@ -60,6 +60,7 @@ bot.schedule = require("node-schedule");
 bot.utils.loadDatabases(bot);
 bot.colors = require("./utils/colors.json");
 bot.color8 = require("./utils/color8.json");
+bot.emoji = require("./utils/emojis.json");
 bot.invite = "https://discord.gg/bUUggyCjvp";
 bot.shortinvite = "discord.gg/bUUggyCjvp";
 bot.supportserver = "610816275580583936";
