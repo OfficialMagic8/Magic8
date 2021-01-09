@@ -13,7 +13,10 @@ module.exports = {
 
       delete require.cache[require.resolve("../../utils/ads.json")];
       bot.ads = require("../../utils/ads.json");
-      
+
+      delete require.cache[require.resolve("../../config.json")];
+      bot.config = require("../../config.json");
+
       bot.utils.loadDatabases(bot);
       bot.utils.loadCommands(bot);
       bot.utils.loadEvents(bot);
