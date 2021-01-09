@@ -81,7 +81,7 @@ module.exports = {
         guildChannel.setName(guildText).catch(e => { });
       }
     }
-    postbfd(bot);
+    // postbfd(bot);
     postblistxyz(bot);
     postdiscordboats(bot);
     postdiscordextremelist(bot);
@@ -94,7 +94,7 @@ module.exports = {
           guildChannel.setName(guildText).catch(e => { });
         }
       }
-      postbfd(bot)
+      // postbfd(bot);
       postblistxyz(bot);
       postdiscordboats(bot);
       postdiscordextremelist(bot);
