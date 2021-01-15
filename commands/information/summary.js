@@ -22,12 +22,12 @@ module.exports = {
       let todayscommands = parseInt(today.commands);
       let todaysdiffcommands = todayscommands - parseInt(yesterday.commands);
       let todaysguilds = parseInt(today.servers);
-      let todaysdiffguilds = todaysguilds - parseInt(yesterday.guilds)
+      let todaysdiffguilds = todaysguilds - parseInt(yesterday.servers)
       let todaysactiveusers = parseInt(today.active)
       let todaysactiveusersdiff = todaysactiveusers - parseInt(yesterday.active)
       embed.setAuthor(bot.translate(bot, language, "summary.title")
         .replace(/{BOTNAME}/g, bot.user.username)
-        .replcae(/{DATE}/g, date))
+        .replace(/{DATE}/g, date))
       embed.setColor(bot.colors.main)
       embed.setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
       embed.setDescription(bot.translate(bot, language, "summary.description").join("\n")
