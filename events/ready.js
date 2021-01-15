@@ -33,10 +33,12 @@ module.exports = {
       { name: `with your mind`, type: "PLAYING" },
       { name: `with your friends`, type: "PLAYING" },
       { name: `with your thoughts`, type: "PLAYING" },
-      { name: `for safe holidays`, type: "WATCHING" },
-      { name: `for a Happy New Year`, type: "WATCHING" },
       { name: `life`, type: "COMPETING" },
       { name: `by myself`, type: "PLAYING" },
+      { name: `magic8.xyz`, type: "PLAYING" },
+      { name: `magic8.xyz/docs`, type: "PLAYING" },
+      { name: `magic8.xyz/discord`, type: "PLAYING" },
+      { name: `for 2021 to suck`, type: "WATCHING" },
       { name: `{SERVERS} cool servers`, type: "WATCHING" },
       { name: `{USERS} amazing users`, type: "WATCHING" },
       { name: `for @Magic8`, type: "WATCHING" },
@@ -82,6 +84,7 @@ module.exports = {
       }
     }
     // postbfd(bot);
+    postbbl(bot);
     postblistxyz(bot);
     postdiscordboats(bot);
     postdiscordextremelist(bot);
@@ -95,6 +98,7 @@ module.exports = {
         }
       }
       // postbfd(bot);
+      postbbl(bot);
       postblistxyz(bot);
       postdiscordboats(bot);
       postdiscordextremelist(bot);
@@ -229,6 +233,20 @@ module.exports = {
       // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
       let data = `{
         "server_count": ${bot.guilds.cache.size}
+      }`;
+      xhr.send(data);
+    }
+    async function postbbl(bot) {
+      let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+      let url = "https://bladebotlist.xyz/api/bots/484148705507934208/stats";
+      let xhr = new XMLHttpRequest();
+      xhr.open("PATCH", url);
+      xhr.setRequestHeader("Authorization", process.env.BBL_API);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
+      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
+      let data = `{
+        "servercount": ${bot.guilds.cache.size}
       }`;
       xhr.send(data);
     }
