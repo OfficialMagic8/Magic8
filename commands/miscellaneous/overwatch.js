@@ -56,6 +56,8 @@ module.exports = {
             ticon = bot.emoji.plat;
           } else if (tank.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-DiamondTier.png") {
             ticon = bot.emoji.diamond;
+          } else if (support.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-GrandmasterTier.png") {
+            ticon = bot.emoji.grandmaster;
           }
           tlevel = tank.level;
         } catch (e) {
@@ -76,6 +78,8 @@ module.exports = {
             dicon = bot.emoji.plat;
           } else if (dps.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-DiamondTier.png") {
             dicon = bot.emoji.diamond;
+          } else if (support.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-GrandmasterTier.png") {
+            dicon = bot.emoji.grandmaster;
           }
           dlevel = dps.level;
         } catch (e) {
@@ -99,11 +103,29 @@ module.exports = {
             sicon = bot.emoji.diamond;
           } else if (support.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-MasterTier.png") {
             sicon = bot.emoji.master;
+          } else if (support.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-GrandmasterTier.png") {
+            sicon = bot.emoji.grandmaster;
           }
           slevel = support.level;
         } catch (e) {
           sicon = "";
           slevel = "N/A";
+        }
+        let averageicon;
+        if (json.ratingIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-BronzeTier.png") {
+          averageicon = bot.emoji.bronze;
+        } else if (json.ratingIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-SilverTier.png") {
+          averageicon = bot.emoji.silver;
+        } else if (json.ratingIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-GoldTier.png") {
+          averageicon = bot.emoji.gold;
+        } else if (json.ratingIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-PlatinumTier.png") {
+          averageicon = bot.emoji.plat;
+        } else if (json.ratingIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-DiamondTier.png") {
+          averageicon = bot.emoji.diamond;
+        } else if (json.ratingIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-MasterTier.png") {
+          averageicon = bot.emoji.master;
+        } else if (json.ratingIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-GrandmasterTier.png") {
+          averageicon = bot.emoji.grandmaster;
         }
         let rankedgames = json.competitiveStats.games;
         let rankedwins = rankedgames.won;
@@ -123,7 +145,8 @@ module.exports = {
           .replace(/{SILVER}/g, json.quickPlayStats.awards.medalsSilver.toLocaleString("en"))
           .replace(/{GOLD}/g, json.quickPlayStats.awards.medalsGold.toLocaleString("en"))
           .replace(/{WON}/g, json.quickPlayStats.games.won.toLocaleString("en"))
-          .replace(/{AVERAGE}/g, json.rating.toLocaleString("en"))
+          .replace(/{AVERAGE}/g, json.rating)
+          .replace(/{AVERAGEICON}/g, averageicon)
           .replace(/{TANK}/g, bot.emoji.tank)
           .replace(/{DPS}/g, bot.emoji.dps)
           .replace(/{SUPPORT}/g, bot.emoji.support)
