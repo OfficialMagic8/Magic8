@@ -294,7 +294,7 @@ module.exports = {
       if (!listname) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "listmanager.nonewlistname")
+          .setDescription(bot.translate(bot, language, "listmanager.nonewlistname").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{USER}/g, message.author)
             .replace(/{INFO}/g, bot.emoji.info));
