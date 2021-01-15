@@ -23,9 +23,6 @@ module.exports = {
         usage.sort(function (a, b) {
           let nameA = a.category.toUpperCase();
           let nameB = b.category.toUpperCase();
-          if (!a.category || !b.category) {
-            console.log(`${row.guildid} ${b.category} ${b.commanf}`)
-          }
           if (nameA < nameB) {
             return -1;
           }

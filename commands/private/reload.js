@@ -17,6 +17,9 @@ module.exports = {
       delete require.cache[require.resolve("../../config.json")];
       bot.config = require("../../config.json");
 
+      delete require.cache[require.resolve("../../utils/emojis.json")];
+      bot.emoji = require("../../utils/emojis.json");
+      
       bot.utils.loadDatabases(bot);
       bot.utils.loadCommands(bot);
       bot.utils.loadEvents(bot);
