@@ -7,15 +7,7 @@ module.exports = {
   name: "8ball",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
-    if (!args[0]) {
-      let language = bot.utils.getLanguage(bot, guildData.language);
-      let embed = new MessageEmbed()
-        .setColor(bot.colors.red)
-        .setDescription(bot.translate(bot, language, "8ball.asksomething")
-          .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{USER}/g, message.author));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-    }
+    let language = bot.utils.getLanguage(bot, guildData.language);
     let replies;
     if (guildData.ballreplytype === 3) {
       let customreplies = JSON.parse(guildData.ballcustomreplies);
@@ -40,7 +32,6 @@ module.exports = {
         replies = customreplies;
       }
     } else {
-      let language = bot.utils.getLanguage(bot, guildData.language);
       if (guildData.ballreplytype === 2) {
         replies = bot.translate(bot, language, "8ball.replies.explicit");
       } else if (guildData.ballreplytype === 1) {
@@ -49,8 +40,23 @@ module.exports = {
         replies = bot.translate(bot, language, "8ball.replies.clean");
       }
     }
-    let language = bot.utils.getLanguage(bot, guildData.language);
+    if (!args[0]) {
+      let embed = new MessageEmbed()
+        .setColor(bot.colors.red)
+        .setDescription(bot.translate(bot, language, "8ball.asksomething")
+          .replace(/{CROSS}/g, bot.emoji.cross)
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+    }
     let question = args.join(" ");
+    if (question.length > 1000) {
+      let embed = new MessageEmbed()
+      .setColor(bot.colors.red)
+      .setDescription(bot.translate(bot, language, "8ball.toolong")
+        .replace(/{CROSS}/g, bot.emoji.cross)
+        .replace(/{USER}/g, message.author));
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+    }
     let reply = replies[Math.floor(Math.random() * replies.length)];
     let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(message.guild.id);
     let usagearray = JSON.parse(usageData.usage);
