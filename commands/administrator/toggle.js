@@ -20,12 +20,12 @@ module.exports = {
       let max = bot.maxtoggledcommands.get(bot.premium.get(message.guild.id));
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
-        .setAuthor(`${bot.user.username} - Disabled Commands: (${get.length}/${max})`)
+        .setAuthor(`${bot.user.username} - Disabled Commands: (${disabledCommands.length}/${max})`)
         .setThumbnail(bot.user.displayAvatarURL({ formant: "png" }))
         .setDescription([
           `${disabled}`,
           ``,
-          `${bot.emoji.info} To disable or enable a command, type: \`${prefix}s toggle\``]);
+          `${bot.emoji.info} To disable or enable a command, type: \`${prefix}toggle <command>\``]);
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     disabledCommands.sort()
