@@ -184,7 +184,7 @@ module.exports = {
     let channels = guild.channels.cache.filter(c => c.type !== "category").size;
     let split = new Date().toLocaleString().split(" ");
     let formattedTime = `${split[1]}${split[2]}`;
-    let performedCommand = `${command.emoji} __${formattedTime}__` +
+    let performedCommand = `${command.emoji ? command.emoji : ""} __${formattedTime}__` +
       ` **C:** \`${command.name}\` **| A:** \`${message.author.tag}\` **| S/ID:** \`${guild.name} (${guild.id})\` (${guild.members.cache.size - bots}/${bots}/${channels}) **| Full:** \`${message.content}\``;
     let commandsChannel = bot.channels.cache.get(bot.config.commandlogs);
     if (commandsChannel) commandsChannel.send(performedCommand).catch(e => { });
