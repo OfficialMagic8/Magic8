@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const link = "https://minecraftskinstealer.com/achievement/{ITEM}/{TITLE}/{SUBTITLE}"
 module.exports = {
-  aliases: ["mcachie", "mca"],
+  aliases: ["mca"],
   category: "MINECRAFT",
   description: "Create your own Minecraft achivement",
   emoji: "🎮",
