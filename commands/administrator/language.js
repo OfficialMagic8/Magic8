@@ -283,7 +283,6 @@ module.exports = {
             .replace(/{TIME}/g, bot.lastfetched.get("lf")))
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setColor(bot.colors.main)
-          .setFooter(bot.footer)
           .setDescription(bot.translate(bot, language, "language.menu").join("\n")
             .replace(/{BOT}/g, bot.user)
             .replace(/{PREFIX}/g, prefix)
