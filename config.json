@@ -13,12 +13,6 @@
   "commandlogs": "629736098028847104",
   "votechannel": "776068283115241482",
   "caughterrors": "782975917819166731",
-  "vote": {
-    "dbl": "https://top.gg/bot/484148705507934208/vote",
-    "db": "https://discord.boats/bot/484148705507934208/vote",
-    "dl": "https://bots.discordlabs.org/bot/484148705507934208",
-    "bls": "https://botlist.space/bot/484148705507934208/upvote"
-  },
   "botinvite": "https://discord.com/oauth2/authorize?client_id=484148705507934208&scope=bot%20applications.commands&permissions=1896344688",
   "github": {
     "org": "https://github.com/OfficialMagic8",
@@ -28,7 +22,7 @@
   "donatelink": "https://donatebot.io/checkout/610816275580583936",
   "status": "https://status.magic8.xyz",
   "docs": {
-    "ads": "https://docs.magic8.xyz/info/ads",
+    "ads": "https://docs.magic8.xyz/info/ads-voting",
     "main": "https://docs.magic8.xyz/",
     "terms": "https://docs.magic8.xyz/info/terms",
     "triplepackage": "https://docs.magic8.xyz/info/premium#triple-package-usd-8-99-one-time-forever",
