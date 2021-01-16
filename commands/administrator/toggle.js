@@ -5,7 +5,6 @@ module.exports = {
   description: "Toggle almost any command for all users of your server.\nRequires `Manage Server` Permission",
   emoji: "⚙️",
   name: "toggle",
-  dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let disabledCommands = JSON.parse(guildData.disabledcommands)
