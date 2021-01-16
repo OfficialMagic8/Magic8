@@ -5,7 +5,6 @@ module.exports = {
   description: "View Magic8's daily summary of statistics.",
   emoji: "📰",
   name: "summary",
-  dev: true,
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
@@ -33,10 +32,13 @@ module.exports = {
       embed.setDescription(bot.translate(bot, language, "summary.description").join("\n")
         .replace(/{TOTALGUILDS}/g, bot.guilds.cache.size)
         .replace(/{GUILDSDIFF}/g, todaysdiffguilds)
+        .replace(/{EMOJI1}/g, todaysdiffguilds < 0 ? bot.emoji.cross : bot.emoji.check)
         .replace(/{COMMANDSUSED}/g, todayscommands)
         .replace(/{COMMANDSUSEDDIFF}/g, todaysdiffcommands)
+        .replace(/{EMOJI1}/g, todaysdiffcommands < 0 ? bot.emoji.cross : bot.emoji.check)
         .replace(/{ACTIVEUSERS}/g, todaysactiveusers)
         .replace(/{ACTIVEUSERSDIFF}/g, todaysactiveusersdiff)
+        .replace(/{EMOJI1}/g, todaysactiveusersdiff < 0 ? bot.emoji.cross : bot.emoji.check)
         .replace(/{INFO}/g, bot.emoji.info)
         .replace(/{STATCORD}/g, "https://statcord.com/bot/484148705507934208"));
       return embedmessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
