@@ -97,7 +97,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
         attachment: `./templates/latestGuildData.db`,
         name: `latestGuildData.db`
       }]
-    });
+    }).catch(e => { });
   }
   bot.fs.copyFile('./data/usageData.db', `./templates/latestUsageData.db`, usageCallback);
   function usageCallback(err) {
@@ -114,34 +114,36 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
         attachment: `./templates/latestUsageData.db`,
         name: `latestUsageData.db`
       }]
-    });
+    }).catch(e => { });
   }
 });
 app.post("/votes", async function (request, response) {
   response.sendStatus(200);
   let auth = request.headers.authorization;
   if (bot.debug) {
-    console.log(`Headers:`)
+    console.log(`Headers:`);
     console.log(request.headers);
     console.log(`Body:`);
     console.log(request.body);
   }
   if (auth === process.env.TOPGG_AUTH) {
-    bot.webhooks.dbl(bot, request);
+    bot.webhooks.topgg(bot, request.body);
   } else if (auth === process.env.DISCORD_BOATS_AUTH) {
-    bot.webhooks.boats(bot, request);
+    bot.webhooks.boats(bot, request.body);
   } else if (auth === process.env.DISCORD_LABS_TOKEN) {
-    bot.webhooks.labs(bot, request);
+    bot.webhooks.labs(bot, request.body);
   } else if (auth === process.env.BOT_LIST_TOKEN) {
-    bot.webhooks.discordbotlist(bot, request);
+    bot.webhooks.discordbotlist(bot, request.body);
   } else if (auth === process.env.BOTLISTSPACE_TOKEN) {
-    bot.webhooks.botlistspace(bot, request);
+    bot.webhooks.botlistspace(bot, request.body);
   } else if (auth = process.env.ABSTRACTLIST) {
-    bot.webhooks.abstractlist(bot, request);
+    bot.webhooks.abstractlist(bot, request.body);
   } else if (auth = process.env.BLIST_WEBHOOK) {
-    bot.webhooks.blist(bot, request);
+    bot.webhooks.blist(bot, request.body);
   } else if (auth = process.env.IDLEDEV_WEBHOOK) {
-    bot.webhooks.idledev(bot, request);
+    bot.webhooks.idledev(bot, request.body);
+  } else if (auth = process.env.BBL_WEBHOOK) {
+    bot.webhooks.bladebotlist(bot, request.body)
   } else return;
 });
 app.get("/pingstatus", function (request, response) {

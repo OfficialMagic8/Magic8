@@ -2,6 +2,7 @@ module.exports.loadDatabases = (bot) => {
   const Database = require('better-sqlite3');
   bot.db = new Database('./data/guildData.db');
   bot.udb = new Database('./data/usageData.db');
+  bot.vdb = new Database('./data/voteData.db')
   console.log("📊 Databases fetched!")
 }
 module.exports.loadCommands = (bot) => {
@@ -186,17 +187,21 @@ module.exports.updateGuild = (bot, guild) => {
   bot.db.prepare("UPDATE guilddata SET guildname=? WHERE guildid=?").run(guild.name, guild.id);
   bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("true", guild.id);
 }
-module.exports.updateGuildUsage = (bot, guild) => {
-  bot.udb.prepare("UPDATE usagedata SET guildname=? WHERE guildid=?").run(guild.name, guild.id)
-  bot.udb.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("true", guild.id);
+module.exports.registerGuildVotes = (bot, guild) => {
+  bot.vdb.prepare("INSERT INTO votedata (guildid, guildname) VALUES (?,?)").run(guild.id, guild.name);
+}
+module.exports.updateGuildVotes = (bot, guild) => {
+  bot.vdb.prepare("UPDATE votedata SET guildname=? WHERE guildid=?").run(guild.name, guild.id);
+  bot.vdb.prepare("UPDATE votedata SET inguild=? WHERE guildid=?").run("true", guild.id);
 }
 module.exports.registerGuildUsage = (bot, guild) => {
   bot.udb.prepare("INSERT INTO usagedata (guildid, guildname) VALUES (?,?)").run(guild.id, guild.name)
   bot.usage.set(guild.id, 0)
   bot.adtype.set(guild.id, 0);
 }
-module.exports.registerUser = (bot, user) => {
-  bot.db.prepare("INSERT INTO usersinfo (userid) VALUES (?)").run(user.id)
+module.exports.updateGuildUsage = (bot, guild) => {
+  bot.udb.prepare("UPDATE usagedata SET guildname=? WHERE guildid=?").run(guild.name, guild.id)
+  bot.udb.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("true", guild.id);
 }
 module.exports.getRandomColors = (bot, amount) => {
   let object = bot.color8;

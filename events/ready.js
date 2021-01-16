@@ -240,7 +240,7 @@ module.exports = {
       let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
       let url = "https://bladebotlist.xyz/api/bots/484148705507934208/stats";
       let xhr = new XMLHttpRequest();
-      xhr.open("PATCH", url);
+      xhr.open("POST", url);
       xhr.setRequestHeader("Authorization", process.env.BBL_API);
       xhr.setRequestHeader("Content-Type", "application/json");
       // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
