@@ -1,5 +1,5 @@
 module.exports.topgg = async (bot, body) => {
-  let fyrlex = bot.users.cache.get("292821168833036288")
+  let fyrlex = bot.users.cache.get("292821168833036288");
   let unknown = false;
   let user;
   if (bot.users.cache.has(body.user)) {
@@ -72,6 +72,7 @@ module.exports.topgg = async (bot, body) => {
   return bot.webhook.send(votemsg).catch(e => { });
 }
 module.exports.labs = async (bot, body) => {
+  let fyrlex = bot.users.cache.get("292821168833036288");
   let unknown = false;
   let user;
   if (bot.users.cache.has(body.uid)) {
@@ -88,6 +89,26 @@ module.exports.labs = async (bot, body) => {
       };
     };
   };
+  let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(user.id));
+  userguilds.forEach(guild => {
+    let voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
+    if (!voteData) {
+      bot.utils.registerGuildVotes(bot, guild);
+    }
+    bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
+    bot.vdb.prepare("UPDATE votedata SET totalvotes=? WHERE guildid=?").run(voteData.totalvotes + 1, guild.id);
+    bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
+    bot.monthlyvotes.set(guild.id, bot.monthlyvotes.get(guild.id) ? bot.monthlyvotes.get(guild.id) : voteData.monthlyvotes);
+    bot.totalvotes.set(guild.id, bot.totalvotes.get(guild.id) ? bot.totalvotes.get(guild.id) : voteData.totalvotes);
+    if (bot.monthlyvotes.get(guild.id) % 25) {
+      let embed = new MessageEmbed()
+        .setColor(bot.colors.green)
+        .setDescription([
+          `**Guild:** ${guild.name} (${guild.id})`,
+          `**Votes:** ${bot.monthlyvotes.get(guild.id)}`])
+      return fyrlex.send(embed).catch(e => { })
+    }
+  });
   let usertag = user.tag;
   const { MessageEmbed } = require("discord.js");
   let dm = new MessageEmbed()
@@ -112,6 +133,7 @@ module.exports.labs = async (bot, body) => {
   return bot.webhook.send(votemsg).catch(e => { });
 }
 module.exports.boats = async (bot, body) => {
+  let fyrlex = bot.users.cache.get("292821168833036288");
   let unknown = false;
   let user;
   if (bot.users.cache.has(body.user.id)) {
@@ -174,6 +196,7 @@ module.exports.boats = async (bot, body) => {
   return bot.webhook.send(votemsg).catch(e => { });
 }
 module.exports.botlistspace = async (bot, body) => {
+  let fyrlex = bot.users.cache.get("292821168833036288");
   let unknown = false;
   let user;
   if (bot.users.cache.has(body.user.id)) {
@@ -244,6 +267,7 @@ module.exports.abstractlist = async (bot, body) => {
 module.exports.idledev = async (bot, body) => {
 }
 module.exports.bladebotlist = async (bot, body) => {
+  let fyrlex = bot.users.cache.get("292821168833036288");
   let unknown = false;
   let user;
   if (bot.users.cache.has(body.user.id)) {
