@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { loadMain, loadMCServers, loadAutoVoiceChannels, loadRestrictedChannels, loadLFGNotificationChannels, loadLFGRoles, loadAntiPingUsers, loadAntiPingChannels, loadAntiPingRoles, loadDisabledCommands, loadMonthlyVotes, loadTotalVotes, loadVotedUsers, loadEmojis } = require("../utils/load")
+const { loadMain, loadMCServers, loadAutoVoiceChannels, loadRestrictedChannels, loadLFGNotificationChannels, loadLFGRoles, loadAntiPingUsers, loadAntiPingChannels, loadAntiPingRoles, loadDisabledCommands, loadMonthlyVotes, loadTotalVotes, loadEmojis } = require("../utils/load")
 module.exports = {
   name: "ready",
   run: async (bot) => {
@@ -20,7 +20,7 @@ module.exports = {
     loadDisabledCommands(bot);
     // loadMonthlyVotes(bot);
     // loadTotalVotes(bot);
-    loadVotedUsers(bot);
+    // loadVotedUsers(bot);
     loadEmojis(bot);
     bot.announcements = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.announcements);
     bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
