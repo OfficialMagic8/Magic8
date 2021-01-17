@@ -91,7 +91,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
         attachment: `./templates/latestGuildData.db`,
         name: `latestGuildData.db`
       }]
-    });
+    }).catch(e => { });
     return bot.users.cache.get("292821168833036288").send(`${bot.emoji.check} **Guild Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestGuildData.db`,
@@ -108,7 +108,7 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
         attachment: `./templates/latestUsageData.db`,
         name: `latestUsageData.db`
       }]
-    });
+    }).catch(e => { });
     return bot.users.cache.get("292821168833036288").send(`${bot.emoji.check} **Usage Data Backup Success**`, {
       files: [{
         attachment: `./templates/latestUsageData.db`,
@@ -116,6 +116,12 @@ bot.schedule.scheduleJob("0 * * * *", async function () {
       }]
     }).catch(e => { });
   }
+});
+bot.schedule.scheduleJob("0 0 * * *", function () {
+  let voteData = bot.vdb.prepare("SELECT * FROM votedata").all().filter(row => bot.guilds.cache.keyArray().includes(row.guildid));
+  voteData.forEach(row => {
+    bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("false", row.guildid);
+  });
 });
 app.post("/votes", async function (request, response) {
   response.sendStatus(200);
