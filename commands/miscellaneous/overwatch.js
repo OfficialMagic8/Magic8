@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const heroes = ["bastion", "dVa", "genji", "hanzo", "junkrat", "lucio", "mccree", "mei", "mercy", "orisa", "pharah", "reaper", "reinhardt", "roadhog", "soldier76", "sombra", "symmetra", "torbjorn", "tracer", "widowmaker", "winston", "zarya", "zenyatta"]
 module.exports = {
   aliases: ["ow"],
   description: "View an Overwatch PC user's profile",
@@ -14,7 +15,7 @@ module.exports = {
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "overwatch.error.user").join("\n")
           .replace(/{CROSS}/g, bot.emoji.cross)
-          .replace(/{UESR}/g, message.author));
+          .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let embed = new MessageEmbed()
@@ -167,6 +168,6 @@ module.exports = {
         .replace(/{CROSS}/g, bot.emoji.cross)
         .replace(/{PREFIX}/g, prefix));
       return embedmessage.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
-    })
+    });
   }
 }
