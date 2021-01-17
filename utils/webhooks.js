@@ -28,6 +28,7 @@ module.exports.topgg = async (bot, body) => {
       let voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
       if (!voteData) {
         bot.utils.registerGuildVotes(bot, guild);
+        voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
       }
       bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
       bot.vdb.prepare("UPDATE votedata SET totalvotes=? WHERE guildid=?").run(voteData.totalvotes + 1, guild.id);
@@ -94,6 +95,7 @@ module.exports.labs = async (bot, body) => {
     let voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
     if (!voteData) {
       bot.utils.registerGuildVotes(bot, guild);
+      voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
     }
     bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
     bot.vdb.prepare("UPDATE votedata SET totalvotes=? WHERE guildid=?").run(voteData.totalvotes + 1, guild.id);
@@ -155,6 +157,7 @@ module.exports.boats = async (bot, body) => {
     let voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
     if (!voteData) {
       bot.utils.registerGuildVotes(bot, guild);
+      voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
     }
     bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
     bot.vdb.prepare("UPDATE votedata SET totalvotes=? WHERE guildid=?").run(voteData.totalvotes + 1, guild.id);
@@ -218,6 +221,7 @@ module.exports.botlistspace = async (bot, body) => {
     let voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
     if (!voteData) {
       bot.utils.registerGuildVotes(bot, guild);
+      voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
     }
     bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
     bot.vdb.prepare("UPDATE votedata SET totalvotes=? WHERE guildid=?").run(voteData.totalvotes + 1, guild.id);
@@ -289,6 +293,7 @@ module.exports.bladebotlist = async (bot, body) => {
     let voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
     if (!voteData) {
       bot.utils.registerGuildVotes(bot, guild);
+      voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
     }
     bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
     bot.vdb.prepare("UPDATE votedata SET totalvotes=? WHERE guildid=?").run(voteData.totalvotes + 1, guild.id);
