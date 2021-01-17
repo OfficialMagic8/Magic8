@@ -147,7 +147,6 @@ module.exports = {
         .setFooter(`Want your Advertisement here? Contact Fyrlex#2740`)
         .setDescription(ad.description.join("\n")
           .replace(/{BOT}/g, bot.user)
-          .replace(/{VOTELINK}/g, bot.config.vote.dbl)
           .replace(/{INVITE}/g, bot.invite)
           .replace(/{ADSINFO}/g, bot.docs.ads)
           .replace(/{INFO}/g, bot.emoji.info));
