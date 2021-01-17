@@ -89,7 +89,7 @@ module.exports = {
               .setColor(bot.colors.red)
               .setDescription(bot.translate(bot, language, "namehistory.invalidusername")
                 .replace(/{CROSS}/g, bot.emoji.cross)
-                .replace(/{UESR}/g, message.author)
+                .replace(/{USER}/g, message.author)
                 .replace(/{TOSEARCH}/g, toSearch))
             return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
           }
