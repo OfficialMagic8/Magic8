@@ -45,6 +45,7 @@ bot.docs = bot.config.docs;
 bot.github = bot.config.github;
 bot.pack = require("./package.json");
 bot.utils = require("./utils/methods.js");
+bot.load = require("./utils/load.js");
 bot.error = bot.utils.error;
 bot.translate = bot.utils.getTranslation;
 bot.webhooks = require("./utils/webhooks.js");

@@ -8,6 +8,9 @@ module.exports = {
       delete require.cache[require.resolve("../../utils/methods.js")];
       bot.utils = require("../../utils/methods.js");
 
+      delete require.cache[require.resolve("../../utils/load.js")];
+      bot.load = require("../../utils/load.js");
+
       delete require.cache[require.resolve("../../utils/webhooks.js")];
       bot.webhooks = require("../../utils/webhooks.js");
 

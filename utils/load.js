@@ -32,69 +32,69 @@ module.exports.loadMCServers = (bot) => {
 };
 module.exports.loadMonthlyVotes = (bot) => {
   let guildsids = bot.guilds.cache.keyArray();
-  let loaded = bot.db.prepare("SELECT * FROM guilddata WHERE monthlyvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
+  let loaded = bot.vdb.prepare("SELECT * FROM votedata WHERE monthlyvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
   loaded.forEach(row => {
-    bot.monthlyvotes.set(row.guildid, row.monthlyvotes)
-  })
+    bot.monthlyvotes.set(row.guildid, row.monthlyvotes);
+  });
   console.log(`☑️ Guilds with monthly votes: ${loaded.length}`);
 };
 module.exports.loadTotalVotes = (bot) => {
   let guildsids = bot.guilds.cache.keyArray();
-  let loaded = bot.db.prepare("SELECT * FROM guilddata WHERE totalvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
+  let loaded = bot.vdb.prepare("SELECT * FROM votedata WHERE totalvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
   loaded.forEach(row => {
     bot.totalvotes.set(row.guildid, row.totalvotes);
   });
   console.log(`☑️ Guilds with any votes: ${loaded.length}`);
 };
-module.exports.loadVotedUsers = async (bot) => {
-  try {
-    let votes = await bot.dbl.getVotes();
-    let voted = [];
-    votes.forEach(vote => {
-      let o = {
-        name: `${vote.username}#${vote.discriminator}`,
-        id: vote.id,
-        votes: 1
-      }
-      voted.push(o);
-    });
-    let names = [];
-    let votesarray = [];
-    let idarray = [];
-    for (let v of voted) {
-      let repeats = voted.filter(i => i.name === v.name);
-      names.push(v.name);
-      if (names.filter(i => i === v.name).length <= 1) {
-        let o = {
-          name: v.name,
-          id: v.id,
-          votes: repeats.length
-        }
-        votesarray.push(o);
-        idarray.push(v.id);
-      }
-    }
-    // console.log(`☑️ Loaded ${votesarray.length} DBL Voters This Month`);
-    idarray.forEach(userid => {
-      let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(userid));
-      userguilds.forEach(guild => {
-        let current = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id).monthlyvotes
-        bot.db.prepare("UPDATE guilddata SET monthlyvotes=? WHERE guildid=?").run(current + votesarray.find(v => v.id === userid).votes, guild.id);
-      });
-      if (bot.dbl.hasVoted(userid)) {
-        userguilds.forEach(guild => {
-          bot.db.prepare("UPDATE guilddata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
-        });
-      } else if (!bot.dbl.hasVoted(userid)) {
-        userguilds.forEach(guild => {
-          bot.db.prepare("UPDATE guilddata SET hasvoted=? WHERE guildid=?").run("false", guild.id);
-        });
-      }
-    });
-  } catch (e) {
-    console.error(e);
-  }
-};
+// module.exports.loadVotedUsers = async (bot) => {
+//   try {
+//     let votes = await bot.dbl.getVotes();
+//     let voted = [];
+//     votes.forEach(vote => {
+//       let o = {
+//         name: `${vote.username}#${vote.discriminator}`,
+//         id: vote.id,
+//         votes: 1
+//       }
+//       voted.push(o);
+//     });
+//     let names = [];
+//     let votesarray = [];
+//     let idarray = [];
+//     for (let v of voted) {
+//       let repeats = voted.filter(i => i.name === v.name);
+//       names.push(v.name);
+//       if (names.filter(i => i === v.name).length <= 1) {
+//         let o = {
+//           name: v.name,
+//           id: v.id,
+//           votes: repeats.length
+//         }
+//         votesarray.push(o);
+//         idarray.push(v.id);
+//       }
+//     }
+//     // console.log(`☑️ Loaded ${votesarray.length} DBL Voters This Month`);
+//     idarray.forEach(userid => {
+//       let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(userid));
+//       userguilds.forEach(guild => {
+//         let current = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id).monthlyvotes
+//         bot.db.prepare("UPDATE guilddata SET monthlyvotes=? WHERE guildid=?").run(current + votesarray.find(v => v.id === userid).votes, guild.id);
+//       });
+//       if (bot.dbl.hasVoted(userid)) {
+//         userguilds.forEach(guild => {
+//           bot.db.prepare("UPDATE guilddata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
+//         });
+//       } else if (!bot.dbl.hasVoted(userid)) {
+//         userguilds.forEach(guild => {
+//           bot.db.prepare("UPDATE guilddata SET hasvoted=? WHERE guildid=?").run("false", guild.id);
+//         });
+//       }
+//     });
+//   } catch (e) {
+//     console.error(e);
+//   }
+// };
 module.exports.loadAutoVoiceChannels = (bot) => {
   let guildsids = bot.guilds.cache.keyArray();
   let loaded = bot.db.prepare("SELECT * FROM guilddata WHERE autovoicesystemready!=?").all(0).filter(row => guildsids.includes(row.guildid));
