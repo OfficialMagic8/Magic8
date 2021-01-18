@@ -36,7 +36,7 @@ module.exports.topgg = async (bot, body) => {
       bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
       bot.monthlyvotes.set(guild.id, bot.monthlyvotes.get(guild.id) ? bot.monthlyvotes.get(guild.id) : voteData.monthlyvotes);
       bot.totalvotes.set(guild.id, bot.totalvotes.get(guild.id) ? bot.totalvotes.get(guild.id) : voteData.totalvotes);
-      if (bot.monthlyvotes.get(guild.id) % 25) {
+      if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription([
@@ -102,7 +102,7 @@ module.exports.labs = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.get(guild.id) ? bot.monthlyvotes.get(guild.id) : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.get(guild.id) ? bot.totalvotes.get(guild.id) : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
@@ -163,7 +163,7 @@ module.exports.boats = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.get(guild.id) ? bot.monthlyvotes.get(guild.id) : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.get(guild.id) ? bot.totalvotes.get(guild.id) : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
@@ -226,7 +226,7 @@ module.exports.botlistspace = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.get(guild.id) ? bot.monthlyvotes.get(guild.id) : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.get(guild.id) ? bot.totalvotes.get(guild.id) : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
@@ -297,7 +297,7 @@ module.exports.bladebotlist = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.get(guild.id) ? bot.monthlyvotes.get(guild.id) : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.get(guild.id) ? bot.totalvotes.get(guild.id) : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
