@@ -18,8 +18,8 @@ module.exports = {
     loadAntiPingChannels(bot);
     loadAntiPingRoles(bot);
     loadDisabledCommands(bot);
-    // loadMonthlyVotes(bot);
-    // loadTotalVotes(bot);
+    loadMonthlyVotes(bot);
+    loadTotalVotes(bot);
     // loadVotedUsers(bot);
     loadEmojis(bot);
     bot.announcements = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.announcements);
