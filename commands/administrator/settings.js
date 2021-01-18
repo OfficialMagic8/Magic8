@@ -1038,8 +1038,8 @@ module.exports = {
           `**Available Settings:**`,
           `\`${prefix}s 8ball\` - Magic 8 Ball Settings`,
           `\`${prefix}s media\` - Server Media Settings`,
-          `\`${prefix}s lfg\` - Looking For Group Settings`
-            ``,
+          `\`${prefix}s lfg\` - Looking For Group Settings`,
+          ``,
           `\`${prefix}s funchannel\` - Manage Fun Commands Channel`,
           `\`${prefix}s minigamechannel\` - Manage Minigames Channel`,
           `\`${prefix}s miscellaneouschannel\` - Manage Miscellaneous Commands Channel`,
