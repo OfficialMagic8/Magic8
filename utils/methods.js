@@ -1,3 +1,4 @@
+const { MessageEmbed } = require("discord.js");
 module.exports.loadDatabases = (bot) => {
   const Database = require('better-sqlite3');
   bot.db = new Database('./data/guildData.db');
@@ -89,7 +90,6 @@ async function fetchMessages(fetchedMessages, channel) { // long time no glitch.
   }
 }
 module.exports.error = (bot, message, language, e) => {
-  const { MessageEmbed } = require("discord.js");
   let logs = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.caughterrors);
   let startedwith;
   let prefix = bot.prefixes.get(message.guild.id)
@@ -163,15 +163,13 @@ module.exports.fetchLanguages = (bot) => {
   }
 
   bot.lastfetched.set("lf", new Date().toLocaleString("en"))
-  bot.fetch("https://raw.githubusercontent.com/OfficialMagic8/Languages/master/links.json").then(res => res.json())
-    .then(json => {
-      json.forEach(link => {
-        bot.fetch(link).then(res => res.json())
-          .then(json => {
-            bot.languages.set(json.languagenameshort, json);
-          });
+  bot.fetch("https://raw.githubusercontent.com/OfficialMagic8/Languages/master/links.json").then(res => res.json()).then(json => {
+    json.forEach(link => {
+      bot.fetch(link).then(res => res.json()).then(json => {
+        bot.languages.set(json.languagenameshort, json);
       });
-    }).catch(e => { return bot.error(bot, message, language, e); });
+    });
+  }).catch(e => { return bot.error(bot, message, language, e); });
 }
 module.exports.getTranslation = (bot, object, path) => {
   let text = getNested(object, path.split("."));
