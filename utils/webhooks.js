@@ -1,3 +1,4 @@
+const { MessageEmbed } = require("discord.js");
 module.exports.topgg = async (bot, body) => {
   let fyrlex = bot.users.cache.get("292821168833036288");
   let unknown = false;
@@ -49,7 +50,6 @@ module.exports.topgg = async (bot, body) => {
 
   let usertag = user.tag;
   let weekend = body.isWeekend ? body.isWeekend : `false`;
-  const { MessageEmbed } = require("discord.js");
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -112,7 +112,6 @@ module.exports.labs = async (bot, body) => {
     }
   });
   let usertag = user.tag;
-  const { MessageEmbed } = require("discord.js");
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -174,8 +173,7 @@ module.exports.boats = async (bot, body) => {
       return fyrlex.send(embed).catch(e => { })
     }
   });
-  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`)
-  const { MessageEmbed } = require("discord.js");
+  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`);
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -238,8 +236,7 @@ module.exports.botlistspace = async (bot, body) => {
       return fyrlex.send(embed).catch(e => { })
     }
   });
-  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`)
-  const { MessageEmbed } = require("discord.js");
+  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`);
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -310,8 +307,7 @@ module.exports.bladebotlist = async (bot, body) => {
       return fyrlex.send(embed).catch(e => { });
     }
   });
-  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`)
-  const { MessageEmbed } = require("discord.js");
+  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`);
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
