@@ -127,7 +127,7 @@ module.exports.labs = async (bot, body) => {
   let votemsg = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
-    .setFooter(`Discord Labs`)
+    .setFooter(`Discord Bot Labs`)
     .setDescription([
       `**Voter:** ${unknown ? `<@${body.user}>` : user} (${usertag})`,
       `**Voted For:** ${bot.user}`,
