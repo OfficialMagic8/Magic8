@@ -1,4 +1,17 @@
 const { MessageEmbed } = require("discord.js");
+const votelinks = [
+  "[**top.gg**](https://top.gg/bot/484148705507934208/vote)",
+  "[**Discord Boats**](https://discord.boats/bot/484148705507934208/vote)",
+  "[**Discord Bot List**](https://discordbotlist.com/bots/magic8/upvote)",
+  "[**Discord Extreme List**](https://discordextremelist.xyz/en-US/bots/484148705507934208)",
+  "[**Discord Bot Labs**](http://dbots.cc/magic8)",
+  "[**Arcane Center**](https://arcane-center.xyz/bot/484148705507934208)",
+  "[**botlist.space**](https://botlist.space/bot/484148705507934208)",
+  "[**BladeBotList**](https://bladebotlist.xyz/bot/484148705507934208)",
+  "[**Bots For Discord**](https://botsfordiscord.com/bot/484148705507934208)",
+  "[**BotsDataBase**](https://botsdatabase.com/bot/484148705507934208)",
+  "[**Blist**](https://blist.xyz/bot/484148705507934208)"
+]
 module.exports = {
   aliases: ["v"],
   category: "USER",
@@ -7,44 +20,13 @@ module.exports = {
   name: "vote",
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    if (message.author.id === bot.config.ownerid) {
-      try {
-        let votes = await bot.dbl.getVotes();
-        let voted = [];
-        votes.forEach(vote => {
-          let o = {
-            name: `${vote.username}#${vote.discriminator}`,
-            votes: 1
-          };
-          voted.push(o);
-        });
-        let names = [];
-        let final = [];
-        for (let v of voted) {
-          let repeats = voted.filter(i => i.name === v.name)
-          names.push(v.name)
-          if (names.filter(i => i === v.name).length <= 1) {
-            final.push(`${v.name}: ${repeats.length}`)
-          }
-        }
-        console.log(`DBL Voters This Month:\n${final.join("\n")}`)
-      } catch (e) {
-        console.error(e);
-      }
-      try {
-        let votecount = await bot.boats.getBot(bot.user.id)
-        console.log(`Discord Boats Total Votes This Month:\n${votecount.bot_vote_count.toLocaleString("en")}`)
-      } catch (e) {
-        console.error(e);
-      }
-    }
     let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "vote.title")
         .replace(/{BOTNAME}/g, bot.user.username))
       .setColor(bot.colors.main)
       .setDescription(bot.translate(bot, language, "vote.description").join("\n")
         .replace(/{BOT}/g, bot.user)
-        .replace(/{VOTE1}/g, bot.config.vote.dbl))
+        .replace(/{LINKS}/g, votelinks.map(v => `**•** ${v}`).join("\n")));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); })
   }
 }
