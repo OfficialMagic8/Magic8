@@ -151,17 +151,6 @@ module.exports.loadLanguageProgress = (bot) => {
   console.log(langArray.join(" "));
 };
 module.exports.fetchLanguages = (bot) => {
-  function postLanguageProgress(bot) {
-    let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-    let url = "https://magic8-languages.glitch.me/";
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", url);
-    xhr.setRequestHeader("Authorization", "test");
-    xhr.setRequestHeader("Content-Type", "application/json");
-    let data = `${Object.fromEntries(bot.languagesprogress)}`;
-    xhr.send(data);
-  }
-
   bot.lastfetched.set("lf", new Date().toLocaleString("en"))
   bot.fetch("https://raw.githubusercontent.com/OfficialMagic8/Languages/master/links.json").then(res => res.json()).then(json => {
     json.forEach(link => {

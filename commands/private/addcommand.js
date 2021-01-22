@@ -9,17 +9,11 @@ module.exports = {
     loaded.forEach(row => {
       let usage = JSON.parse(row.usage);
       let o = {
-        command: "toggle",
-        category: "ADMINISTRATOR",
-        usage: 0
-      }
-      usage.push(o);
-      let b = {
-        command: "summary",
+        command: "partners",
         category: "INFORMATION",
         usage: 0
       }
-      usage.push(b);
+      usage.push(o);
       bot.udb.prepare("UPDATE usagedata SET usage=? WHERE guildid=?").run(JSON.stringify(usage), row.guildid);
     });
   }
