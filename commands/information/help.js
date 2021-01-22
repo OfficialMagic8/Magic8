@@ -9,7 +9,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language)
     if (!bot.helpmenus.has(message.guild.id)) bot.helpmenus.set(message.guild.id, bot.helpEmbed);
     if (!bot.adminmenus.has(message.guild.id)) bot.adminmenus.set(message.guild.id, bot.staffEmbed);
-    if (message.member.hasPermission("MANAGE_GUILD") && args[0]) {
+    if (args[0]) {
       let inputarray = [];
       for (let c of bot.commands.array()) {
         if (!c.dev) {
