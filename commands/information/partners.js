@@ -1,9 +1,9 @@
 const { MessageEmbed } = require("discord.js");
 const partners = [
-  "[**BreMea**](https://docs.magic8.xyz/info/partners/bremea)",
-  "[**PlexusMC**](https://docs.magic8.xyz/info/partners/plexusmc)",
-  "[**Shopery**](https://docs.magic8.xyz/info/partners/shopery)",
-  "[**Something.Host**](https://docs.magic8.xyz/info/partners/somethinghost)"
+  `[${bot.emoji.bremea} **BreMea**](https://docs.magic8.xyz/info/partners/bremea)`,
+  `[${bot.emoji.plexusmc} **PlexusMC**](https://docs.magic8.xyz/info/partners/plexusmc)`,
+  `[${bot.emoji.shopery} **Shopery**](https://docs.magic8.xyz/info/partners/shopery)`,
+  `[${bot.emoji.somethinghost} **Something.Host**](https://docs.magic8.xyz/info/partners/somethinghost)`
 ]
 module.exports = {
   aliases: [],
@@ -17,7 +17,7 @@ module.exports = {
       .setColor(bot.colors.main)
       .setAuthor(`${bot.user.username} Partners`)
       .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
-      .setDescription(partners.map(p => `**•** ${p}`).join("\n"));
+      .setDescription(partners.join("\n"));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }
