@@ -17,7 +17,6 @@ module.exports = {
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let options = [
-      // "status",
       "updates"
     ];
     if (!args[0]) {
@@ -41,32 +40,14 @@ module.exports = {
           .replace(/{INFO}/g, bot.emoji.info));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     };
-    // if (args[0].toLowerCase() === options[0]) {
-    //   bot.status.addFollower(message.channel.id, `Subscribed to ${options[0]}`).then(() => {
-    //     let embed = new MessageEmbed()
-    //       .setColor(bot.colors.green)
-    //       .setDescription(bot.translate(bot, language, "follow.following").join("\n")
-    //         .replace(/{CHECK}/g, bot.emoji.check)
-    //         .replace(/{CHANNEL}/g, message.channel)
-    //         .replace(/{FOLLOWING}/g, options[0]))
-    //     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-    //   }).catch(e => {
-    //     let embed = new MessageEmbed()
-    //       .setColor(bot.colors.red)
-    //       .setDescription(bot.translate(bot, language, "follow.maxintegrations").join("\n")
-    //         .replace(/{CROSS}/g, bot.emoji.cross)
-    //         .replace(/{CHANNEL}/g, message.channel));
-    //     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-    //   });
-    // };
-    if (args[0].toLowerCase() === options[1]) {
-      bot.status.addFollower(message.channel.id, `Subscribed to ${options[1]}`).then(() => {
+    if (args[0].toLowerCase() === options[0]) {
+      bot.updates.addFollower(message.channel.id, `Subscribed to ${options[1]}`).then(() => {
         let embed = new MessageEmbed()
           .setColor(bot.colors.green)
           .setDescription(bot.translate(bot, language, "follow.following").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
             .replace(/{CHANNEL}/g, message.channel)
-            .replace(/{FOLLOWING}/g, options[1]))
+            .replace(/{FOLLOWING}/g, options[0]))
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }).catch(e => {
         let embed = new MessageEmbed()
