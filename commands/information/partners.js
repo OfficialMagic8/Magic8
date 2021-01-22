@@ -1,9 +1,9 @@
 const { MessageEmbed } = require("discord.js");
 const partners = [
-  `[${bot.emoji.bremea} **BreMea**](https://docs.magic8.xyz/info/partners/bremea)`,
-  `[${bot.emoji.plexusmc} **PlexusMC**](https://docs.magic8.xyz/info/partners/plexusmc)`,
-  `[${bot.emoji.shopery} **Shopery**](https://docs.magic8.xyz/info/partners/shopery)`,
-  `[${bot.emoji.somethinghost} **Something.Host**](https://docs.magic8.xyz/info/partners/somethinghost)`
+  `[{BREMEA} **BreMea**](https://docs.magic8.xyz/info/partners/bremea)`,
+  `[{PLEXUSMC} **PlexusMC**](https://docs.magic8.xyz/info/partners/plexusmc)`,
+  `[{SHOPERY} **Shopery**](https://docs.magic8.xyz/info/partners/shopery)`,
+  `[{SOMETHINGHOST} **Something.Host**](https://docs.magic8.xyz/info/partners/somethinghost)`
 ]
 module.exports = {
   aliases: [],
@@ -17,7 +17,11 @@ module.exports = {
       .setColor(bot.colors.main)
       .setAuthor(`${bot.user.username} Partners`)
       .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
-      .setDescription(partners.join("\n"));
+      .setDescription(partners.join("\n")
+        .replace(/{BREMEA/g, bot.emoji.bremea)
+        .replace(/{PLEXUSMC}/g, bot.emoji.plexusmc)
+        .replace(/{SHOPERY}/g, bot.emoji.shopery)
+        .replace(/{SOMETHINGHOST}/g, bot.emoji.somethinghost));
     return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }
