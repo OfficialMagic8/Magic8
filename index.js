@@ -10,7 +10,7 @@ const server = http.createServer(app)
 const DBL = require('dblapi.js');
 const BOATS = require('boats.js');
 const { Client, Collection, WebhookClient } = require("discord.js");
-const discordsettings = {
+const ClientOptions = {
   restRequestTimeout: 60000,
   ws: {
     intents: [
@@ -22,7 +22,7 @@ const discordsettings = {
     ]
   }
 }
-const bot = new Client(discordsettings);
+const bot = new Client(ClientOptions);
 bot.starttime = new Date()
 const statcordsettings = {
   client: bot,
@@ -38,7 +38,6 @@ const nekoslifeclient = require("nekos.life");
 bot.nekos = new nekoslifeclient();
 
 bot.dbl = new DBL(process.env.DBL_TOKEN, { statsInterval: 1800000, webhookServer: server, webhookAuth: process.env.TOPGG_AUTH }, bot);
-bot.boats = new BOATS(process.env.DISCORD_BOATS_AUTH);
 
 bot.config = require("./config.json");
 bot.docs = bot.config.docs;
@@ -62,9 +61,9 @@ bot.utils.loadDatabases(bot);
 bot.colors = require("./utils/colors.json");
 bot.color8 = require("./utils/color8.json");
 bot.emoji = require("./utils/emojis.json");
-bot.invite = "https://discord.gg/bUUggyCjvp";
-bot.shortinvite = "discord.gg/bUUggyCjvp";
-bot.supportserver = "610816275580583936";
+bot.invite = "https://discord.gg/9jn6AFZxja";
+bot.shortinvite = "discord.gg/9jn6AFZxja";
+bot.supportserver = "727721043283935252";
 bot.footer = ``;
 bot.debug = false;
 
@@ -151,6 +150,10 @@ app.post("/votes", async function (request, response) {
     bot.webhooks.idledev(bot, request.body);
   } else if (auth = process.env.BBL_WEBHOOK) {
     bot.webhooks.bladebotlist(bot, request.body)
+  } else if (auth = process.env.BFD_WEBHOOK) {
+    bot.webhooks.botsfordiscord(bot, request.body)
+  } else if (auth = process.env.BDB_API) {
+    bot.webhooks.botsdatabase(bot, request.body)
   } else return;
 });
 app.get("/pingstatus", function (request, response) {
