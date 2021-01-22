@@ -8,7 +8,7 @@ const partners = [
 module.exports = {
   aliases: [],
   category: "INFORMATION",
-  description: "View Magic8's amazing partners.",
+  description: "Magic8's amazing partners that offer great services or products.",
   emoji: "🤝",
   name: "partners",
   run: async (bot, message, args, prefix, guildData) => {
