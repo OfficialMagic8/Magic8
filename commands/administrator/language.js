@@ -7,7 +7,7 @@ module.exports = {
   emoji: "🌎",
   name: "language",
   run: async (bot, message, args, prefix, guildData) => {
-    if (message.member.hasPermission("MANAGE_GUILD") || message.member.roles.cache.has("704052899285696592") || message.author.id === "292821168833036288") {
+    if (message.member.hasPermission("MANAGE_GUILD") || message.member.roles.cache.has("802198108112289802") || message.author.id === "292821168833036288") {
       let language = bot.utils.getLanguage(bot, guildData.language);
       let subcommand = args[0] ? args[0].toLowerCase() : args[0];
       if (subcommand === "set") {
