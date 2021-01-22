@@ -22,9 +22,9 @@ module.exports = {
     loadTotalVotes(bot);
     // loadVotedUsers(bot);
     loadEmojis(bot);
-    bot.announcements = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.announcements);
+    // bot.announcements = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.announcements);
     bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
-    bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
+    // bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
     let statusList = [
       // { name: `on shard {SHARD}/{MAXSHARDS}`, type: "PLAYING" },
       // { name: `with ${bot.shard.count} shards`, type: "PLAYING" },
