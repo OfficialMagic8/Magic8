@@ -18,7 +18,7 @@ module.exports = {
       .setAuthor(`${bot.user.username} Partners`)
       .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
       .setDescription(partners.join("\n")
-        .replace(/{BREMEA/g, bot.emoji.bremea)
+        .replace(/{BREMEA}/g, bot.emoji.bremea)
         .replace(/{PLEXUSMC}/g, bot.emoji.plexusmc)
         .replace(/{SHOPERY}/g, bot.emoji.shopery)
         .replace(/{SOMETHINGHOST}/g, bot.emoji.somethinghost));
