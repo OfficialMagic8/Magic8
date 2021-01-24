@@ -151,7 +151,7 @@ module.exports.loadLanguageProgress = (bot) => {
   console.log(langArray.join(" "));
 };
 module.exports.fetchLanguages = (bot) => {
-  bot.lastfetched.set("lf", new Date().toLocaleString("en"))
+  bot.lastfetched.set("lf", Date.now())
   bot.fetch("https://raw.githubusercontent.com/OfficialMagic8/Languages/master/links.json").then(res => res.json()).then(json => {
     json.forEach(link => {
       bot.fetch(link).then(res => res.json()).then(json => {
