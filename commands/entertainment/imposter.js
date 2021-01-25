@@ -3,7 +3,7 @@ const colors = ["blue", "red", "darkgreen", "lime", "orange", "pink", "white", "
 const isimposter = ["true", "false"];
 const baseURL = "https://vacefron.nl/api/ejected?name={USERNAME}&impostor={ISIMPOSTER}&crewmate={COLOR}";
 module.exports = {
-  aliases: [],
+  aliases: ["imposter"],
   category: "ENTERTAINMENT",
   description: "Discover the real imposter in your Discord server",
   emoji: "🕵️",
