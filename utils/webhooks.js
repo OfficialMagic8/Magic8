@@ -58,7 +58,7 @@ module.exports.topgg = async (bot, body) => {
     .setDescription([
       `**Voter:** ${unknown ? `<@${body.user}>` : user} (${usertag})`,
       `**Weekend Bonus:** ${weekend}`,
-      `**Voted For:** ${votedfor}`,
+      `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://top.gg/bot/484148705507934208)*`])
   return bot.webhook.send(votemsg).catch(e => { });
