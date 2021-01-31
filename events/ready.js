@@ -5,9 +5,9 @@ module.exports = {
   run: async (bot) => {
     console.log(`✅ Ready event loading... ${bot.user.tag}`);
     bot.statcord.autopost();
-    bot.channels.cache.get("766108811978080267").messages.fetch().then(() => {
-      bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
-    }).catch(e => { });
+    // bot.channels.cache.get("766108811978080267").messages.fetch().then(() => {
+    //   bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
+    // }).catch(e => { });
     loadMain(bot);
     loadMCServers(bot);
     loadAutoVoiceChannels(bot);
@@ -36,7 +36,7 @@ module.exports = {
       { name: `life`, type: "COMPETING" },
       { name: `by myself`, type: "PLAYING" },
       { name: `magic8.xyz`, type: "PLAYING" },
-      { name: `magic8.xyz/docs`, type: "PLAYING" },
+      { name: `magic8.xyz/discord`, type: "PLAYING" },
       { name: `magic8.xyz/invite`, type: "PLAYING" },
       { name: `bremea.com`, type: "PLAYING" },
       { name: `bremea.com/discord`, type: "PLAYING" },
