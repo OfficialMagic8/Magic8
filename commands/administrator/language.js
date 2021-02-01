@@ -36,17 +36,7 @@ module.exports = {
           } else {
             totalpages = fullpagecount;
           }
-          let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
-          if (isNaN(page) || page > totalpages || page < 1) {
-            let embed = new MessageEmbed()
-              .setColor(bot.colors.red)
-              .setDescription(bot.translate(bot, language, "language.invalidpage").join("\n")
-                .replace(/{CROSS}/g, bot.emoji.cross)
-                .replace(/{INPUT}/g, args[1])
-                .replace(/{INFO}/g, bot.emoji.info)
-                .replace(/{TOTALPAGES}/g, totalpages));
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-          }
+          let page = 1;
           let lastitemindex = page * 5;
           let selectedlanguages = [];
           for (map of mapped) {
@@ -67,7 +57,7 @@ module.exports = {
             .setColor(condition ? bot.colors.main : bot.colors.red)
             .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
             .setFooter(bot.translate(bot, language, "language.lastupdated")
-              .replace(/{TIME}/g, bot.lastfetched.get("lf")))
+              .replace(/{TIME}/g, new Date(bot.lastfetched.get("lf")).toLocaleString(guildData.language)))
             .setDescription(bot.translate(bot, language, "language.languages").join("\n")
               .replace(/{UPTODATE}/g, uptodatestring)
               .replace(/{STATEMENT}/g, bot.translate(bot, language, "language.statements.set")
@@ -103,7 +93,7 @@ module.exports = {
         let success = new MessageEmbed()
           .setColor(bot.colors.green)
           .setFooter(bot.translate(bot, language, "language.lastupdated")
-            .replace(/{TIME}/g, bot.lastfetched.get("lf")))
+            .replace(/{TIME}/g, new Date(bot.lastfetched.get("lf")).toLocaleString(guildData.language)))
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setDescription(bot.translate(bot, language, "language.updated").join("\n")
             .replace(/{CHECK}/g, bot.emoji.check)
@@ -116,16 +106,15 @@ module.exports = {
         return message.channel.send(success).catch(e => { });
       } else if (subcommand === "list") {
         let lastfetched = bot.lastfetched.get("lf")
-        let lastfetchedms = Date.parse(lastfetched)
         let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json()).then(json => {
           return Date.parse(json[0].updated_at)
         }).catch(e => { return bot.error(bot, message, language, e); });
         let uptodatestring;
         let condition;
-        if (lastfetchedms < lastcommit) {
+        if (lastfetched < lastcommit) {
           condition = false;
           uptodatestring = `${bot.emoji.cross} **${bot.translate(bot, language, "language.outdated")}**`;
-        } else if (lastfetchedms >= lastcommit) {
+        } else if (lastfetched >= lastcommit) {
           condition = true;
           uptodatestring = `${bot.emoji.check} **${bot.translate(bot, language, "language.uptodate")}**`;
         }
@@ -170,7 +159,7 @@ module.exports = {
           .setColor(condition ? bot.colors.main : bot.colors.red)
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setFooter(bot.translate(bot, language, "language.lastupdated")
-            .replace(/{TIME}/g, bot.lastfetched.get("lf")))
+            .replace(/{TIME}/g, new Date(bot.lastfetched.get("lf")).toLocaleString(guildData.language)))
           .setDescription(bot.translate(bot, language, "language.languages").join("\n")
             .replace(/{UPTODATE}/g, uptodatestring)
             .replace(/{STATEMENT}/g, bot.translate(bot, language, "language.statements.togithub")
@@ -191,7 +180,6 @@ module.exports = {
       } else if (subcommand === "info") {
         if (!args[1]) {
           let lastfetched = bot.lastfetched.get("lf")
-          let lastfetchedms = Date.parse(lastfetched)
           let lastcommit = await bot.fetch("https://api.github.com/orgs/OfficialMagic8/repos").then(res => res.json())
             .then(json => {
               return Date.parse(json[0].updated_at);
@@ -206,17 +194,7 @@ module.exports = {
           } else {
             totalpages = fullpagecount;
           }
-          let page = args[1] ? Math.abs(Math.floor(parseInt(args[1]))) : 1;
-          if (isNaN(page) || page > totalpages || page < 1) {
-            let embed = new MessageEmbed()
-              .setColor(bot.colors.red)
-              .setDescription(bot.translate(bot, language, "language.invalidpage").join("\n")
-                .replace(/{CROSS}/g, bot.emoji.cross)
-                .replace(/{INPUT}/g, args[1])
-                .replace(/{INFO}/g, bot.emoji.info)
-                .replace(/{TOTALPAGES}/g, totalpages));
-            return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-          }
+          let page = 1
           let lastitemindex = page * 5;
           let selectedlanguages = [];
           for (map of mapped) {
@@ -231,10 +209,10 @@ module.exports = {
           }
           let uptodatestring;
           let condition;
-          if (lastfetchedms < lastcommit) {
+          if (lastfetched < lastcommit) {
             condition = false;
             uptodatestring = `${bot.emoji.cross} **${bot.translate(bot, language, "language.outdated")}**`;
-          } else if (lastfetchedms >= lastcommit) {
+          } else if (lastfetched >= lastcommit) {
             condition = true;
             uptodatestring = `${bot.emoji.check} **${bot.translate(bot, language, "language.uptodate")}**`;
           }
@@ -246,7 +224,7 @@ module.exports = {
             .setColor(condition ? bot.colors.main : bot.colors.red)
             .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
             .setFooter(bot.translate(bot, language, "language.lastupdated")
-              .replace(/{TIME}/g, bot.lastfetched.get("lf")))
+              .replace(/{TIME}/g, new Date(bot.lastfetched.get("lf")).toLocaleString(guildData.language)))
             .setDescription(bot.translate(bot, language, "language.languages").join("\n")
               .replace(/{UPTODATE}/g, uptodatestring)
               .replace(/{STATEMENT}/g, bot.translate(bot, language, "language.statements.info")
@@ -280,7 +258,7 @@ module.exports = {
           .setAuthor(bot.translate(bot, language, "language.menutitle")
             .replace(/{BOTNAME}/g, bot.user.username))
           .setFooter(bot.translate(bot, language, "language.lastupdated")
-            .replace(/{TIME}/g, bot.lastfetched.get("lf")))
+            .replace(/{TIME}/g, new Date(bot.lastfetched.get("lf")).toLocaleString(guildData.language)))
           .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
           .setColor(bot.colors.main)
           .setDescription(bot.translate(bot, language, "language.menu").join("\n")

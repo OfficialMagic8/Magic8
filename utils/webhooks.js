@@ -17,40 +17,28 @@ module.exports.topgg = async (bot, body) => {
       }
     }
   }
-  let votedfor;
-  if (body.bot) {
-    votedfor = bot.user;
-  } else if (body.guild) {
-    votedfor = bot.guilds.cache.get(body.guild).name;
-  }
-  if (body.bot) {
-    let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(user.id));
-    userguilds.forEach(guild => {
-      let voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
-      if (!voteData) {
-        bot.utils.registerGuildVotes(bot, guild);
-        voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
-      }
-      bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
-      bot.vdb.prepare("UPDATE votedata SET totalvotes=? WHERE guildid=?").run(voteData.totalvotes + 1, guild.id);
-      bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
-      bot.monthlyvotes.set(guild.id, bot.monthlyvotes.has(guild.id) ? bot.monthlyvotes.get(guild.id) + 1 : voteData.monthlyvotes);
-      bot.totalvotes.set(guild.id, bot.totalvotes.has(guild.id) ? bot.totalvotes.get(guild.id) + 1 : voteData.totalvotes);
-      if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
-        let embed = new MessageEmbed()
-          .setColor(bot.colors.green)
-          .setDescription([
-            `**Guild:** ${guild.name} (${guild.id})`,
-            `**Monthly Votes:** ${bot.monthlyvotes.get(guild.id)}`,
-            `**Total Votes:** ${bot.totalvotes.get(guild.id)}`]);
-        return fyrlex.send(embed).catch(e => { });
-      }
-    });
-    console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`)
-  }
-
-  let usertag = user.tag;
-  let weekend = body.isWeekend ? body.isWeekend : `false`;
+  let userguilds = bot.guilds.cache.filter(guild => guild.members.cache.has(user.id));
+  userguilds.forEach(guild => {
+    let voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
+    if (!voteData) {
+      bot.utils.registerGuildVotes(bot, guild);
+      voteData = bot.vdb.prepare("SELECT * FROM votedata WHERE guildid=?").get(guild.id);
+    }
+    bot.vdb.prepare("UPDATE votedata SET hasvoted=? WHERE guildid=?").run("true", guild.id);
+    bot.vdb.prepare("UPDATE votedata SET totalvotes=? WHERE guildid=?").run(voteData.totalvotes + 1, guild.id);
+    bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
+    bot.monthlyvotes.set(guild.id, bot.monthlyvotes.has(guild.id) ? bot.monthlyvotes.get(guild.id) + 1 : voteData.monthlyvotes);
+    bot.totalvotes.set(guild.id, bot.totalvotes.has(guild.id) ? bot.totalvotes.get(guild.id) + 1 : voteData.totalvotes);
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0 && bot.monthlyvotes.get(guild.id) !== 0) {
+      let embed = new MessageEmbed()
+        .setColor(bot.colors.green)
+        .setDescription([
+          `**Guild:** ${guild.name} (${guild.id})`,
+          `**Monthly Votes:** ${bot.monthlyvotes.get(guild.id)}`,
+          `**Total Votes:** ${bot.totalvotes.get(guild.id)}`]);
+      return fyrlex.send(embed).catch(e => { });
+    }
+  });
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -61,6 +49,8 @@ module.exports.topgg = async (bot, body) => {
       ``,
       `- Magic8 Developers`]);
   user.send(dm).catch(e => { });
+  let usertag = user.tag;
+  let weekend = body.isWeekend ? body.isWeekend : `false`;
   let votemsg = new MessageEmbed()
     .setColor(body.type === "test" ? bot.colors.red : bot.colors.main)
     .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
@@ -68,7 +58,7 @@ module.exports.topgg = async (bot, body) => {
     .setDescription([
       `**Voter:** ${unknown ? `<@${body.user}>` : user} (${usertag})`,
       `**Weekend Bonus:** ${weekend}`,
-      `**Voted For:** ${votedfor}`,
+      `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://top.gg/bot/484148705507934208)*`])
   return bot.webhook.send(votemsg).catch(e => { });
@@ -103,7 +93,7 @@ module.exports.labs = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.has(guild.id) ? bot.monthlyvotes.get(guild.id) + 1 : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.has(guild.id) ? bot.totalvotes.get(guild.id) + 1 : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0 && bot.monthlyvotes.get(guild.id) !== 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
@@ -113,7 +103,6 @@ module.exports.labs = async (bot, body) => {
       return fyrlex.send(embed).catch(e => { });
     }
   });
-  let usertag = user.tag;
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -122,8 +111,9 @@ module.exports.labs = async (bot, body) => {
       ``,
       `Make sure to check out the [rewards](${bot.docs.ads}) I give for voting!`,
       ``,
-      `- Magic8 Developers`])
+      `- Magic8 Developers`]);
   user.send(dm).catch(e => { });
+  let usertag = user.tag;
   let votemsg = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(user.displayAvatarURL({ format: "png", dynamic: true }))
@@ -165,7 +155,7 @@ module.exports.boats = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.has(guild.id) ? bot.monthlyvotes.get(guild.id) + 1 : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.has(guild.id) ? bot.totalvotes.get(guild.id) + 1 : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0 && bot.monthlyvotes.get(guild.id) !== 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
@@ -175,7 +165,6 @@ module.exports.boats = async (bot, body) => {
       return fyrlex.send(embed).catch(e => { });
     }
   });
-  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`);
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -228,17 +217,16 @@ module.exports.botlistspace = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.has(guild.id) ? bot.monthlyvotes.get(guild.id) + 1 : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.has(guild.id) ? bot.totalvotes.get(guild.id) + 1 : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0 && bot.monthlyvotes.get(guild.id) !== 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
           `**Guild:** ${guild.name} (${guild.id})`,
           `**Monthly Votes:** ${bot.monthlyvotes.get(guild.id)}`,
-          `**Total Votes:** ${bot.totalvotes.get(guild.id)}`])
-      return fyrlex.send(embed).catch(e => { })
+          `**Total Votes:** ${bot.totalvotes.get(guild.id)}`]);
+      return fyrlex.send(embed).catch(e => { });
     }
   });
-  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`);
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -299,17 +287,16 @@ module.exports.botsfordiscord = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.has(guild.id) ? bot.monthlyvotes.get(guild.id) + 1 : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.has(guild.id) ? bot.totalvotes.get(guild.id) + 1 : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0 && bot.monthlyvotes.get(guild.id) !== 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
           `**Guild:** ${guild.name} (${guild.id})`,
           `**Monthly Votes:** ${bot.monthlyvotes.get(guild.id)}`,
-          `**Total Votes:** ${bot.totalvotes.get(guild.id)}`])
+          `**Total Votes:** ${bot.totalvotes.get(guild.id)}`]);
       return fyrlex.send(embed).catch(e => { });
     }
   });
-  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`);
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -362,7 +349,7 @@ module.exports.botsdatabase = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.has(guild.id) ? bot.monthlyvotes.get(guild.id) + 1 : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.has(guild.id) ? bot.totalvotes.get(guild.id) + 1 : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0 && bot.monthlyvotes.get(guild.id) !== 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
@@ -372,7 +359,6 @@ module.exports.botsdatabase = async (bot, body) => {
       return fyrlex.send(embed).catch(e => { });
     }
   });
-  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`);
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
@@ -425,7 +411,7 @@ module.exports.bladebotlist = async (bot, body) => {
     bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(voteData.monthlyvotes + 1, guild.id);
     bot.monthlyvotes.set(guild.id, bot.monthlyvotes.has(guild.id) ? bot.monthlyvotes.get(guild.id) + 1 : voteData.monthlyvotes);
     bot.totalvotes.set(guild.id, bot.totalvotes.has(guild.id) ? bot.totalvotes.get(guild.id) + 1 : voteData.totalvotes);
-    if (bot.monthlyvotes.get(guild.id) % 25 === 0) {
+    if (bot.monthlyvotes.get(guild.id) % 25 === 0 && bot.monthlyvotes.get(guild.id) !== 0) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.green)
         .setDescription([
@@ -435,7 +421,6 @@ module.exports.bladebotlist = async (bot, body) => {
       return fyrlex.send(embed).catch(e => { });
     }
   });
-  console.log(`☑️ Set 'hasvoted' to TRUE for ${userguilds.size} guilds for the user ${user.tag} (${user.id}).`);
   let dm = new MessageEmbed()
     .setColor(bot.colors.main)
     .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))

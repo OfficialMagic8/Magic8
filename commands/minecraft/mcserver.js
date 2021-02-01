@@ -82,7 +82,7 @@ module.exports = {
           thumbnail = await bot.canvas.loadImage(url).then(image => { return url; })
         } catch (e) { }
         bot.fetch(`https://api.mcsrvstat.us/2/${server}`).then(res => res.json()).then(data => {
-          let getplayers = data.players.list ? data.players.list : false;
+          let getplayers = data.players ? data.players.list : false;
           if (getplayers) {
             let mapped = getplayers.map(p => `**•** ${p.replace(/_/g, "\\_")}`);
             let size = mapped.length;

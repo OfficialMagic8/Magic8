@@ -3,7 +3,7 @@ const colors = ["blue", "red", "darkgreen", "lime", "orange", "pink", "white", "
 const isimposter = ["true", "false"];
 const baseURL = "https://vacefron.nl/api/ejected?name={USERNAME}&impostor={ISIMPOSTER}&crewmate={COLOR}";
 module.exports = {
-  aliases: [],
+  aliases: ["imposter"],
   category: "ENTERTAINMENT",
   description: "Discover the real imposter in your Discord server",
   emoji: "🕵️",
@@ -28,14 +28,12 @@ module.exports = {
       }
     }
     let url = baseURL.replace(/{USERNAME}/g, target.username.split(" ").join("%20")).replace(/{ISIMPOSTER}/g, imposter).replace(/{COLOR}/g, color);
-    if (!args[0]) {
-      let embed = new MessageEmbed()
-        .setColor(bot.colors.main)
-        .setImage(url)
-        .setAuthor(bot.translate(bot, language, "imposter.title")
-          .replace(/{USERNAME}/g, target.username)
-          .replace(/{GUILDNAME}/g, message.guild.name), target.displayAvatarURL({ format: "png" }));
-      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
-    }
+    let embed = new MessageEmbed()
+      .setColor(bot.colors.main)
+      .setImage(url)
+      .setAuthor(bot.translate(bot, language, "imposter.title")
+        .replace(/{USERNAME}/g, target.username)
+        .replace(/{GUILDNAME}/g, message.guild.name), target.displayAvatarURL({ format: "png" }));
+    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
   }
 }  
