@@ -74,9 +74,9 @@ bot.debug = false;
 
 bot.schedule.scheduleJob("0 0 1 * *", function () {
   let guildsids = bot.guilds.cache.keyArray();
-  let selected = bot.db.prepare("SELECT * FROM guilddata WHERE monthlyvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
+  let selected = bot.vdb.prepare("SELECT * FROM votedata WHERE monthlyvotes!=?").all(0).filter(row => guildsids.includes(row.guildid));
   selected.forEach(row => {
-    bot.db.prepare("UPDATE guilddata SET monthlyvotes=? WHERE guildid=?").run(0, row.guildid);
+    bot.vdb.prepare("UPDATE votedata SET monthlyvotes=? WHERE guildid=?").run(0, row.guildid);
     bot.monthlyvotes.clear();
   });
   console.log(`☑️ Reset ${selected.length} guilds with monthly votes.`);
