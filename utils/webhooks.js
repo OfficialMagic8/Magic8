@@ -61,7 +61,7 @@ module.exports.topgg = async (bot, body) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://top.gg/bot/484148705507934208)*`])
-  return bot.webhook.send(votemsg).catch(e => { });
+  return bot.votewebhook.send(votemsg).catch(e => { });
 }
 module.exports.labs = async (bot, body) => {
   let fyrlex = bot.users.cache.get("292821168833036288");
@@ -123,7 +123,7 @@ module.exports.labs = async (bot, body) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://bots.discordlabs.org/bot/484148705507934208)*`]);
-  return bot.webhook.send(votemsg).catch(e => { });
+  return bot.votewebhook.send(votemsg).catch(e => { });
 }
 module.exports.boats = async (bot, body) => {
   let fyrlex = bot.users.cache.get("292821168833036288");
@@ -185,7 +185,7 @@ module.exports.boats = async (bot, body) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://discord.boats/bot/484148705507934208)*`]);
-  return bot.webhook.send(votemsg).catch(e => { console.error(e) });
+  return bot.votewebhook.send(votemsg).catch(e => { console.error(e) });
 }
 module.exports.botlistspace = async (bot, body) => {
   let fyrlex = bot.users.cache.get("292821168833036288");
@@ -247,7 +247,7 @@ module.exports.botlistspace = async (bot, body) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://botlist.space/bot/484148705507934208)*`]);
-  return bot.webhook.send(votemsg).catch(e => { console.error(e) });
+  return bot.votewebhook.send(votemsg).catch(e => { console.error(e) });
 }
 module.exports.blist = async (bot, body) => {
 }
@@ -317,7 +317,7 @@ module.exports.botsfordiscord = async (bot, body) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://botsfordiscord.com/bot/484148705507934208)*`]);
-  return bot.webhook.send(votemsg).catch(e => { console.error(e) });
+  return bot.votewebhook.send(votemsg).catch(e => { console.error(e) });
 }
 module.exports.botsdatabase = async (bot, body) => {
   let fyrlex = bot.users.cache.get("292821168833036288");
@@ -379,7 +379,7 @@ module.exports.botsdatabase = async (bot, body) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://botsdatabase.com/bot/484148705507934208)*`]);
-  return bot.webhook.send(votemsg).catch(e => { });
+  return bot.votewebhook.send(votemsg).catch(e => { });
 }
 module.exports.bladebotlist = async (bot, body) => {
   let fyrlex = bot.users.cache.get("292821168833036288");
@@ -441,5 +441,5 @@ module.exports.bladebotlist = async (bot, body) => {
       `**Voted For:** ${bot.user}`,
       ``,
       `*You can vote again in 12 hours [**here**](https://bladebotlist.xyz/bot/484148705507934208/)*`]);
-  return bot.webhook.send(votemsg).catch(e => { });
+  return bot.votewebhook.send(votemsg).catch(e => { });
 }
