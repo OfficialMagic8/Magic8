@@ -1,38 +1,39 @@
 [
   {
     "name": "Magic8",
-    "thumbnail": "https://cdn.discordapp.com/avatars/484148705507934208/98a7b6214cd7e14438709e2d0d3cc0bc.png",
+    "thumbnail": "https://cdn.discordapp.com/avatars/484148705507934208/e3eee47601dc782fef7d1baf0624f189.png",
     "description": [
       "**Hello my amazing friends!**",
       "• Enjoy {BOT}? Give us a [**vote**](https://top.gg/bot/484148705507934208/vote)!",
       "• Voting gives your server **rewards**!",
       "• Join the official Magic8 [Support Server]({INVITE}) and meet new people!",
       "",
-      "{INFO} **Advertisement Info:** [here]({ADSINFO})"
+      "{INFO} [**Advertisement Info**]({ADSINFO})"
     ]
   },
   {
     "name": "Something.Host",
     "image": "https://something.host/img/brand.png",
     "description": [
-      "**Want to host a Discord Bot?**",
+      "**Want to host a Discord Bot or Minecraft Server?**",
       "• Check out [**Something.Host**](https://something.host/)!",
+      "• High quality products & support!",
       "• Join our growing community today @ [discord.gg/FZXaqgM](https://discord.gg/FZXaqgM)!",
-      "• Free 24/7 hosting coming soon!",
       "",
-      "{INFO} **Advertisement Info:** [here]({ADSINFO})"
+      "{INFO} [**Advertisement Info**]({ADSINFO})"
     ]
   },
   {
-    "name": "MailBox Bot",
-    "thumbnail": "https://cdn.discordapp.com/avatars/645737776783949873/5e17aa5babbe6adcbfba89e646999fcf.png",
+    "name": "BreMea Development",
+    "thumbnail": "https://cdn.discordapp.com/icons/727721043283935252/a_cfe7d12f031bcd31e4f9ca14924f28ac.gif",
     "description": [
-      "**Looking for a Mod Mail system?**",
-      "• Invite [**MailBox**](https://discord.com/oauth2/authorize?client_id=645737776783949873&scope=bot&permissions=201714897) to your server!",
-      "• Easy community managment!",
-      "• Fast and customizable setup!",
+      "**Looking for excellent Discord bots?**",
+      "• Check out [**BreMea Dev**](https://bremea.com/)!",
+      "• Invite [**CountBot**](https://discord.com/oauth2/authorize?client_id=727569067895947383&permissions=355408&redirect_uri=https%3A%2F%2Fdiscord.com%2Finvite%2F2JBFupp&scope=bot%20applications.commands) to your server!",
+      "• Other popular and unique bots!",
+      "• Amazing [**Community Server**](https://discord.gg/9jn6AFZxja)!",
       "",
-      "{INFO} **Advertisement Info:** [here]({ADSINFO})"
+      "{INFO} [**Advertisement Info**]({ADSINFO})"
     ]
   },
   {
@@ -50,7 +51,7 @@
       "• Deliver orders.",
       "• Private channel in our [**Workshop**](https://discord.gg/tWXKWFdDnj).",
       "",
-      "{INFO} **Advertisement Info:** [here]({ADSINFO})"
+      "{INFO} [**Advertisement Info**]({ADSINFO})"
     ]
   }
 ]

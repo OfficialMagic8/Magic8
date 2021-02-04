@@ -13,11 +13,11 @@ module.exports = {
     if (message.type !== "DEFAULT") return;
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
-    if (message.channel.id === "802156799393529908") {
+    if (message.channel.id === "802156799393529908" && message.author.id === "292821168833036288") {
       bot.latestupdate.set("latestupdate", message.content);
     }
     if (message.author.id === "292821168833036288" && message.content === "getupdate") {
-      bot.latestupdate.set("latestupdate", bot.channels.cache.get("802156799393529908").messages.cache.first().content);
+      bot.latestupdate.set("latestupdate", bot.channels.cache.get("802156799393529908").messages.cache.filter(m => m.author.id === "292821168833036288").first().content);
     }
     let guildData;
     if (!bot.prefixes.has(guild.id)) {
@@ -140,7 +140,7 @@ module.exports = {
       console.log(`🗨️ ${ad.name} Advertisement Sent In: ${guild.name} (${guild.id})`);
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
-        .setAuthor(`${ad.name} - Advertisement`)
+        .setTitle(`${ad.name} - Advertisement`)
         .setFooter(`Want your Advertisement here? Contact Fyrlex#2740`)
         .setDescription(ad.description.join("\n")
           .replace(/{BOT}/g, bot.user)

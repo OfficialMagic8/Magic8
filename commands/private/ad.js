@@ -6,11 +6,10 @@ module.exports = {
     let ad = bot.ads[bot.adtype.get(message.guild.id)];
     let embed = new MessageEmbed()
       .setColor(bot.colors.main)
-      .setAuthor(`${ad.name} - Advertisement`)
+      .setTitle(`${ad.name} - Advertisement`)
       .setFooter(`Want your Advertisement here? Contact Fyrlex#2740`)
       .setDescription(ad.description.join("\n")
         .replace(/{BOT}/g, bot.user)
-        .replace(/{VOTELINK}/g, bot.config.vote.dbl)
         .replace(/{INVITE}/g, bot.invite)
         .replace(/{ADSINFO}/g, bot.docs.ads)
         .replace(/{INFO}/g, bot.emoji.info));
