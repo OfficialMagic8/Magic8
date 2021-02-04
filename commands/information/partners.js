@@ -1,12 +1,12 @@
 const { MessageEmbed } = require("discord.js");
 const partners = [
-  `[{BREMEA} **BreMea**](https://docs.magic8.xyz/info/partners/bremea)`,
+  `[{BREMEA} **BreMea Development**](https://docs.magic8.xyz/info/partners/bremea)`,
   `[{PLEXUSMC} **PlexusMC**](https://docs.magic8.xyz/info/partners/plexusmc)`,
   `[{SHOPERY} **Shopery**](https://docs.magic8.xyz/info/partners/shopery)`,
   `[{SOMETHINGHOST} **Something.Host**](https://docs.magic8.xyz/info/partners/somethinghost)`
 ]
 module.exports = {
-  aliases: [],
+  aliases: ["affiliates"],
   category: "INFORMATION",
   description: "Magic8's amazing partners that offer great services or products.",
   emoji: "🤝",
@@ -15,7 +15,7 @@ module.exports = {
     let language = bot.utils.getLanguage(bot, guildData.language);
     let embed = new MessageEmbed()
       .setColor(bot.colors.main)
-      .setAuthor(`${bot.user.username} Partners`)
+      .setAuthor(`${bot.user.username} Partners & Affiliates`)
       .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
       .setDescription(partners.join("\n")
         .replace(/{BREMEA}/g, bot.emoji.bremea)
