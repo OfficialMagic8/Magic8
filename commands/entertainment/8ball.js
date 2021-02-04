@@ -51,11 +51,11 @@ module.exports = {
     let question = args.join(" ");
     if (question.length > 1000) {
       let embed = new MessageEmbed()
-      .setColor(bot.colors.red)
-      .setDescription(bot.translate(bot, language, "8ball.toolong")
-        .replace(/{CROSS}/g, bot.emoji.cross)
-        .replace(/{USER}/g, message.author));
-    return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+        .setColor(bot.colors.red)
+        .setDescription(bot.translate(bot, language, "8ball.toolong")
+          .replace(/{CROSS}/g, bot.emoji.cross)
+          .replace(/{USER}/g, message.author));
+      return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
     let reply = replies[Math.floor(Math.random() * replies.length)];
     let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(message.guild.id);
