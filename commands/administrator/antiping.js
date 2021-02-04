@@ -197,7 +197,8 @@ module.exports = {
       let targetrole;
       try {
         let id = args[1].replace(/[^0-9]/g, "");
-        targetrole = message.guild.roles.cache.get(id) || await message.guild.roles.fetch(id);
+        targetrole = message.guild.roles.cache.find(r => r.name.toLowerCase() === args[1].toLowerCase()) || (message.guild.roles.cache.get(id) || await message.guild.roles.fetch(id))
+        if (!targetrole || !targetrole.name) targetrole = undefined;
       } catch (e) {
         let rolesarray = [];
         let getroles = message.guild.roles.cache.keyArray();
@@ -242,7 +243,7 @@ module.exports = {
             .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
-      if (targetrole === null && !Number.isInteger(parseInt(args[1]))) {
+      if (!targetrole && !Number.isInteger(parseInt(args[1]))) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invalidrole").join("\n")
@@ -342,27 +343,38 @@ module.exports = {
       let targetrole;
       try {
         let id = args[1].replace(/[^0-9]/g, "");
-        targetrole = message.guild.roles.cache.get(id) || await message.guild.roles.fetch(id);
+        targetrole = message.guild.roles.cache.find(r => r.name.toLowerCase() === args[1].toLowerCase()) || (message.guild.roles.cache.get(id) || await message.guild.roles.fetch(id));
+        if (!targetrole || !targetrole.name) targetrole = undefined;
       } catch (e) {
         let rolesarray = [];
         let getroles = message.guild.roles.cache.keyArray();
         getroles.forEach(roleid => {
           if (bypassroles.includes(roleid)) {
-            rolesarray.push(`${message.guild.roles.cache.get(roleid)}(${roleid})`);
+            rolesarray.push(`${message.guild.roles.cache.get(roleid)} (${roleid})`);
           }
         })
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
-          .setDescription(bot.translate(bot, language, "antiping.invalidbypassrole").join("\n")
+          .setDescription(bot.translate(bot, language, "antiping.nobypassroleprovided").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{BYPASSROLES}/g, rolesarray.map(r => `**•** ${r}`).join("\n")));
+        return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
+      }
+      if (!message.guild.roles.cache.find(r => r.name.toLowerCase() === args[1].toLowerCase())) {
+        let embed = new MessageEmbed()
+          .setColor(bot.colors.red)
+          .setDescription(bot.translate(bot, language, "antiping.invalidbypassrole").join("\n")
+            .replace(/{CROSS}/g, bot.emoji.cross)
+            .replace(/{TARGETROLE}/g, targetrole)
+            .replace(/{INFO}/g, bot.emoji.info)
+            .replace(/{PREFIX}/g, prefix));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!bypassroles.includes(targetrole.id)) {
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.alreadydoesnotbypass").join("\n")
-            .replace(/{CHECK}/g, bot.emoji.check)
+            .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{TARGETROLE}/g, targetrole)
             .replace(/{INFO}/g, bot.emoji.info)
             .replace(/{PREFIX}/g, prefix));
