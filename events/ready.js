@@ -5,9 +5,10 @@ module.exports = {
   run: async (bot) => {
     console.log(`✅ Ready event loading... ${bot.user.tag}`);
     bot.statcord.autopost();
-    // bot.channels.cache.get("766108811978080267").messages.fetch().then(() => {
-    //   bot.latestupdate.set("latestupdate", bot.channels.cache.get("766108811978080267").messages.cache.first().content);
-    // }).catch(e => { });
+    bot.channels.cache.get("802156799393529908").messages.fetch().then(() => {
+      if (!bot.channels.cache.get("802156799393529908").messages.cache.find(m => m.author.id === "292821168833036288")) return;
+      bot.latestupdate.set("latestupdate", bot.channels.cache.get("802156799393529908").messages.cache.filter(m => m.author.id === "292821168833036288").first().content);
+    }).catch(e => { });
     loadMain(bot);
     loadMCServers(bot);
     loadAutoVoiceChannels(bot);
@@ -20,11 +21,8 @@ module.exports = {
     loadDisabledCommands(bot);
     loadMonthlyVotes(bot);
     loadTotalVotes(bot);
-    // loadVotedUsers(bot);
     loadEmojis(bot);
-    // bot.announcements = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.announcements);
     bot.updates = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.updates);
-    // bot.status = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.status);
     let statusList = [
       // { name: `on shard {SHARD}/{MAXSHARDS}`, type: "PLAYING" },
       // { name: `with ${bot.shard.count} shards`, type: "PLAYING" },
