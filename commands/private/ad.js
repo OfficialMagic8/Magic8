@@ -4,6 +4,7 @@ module.exports = {
   dev: true,
   run: async (bot, message, args, prefix, guildData) => {
     let ad = bot.ads[bot.adtype.get(message.guild.id)];
+    if (!ad) bot.adtype.set(message.guild.id, 0);
     let embed = new MessageEmbed()
       .setColor(bot.colors.main)
       .setTitle(`${ad.name} - Advertisement`)
