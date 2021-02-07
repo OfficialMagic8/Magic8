@@ -143,10 +143,8 @@ module.exports = {
         .setTitle(`${ad.name} - Advertisement`)
         .setFooter(`Want your Advertisement here? Contact Fyrlex#2740`)
         .setDescription(ad.description.join("\n")
-          .replace(/{BOT}/g, bot.user)
-          .replace(/{INVITE}/g, bot.invite)
-          .replace(/{ADSINFO}/g, bot.docs.ads)
-          .replace(/{INFO}/g, bot.emoji.info));
+          .replace(/{INFO}/g, bot.emoji.info)
+          .replace(/{ADSINFO}/g, bot.docs.ads));
       if (ad.image) embed.setImage(ad.image);
       if (ad.thumbnail) embed.setThumbnail(ad.thumbnail);
       message.channel.send(embed).then(m => m.delete({ timeout: 60000 }).catch(e => { })).catch(e => { });
