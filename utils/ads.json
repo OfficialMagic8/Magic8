@@ -4,27 +4,17 @@
     "thumbnail": "https://cdn.discordapp.com/avatars/484148705507934208/e3eee47601dc782fef7d1baf0624f189.png",
     "description": [
       "**Hello my amazing friends!**",
-      "• Enjoy {BOT}? Give us a [**vote**](https://top.gg/bot/484148705507934208/vote)!",
+      "• Enjoy <@484148705507934208>? Give us a [**vote**](https://top.gg/bot/484148705507934208/vote)!",
       "• Voting gives your server **rewards**!",
-      "• Join the official Magic8 [Support Server]({INVITE}) and meet new people!",
-      "",
-      "{INFO} [**Advertisement Info**]({ADSINFO})"
-    ]
-  },
-  {
-    "name": "Something.Host",
-    "image": "https://something.host/img/brand.png",
-    "description": [
-      "**Want to host a Discord Bot or Minecraft Server?**",
-      "• Check out [**Something.Host**](https://something.host/)!",
-      "• High quality products & support!",
-      "• Join our growing community today @ [discord.gg/FZXaqgM](https://discord.gg/FZXaqgM)!",
+      "• Join the official Magic8 [Support Server](https://discord.gg/9jn6AFZxja) and meet new people!",
       "",
       "{INFO} [**Advertisement Info**]({ADSINFO})"
     ]
   },
   {
     "name": "BreMea Development",
+    "id": "bremea",
+    "type": "Partner",
     "thumbnail": "https://cdn.discordapp.com/icons/727721043283935252/a_cfe7d12f031bcd31e4f9ca14924f28ac.gif",
     "description": [
       "**Looking for excellent Discord bots?**",
@@ -37,7 +27,37 @@
     ]
   },
   {
+    "name": "Huntrer Bot",
+    "id": "hunterbot",
+    "type": "Affiliate",
+    "thumbnail": "https://cdn.discordapp.com/attachments/800940739248259083/807394083608723507/1605762516174.png",
+    "description": [
+      "• Looking for a great multi purpose bot? Well Hunter Bot is here!",
+      "• [Invite Iink](https://hunterbot.tk/invite)",
+      "• [Support](https://hunterbot.tk/support)",
+      "",
+      "{INFO} [**Advertisement Info**]({ADSINFO})"
+    ]
+  },
+  {
+    "name": "PlexusMC - Minecraft Java 1.16",
+    "id": "plexus",
+    "type": "Affiliate",
+    "thumbnail": "https://cdn.discordapp.com/icons/573851478259925022/62bc19a2187a4d0311359d76c944708e.png",
+    "description": [
+      "**Looking for a unique Minecraft survival experience?**",
+      "• Check out the [**PlexusMC**](plexusmc.net) website!",
+      "• View the [**World Map**](https://map.plexusmc.net/) to see everything!",
+      "• Join now with `play.plexusmc.net`!",
+      "• Amazing [**Discord Server**](https://discord.gg/C48Xdb9GWN)!",
+      "",
+      "{INFO} [**Advertisement Info**]({ADSINFO})"
+    ]
+  },
+  {
     "name": "Shopery",
+    "id": "shopery",
+    "type": "Affiliate",
     "thumbnail": "https://cdn.discordapp.com/attachments/791728292377001984/791811002843791370/shopery.png",
     "description": [
       "**Information**",
@@ -50,6 +70,20 @@
       "• Make customers' requests",
       "• Deliver orders.",
       "• Private channel in our [**Workshop**](https://discord.gg/tWXKWFdDnj).",
+      "",
+      "{INFO} [**Advertisement Info**]({ADSINFO})"
+    ]
+  },
+  {
+    "name": "Something.Host",
+    "id": "somethinghost",
+    "type": "Affiliate",
+    "image": "https://something.host/img/brand.png",
+    "description": [
+      "**Want to host a Discord Bot or Minecraft Server?**",
+      "• Check out [**Something.Host**](https://something.host/)!",
+      "• High quality VPS & MC Servers + Support!",
+      "• Join our growing community today @ [discord.gg/FZXaqgM](https://discord.gg/FZXaqgM)!",
       "",
       "{INFO} [**Advertisement Info**]({ADSINFO})"
     ]
