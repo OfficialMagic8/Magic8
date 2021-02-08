@@ -1,6 +1,7 @@
 [
   {
     "name": "Magic8",
+    "id": "magic8",
     "thumbnail": "https://cdn.discordapp.com/avatars/484148705507934208/e3eee47601dc782fef7d1baf0624f189.png",
     "description": [
       "**Hello my amazing friends!**",
@@ -41,7 +42,7 @@
   },
   {
     "name": "PlexusMC - Minecraft Java 1.16",
-    "id": "plexus",
+    "id": "plexusmc",
     "type": "Affiliate",
     "thumbnail": "https://cdn.discordapp.com/icons/573851478259925022/62bc19a2187a4d0311359d76c944708e.png",
     "description": [
