@@ -1,10 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const partners = [
-  `[{BREMEA} **BreMea Development**](https://docs.magic8.xyz/info/partners/bremea)`,
-  `[{PLEXUSMC} **PlexusMC**](https://docs.magic8.xyz/info/partners/plexusmc)`,
-  `[{SHOPERY} **Shopery**](https://docs.magic8.xyz/info/partners/shopery)`,
-  `[{SOMETHINGHOST} **Something.Host**](https://docs.magic8.xyz/info/partners/somethinghost)`
-]
 module.exports = {
   aliases: ["affiliates"],
   category: "INFORMATION",
@@ -18,15 +12,15 @@ module.exports = {
     });
     let language = bot.utils.getLanguage(bot, guildData.language);
     if (!args[0]) {
+      let partners = [];
+      for (partner of bot.ads) {
+        if (partner.id !== "magic8") partners.push(`${bot.emoji[partner.id]} [**${partner.name}**](https://docs.magic8.xyz/info/partners/${partner.id})`);
+      }
       let embed = new MessageEmbed()
         .setColor(bot.colors.main)
         .setAuthor(`${bot.user.username} Partners & Affiliates`)
         .setThumbnail(bot.user.displayAvatarURL({ format: "png" }))
-        .setDescription(partners.join("\n")
-          .replace(/{BREMEA}/g, bot.emoji.bremea)
-          .replace(/{PLEXUSMC}/g, bot.emoji.plexusmc)
-          .replace(/{SHOPERY}/g, bot.emoji.shopery)
-          .replace(/{SOMETHINGHOST}/g, bot.emoji.somethinghost));
+        .setDescription(partners.join("\n"));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
     } else {
       if (!validids.includes(args[0].toLowerCase())) {
