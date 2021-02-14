@@ -25,7 +25,7 @@ module.exports = {
       //   .replace(/{CPU}/g, bot.os.cpus().shift().model))
       .setDescription(bot.translate(bot, language, "botinfo.description").join("\n")
         .replace(/{GUILDS}/g, parseInt(bot.guilds.cache.size).toLocaleString("en"))
-        .replace(/{USERS}/g, bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))
+        .replace(/{USERS}/g, bot.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString("en"))
         .replace(/{CHANNELS}/g, parseInt(bot.channels.cache.size).toLocaleString("en"))
         // .replace(/{NSFWCHANNELS}/g, bot.channels.cache.filter(c => c.nsfw).size.toLocaleString("en"))
         // .replace(/{RAM}/g, `${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`)
