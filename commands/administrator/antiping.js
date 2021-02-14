@@ -24,8 +24,9 @@ module.exports = {
           upgradestring = bot.translate(bot, language, "antiping.upgrade.cannotupgrade");
         }
         let array = [];
-        users.forEach((item, index) => {
-          array.push(`**${index + 1}.** ${bot.users.cache.get(item)}`);
+        users.forEach(async (u) => {
+          let user = bot.users.cache.get(u) || await bot.users.fetch(u);
+          if (user) array.push(`${user} (${user.id})`);
         })
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -33,14 +34,15 @@ module.exports = {
             .replace(/{CROSS}/g, bot.emoji.cross)
             .replace(/{MAX}/g, max)
             .replace(/{UPGRADE}/g, upgradestring)
-            .replace(/{USERS}/g, array.join("\n")));
+            .replace(/{USERS}/g, array.map(u => `**•** ${u}`).join("\n")));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!args[1]) {
         let usersarray = [];
         let antipingusers = JSON.parse(guildData.antipingusers);
-        antipingusers.forEach(u => {
-          usersarray.push(`${bot.users.cache.get(u)} (${u})`);
+        antipingusers.forEach(async u => {
+          let user = bot.users.cache.get(u) || await bot.users.fetch(u);
+          if (user) usersarray.push(`${user} (${user.id})`);
         })
         if (antipingusers.length === 0) {
           usersarray = [`*${bot.translate(bot, language, "none")}*`];
@@ -114,8 +116,8 @@ module.exports = {
       if (!args[1]) {
         let usersarray = [];
         bot.antipingusers.get(message.guild.id).forEach(async u => {
-          let fetched = await bot.users.fetch(u) || bot.users.cache.get(u);
-          usersarray.push(`${fetched} (${fetched.id})`);
+          let user = bot.users.cache.get(u) || await bot.users.fetch(u);
+          if (user) usersarray.push(`${fetched} (${fetched.id})`);
         });
         let embed = new MessageEmbed()
           .setColor(bot.colors.main)
