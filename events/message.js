@@ -3,14 +3,8 @@ module.exports = {
   name: "message",
   run: async (bot, message) => {
     let guild = message.guild;
-    try {
-      if (!bot.users.cache.has(message.author.id)) await bot.users.fetch(message.author.id)
-      if (!bot.guildfetched.has(guild.id)) {
-        bot.guildfetched.set(guild.id, Date.now());
-        await guild.members.fetch();
-      }
-    } catch (e) { }
     if (message.type !== "DEFAULT") return;
+    if (!bot.users.cache.has(message.author.id)) await bot.users.fetch(message.author.id);
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.channel.id === "802156799393529908" && message.author.id === "292821168833036288") {
@@ -57,7 +51,7 @@ module.exports = {
           bot.utils.registerGuild(bot, guild);
           guildData = bot.db.prepare("SELECT * FROM guilddata WHERE guildid=?").get(guild.id);
         }
-        let member = guild.members.cache.get(message.author.id)
+        let member = guild.members.cache.get(message.author.id) || await guild.members.fetch(message.author.id);
         let getbypassroles = JSON.parse(guildData.antipingbypassroles);
         let hasroles = false;
         getbypassroles.forEach(role => {
@@ -98,8 +92,8 @@ module.exports = {
     }
     if (!message.content.startsWith(prefix) && !message.content.startsWith(`<@${bot.user.id}>`) && !message.content.startsWith(`<@!${bot.user.id}>`)) return;
     // if (message.author.id !== "292821168833036288") return message.channel.send("Hey there! I'm updating right now so you can't use any commands. I'll be back soon!")
-    if (!bot.adtype.has(guild.id)) bot.adtype.set(guild.id, 0);
-    if (!bot.usage.has(guild.id)) bot.usage.set(guild.id, 0);
+    // if (!bot.adtype.has(guild.id)) bot.adtype.set(guild.id, 0);
+    // if (!bot.usage.has(guild.id)) bot.usage.set(guild.id, 0);
     let startedwith;
     if (message.content.startsWith(prefix)) startedwith = prefix.length;
     if (message.content.startsWith(`<@${bot.user.id}>`)) startedwith = `<@${bot.user.id}>`.length;
@@ -134,25 +128,25 @@ module.exports = {
     if (command.dev) return;
     // Statcord.ShardingClient.postCommand(command.name, message.author.id, bot);
     bot.statcord.postCommand(command.name, message.author.id);
-    bot.usage.set(guild.id, (bot.usage.get(guild.id) + 1));
-    if (guildData.hasvoted === "false" && (bot.usage.get(guild.id) % 100 === 0) && bot.premium.get(guild.id) === 0) {
-      let ad = bot.ads[bot.adtype.get(guild.id)];
-      console.log(`🗨️ ${ad.name} Advertisement Sent In: ${guild.name} (${guild.id})`);
-      let embed = new MessageEmbed()
-        .setColor(bot.colors.main)
-        .setTitle(`${ad.name} - Advertisement`)
-        .setFooter(`Want your Advertisement here? Contact Fyrlex#2740`)
-        .setDescription(ad.description.join("\n")
-          .replace(/{INFO}/g, bot.emoji.info)
-          .replace(/{ADSINFO}/g, bot.docs.ads));
-      if (ad.image) embed.setImage(ad.image);
-      if (ad.thumbnail) embed.setThumbnail(ad.thumbnail);
-      message.channel.send(embed).then(m => m.delete({ timeout: 60000 }).catch(e => { })).catch(e => { });
-      bot.adtype.set(guild.id, (bot.adtype.get(guild.id) + 1));
-      if (bot.adtype.get(guild.id) > 4) {
-        bot.adtype.set(guild.id, 0);
-      }
-    }
+    // bot.usage.set(guild.id, (bot.usage.get(guild.id) + 1));
+    // if (guildData.hasvoted === "false" && (bot.usage.get(guild.id) % 100 === 0) && bot.premium.get(guild.id) === 0) {
+    //   let ad = bot.ads[bot.adtype.get(guild.id)];
+    //   console.log(`🗨️ ${ad.name} Advertisement Sent In: ${guild.name} (${guild.id})`);
+    //   let embed = new MessageEmbed()
+    //     .setColor(bot.colors.main)
+    //     .setTitle(`${ad.name} - Advertisement`)
+    //     .setFooter(`Want your Advertisement here? Contact Fyrlex#2740`)
+    //     .setDescription(ad.description.join("\n")
+    //       .replace(/{INFO}/g, bot.emoji.info)
+    //       .replace(/{ADSINFO}/g, bot.docs.ads));
+    //   if (ad.image) embed.setImage(ad.image);
+    //   if (ad.thumbnail) embed.setThumbnail(ad.thumbnail);
+    //   message.channel.send(embed).then(m => m.delete({ timeout: 60000 }).catch(e => { })).catch(e => { });
+    //   bot.adtype.set(guild.id, (bot.adtype.get(guild.id) + 1));
+    //   if (bot.adtype.get(guild.id) > 4) {
+    //     bot.adtype.set(guild.id, 0);
+    //   }
+    // }
     let usageData = bot.udb.prepare("SELECT * FROM usagedata WHERE guildid=?").get(guild.id);
     if (!usageData) {
       bot.utils.registerGuildUsage(bot, guild);
