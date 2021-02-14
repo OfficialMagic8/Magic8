@@ -22,9 +22,8 @@ module.exports = {
     bot.db.prepare("UPDATE guilddata SET inguild=? WHERE guildid=?").run("false", guild.id);
     bot.udb.prepare("UPDATE usagedata SET inguild=? WHERE guildid=?").run("false", guild.id);
     let outage = false;
-    let users = guild.members.cache.filter(m => !m.user.bot).size;
+    let users = guild.memberCount
     let channels = guild.channels.cache.filter(c => c.type !== "category").size;
-    let bots = guild.members.cache.filter(m => m.user.bot).size;
     let created = guild.createdAt.toLocaleString().split("GMT")[0].trim();
     let embed = new MessageEmbed()
     if (users <= 0 && channels <= 0 && bots <= 0) {
@@ -45,7 +44,7 @@ module.exports = {
         .setDescription([
           `**Name:** ${guild.name} (**${guild.id}**)`,
           ``,
-          `**Users/Bots/Channels:** (${users}/${bots}/${channels})`,
+          `**Users/Channels:** (${users}/${channels})`,
           ``,
           `**Date Created:** ${created} GMT`])
     }

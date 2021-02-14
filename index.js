@@ -196,7 +196,6 @@ bot.languages = new Collection();
 bot.languagesprogress = new Collection();
 bot.languagesprogress.set("en", { lang: "English", flag: "🇺🇸", progress: 100, authors: ["Fyrlex#2740", "AlonsoAliaga#0017"] })
 bot.lastfetched = new Collection();
-bot.guildfetched = new Collection();
 
 // app.get("/test", async function (request, response) {
 //   response.json(bot.languages.get("en"))

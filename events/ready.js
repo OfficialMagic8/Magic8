@@ -56,7 +56,7 @@ module.exports = {
       // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
       // bot.shard.ids.forEach(shard => {
       let status = statusList[statusSize];
-      bot.user.setActivity(status.name.replace(/{SERVERS}/g, bot.guilds.cache.size).replace(/{USERS}/g, parseInt(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en"))/*.replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards)*/, { type: status.type/*, shardID: shard*/ }).catch(e => { });
+      bot.user.setActivity(status.name.replace(/{SERVERS}/g, bot.guilds.cache.size).replace(/{USERS}/g, bot.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString("en"))/*.replace(/{SHARD}/g, shard).replace(/{MAXSHARDS}/g, maxshards)*/, { type: status.type/*, shardID: shard*/ }).catch(e => { });
       statusSize--;
       if (statusSize < 0) statusSize = statusList.length - 1;
       // });
@@ -72,52 +72,20 @@ module.exports = {
     console.log(`✅ Start Time: ${restartTime}`);
     // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
     // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-    console.log(`📊 Users: ${parseInt(bot.users.cache.filter(u => !u.bot).size.toLocaleString("en"))} - Guilds: ${bot.guilds.cache.size}`);
+    console.log(`📊 Users: ${bot.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString("en")} - Guilds: ${bot.guilds.cache.size}`);
     let readyMsg = `${bot.emoji.check} __${time}__ ${bot.user} **successfully restarted!** Time: \`${restartTime}\` Ping: \`${bot.ms(bot.ws.ping)}\``;
     bot.channels.cache.get(bot.config.commandlogs).send(readyMsg).catch(e => { });
-    let guildChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get("652539034404519936");
-    if (guildChannel) {
-      // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-      // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-      let guildText = `📚 Guilds : ${bot.guilds.cache.size}`;
-      if (guildChannel.name !== guildText) {
-        guildChannel.setName(guildText).catch(e => { });
-      }
-    }
     // postbfd(bot);
     postbbl(bot);
     postblistxyz(bot);
     postdiscordboats(bot);
     postdiscordextremelist(bot);
     setInterval(() => {
-      if (guildChannel) {
-        // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
-        // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
-        let guildText = `📚 Guilds : ${bot.guilds.cache.size}`;
-        if (guildChannel.name !== guildText) {
-          guildChannel.setName(guildText).catch(e => { });
-        }
-      }
       // postbfd(bot);
       postbbl(bot);
       postblistxyz(bot);
       postdiscordboats(bot);
       postdiscordextremelist(bot);
-    }, 1800000)
-    let userChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get("652538780376367104");
-    if (userChannel) {
-      let userText = `👥 Users : ${(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")}`;
-      if (userChannel.name !== userText) {
-        userChannel.setName(userText).catch(e => { });
-      }
-    }
-    setInterval(() => {
-      if (userChannel) {
-        let userText = `👥 Users : ${(bot.users.cache.filter(u => !u.bot).size).toLocaleString("en")}`;
-        if (userChannel.name !== userText) {
-          userChannel.setName(userText).catch(e => { });
-        }
-      }
     }, 1800000)
     let monthlyVotesStats = "706888493145653339";
     bot.dbl.getBot(bot.user.id).then(botinfo => {

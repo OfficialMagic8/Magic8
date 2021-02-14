@@ -183,8 +183,8 @@ module.exports.updateGuildVotes = (bot, guild) => {
 }
 module.exports.registerGuildUsage = (bot, guild) => {
   bot.udb.prepare("INSERT INTO usagedata (guildid, guildname) VALUES (?,?)").run(guild.id, guild.name)
-  bot.usage.set(guild.id, 0)
-  bot.adtype.set(guild.id, 0);
+  // bot.usage.set(guild.id, 0)
+  // bot.adtype.set(guild.id, 0);
 }
 module.exports.updateGuildUsage = (bot, guild) => {
   bot.udb.prepare("UPDATE usagedata SET guildname=? WHERE guildid=?").run(guild.name, guild.id)

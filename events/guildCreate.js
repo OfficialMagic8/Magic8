@@ -2,10 +2,6 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
   name: "guildCreate",
   run: async (bot, guild) => {
-    try {
-      bot.guildfetched.set(message.guild.id, Date.now());
-      await guild.members.fetch();
-    } catch (e) { }
     // let getguilds = await bot.shard.broadcastEval('this.guilds.cache.size').catch(e => { })
     // let guilds = parseInt(getguilds.reduce((acc, guildCount) => acc + guildCount, 0)).toLocaleString("en")
     let text = `📚 Guilds : ${bot.guilds.cache.size}`;
@@ -68,10 +64,9 @@ module.exports = {
       ];
       channelToSend.send(welcomeArray.join("\n")).catch(e => { });
     }
-    let users = guild.members.cache.filter(m => !m.user.bot).size;
+    let users = guild.memberCount;
     let joined = guild.joinedAt.toLocaleString().split("GMT")[0].trim();
     let channels = guild.channels.cache.filter(c => c.type !== "category").size;
-    let bots = guild.members.cache.filter(m => m.user.bot).size;
     let created = guild.createdAt.toLocaleString().split("GMT")[0].trim();
     let owner = bot.users.cache.get(bot.guilds.cache.get(guild.id).ownerID) || await bot.users.fetch(bot.guilds.cache.get(guild.id).ownerID);
     let embed = new MessageEmbed()
@@ -81,7 +76,7 @@ module.exports = {
       .setDescription([
         `**Name:** ${guild.name} (**${guild.id}**)`,
         ``,
-        `**Users/Bots/Channels:** (${users}/${bots}/${channels})`,
+        `**Users/Channels:** (${users}/${channels})`,
         ``,
         `**Owner:** ${owner}/${owner.tag} (${owner.id})`,
         `**Joined:** ${joined}`,
@@ -89,13 +84,6 @@ module.exports = {
     let logsChannel = bot.guilds.cache.get(bot.supportserver).channels.cache.get(bot.config.guildlogs);
     setTimeout(() => {
       logsChannel.send(embed).catch(e => { });
-    }, 2000)
-
-    // let timechange = new Date(new Date().getTime() - 4 * 3600000).toLocaleString();
-    // let cdate = guild.createdAt.toString().split(" ");
-    // let users = guild.members.cache.filter(m => !m.user.bot).size;
-    // let bots = guild.members.cache.filter(m => m.user.bot).size;
-    // let channels = guild.channels.cache.size;
-    // bot.sendMessage(`NEW GUILD: '${guild.name}'\nID: '${guild.id}'\nCreated: ${cdate[1]}, ${cdate[2]} ${cdate[3]}\n\n(${users}/${bots}/${channels})\n${timechange}`);
+    }, 2000);
   }
 };
