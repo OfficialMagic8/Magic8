@@ -44,7 +44,7 @@ module.exports = {
     if (message.author.id === target.id) {
       let embed = new MessageEmbed()
         .setColor(bot.colors.red)
-        .setDescription(bot.translate(bot, language, "connectfour.cannotyourself")
+        .setDescription(bot.translate(bot, language, "connectfour.cannotbeauthor")
           .replace(/{CROSS}/g, bot.emoji.cross)
           .replace(/{USER}/g, message.author));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
