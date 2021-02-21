@@ -396,9 +396,21 @@ bot.ws.on("INTERACTION_CREATE", interaction => {
 });
 bot.utils.loadCommands(bot);
 bot.utils.loadEvents(bot);
-module.exports = {
-  bot: bot
-};
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Application specific logging, throwing an error, or other logic here
+});
+process.on('uncaughtException', (err, origin) => {
+  console.log(`Caught exception: ${err}`);
+  console.log(`Exception origin: ${origin}`);
+});
+process.on('warning', (warning) => {
+  console.warn(warning.name);    // Print the warning name
+  console.warn(warning.message); // Print the warning message
+  console.warn(warning.stack);   // Print the stack trace
+});
+
 bot.cleanTags = (message) => {
   return message.replace(/@everyone/gi, "<everyone>").replace(/@here/gi, "<here>")
 }
