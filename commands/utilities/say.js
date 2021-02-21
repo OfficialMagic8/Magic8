@@ -8,6 +8,7 @@ module.exports = {
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
     if (!message.member.hasPermission("MANAGE_MESSAGES")) return;
+    let language = bot.utils.getLanguage(bot, guildData.language);
     message.delete({ timeout: 500 }).catch(e => { });
     let channel = message.channel;
     let msg;
@@ -21,7 +22,6 @@ module.exports = {
       }
     }
     if (!msg) {
-      let language = bot.utils.getLanguage(bot, guildData.language);
       let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setFooter(bot.translate(bot, language, "say.tip"))
@@ -32,11 +32,10 @@ module.exports = {
     } else {
       let permissions = message.guild.me.permissionsIn(channel);
       if (!permissions || !permissions.has("SEND_MESSAGES")) {
-        let language = bot.utils.getLanguage(bot, guildData.language);
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "say.permissionrequired")
-            .replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author))
+            .replace(/{CROSS}/g, bot.emoji.cross).replace(/{USER}/g, message.author));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       } else {
         if (message.member.hasPermission("MENTION_EVERYONE")) {
