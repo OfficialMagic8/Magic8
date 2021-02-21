@@ -4,7 +4,7 @@ module.exports = {
   run: async (bot, message) => {
     let guild = message.guild;
     if (message.type !== "DEFAULT") return;
-    if (!bot.users.cache.has(message.author.id)) await bot.users.fetch(message.author.id);
+    // if (!bot.users.cache.has(message.author.id)) await bot.users.fetch(message.author.id);
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.channel.id === "802156799393529908" && message.author.id === "292821168833036288") {
