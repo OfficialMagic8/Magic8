@@ -8,10 +8,9 @@ module.exports = {
   name: "inspire",
   run: async (bot, message, args, prefix, guildData) => {
     let language = bot.utils.getLanguage(bot, guildData.language);
-    let req = await bot.fetch(`https://type.fit/api/quotes`).then(res => res.json())
-      .then(json => {
-        return json;
-      }).catch(e => { return bot.error(bot, message, language, e); });
+    let req = await bot.fetch(`https://type.fit/api/quotes`).then(res => res.json()).then(json => {
+      return json;
+    }).catch(e => { return bot.error(bot, message, language, e); });
     let quote = req[Math.floor(Math.random() * req.length)];
     let author;
     if (quote.author === null) {
