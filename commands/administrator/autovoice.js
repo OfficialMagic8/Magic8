@@ -35,7 +35,7 @@ module.exports = {
         }
         let available = [];
         getautochannels.forEach(c => {
-          available.push(`${bot.guilds.cache.get(message.guild.id).channels.cache.get(c.id).name} (${c.id})`);
+          if (message.guild.channels.cache.has(c.id)) available.push(`${message.guild.channels.cache.get(c.id).name} (${c.id})`);
         })
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
@@ -97,7 +97,7 @@ module.exports = {
       } else {
         getautochannels.forEach(vc => {
           a.push(vc.id)
-          available.push(`${bot.guilds.cache.get(message.guild.id).channels.cache.get(vc.id).name} (${vc.id})`);
+          available.push(`${message.guild.channels.cache.get(vc.id).name} (${vc.id})`);
         })
       }
       if (!args[1] || (args[1] && !a.includes(args[1]))) {
@@ -112,7 +112,7 @@ module.exports = {
         try {
           let vc = getautochannels.find(i => i.id === args[1]);
           getautochannels.splice(getautochannels.indexOf(vc), 1);
-          let todelete = bot.guilds.cache.get(message.guild.id).channels.cache.get(args[1]);
+          let todelete = message.guild.channels.cache.get(args[1]);
           bot.db.prepare("UPDATE guilddata SET autovoicechannels=? WHERE guildid=?").run(JSON.stringify(getautochannels), message.guild.id);
           if (getautochannels.length <= 0) {
             bot.db.prepare("UPDATE guilddata SET autovoicesystemready=? WHERE guildid=?").run(0, message.guild.id);
@@ -297,11 +297,11 @@ module.exports = {
       if (category === "none") {
         voicecategory = bot.translate(bot, language, "none");
       } else {
-        voicecategory = `${bot.guilds.cache.get(message.guild.id).channels.cache.get(category).name} (${category})`;
+        voicecategory = `${message.guild.channels.cache.get(category).name} (${category})`;
       }
       if (voicechannels.length >= 1 && category !== "none") {
         voicechannels.forEach(vc => {
-          thechannels.push(`${bot.guilds.cache.get(message.guild.id).channels.cache.get(vc.id).name} (${vc.id})`);
+          if (message.guild.channels.cache.has(vc.id)) thechannels.push(`${message.guild.channels.cache.get(vc.id).name} (${vc.id})`);
         });
       } else {
         thechannels = [`*${bot.translate(bot, language, "none")}*`];
@@ -334,7 +334,7 @@ module.exports = {
           let embed = new MessageEmbed()
             .setColor(bot.colors.main)
             .setDescription(bot.translate(bot, language, "autovoice.viewcategory").join("\n")
-              .replace(/{CATEGORY}/g, bot.guilds.cache.get(message.guild.id).channels.cache.get(category))
+              .replace(/{CATEGORY}/g, message.guild.channels.cache.get(category))
               .replace(/{CATEGORYID}/g, category)
               .replace(/{INFO}/g, bot.emoji.info)
               .replace(/{PREFIX}/g, prefix));
@@ -370,7 +370,7 @@ module.exports = {
         possiblechannel = await message.guild.channels.cache.get(args[1]) || message.guild.channels.fetch(args[1])
       } catch (e) { }
       if (!possiblechannel || possiblechannel.type !== "category") {
-        let allchannels = bot.guilds.cache.get(message.guild.id).channels.cache.keyArray();
+        let allchannels = message.guild.channels.cache.keyArray();
         let categoriesarray = [];
         allchannels.forEach(c => {
           if (bot.channels.cache.get(c).type === "category") {
@@ -403,7 +403,7 @@ module.exports = {
         .setColor(bot.colors.green)
         .setDescription(bot.translate(bot, language, "autovoice.categoryset").join("\n")
           .replace(/{CHECK}/g, bot.emoji.check)
-          .replace(/{CATEGORY}/g, bot.guilds.cache.get(message.guild.id).channels.cache.get(args[1]))
+          .replace(/{CATEGORY}/g, message.guild.channels.cache.get(args[1]))
           .replace(/{CATEGORYID}/g, args[1])
           .replace(/{INFO}/g, bot.emoji.info));
       return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
