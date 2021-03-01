@@ -31,7 +31,7 @@ module.exports = {
         // .replace(/{RAM}/g, `${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`)
         .replace(/{DJS}/g, bot.emoji.djs)
         .replace(/{DJSVERSION}/g, bot.pack.dependencies["discord.js"].replace(/\^/g, ""))
-        .replace(/{NODE}/g, bot.emoji.node)
+        .replace(/{NODE}/g, bot.emoji.nodejs)
         .replace(/{NODEVERSION}/g, bot.pack.engines.node)
         .replace(/{UPTIME}/g, uptime)
         .replace(/{PING}/g, bot.ms(bot.ws.ping))
