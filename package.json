@@ -38,7 +38,7 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "simple-node-logger": "^18.12.24",
-    "statcord.js": "^3.1.1",
+    "statcord.js": "^3.1.7",
     "sqlite3": "^5.0.0",
     "images-scraper": "^5.0.6",
     "xmlhttprequest": "1.8.0"
