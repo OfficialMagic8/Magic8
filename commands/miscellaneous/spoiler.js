@@ -7,9 +7,9 @@ module.exports = {
   name: "spoiler",
   toggleable: true,
   run: async (bot, message, args, prefix, guildData) => {
+    let language = bot.utils.getLanguage(bot, guildData.language);
     let msg = args.join(" ");
     if (!msg) {
-      let language = bot.utils.getLanguage(bot, guildData.language);
       let embed = new MessageEmbed()
         .setColor(bot.colors.red)
         .setDescription(bot.translate(bot, language, "spoiler.messagerequired")
