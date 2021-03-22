@@ -36,6 +36,7 @@ module.exports = {
       { name: `magic8.xyz`, type: "PLAYING" },
       { name: `magic8.xyz/discord`, type: "PLAYING" },
       { name: `magic8.xyz/invite`, type: "PLAYING" },
+      { name: `with Something.Host`, type: "PLAYING" },
       { name: `bremea.com`, type: "PLAYING" },
       { name: `bremea.com/discord`, type: "PLAYING" },
       { name: `bremea.com/countbot`, type: "PLAYING" },
