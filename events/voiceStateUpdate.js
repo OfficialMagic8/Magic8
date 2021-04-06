@@ -7,7 +7,7 @@ module.exports = {
       // console.log(`Guild In Voice Channels Collection`)
       let getchannel;
       try {
-        getchannel = await bot.channels.fetch((oldState.channel || newState.channel).id) || guild.channels.cache.get((oldState.channel || newState.channel).id)
+        getchannel = guild.channels.cache.get((oldState.channel || newState.channel).id) || await guild.channels.fetch((oldState.channel || newState.channel).id)
       } catch (e) { }
       // console.log(`Joined: ${getchannel.id}`)
       // console.log(`Parent: ${getchannel.parentID}`)
