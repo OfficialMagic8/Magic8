@@ -29,6 +29,7 @@ module.exports = {
         .replace(/{CHANNELS}/g, parseInt(bot.channels.cache.size).toLocaleString("en"))
         // .replace(/{NSFWCHANNELS}/g, bot.channels.cache.filter(c => c.nsfw).size.toLocaleString("en"))
         // .replace(/{RAM}/g, `${memory}/${maxRam} MB (${Math.round((memory * 100) / maxRam)}%)`)
+        .replace(/{SOMETHINGHOST}/g, bot.emoji.somethinghost)
         .replace(/{DJS}/g, bot.emoji.djs)
         .replace(/{DJSVERSION}/g, bot.pack.dependencies["discord.js"].replace(/\^/g, ""))
         .replace(/{NODE}/g, bot.emoji.nodejs)
