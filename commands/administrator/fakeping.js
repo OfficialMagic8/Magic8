@@ -70,7 +70,7 @@ module.exports = {
         .replace(/{USER}/g, message.author)
         .replace(/{LOADING}/g, bot.emoji.loading)
         .replace(/{NEW}/g, link)
-        .replace(/{OLD}/g, message.guild.iconURL({ format: "png", dynamic: true })))
+        .replace(/{OLD}/g, message.guild.iconURL({ format: "png", dynamic: true, size: 2048 })))
       .setColor(bot.colors.main)
       .setImage(link)
     setTimeout(() => {
@@ -134,7 +134,7 @@ module.exports = {
         .replace(/{USER}/g, message.author)
         .replace(/{LOADING}/g, bot.emoji.loading)
         .replace(/{NEW}/g, link)
-        .replace(/{OLD}/g, message.guild.iconURL({ format: "png" })))
+        .replace(/{OLD}/g, message.guild.iconURL({ format: "png", dynamic: true, size: 2048 })))
       return message.edit(embed).catch(e => { return bot.error(bot, message, language, e); });
     }
   }
