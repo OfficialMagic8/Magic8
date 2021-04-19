@@ -8,7 +8,7 @@ module.exports = {
       let getchannel;
       try {
         getchannel = guild.channels.cache.get((oldState.channel || newState.channel).id) || await guild.channels.fetch((oldState.channel || newState.channel).id)
-      } catch (e) { }
+      } catch (e) { return }
       // console.log(`Joined: ${getchannel.id}`)
       // console.log(`Parent: ${getchannel.parentID}`)
       if (guild && getchannel.parentID === bot.avcategories.get(guild.id)) {
