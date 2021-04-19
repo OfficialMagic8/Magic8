@@ -57,6 +57,8 @@ module.exports = {
             ticon = bot.emoji.plat;
           } else if (tank.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-DiamondTier.png") {
             ticon = bot.emoji.diamond;
+          } else if (tank.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-MasterTier.png") {
+            ticon = bot.emoji.master;
           } else if (tank.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-GrandmasterTier.png") {
             ticon = bot.emoji.grandmaster;
           }
@@ -79,6 +81,8 @@ module.exports = {
             dicon = bot.emoji.plat;
           } else if (dps.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-DiamondTier.png") {
             dicon = bot.emoji.diamond;
+          } else if (dps.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-MasterTier.png") {
+            dicon = bot.emoji.master;
           } else if (dps.rankIcon === "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-GrandmasterTier.png") {
             dicon = bot.emoji.grandmaster;
           }
