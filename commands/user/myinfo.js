@@ -36,16 +36,27 @@ module.exports = {
       boosting = bot.translate(bot, language, "myinfo.boost")
         .replace(/{SINCE}/g, member.premiumSince);
     }
-    let rolesarray = []
+    let rolesarray = [];
     let roles = member.roles.cache.keyArray();
     roles.forEach(role => {
       rolesarray.push(message.guild.roles.cache.get(role));
     })
     rolesarray.pop();
+    rolesarray.sort(function (roleA, roleB) {
+      let nameA = roleA.name.toUpperCase();
+      let nameB = roleB.name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
     let embed = new MessageEmbed()
       .setAuthor(bot.translate(bot, language, "myinfo.title")
-        .replace(/{USERNAME}/g, bot.users.cache.get(member.id).username))
-      .setThumbnail(bot.users.cache.get(member.id).displayAvatarURL({ format: "png", dynamic: true }))
+        .replace(/{USERNAME}/g, message.author.username))
+      .setThumbnail(message.author.displayAvatarURL({ format: "png", dynamic: true }))
       .setColor(bot.colors.main)
       .setDescription(bot.translate(bot, language, "myinfo.description").join("\n")
         .replace(/{USER}/g, message.author)
