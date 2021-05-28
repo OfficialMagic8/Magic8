@@ -363,13 +363,27 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!message.guild.roles.cache.find(r => r.name.toLowerCase() === args[1].toLowerCase())) {
+        let bypassarray = [];
+        let bypassroles = JSON.parse(guildData.antipingbypassroles)
+        bypassroles.forEach(async roleid => {
+          let role;
+          try {
+            role = message.guild.roles.cache.get(roleid) || await message.guild.roles.fetch(roleid);
+          } catch (e) { }
+          bypassarray.push(`${role}(${role.id})`);
+        })
+        if (bypassarray.length === 0) {
+          bypassarray = [`*${bot.translate(bot, language, "none")}*`];
+          bot.antipingbypassroles.delete(message.guild.id);
+        }
         let embed = new MessageEmbed()
           .setColor(bot.colors.red)
           .setDescription(bot.translate(bot, language, "antiping.invalidbypassrole").join("\n")
             .replace(/{CROSS}/g, bot.emoji.cross)
-            .replace(/{TARGETROLE}/g, targetrole)
+            .replace(/{INPUT}/g, targetrole)
             .replace(/{INFO}/g, bot.emoji.info)
-            .replace(/{PREFIX}/g, prefix));
+            .replace(/{PREFIX}/g, prefix)
+            .replace(/{BYPASSROLES}/g, bypassarray.map(r => `**•** ${r}`).join("\n")));
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
       if (!bypassroles.includes(targetrole.id)) {
@@ -400,14 +414,14 @@ module.exports = {
         return message.channel.send(embed).catch(e => { return bot.error(bot, message, language, e); });
       }
     } else if (subcommand === "roles") {
-      let bypassarray = []
-      let bypassroles = JSON.parse(guildData.antipingbypassroles)
+      let bypassarray = [];
+      let bypassroles = JSON.parse(guildData.antipingbypassroles);
       bypassroles.forEach(async roleid => {
         let role;
         try {
-          role = message.guild.roles.cache.get(roleid) || await message.guild.roles.fetch(roleid)
+          role = message.guild.roles.cache.get(roleid) || await message.guild.roles.fetch(roleid);
         } catch (e) { }
-        bypassarray.push(`${role}(${role.id})`)
+        bypassarray.push(`${role}(${role.id})`);
       })
       if (bypassarray.length === 0) {
         bypassarray = [`*${bot.translate(bot, language, "none")}*`];
